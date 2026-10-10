@@ -1,0 +1,585 @@
+id,base,category,axis,value,status,duplicate_of,media3,cost,name,why
+add_music,add_music,audio,,,ready,,mapped,cheap,Add music,55 Hz kick band in a pause -120→7 dB; ducked under speech: True
+add_music.mood=upbeat,add_music,audio,mood,upbeat,ready,,mapped,cheap,Add music,vs plain: sound differs by 27.5 dB
+add_music.mood=calm,add_music,audio,mood,calm,ready,,mapped,cheap,Add music,vs plain: sound differs by 27.3 dB
+add_music.level=bed,add_music,audio,level,bed,planned,,mapped,cheap,Add music,"'level' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+add_music.level=featured,add_music,audio,level,featured,planned,,mapped,cheap,Add music,"'level' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+audio_fade,audio_fade,audio,,,ready,,mapped,cheap,Audio fade,"first 0.15 s -19→-40 dB, last 0.15 s -43 dB, middle -18 dB"
+audio_fade.where=in,audio_fade,audio,where,in,ready,,mapped,cheap,Audio fade,vs plain: sound differs by 16.6 dB
+audio_fade.where=out,audio_fade,audio,where,out,ready,,mapped,cheap,Audio fade,vs plain: sound differs by 19.7 dB
+audio_fade.where=both,audio_fade,audio,where,both,ready,,mapped,cheap,Audio fade,vs plain: sound differs by 19.7 dB
+audio_fade.length=0.5s,audio_fade,audio,length,0.5s,planned,,mapped,cheap,Audio fade,"'length' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+audio_fade.length=1.5s,audio_fade,audio,length,1.5s,planned,,mapped,cheap,Audio fade,"'length' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+audio_fade.length=3s,audio_fade,audio,length,3s,planned,,mapped,cheap,Audio fade,"'length' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+beat_sync,beat_sync,audio,,,ready,,mapped,medium,Beat sync,cut times [5.78] — distance to the nearest beat [0.0]
+beat_sync.every=1,beat_sync,audio,every,1,ready,,mapped,medium,Beat sync,vs plain: length 11.77s vs 12.00s
+beat_sync.every=2,beat_sync,audio,every,2,rejected-duplicate,beat_sync.every=1,mapped,medium,Beat sync,"picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 0.0 dB (< 1.5), same length"
+beat_sync.every=4,beat_sync,audio,every,4,rejected-no-effect,,mapped,medium,Beat sync,"same as the plain video: picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 0.0 dB (< 1.5), same length"
+denoise,denoise,audio,,,ready,,server_only,cheap,Remove background noise,noise in a gap -45→-72 dB; the voice tone 18→18 dB
+denoise.amount=light,denoise,audio,amount,light,ready,,server_only,cheap,Remove background noise,vs plain: sound differs by 21.8 dB
+denoise.amount=strong,denoise,audio,amount,strong,rejected-duplicate,denoise.amount=light,server_only,cheap,Remove background noise,"picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 0.0 dB (< 1.5), same length"
+duck_music,duck_music,audio,,,ready,,server_only,cheap,Duck music under speech,kick band during speech 10→1 dB (music ducked under the voice); longest word 0.76s
+duck_music.amount=6 dB,duck_music,audio,amount,6 dB,ready,,server_only,cheap,Duck music under speech,vs plain: sound differs by 2.9 dB
+duck_music.amount=12 dB,duck_music,audio,amount,12 dB,ready,,server_only,cheap,Duck music under speech,vs plain: sound differs by 7.2 dB
+duck_music.amount=20 dB,duck_music,audio,amount,20 dB,ready,,server_only,cheap,Duck music under speech,vs plain: sound differs by 12.1 dB
+echo_reverb,echo_reverb,audio,,,ready,,server_only,cheap,Echo / reverb,just after the tone stops -180→-36 dB (echo tail)
+echo_reverb.amount=room,echo_reverb,audio,amount,room,rejected-no-effect,,server_only,cheap,Echo / reverb,"same as the plain video: picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 1.4 dB (< 1.5), same length"
+echo_reverb.amount=hall,echo_reverb,audio,amount,hall,ready,,server_only,cheap,Echo / reverb,vs plain: sound differs by 3.3 dB
+echo_reverb.amount=cave,echo_reverb,audio,amount,cave,ready,,server_only,cheap,Echo / reverb,vs plain: sound differs by 7.3 dB
+extract_audio,extract_audio,audio,,,ready,,mapped,cheap,Export the audio,"extract_audio.mp3: 12.00s (video 12.00s), decodes: True"
+extract_audio.format=mp3,extract_audio,audio,format,mp3,ready,,mapped,cheap,Export the audio,vs plain: extra files ['.mp3'] vs []
+extract_audio.format=wav,extract_audio,audio,format,wav,ready,,mapped,cheap,Export the audio,vs plain: extra files ['.wav'] vs []
+extract_audio.format=m4a,extract_audio,audio,format,m4a,ready,,mapped,cheap,Export the audio,vs plain: extra files ['.m4a'] vs []
+mute,mute,audio,,,ready,,mapped,cheap,Mute,sound inside 1-3 s -75 dB; outside -18→-18 dB
+mute.scope=whole,mute,audio,scope,whole,planned,,mapped,cheap,Mute,"'scope' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+mute.scope=part,mute,audio,scope,part,planned,,mapped,cheap,Mute,"'scope' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+normalize_loudness,normalize_loudness,audio,,,ready,,server_only,medium,Loudness (LUFS),-13.8 LUFS for -14; peak -12.7 dB
+normalize_loudness.target=-16,normalize_loudness,audio,target,-16,planned,,server_only,medium,Loudness (LUFS),"'target' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+normalize_loudness.target=-14,normalize_loudness,audio,target,-14,planned,,server_only,medium,Loudness (LUFS),"'target' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+normalize_loudness.target=-11,normalize_loudness,audio,target,-11,planned,,server_only,medium,Loudness (LUFS),"'target' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+replace_audio,replace_audio,audio,,,ready,,mapped,cheap,Replace the audio,55 Hz kick -83→17 dB; the clip's 440 Hz tone 16→-31 dB; loudest 55 Hz
+replace_audio.mood=upbeat,replace_audio,audio,mood,upbeat,ready,,mapped,cheap,Replace the audio,vs plain: sound differs by 18.7 dB
+replace_audio.mood=calm,replace_audio,audio,mood,calm,ready,,mapped,cheap,Replace the audio,vs plain: sound differs by 16.4 dB
+sfx_whoosh,sfx_whoosh,audio,,,ready,,mapped,cheap,Whoosh sound,broadband sound at the cut -1→51 dB
+sfx_whoosh.volume=soft,sfx_whoosh,audio,volume,soft,ready,,mapped,cheap,Whoosh sound,vs plain: sound differs by 1.8 dB
+sfx_whoosh.volume=normal,sfx_whoosh,audio,volume,normal,ready,,mapped,cheap,Whoosh sound,vs plain: sound differs by 4.2 dB
+sfx_whoosh.volume=loud,sfx_whoosh,audio,volume,loud,rejected-duplicate,sfx_whoosh.volume=normal,mapped,cheap,Whoosh sound,"picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 1.5 dB (< 1.5), same length"
+voice_clarity,voice_clarity,audio,,,ready,,server_only,cheap,Voice clarity,presence (2.5-4.5 kHz) vs body (150-400 Hz) -12.4→-6.9 dB
+voice_clarity.preset=podcast,voice_clarity,audio,preset,podcast,planned,,server_only,cheap,Voice clarity,"'preset' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+voice_clarity.preset=vlog,voice_clarity,audio,preset,vlog,planned,,server_only,cheap,Voice clarity,"'preset' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+voice_clarity.preset=phone_mic,voice_clarity,audio,preset,phone_mic,planned,,server_only,cheap,Voice clarity,"'preset' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+volume,volume,audio,,,ready,,mapped,cheap,Volume,-15.8 → -10.6 LUFS (want -9.8)
+volume.gain=-6 dB,volume,audio,gain,-6 dB,planned,,mapped,cheap,Volume,"'gain' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+volume.gain=+3 dB,volume,audio,gain,+3 dB,planned,,mapped,cheap,Volume,"'gain' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+volume.gain=+6 dB,volume,audio,gain,+6 dB,planned,,mapped,cheap,Volume,"'gain' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+volume.what=mix,volume,audio,what,mix,ready,,mapped,cheap,Volume,vs plain: sound differs by 5.3 dB
+volume.what=music,volume,audio,what,music,planned,,mapped,cheap,Volume,not testable on the test media — the skill says: there is no music — add music first
+volume.what=voice,volume,audio,what,voice,rejected-no-effect,,mapped,cheap,Volume,"same as the plain video: picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 0.1 dB (< 1.5), same length"
+auto_enhance,auto_enhance,color,,,ready,,mapped,medium,Auto enhance,mean brightness 0.31→0.38 (target 0.48)
+auto_enhance.strength=light,auto_enhance,color,strength,light,ready,,mapped,medium,Auto enhance,vs plain: picture differs by 12.7
+auto_enhance.strength=normal,auto_enhance,color,strength,normal,ready,,mapped,medium,Auto enhance,vs plain: picture differs by 19.8
+auto_enhance.strength=strong,auto_enhance,color,strength,strong,ready,,mapped,medium,Auto enhance,vs plain: picture differs by 36.3
+blur,blur,color,,,ready,,mapped,cheap,Blur,"edge energy inside 2.39→1.43, outside 2.53→2.50"
+blur.radius=2,blur,color,radius,2,ready,,mapped,cheap,Blur,vs plain: picture differs by 4.9
+blur.radius=6,blur,color,radius,6,ready,,mapped,cheap,Blur,vs plain: picture differs by 14.3
+blur.radius=12,blur,color,radius,12,ready,,mapped,cheap,Blur,vs plain: picture differs by 24.3
+brightness,brightness,color,,,ready,,mapped,cheap,Brightness,"luma inside 127.6→149.9, outside 127.0→127.0"
+brightness.amount=-0.2,brightness,color,amount,-0.2,ready,,mapped,cheap,Brightness,vs plain: picture differs by 33.7
+brightness.amount=-0.1,brightness,color,amount,-0.1,ready,,mapped,cheap,Brightness,vs plain: picture differs by 18.4
+brightness.amount=+0.1,brightness,color,amount,+0.1,ready,,mapped,cheap,Brightness,vs plain: picture differs by 16.1
+brightness.amount=+0.2,brightness,color,amount,+0.2,ready,,mapped,cheap,Brightness,vs plain: picture differs by 31.7
+cinematic_look,cinematic_look,color,,,ready,,mapped,cheap,Cinematic look,"vs the look's maths 2.3, vs plain 9.7"
+cinematic_look.strength=0.5,cinematic_look,color,strength,0.5,ready,,mapped,cheap,Cinematic look,vs plain: picture differs by 5.0
+cinematic_look.strength=0.85,cinematic_look,color,strength,0.85,ready,,mapped,cheap,Cinematic look,vs plain: picture differs by 8.1
+cinematic_look.strength=1.0,cinematic_look,color,strength,1.0,rejected-duplicate,cinematic_look.strength=0.85,mapped,cheap,Cinematic look,"picture 2.2 (< 3.0), part 7.5 (< 10.0), sound 0.0 dB (< 1.5), same length"
+color_pop,color_pop,color,,,ready,,custom_shader,cheap,Colour pop,red area saturation 253→249; other colours 247→2
+color_pop.color=red,color_pop,color,color,red,ready,,custom_shader,cheap,Colour pop,vs plain: picture differs by 90.3
+color_pop.color=yellow,color_pop,color,color,yellow,ready,,custom_shader,cheap,Colour pop,vs plain: picture differs by 88.9
+color_pop.color=blue,color_pop,color,color,blue,ready,,custom_shader,cheap,Colour pop,vs plain: picture differs by 71.1
+color_pop.color=green,color_pop,color,color,green,ready,,custom_shader,cheap,Colour pop,vs plain: picture differs by 88.9
+contrast,contrast,color,,,ready,,mapped,cheap,Contrast,luma spread 35.6→54.4
+contrast.amount=0.8,contrast,color,amount,0.8,ready,,mapped,cheap,Contrast,vs plain: picture differs by 8.5
+contrast.amount=1.2,contrast,color,amount,1.2,ready,,mapped,cheap,Contrast,vs plain: picture differs by 8.6
+contrast.amount=1.5,contrast,color,amount,1.5,ready,,mapped,cheap,Contrast,vs plain: picture differs by 20.9
+cool,cool,color,,,ready,,custom_shader,cheap,Cooler,red minus blue -3.6→-19.4
+cool.amount=light,cool,color,amount,light,ready,,custom_shader,cheap,Cooler,vs plain: picture differs by 7.6
+cool.amount=normal,cool,color,amount,normal,ready,,custom_shader,cheap,Cooler,vs plain: picture differs by 11.1
+cool.amount=strong,cool,color,amount,strong,ready,,custom_shader,cheap,Cooler,vs plain: picture differs by 14.5
+film_grain,film_grain,color,,,ready,,custom_shader,medium,Film grain,fine detail 1.60→3.65; frame-to-frame change 4.91→6.24 (moving grain)
+film_grain.amount=light,film_grain,color,amount,light,ready,,custom_shader,medium,Film grain,vs plain: file 6.13x bigger per second
+film_grain.amount=normal,film_grain,color,amount,normal,ready,,custom_shader,medium,Film grain,vs plain: picture differs by 4.1
+film_grain.amount=heavy,film_grain,color,amount,heavy,ready,,custom_shader,medium,Film grain,vs plain: picture differs by 10.1
+grayscale,grayscale,color,,,ready,,mapped,cheap,Black and white,"saturation inside 246.5→0.1, outside 243.8→243.9"
+grayscale.intensity=half,grayscale,color,intensity,half,ready,,mapped,cheap,Black and white,vs plain: picture differs by 58.5
+grayscale.intensity=full,grayscale,color,intensity,full,ready,,mapped,cheap,Black and white,vs plain: picture differs by 106.7
+grayscale.time=whole,grayscale,color,time,whole,planned,,mapped,cheap,Black and white,"'time' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+grayscale.time=one_shot,grayscale,color,time,one_shot,planned,,mapped,cheap,Black and white,"'time' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+grayscale.time=intermittent,grayscale,color,time,intermittent,planned,,mapped,cheap,Black and white,"'time' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+saturation,saturation,color,,,ready,,mapped,cheap,Saturation,saturation 109.8→166.0
+saturation.amount=0.6,saturation,color,amount,0.6,ready,,mapped,cheap,Saturation,vs plain: picture differs by 19.1
+saturation.amount=1.3,saturation,color,amount,1.3,ready,,mapped,cheap,Saturation,vs plain: picture differs by 14.3
+saturation.amount=1.6,saturation,color,amount,1.6,ready,,mapped,cheap,Saturation,vs plain: picture differs by 28.6
+sepia,sepia,color,,,ready,,mapped,cheap,Sepia,"R 160 > G 145 > B 116; R-B spread 16.5 (a tone, not colours)"
+sepia.strength=light,sepia,color,strength,light,ready,,mapped,cheap,Sepia,vs plain: picture differs by 24.4
+sepia.strength=full,sepia,color,strength,full,ready,,mapped,cheap,Sepia,vs plain: picture differs by 50.8
+sharpen,sharpen,color,,,ready,,custom_shader,cheap,Sharpen,edge energy 2.39→4.26
+sharpen.amount=light,sharpen,color,amount,light,rejected-no-effect,,custom_shader,cheap,Sharpen,"same as the plain video: picture 1.0 (< 3.0), part 9.1 (< 10.0), sound 0.1 dB (< 1.5), same length"
+sharpen.amount=normal,sharpen,color,amount,normal,ready,,custom_shader,cheap,Sharpen,vs plain: one part of the picture differs by 10.9
+sharpen.amount=strong,sharpen,color,amount,strong,ready,,custom_shader,cheap,Sharpen,vs plain: one part of the picture differs by 18.8
+teal_orange,teal_orange,color,,,ready,,mapped,cheap,Teal and orange,"vs the look's maths 2.6, vs plain 16.7"
+teal_orange.strength=0.5,teal_orange,color,strength,0.5,ready,,mapped,cheap,Teal and orange,vs plain: picture differs by 8.2
+teal_orange.strength=0.85,teal_orange,color,strength,0.85,ready,,mapped,cheap,Teal and orange,vs plain: picture differs by 13.9
+teal_orange.strength=1.0,teal_orange,color,strength,1.0,ready,,mapped,cheap,Teal and orange,vs plain: picture differs by 16.5
+vignette,vignette,color,,,ready,,custom_shader,cheap,Vignette,corner/centre brightness 0.85→0.59
+vignette.amount=light,vignette,color,amount,light,ready,,custom_shader,cheap,Vignette,vs plain: picture differs by 7.7
+vignette.amount=normal,vignette,color,amount,normal,ready,,custom_shader,cheap,Vignette,vs plain: picture differs by 17.2
+vignette.amount=strong,vignette,color,amount,strong,ready,,custom_shader,cheap,Vignette,vs plain: picture differs by 47.1
+vintage_faded,vintage_faded,color,,,ready,,mapped,cheap,Vintage faded,"vs the look's maths 2.2, vs plain 24.7"
+vintage_faded.strength=0.5,vintage_faded,color,strength,0.5,ready,,mapped,cheap,Vintage faded,vs plain: picture differs by 12.5
+vintage_faded.strength=0.85,vintage_faded,color,strength,0.85,ready,,mapped,cheap,Vintage faded,vs plain: picture differs by 21.2
+vintage_faded.strength=1.0,vintage_faded,color,strength,1.0,ready,,mapped,cheap,Vintage faded,vs plain: picture differs by 24.9
+warm,warm,color,,,ready,,custom_shader,cheap,Warmer,red minus blue -3.6→20.6
+warm.amount=light,warm,color,amount,light,ready,,custom_shader,cheap,Warmer,vs plain: picture differs by 8.5
+warm.amount=normal,warm,color,amount,normal,ready,,custom_shader,cheap,Warmer,vs plain: picture differs by 14.2
+warm.amount=strong,warm,color,amount,strong,ready,,custom_shader,cheap,Warmer,vs plain: picture differs by 27.7
+delete_segment,delete_segment,cutting,,,ready,,mapped,cheap,Delete a part,12.00→10.00s (want −2.00); after-cut frame diff 1.1
+delete_segment.target=time_range,delete_segment,cutting,target,time_range,planned,,mapped,cheap,Delete a part,"'target' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+delete_segment.target=shot_number,delete_segment,cutting,target,shot_number,planned,,mapped,cheap,Delete a part,"'target' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+delete_segment.target=first_shot,delete_segment,cutting,target,first_shot,planned,,mapped,cheap,Delete a part,"'target' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+delete_segment.target=last_shot,delete_segment,cutting,target,last_shot,planned,,mapped,cheap,Delete a part,"'target' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+delete_segment.gap=close_gap,delete_segment,cutting,gap,close_gap,planned,,mapped,cheap,Delete a part,"'gap' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+delete_segment.gap=leave_black,delete_segment,cutting,gap,leave_black,planned,,mapped,cheap,Delete a part,"'gap' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+extract_highlights,extract_highlights,cutting,,,ready,,mapped,medium,Best moments (highlights),"2 moments, 4.00s (want 4.00); [""highlights: T1 0.0-2.0s (score 3.70); T1 2.0-4.0s (score 5.19) — picked by picture change + speech, not a human's taste""]"
+extract_highlights.count=1,extract_highlights,cutting,count,1,ready,,mapped,medium,Best moments (highlights),vs plain: length 2.00s vs 12.00s
+extract_highlights.count=3,extract_highlights,cutting,count,3,ready,,mapped,medium,Best moments (highlights),vs plain: length 6.00s vs 12.00s
+extract_highlights.count=5,extract_highlights,cutting,count,5,ready,,mapped,medium,Best moments (highlights),vs plain: length 10.00s vs 12.00s
+extract_highlights.length=2s,extract_highlights,cutting,length,2s,ready,,mapped,medium,Best moments (highlights),vs plain: length 4.00s vs 12.00s
+extract_highlights.length=4s,extract_highlights,cutting,length,4s,ready,,mapped,medium,Best moments (highlights),vs plain: length 8.00s vs 12.00s
+extract_highlights.length=8s,extract_highlights,cutting,length,8s,rejected-no-effect,,mapped,medium,Best moments (highlights),"same as the plain video: picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 0.1 dB (< 1.5), same length"
+fit_to_duration,fit_to_duration,cutting,,,ready,,mapped,cheap,Fit to a length,12.00s for 12.0s
+fit_to_duration.target=15s,fit_to_duration,cutting,target,15s,planned,,mapped,cheap,Fit to a length,"'target' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+fit_to_duration.target=30s,fit_to_duration,cutting,target,30s,planned,,mapped,cheap,Fit to a length,"'target' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+fit_to_duration.target=60s,fit_to_duration,cutting,target,60s,planned,,mapped,cheap,Fit to a length,"'target' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+fit_to_duration.target=90s,fit_to_duration,cutting,target,90s,planned,,mapped,cheap,Fit to a length,"'target' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+fit_to_duration.strategy=shorten_every_shot,fit_to_duration,cutting,strategy,shorten_every_shot,planned,,mapped,cheap,Fit to a length,"'strategy' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+fit_to_duration.strategy=drop_weakest_shots,fit_to_duration,cutting,strategy,drop_weakest_shots,planned,,mapped,cheap,Fit to a length,"'strategy' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+hook_first,hook_first,cutting,,,ready,,mapped,medium,Hook first,"12.00→13.50s (+1.5), opens with T1 2.5-4.0s; rest vs plain diff 0.7; first frame vs source 1.0"
+hook_first.mode=teaser,hook_first,cutting,mode,teaser,ready,,mapped,medium,Hook first,vs plain: length 13.50s vs 12.00s
+hook_first.mode=move,hook_first,cutting,mode,move,ready,,mapped,medium,Hook first,vs plain: picture differs by 25.3
+hook_first.length=1s,hook_first,cutting,length,1s,planned,,mapped,medium,Hook first,"'length' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+hook_first.length=2s,hook_first,cutting,length,2s,planned,,mapped,medium,Hook first,"'length' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+hook_first.length=3s,hook_first,cutting,length,3s,planned,,mapped,medium,Hook first,"'length' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+insert_broll,insert_broll,cutting,,,ready,,mapped,cheap,B-roll cutaway,"picture changed 119.9 inside, 0.9 after; sound 440 Hz (plain 440 Hz)"
+insert_broll.length=1.5s,insert_broll,cutting,length,1.5s,planned,,mapped,cheap,B-roll cutaway,"'length' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+insert_broll.length=2.5s,insert_broll,cutting,length,2.5s,planned,,mapped,cheap,B-roll cutaway,"'length' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+insert_broll.length=4s,insert_broll,cutting,length,4s,planned,,mapped,cheap,B-roll cutaway,"'length' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+insert_broll.entry=cut,insert_broll,cutting,entry,cut,planned,,mapped,cheap,B-roll cutaway,"'entry' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+insert_broll.entry=crossfade,insert_broll,cutting,entry,crossfade,planned,,mapped,cheap,B-roll cutaway,"'entry' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+intro_outro,intro_outro,cutting,,,ready,,mapped,cheap,Intro / outro card,12.00→13.50s (+1.5); text pixels in the card 1.2%; video after the card diff 0.7
+intro_outro.which=intro,intro_outro,cutting,which,intro,ready,,mapped,cheap,Intro / outro card,vs plain: length 13.50s vs 12.00s
+intro_outro.which=outro,intro_outro,cutting,which,outro,ready,,mapped,cheap,Intro / outro card,vs plain: length 13.50s vs 12.00s
+intro_outro.which=both,intro_outro,cutting,which,both,ready,,mapped,cheap,Intro / outro card,vs plain: length 15.00s vs 12.00s
+intro_outro.background=black,intro_outro,cutting,background,black,ready,,mapped,cheap,Intro / outro card,vs plain: length 13.50s vs 12.00s
+intro_outro.background=white,intro_outro,cutting,background,white,ready,,mapped,cheap,Intro / outro card,vs plain: length 13.50s vs 12.00s
+intro_outro.background=brand,intro_outro,cutting,background,brand,ready,,mapped,cheap,Intro / outro card,vs plain: length 13.50s vs 12.00s
+intro_outro.background=gradient,intro_outro,cutting,background,gradient,ready,,mapped,cheap,Intro / outro card,vs plain: length 13.50s vs 12.00s
+intro_outro.background=warm,intro_outro,cutting,background,warm,ready,,mapped,cheap,Intro / outro card,vs plain: length 13.50s vs 12.00s
+intro_outro.length=1.5s,intro_outro,cutting,length,1.5s,planned,,mapped,cheap,Intro / outro card,"'length' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+intro_outro.length=2s,intro_outro,cutting,length,2s,planned,,mapped,cheap,Intro / outro card,"'length' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+intro_outro.length=3s,intro_outro,cutting,length,3s,planned,,mapped,cheap,Intro / outro card,"'length' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+j_cut,j_cut,cutting,,,ready,,server_only,cheap,J-cut (next sound starts early),sound before the cut 880 Hz (plain 440 Hz: the next shot is 880 Hz); picture unchanged (0.0)
+j_cut.lead=0.25s,j_cut,cutting,lead,0.25s,planned,,server_only,cheap,J-cut (next sound starts early),"'lead' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+j_cut.lead=0.5s,j_cut,cutting,lead,0.5s,planned,,server_only,cheap,J-cut (next sound starts early),"'lead' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+j_cut.lead=1s,j_cut,cutting,lead,1s,planned,,server_only,cheap,J-cut (next sound starts early),"'lead' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+j_cut.where=every_cut,j_cut,cutting,where,every_cut,planned,,server_only,cheap,J-cut (next sound starts early),"'where' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+j_cut.where=one_cut,j_cut,cutting,where,one_cut,planned,,server_only,cheap,J-cut (next sound starts early),"'where' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+jump_cut_tighten,jump_cut_tighten,cutting,,,ready,,mapped,medium,Tighten pauses (jump cuts),longest gap between words 0.56s (≤ 0.65); 14.53→7.45s
+jump_cut_tighten.tightness=relaxed_0.5s,jump_cut_tighten,cutting,tightness,relaxed_0.5s,planned,,mapped,medium,Tighten pauses (jump cuts),"'tightness' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+jump_cut_tighten.tightness=normal_0.3s,jump_cut_tighten,cutting,tightness,normal_0.3s,planned,,mapped,medium,Tighten pauses (jump cuts),"'tightness' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+jump_cut_tighten.tightness=very_tight_0.1s,jump_cut_tighten,cutting,tightness,very_tight_0.1s,planned,,mapped,medium,Tighten pauses (jump cuts),"'tightness' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+l_cut,l_cut,cutting,,,ready,,server_only,cheap,L-cut (sound carries over),sound after the cut 440 Hz (plain 880 Hz: this shot is 440 Hz); picture unchanged (0.0)
+l_cut.tail=0.25s,l_cut,cutting,tail,0.25s,planned,,server_only,cheap,L-cut (sound carries over),"'tail' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+l_cut.tail=0.5s,l_cut,cutting,tail,0.5s,planned,,server_only,cheap,L-cut (sound carries over),"'tail' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+l_cut.tail=1s,l_cut,cutting,tail,1s,planned,,server_only,cheap,L-cut (sound carries over),"'tail' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+l_cut.where=every_cut,l_cut,cutting,where,every_cut,planned,,server_only,cheap,L-cut (sound carries over),"'where' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+l_cut.where=one_cut,l_cut,cutting,where,one_cut,planned,,server_only,cheap,L-cut (sound carries over),"'where' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+merge_clips,merge_clips,cutting,,,ready,,mapped,cheap,Join all clips,12.00s for clips totalling 12.00s
+merge_clips.order=upload,merge_clips,cutting,order,upload,rejected-no-effect,,mapped,cheap,Join all clips,"same as the plain video: picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 0.1 dB (< 1.5), same length"
+merge_clips.order=filming_time,merge_clips,cutting,order,filming_time,planned,,mapped,cheap,Join all clips,'filming_time' is not one of the parameter's choices yet
+merge_clips.joins=hard_cut,merge_clips,cutting,joins,hard_cut,planned,,mapped,cheap,Join all clips,"'joins' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+merge_clips.joins=crossfade,merge_clips,cutting,joins,crossfade,planned,,mapped,cheap,Join all clips,"'joins' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+montage_builder,montage_builder,cutting,,,ready,,mapped,medium,Montage,"6 shots of [1.0]s from 2 clips, 6.00s"
+montage_builder.pace=0.5s,montage_builder,cutting,pace,0.5s,planned,,mapped,medium,Montage,"'pace' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+montage_builder.pace=1s,montage_builder,cutting,pace,1s,planned,,mapped,medium,Montage,"'pace' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+montage_builder.pace=2s,montage_builder,cutting,pace,2s,planned,,mapped,medium,Montage,"'pace' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+montage_builder.total=10s,montage_builder,cutting,total,10s,ready,,mapped,medium,Montage,vs plain: length 10.00s vs 12.00s
+montage_builder.total=15s,montage_builder,cutting,total,15s,ready,,mapped,medium,Montage,vs plain: picture differs by 119.8
+montage_builder.total=30s,montage_builder,cutting,total,30s,rejected-duplicate,montage_builder.total=15s,mapped,medium,Montage,"picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 0.0 dB (< 1.5), same length"
+remove_fillers,remove_fillers,cutting,,,ready,,server_only,medium,Remove filler sounds,"fillers before ['Um,'], after []; 14.53→14.33s"
+remove_fillers.list=english,remove_fillers,cutting,list,english,planned,,server_only,medium,Remove filler sounds,"'list' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+remove_fillers.list=hindi,remove_fillers,cutting,list,hindi,planned,,server_only,medium,Remove filler sounds,"'list' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+remove_fillers.list=both,remove_fillers,cutting,list,both,planned,,server_only,medium,Remove filler sounds,"'list' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+remove_fillers.padding=tight,remove_fillers,cutting,padding,tight,planned,,server_only,medium,Remove filler sounds,"'padding' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+remove_fillers.padding=normal,remove_fillers,cutting,padding,normal,planned,,server_only,medium,Remove filler sounds,"'padding' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+remove_silence,remove_silence,cutting,,,ready,,mapped,cheap,Remove silences,"14.53→7.10s, longest pause left 0.45s (≤ 0.85)"
+remove_silence.aggressiveness=gentle_1s,remove_silence,cutting,aggressiveness,gentle_1s,planned,,mapped,cheap,Remove silences,"'aggressiveness' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+remove_silence.aggressiveness=normal_0.6s,remove_silence,cutting,aggressiveness,normal_0.6s,planned,,mapped,cheap,Remove silences,"'aggressiveness' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+remove_silence.aggressiveness=tight_0.3s,remove_silence,cutting,aggressiveness,tight_0.3s,planned,,mapped,cheap,Remove silences,"'aggressiveness' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+remove_silence.keep_padding=0.05,remove_silence,cutting,keep_padding,0.05,planned,,mapped,cheap,Remove silences,"'keep_padding' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+remove_silence.keep_padding=0.15,remove_silence,cutting,keep_padding,0.15,planned,,mapped,cheap,Remove silences,"'keep_padding' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+remove_silence.keep_padding=0.3,remove_silence,cutting,keep_padding,0.3,planned,,mapped,cheap,Remove silences,"'keep_padding' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+reorder_clips,reorder_clips,cutting,,,ready,,mapped,cheap,Change shot order,"first frame vs old shot 2: 0.3, vs old shot 1: 118.7"
+reorder_clips.how=explicit_list,reorder_clips,cutting,how,explicit_list,planned,,mapped,cheap,Change shot order,"'how' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+reorder_clips.how=move_one_to_start,reorder_clips,cutting,how,move_one_to_start,planned,,mapped,cheap,Change shot order,"'how' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+reorder_clips.how=move_one_to_end,reorder_clips,cutting,how,move_one_to_end,planned,,mapped,cheap,Change shot order,"'how' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+reorder_clips.how=reverse_order,reorder_clips,cutting,how,reverse_order,planned,,mapped,cheap,Change shot order,"'how' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+reorder_clips.how=swap_two,reorder_clips,cutting,how,swap_two,planned,,mapped,cheap,Change shot order,"'how' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+split,split,cutting,,,ready,,mapped,cheap,Split at a time,"2→3 shots, 12.00→12.00s, frames diff 1.0, sound at the split +0.0 dB vs plain"
+split.where=at_time,split,cutting,where,at_time,planned,,mapped,cheap,Split at a time,"'where' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+split.where=at_playhead,split,cutting,where,at_playhead,planned,,mapped,cheap,Split at a time,"'where' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+split.where=at_scene_change,split,cutting,where,at_scene_change,planned,,mapped,cheap,Split at a time,"'where' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+split.pieces=two,split,cutting,pieces,two,planned,,mapped,cheap,Split at a time,"'pieces' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+split.pieces=at_every_n_seconds,split,cutting,pieces,at_every_n_seconds,planned,,mapped,cheap,Split at a time,"'pieces' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+trim,trim,cutting,,,ready,,mapped,cheap,Trim (keep a time range),5.00s (want 5.00); first frame vs plain@2.2s diff 1.0
+trim.range=first_n_seconds,trim,cutting,range,first_n_seconds,planned,,mapped,cheap,Trim (keep a time range),"'range' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+trim.range=last_n_seconds,trim,cutting,range,last_n_seconds,planned,,mapped,cheap,Trim (keep a time range),"'range' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+trim.range=middle_range,trim,cutting,range,middle_range,planned,,mapped,cheap,Trim (keep a time range),"'range' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+trim.snap=exact,trim,cutting,snap,exact,planned,,mapped,cheap,Trim (keep a time range),"'snap' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+trim.snap=nearest_cut,trim,cutting,snap,nearest_cut,planned,,mapped,cheap,Trim (keep a time range),"'snap' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+export_preset,export_preset,delivery,,,ready,,mapped,cheap,Export for a platform,"720x1280 30 fps h264/aac, 604 kbit/s (cap 8000)"
+export_preset.platform=instagram_reels,export_preset,delivery,platform,instagram_reels,ready,,mapped,cheap,Export for a platform,"vs plain: frame size (720, 1280) vs (640, 360)"
+export_preset.platform=youtube_shorts,export_preset,delivery,platform,youtube_shorts,rejected-duplicate,export_preset.platform=instagram_reels,mapped,cheap,Export for a platform,"picture 0.2 (< 3.0), part 2.9 (< 10.0), sound 0.1 dB (< 1.5), same length"
+export_preset.platform=whatsapp_status,export_preset,delivery,platform,whatsapp_status,ready,,mapped,cheap,Export for a platform,"vs plain: frame size (720, 1280) vs (640, 360)"
+export_preset.platform=youtube,export_preset,delivery,platform,youtube,ready,,mapped,cheap,Export for a platform,"vs plain: frame size (1280, 720) vs (640, 360)"
+export_preset.platform=linkedin,export_preset,delivery,platform,linkedin,ready,,mapped,cheap,Export for a platform,"vs plain: frame size (720, 720) vs (640, 360)"
+export_preset.quality=high,export_preset,delivery,quality,high,ready,,mapped,cheap,Export for a platform,"vs plain: frame size (1080, 1920) vs (640, 360)"
+export_preset.quality=light,export_preset,delivery,quality,light,ready,,mapped,cheap,Export for a platform,"vs plain: frame size (720, 1280) vs (640, 360)"
+scene_detect,scene_detect,delivery,,,ready,,mapped,medium,Scene detection,"cuts at [4.0, 8.0] (the clip changes scene at 4.0 and 8.0 s)"
+scene_detect.use=split_only,scene_detect,delivery,use,split_only,planned,,mapped,medium,Scene detection,"'use' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+scene_detect.use=split_and_transition,scene_detect,delivery,use,split_and_transition,planned,,mapped,medium,Scene detection,"'use' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+srt_export,srt_export,delivery,,,ready,,mapped,cheap,Captions as .srt,7 SRT entries for 7 captions; well-formed: True
+srt_export.format=srt,srt_export,delivery,format,srt,ready,,mapped,cheap,Captions as .srt,vs plain: extra files ['.srt'] vs []
+thumbnail,thumbnail,delivery,,,ready,,mapped,cheap,Thumbnail,"thumbnail.jpg 640x360, = frame at 2.0s (diff 2.0)"
+thumbnail.moment=start,thumbnail,delivery,moment,start,planned,,mapped,cheap,Thumbnail,"'moment' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+thumbnail.moment=third,thumbnail,delivery,moment,third,planned,,mapped,cheap,Thumbnail,"'moment' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+thumbnail.moment=best,thumbnail,delivery,moment,best,planned,,mapped,cheap,Thumbnail,"'moment' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+aspect_16_9,aspect_16_9,layout,,,ready,,mapped,cheap,Landscape 16:9 (YouTube),640x360 for 16:9; picture std 124.2
+aspect_16_9.fit=crop,aspect_16_9,layout,fit,crop,planned,,mapped,cheap,Landscape 16:9 (YouTube),"'fit' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+aspect_16_9.fit=blur,aspect_16_9,layout,fit,blur,planned,,mapped,cheap,Landscape 16:9 (YouTube),"'fit' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+aspect_16_9.fit=fit,aspect_16_9,layout,fit,fit,planned,,mapped,cheap,Landscape 16:9 (YouTube),"'fit' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+aspect_1_1,aspect_1_1,layout,,,ready,,mapped,cheap,Square 1:1,360x360 for 1:1; picture std 113.8
+aspect_1_1.fit=crop,aspect_1_1,layout,fit,crop,planned,,mapped,cheap,Square 1:1,"'fit' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+aspect_1_1.fit=blur,aspect_1_1,layout,fit,blur,planned,,mapped,cheap,Square 1:1,"'fit' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+aspect_1_1.fit=fit,aspect_1_1,layout,fit,fit,planned,,mapped,cheap,Square 1:1,"'fit' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+aspect_4_5,aspect_4_5,layout,,,ready,,mapped,cheap,Portrait 4:5 (feed),360x450 for 4:5; picture std 123.9
+aspect_4_5.fit=crop,aspect_4_5,layout,fit,crop,planned,,mapped,cheap,Portrait 4:5 (feed),"'fit' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+aspect_4_5.fit=blur,aspect_4_5,layout,fit,blur,planned,,mapped,cheap,Portrait 4:5 (feed),"'fit' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+aspect_4_5.fit=fit,aspect_4_5,layout,fit,fit,planned,,mapped,cheap,Portrait 4:5 (feed),"'fit' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+aspect_9_16,aspect_9_16,layout,,,ready,,mapped,cheap,Vertical 9:16 (Reels / Shorts / Status),360x640 for 9:16; picture std 125.1
+aspect_9_16.fit=crop,aspect_9_16,layout,fit,crop,planned,,mapped,cheap,Vertical 9:16 (Reels / Shorts / Status),"'fit' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+aspect_9_16.fit=blur,aspect_9_16,layout,fit,blur,planned,,mapped,cheap,Vertical 9:16 (Reels / Shorts / Status),"'fit' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+aspect_9_16.fit=fit,aspect_9_16,layout,fit,fit,planned,,mapped,cheap,Vertical 9:16 (Reels / Shorts / Status),"'fit' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+aspect_9_16.platform=instagram_reels,aspect_9_16,layout,platform,instagram_reels,planned,,mapped,cheap,Vertical 9:16 (Reels / Shorts / Status),"'platform' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+aspect_9_16.platform=youtube_shorts,aspect_9_16,layout,platform,youtube_shorts,planned,,mapped,cheap,Vertical 9:16 (Reels / Shorts / Status),"'platform' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+aspect_9_16.platform=whatsapp_status,aspect_9_16,layout,platform,whatsapp_status,planned,,mapped,cheap,Vertical 9:16 (Reels / Shorts / Status),"'platform' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+auto_reframe,auto_reframe,layout,,,ready,,mapped,heavy,Auto reframe (follow the subject),"box x (share of width) at 0.3/1.5/2.7s: [0.45, 0.5, 0.55]; centred crop loses it: [0, 0]"
+auto_reframe.target=person,auto_reframe,layout,target,person,ready,,mapped,heavy,Auto reframe (follow the subject),vs plain: picture differs by 17.4
+auto_reframe.target=face,auto_reframe,layout,target,face,rejected-duplicate,auto_reframe.target=person,mapped,heavy,Auto reframe (follow the subject),"picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 0.0 dB (< 1.5), same length"
+auto_reframe.smoothing=steady,auto_reframe,layout,smoothing,steady,planned,,mapped,heavy,Auto reframe (follow the subject),"'smoothing' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+auto_reframe.smoothing=responsive,auto_reframe,layout,smoothing,responsive,planned,,mapped,heavy,Auto reframe (follow the subject),"'smoothing' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+blur_background_fill,blur_background_fill,layout,,,ready,,custom_shader,medium,Blurred background fill,"top band mean 127.0 (not black), edges top 0.55 vs middle 3.26"
+blur_background_fill.blur=light,blur_background_fill,layout,blur,light,planned,,custom_shader,medium,Blurred background fill,"'blur' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+blur_background_fill.blur=normal,blur_background_fill,layout,blur,normal,planned,,custom_shader,medium,Blurred background fill,"'blur' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+blur_background_fill.blur=heavy,blur_background_fill,layout,blur,heavy,planned,,custom_shader,medium,Blurred background fill,"'blur' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+crop,crop,layout,,,ready,,mapped,cheap,Crop (zoom into a region),vs the plain frame's box enlarged 1.3; vs plain 86.9
+crop.region=center,crop,layout,region,center,planned,,mapped,cheap,Crop (zoom into a region),"'region' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+crop.region=left_half,crop,layout,region,left_half,planned,,mapped,cheap,Crop (zoom into a region),"'region' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+crop.region=right_half,crop,layout,region,right_half,planned,,mapped,cheap,Crop (zoom into a region),"'region' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+crop.region=top_half,crop,layout,region,top_half,planned,,mapped,cheap,Crop (zoom into a region),"'region' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+crop.region=bottom_half,crop,layout,region,bottom_half,planned,,mapped,cheap,Crop (zoom into a region),"'region' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+letterbox,letterbox,layout,,,ready,,mapped,cheap,Cinema bars (letterbox),"bar 46px: top max 24 (black), middle std 124.1"
+letterbox.ratio=1.85,letterbox,layout,ratio,1.85,ready,,mapped,cheap,Cinema bars (letterbox),vs plain: picture differs by 6.2
+letterbox.ratio=2.0,letterbox,layout,ratio,2.0,ready,,mapped,cheap,Cinema bars (letterbox),vs plain: picture differs by 14.9
+letterbox.ratio=2.39,letterbox,layout,ratio,2.39,ready,,mapped,cheap,Cinema bars (letterbox),vs plain: picture differs by 32.9
+letterbox.ratio=2.76,letterbox,layout,ratio,2.76,ready,,mapped,cheap,Cinema bars (letterbox),vs plain: picture differs by 46.0
+letterbox.time=whole,letterbox,layout,time,whole,planned,,mapped,cheap,Cinema bars (letterbox),"'time' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+letterbox.time=intro_only,letterbox,layout,time,intro_only,planned,,mapped,cheap,Cinema bars (letterbox),"'time' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+picture_in_picture,picture_in_picture,layout,,,ready,,mapped,medium,Picture in picture,"top-right corner changed 150.4, rest 0.8; sound 440 Hz (the main clip's)"
+picture_in_picture.corner=top_left,picture_in_picture,layout,corner,top_left,planned,,mapped,medium,Picture in picture,"'corner' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+picture_in_picture.corner=top_right,picture_in_picture,layout,corner,top_right,planned,,mapped,medium,Picture in picture,"'corner' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+picture_in_picture.corner=bottom_left,picture_in_picture,layout,corner,bottom_left,planned,,mapped,medium,Picture in picture,"'corner' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+picture_in_picture.corner=bottom_right,picture_in_picture,layout,corner,bottom_right,planned,,mapped,medium,Picture in picture,"'corner' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+picture_in_picture.size=small,picture_in_picture,layout,size,small,ready,,mapped,medium,Picture in picture,vs plain: picture differs by 8.9
+picture_in_picture.size=medium,picture_in_picture,layout,size,medium,ready,,mapped,medium,Picture in picture,vs plain: picture differs by 15.9
+picture_in_picture.size=large,picture_in_picture,layout,size,large,ready,,mapped,medium,Picture in picture,vs plain: picture differs by 41.8
+picture_in_picture.border=none,picture_in_picture,layout,border,none,planned,,mapped,medium,Picture in picture,"'border' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+picture_in_picture.border=white,picture_in_picture,layout,border,white,planned,,mapped,medium,Picture in picture,"'border' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+rotate_flip,rotate_flip,layout,,,ready,,mapped,cheap,Rotate / flip,"180°: vs plain turned around 1.1 (same), vs plain 238.0"
+rotate_flip.angle=90,rotate_flip,layout,angle,90,ready,,mapped,cheap,Rotate / flip,vs plain: picture differs by 131.7
+rotate_flip.angle=180,rotate_flip,layout,angle,180,ready,,mapped,cheap,Rotate / flip,vs plain: picture differs by 235.3
+rotate_flip.angle=270,rotate_flip,layout,angle,270,ready,,mapped,cheap,Rotate / flip,vs plain: picture differs by 131.9
+rotate_flip.mirror=h,rotate_flip,layout,mirror,h,planned,,mapped,cheap,Rotate / flip,"'mirror' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+rotate_flip.mirror=v,rotate_flip,layout,mirror,v,planned,,mapped,cheap,Rotate / flip,"'mirror' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+split_screen,split_screen,layout,,,ready,,mapped,medium,Split screen,left vs clip 1 0.6 (vs clip 2 57.0); right vs clip 2 20.2
+split_screen.layout=left_right,split_screen,layout,layout,left_right,ready,,mapped,medium,Split screen,vs plain: picture differs by 155.1
+split_screen.layout=top_bottom,split_screen,layout,layout,top_bottom,ready,,mapped,medium,Split screen,vs plain: picture differs by 74.6
+split_screen.gap=none,split_screen,layout,gap,none,planned,,mapped,medium,Split screen,"'gap' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+split_screen.gap=thin_line,split_screen,layout,gap,thin_line,planned,,mapped,medium,Split screen,"'gap' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+freeze_frame,freeze_frame,motion,,,ready,,mapped,cheap,Freeze frame,held frames differ 0.08; = plain at 2.0s (0.8); continues after (1.0); sound in the hold -180 dB; 12.00→13.50s
+freeze_frame.duration=0.5s,freeze_frame,motion,duration,0.5s,ready,,mapped,cheap,Freeze frame,vs plain: length 12.50s vs 12.00s
+freeze_frame.duration=1.5s,freeze_frame,motion,duration,1.5s,ready,,mapped,cheap,Freeze frame,vs plain: length 13.50s vs 12.00s
+freeze_frame.duration=3s,freeze_frame,motion,duration,3s,ready,,mapped,cheap,Freeze frame,vs plain: length 15.00s vs 12.00s
+freeze_frame.with=plain,freeze_frame,motion,with,plain,planned,,mapped,cheap,Freeze frame,"'with' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+freeze_frame.with=flash,freeze_frame,motion,with,flash,planned,,mapped,cheap,Freeze frame,"'with' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+freeze_frame.with=zoom,freeze_frame,motion,with,zoom,planned,,mapped,cheap,Freeze frame,"'with' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+ken_burns,ken_burns,motion,,,ready,,mapped,cheap,Ken Burns,"zoom at 1.05s 1.02, 2.9s 1.28 (want ~1.30), after 1.00"
+ken_burns.direction=in,ken_burns,motion,direction,in,ready,,mapped,cheap,Ken Burns,vs plain: picture differs by 53.7
+ken_burns.direction=out,ken_burns,motion,direction,out,ready,,mapped,cheap,Ken Burns,vs plain: picture differs by 48.2
+ken_burns.direction=left,ken_burns,motion,direction,left,ready,,mapped,cheap,Ken Burns,vs plain: picture differs by 88.7
+ken_burns.direction=right,ken_burns,motion,direction,right,ready,,mapped,cheap,Ken Burns,vs plain: picture differs by 87.5
+ken_burns.amount=0.1,ken_burns,motion,amount,0.1,ready,,mapped,cheap,Ken Burns,vs plain: picture differs by 22.3
+ken_burns.amount=0.2,ken_burns,motion,amount,0.2,ready,,mapped,cheap,Ken Burns,vs plain: picture differs by 39.4
+ken_burns.amount=0.35,ken_burns,motion,amount,0.35,ready,,mapped,cheap,Ken Burns,vs plain: picture differs by 59.5
+loop_boomerang,loop_boomerang,motion,,,ready,,server_only,medium,Boomerang loop,"3.00→6.00s; frame at 1.0 s = frame at 5.0s (diff 4.4, vs another 11.5)"
+loop_boomerang.times=1,loop_boomerang,motion,times,1,ready,,server_only,medium,Boomerang loop,vs plain: length 6.00s vs 3.00s
+loop_boomerang.times=2,loop_boomerang,motion,times,2,ready,,server_only,medium,Boomerang loop,vs plain: length 12.00s vs 3.00s
+loop_boomerang.times=3,loop_boomerang,motion,times,3,ready,,server_only,medium,Boomerang loop,vs plain: length 18.00s vs 3.00s
+pan,pan,motion,,,ready,,mapped,cheap,Pan,"crop x at 0.3/2.0/5.5 s: [6, 38, 104] (moving right)"
+pan.direction=left,pan,motion,direction,left,ready,,mapped,cheap,Pan,vs plain: picture differs by 75.4
+pan.direction=right,pan,motion,direction,right,ready,,mapped,cheap,Pan,vs plain: picture differs by 70.3
+pan.direction=up,pan,motion,direction,up,ready,,mapped,cheap,Pan,vs plain: picture differs by 54.4
+pan.direction=down,pan,motion,direction,down,ready,,mapped,cheap,Pan,vs plain: picture differs by 54.4
+pan.speed=slow,pan,motion,speed,slow,ready,,mapped,cheap,Pan,vs plain: picture differs by 37.0
+pan.speed=normal,pan,motion,speed,normal,ready,,mapped,cheap,Pan,vs plain: picture differs by 50.7
+pan.speed=fast,pan,motion,speed,fast,ready,,mapped,cheap,Pan,vs plain: picture differs by 94.9
+punch_in,punch_in,motion,,,ready,,mapped,cheap,Punch in,"zoom before 1.00, at the punch 1.24, after 1.00"
+punch_in.scale=1.1,punch_in,motion,scale,1.1,ready,,mapped,cheap,Punch in,vs plain: picture differs by 42.9
+punch_in.scale=1.2,punch_in,motion,scale,1.2,ready,,mapped,cheap,Punch in,vs plain: picture differs by 69.9
+punch_in.scale=1.28,punch_in,motion,scale,1.28,ready,,mapped,cheap,Punch in,vs plain: picture differs by 87.9
+punch_in.on=beats,punch_in,motion,on,beats,planned,,mapped,cheap,Punch in,"'on' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+punch_in.on=words,punch_in,motion,on,words,planned,,mapped,cheap,Punch in,"'on' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+punch_in.on=cuts,punch_in,motion,on,cuts,planned,,mapped,cheap,Punch in,"'on' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+reverse,reverse,motion,,,ready,,server_only,medium,Reverse,out 0.3s = plain 5.67s (5.8 vs 11.4 for other frames); out 5.7s = plain 0.27s (4.4 vs 9.7); next shot unchanged (0.0)
+reverse.scope=whole,reverse,motion,scope,whole,planned,,server_only,medium,Reverse,"'scope' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+reverse.scope=one_shot,reverse,motion,scope,one_shot,planned,,server_only,medium,Reverse,"'scope' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+reverse.scope=boomerang,reverse,motion,scope,boomerang,planned,,server_only,medium,Reverse,"'scope' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+shake,shake,motion,,,ready,,mapped,cheap,Camera shake,"extra frame-to-frame motion inside 8.2, outside 0.0"
+shake.intensity=light,shake,motion,intensity,light,ready,,mapped,cheap,Camera shake,vs plain: picture differs by 9.3
+shake.intensity=normal,shake,motion,intensity,normal,ready,,mapped,cheap,Camera shake,vs plain: picture differs by 11.9
+shake.intensity=strong,shake,motion,intensity,strong,ready,,mapped,cheap,Camera shake,vs plain: picture differs by 25.4
+slow_motion,slow_motion,motion,,,ready,,mapped,cheap,Slow motion,12.00→14.00s (want 14.00); frame 1s into the window = plain 0.5s in (diff 0.8)
+slow_motion.factor=0.75x,slow_motion,motion,factor,0.75x,ready,,mapped,cheap,Slow motion,vs plain: length 12.67s vs 12.00s
+slow_motion.factor=0.5x,slow_motion,motion,factor,0.5x,ready,,mapped,cheap,Slow motion,vs plain: length 14.00s vs 12.00s
+slow_motion.factor=0.25x,slow_motion,motion,factor,0.25x,ready,,mapped,cheap,Slow motion,vs plain: length 18.00s vs 12.00s
+speed_ramp,speed_ramp,motion,,,ready,,mapped,medium,Speed ramp,12.00→10.50s (want 10.50); first half normal (0.0); second half x2 (0.0)
+speed_ramp.curve=speed_up_later,speed_ramp,motion,curve,speed_up_later,ready,,mapped,medium,Speed ramp,vs plain: length 10.50s vs 12.00s
+speed_ramp.curve=slow_down_later,speed_ramp,motion,curve,slow_down_later,ready,,mapped,medium,Speed ramp,vs plain: length 15.00s vs 12.00s
+speed_ramp.strength=1.5,speed_ramp,motion,strength,1.5,ready,,mapped,medium,Speed ramp,vs plain: length 11.00s vs 12.00s
+speed_ramp.strength=2,speed_ramp,motion,strength,2,ready,,mapped,medium,Speed ramp,vs plain: length 10.50s vs 12.00s
+speed_ramp.strength=3,speed_ramp,motion,strength,3,ready,,mapped,medium,Speed ramp,vs plain: length 10.00s vs 12.00s
+speed_up,speed_up,motion,,,ready,,mapped,cheap,Speed up,12.00→11.00s (want 11.00); frame 0.5s into the window = plain 1.0s in (diff 1.0)
+speed_up.factor=1.5x,speed_up,motion,factor,1.5x,ready,,mapped,cheap,Speed up,vs plain: length 11.33s vs 12.00s
+speed_up.factor=2x,speed_up,motion,factor,2x,ready,,mapped,cheap,Speed up,vs plain: length 11.00s vs 12.00s
+speed_up.factor=3x,speed_up,motion,factor,3x,ready,,mapped,cheap,Speed up,vs plain: length 10.67s vs 12.00s
+stabilize,stabilize,motion,,,ready,,server_only,medium,Stabilise,frame-to-frame change 24.6 → 18.6
+stabilize.strength=light,stabilize,motion,strength,light,ready,,server_only,medium,Stabilise,vs plain: picture differs by 51.5
+stabilize.strength=normal,stabilize,motion,strength,normal,ready,,server_only,medium,Stabilise,vs plain: picture differs by 51.9
+stabilize.strength=strong,stabilize,motion,strength,strong,ready,,server_only,medium,Stabilise,vs plain: picture differs by 67.4
+zoom_in,zoom_in,motion,,,ready,,mapped,cheap,Zoom in,"zoom at 1.05s 1.02, 2.9s 1.28 (want ~1.30), after 1.00"
+zoom_in.amount=0.08,zoom_in,motion,amount,0.08,ready,,mapped,cheap,Zoom in,vs plain: picture differs by 18.8
+zoom_in.amount=0.15,zoom_in,motion,amount,0.15,ready,,mapped,cheap,Zoom in,vs plain: picture differs by 30.9
+zoom_in.amount=0.3,zoom_in,motion,amount,0.3,ready,,mapped,cheap,Zoom in,vs plain: picture differs by 53.7
+zoom_in.easing=linear,zoom_in,motion,easing,linear,ready,,mapped,cheap,Zoom in,vs plain: picture differs by 53.7
+zoom_in.easing=ease_in_out,zoom_in,motion,easing,ease_in_out,ready,,mapped,cheap,Zoom in,vs plain: picture differs by 55.8
+zoom_in.easing=spring,zoom_in,motion,easing,spring,ready,,mapped,cheap,Zoom in,vs plain: picture differs by 58.3
+zoom_in.easing=bounce,zoom_in,motion,easing,bounce,ready,,mapped,cheap,Zoom in,vs plain: picture differs by 55.2
+zoom_out,zoom_out,motion,,,ready,,mapped,cheap,Zoom out,"zoom at 1.1s 1.28 (want ~1.30), at 2.95s 1.00"
+zoom_out.amount=0.08,zoom_out,motion,amount,0.08,ready,,mapped,cheap,Zoom out,vs plain: picture differs by 20.8
+zoom_out.amount=0.15,zoom_out,motion,amount,0.15,ready,,mapped,cheap,Zoom out,vs plain: picture differs by 30.7
+zoom_out.amount=0.3,zoom_out,motion,amount,0.3,ready,,mapped,cheap,Zoom out,vs plain: picture differs by 48.2
+zoom_out.easing=linear,zoom_out,motion,easing,linear,ready,,mapped,cheap,Zoom out,vs plain: picture differs by 48.2
+zoom_out.easing=ease_in_out,zoom_out,motion,easing,ease_in_out,ready,,mapped,cheap,Zoom out,vs plain: picture differs by 50.4
+zoom_out.easing=bounce,zoom_out,motion,easing,bounce,ready,,mapped,cheap,Zoom out,vs plain: picture differs by 49.0
+blur_box_censor,blur_box_censor,stylize,,,ready,,mapped,medium,Blur box (censor),sharpness in the box 200 → 1; a corner outside the box 0.1
+blur_box_censor.region=face,blur_box_censor,stylize,region,face,planned,,mapped,medium,Blur box (censor),not testable on the test media — the skill says: no face found there — give the area instead (e.g. 'top right')
+blur_box_censor.region=center,blur_box_censor,stylize,region,center,ready,,mapped,medium,Blur box (censor),vs plain: picture differs by 6.2
+blur_box_censor.region=corner,blur_box_censor,stylize,region,corner,planned,,mapped,medium,Blur box (censor),'corner' is not one of the parameter's choices yet
+blur_box_censor.blur=soft,blur_box_censor,stylize,blur,soft,planned,,mapped,medium,Blur box (censor),"'blur' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+blur_box_censor.blur=strong,blur_box_censor,stylize,blur,strong,planned,,mapped,medium,Blur box (censor),"'blur' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+countdown_timer,countdown_timer,stylize,,,ready,,mapped,cheap,Countdown,"numbers ['3', '2', '1']; text pixels at 1.5/2.5/3.5 s ['0.4%', '0.4%', '0.3%'], before 0.00%, after 0.01%"
+countdown_timer.from=3,countdown_timer,stylize,from,3,ready,,mapped,cheap,Countdown,vs plain: one part of the picture differs by 38.8
+countdown_timer.from=5,countdown_timer,stylize,from,5,ready,,mapped,cheap,Countdown,vs plain: one part of the picture differs by 42.9
+countdown_timer.from=10,countdown_timer,stylize,from,10,ready,,mapped,cheap,Countdown,vs plain: one part of the picture differs by 73.4
+flash,flash,stylize,,,ready,,mapped,cheap,Flash,brightness at the flash 128→225; 0.4 s before / 0.5 s after unchanged
+flash.on=cuts,flash,stylize,on,cuts,planned,,mapped,cheap,Flash,"'on' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+flash.on=beats,flash,stylize,on,beats,planned,,mapped,cheap,Flash,"'on' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+flash.on=time,flash,stylize,on,time,planned,,mapped,cheap,Flash,"'on' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+glitch,glitch,stylize,,,ready,,custom_shader,cheap,Glitch,"picture changed 16.9 inside 1-3 s, 1.1 outside"
+glitch.intensity=light,glitch,stylize,intensity,light,ready,,custom_shader,cheap,Glitch,vs plain: picture differs by 11.0
+glitch.intensity=normal,glitch,stylize,intensity,normal,ready,,custom_shader,cheap,Glitch,vs plain: picture differs by 13.9
+glitch.intensity=heavy,glitch,stylize,intensity,heavy,ready,,custom_shader,cheap,Glitch,vs plain: picture differs by 25.2
+light_leak,light_leak,stylize,,,ready,,custom_shader,cheap,Light leak,"brighter by 30.8, warmer (R-B) by 27.9 inside; outside changed 1.7"
+light_leak.color=orange,light_leak,stylize,color,orange,ready,,custom_shader,cheap,Light leak,vs plain: picture differs by 29.7
+light_leak.color=pink,light_leak,stylize,color,pink,ready,,custom_shader,cheap,Light leak,vs plain: picture differs by 30.3
+light_leak.color=gold,light_leak,stylize,color,gold,rejected-duplicate,light_leak.color=orange,custom_shader,cheap,Light leak,"picture 1.5 (< 3.0), part 6.8 (< 10.0), sound 0.0 dB (< 1.5), same length"
+light_leak.length=1s,light_leak,stylize,length,1s,planned,,custom_shader,cheap,Light leak,"'length' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+light_leak.length=2s,light_leak,stylize,length,2s,planned,,custom_shader,cheap,Light leak,"'length' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+light_leak.length=4s,light_leak,stylize,length,4s,planned,,custom_shader,cheap,Light leak,"'length' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+mirror_effect,mirror_effect,stylize,,,ready,,custom_shader,cheap,Mirror,left vs mirrored right half 234.7 → 0.7
+mirror_effect.axis=h,mirror_effect,stylize,axis,h,ready,,custom_shader,cheap,Mirror,vs plain: picture differs by 117.0
+mirror_effect.axis=v,mirror_effect,stylize,axis,v,ready,,custom_shader,cheap,Mirror,vs plain: picture differs by 11.4
+mirror_effect.axis=both,mirror_effect,stylize,axis,both,ready,,custom_shader,cheap,Mirror,vs plain: picture differs by 124.4
+pixelate_censor,pixelate_censor,stylize,,,ready,,mapped,medium,Pixelate (censor),equal-neighbour share in the box 64% → 92% (blocks); outside the window 0.9
+pixelate_censor.region=face,pixelate_censor,stylize,region,face,planned,,mapped,medium,Pixelate (censor),not testable on the test media — the skill says: no face found there — give the area instead (e.g. 'top right')
+pixelate_censor.region=center,pixelate_censor,stylize,region,center,ready,,mapped,medium,Pixelate (censor),vs plain: one part of the picture differs by 97.6
+pixelate_censor.region=corner,pixelate_censor,stylize,region,corner,planned,,mapped,medium,Pixelate (censor),'corner' is not one of the parameter's choices yet
+pixelate_censor.blocks=fine,pixelate_censor,stylize,blocks,fine,planned,,mapped,medium,Pixelate (censor),"'blocks' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+pixelate_censor.blocks=coarse,pixelate_censor,stylize,blocks,coarse,planned,,mapped,medium,Pixelate (censor),"'blocks' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+rgb_split,rgb_split,stylize,,,ready,,custom_shader,cheap,RGB split,"red moved -16px, blue +16px (pulled apart by 32px)"
+rgb_split.amount=light,rgb_split,stylize,amount,light,ready,,custom_shader,cheap,RGB split,vs plain: picture differs by 7.6
+rgb_split.amount=normal,rgb_split,stylize,amount,normal,ready,,custom_shader,cheap,RGB split,vs plain: picture differs by 10.9
+rgb_split.amount=heavy,rgb_split,stylize,amount,heavy,ready,,custom_shader,cheap,RGB split,vs plain: picture differs by 22.5
+shape_highlight,shape_highlight,stylize,,,ready,,mapped,cheap,Highlight shape,"yellow ring pixels 0.65% around (0.5, 0.33, 0.64, 0.68)"
+shape_highlight.shape=box,shape_highlight,stylize,shape,box,ready,,mapped,cheap,Highlight shape,vs plain: one part of the picture differs by 41.4
+shape_highlight.shape=ring,shape_highlight,stylize,shape,ring,ready,,mapped,cheap,Highlight shape,vs plain: picture differs by 3.3
+shape_highlight.shape=arrow,shape_highlight,stylize,shape,arrow,ready,,mapped,cheap,Highlight shape,vs plain: picture differs by 5.4
+shape_highlight.color=yellow,shape_highlight,stylize,color,yellow,ready,,mapped,cheap,Highlight shape,vs plain: picture differs by 3.3
+shape_highlight.color=red,shape_highlight,stylize,color,red,ready,,mapped,cheap,Highlight shape,vs plain: picture differs by 3.3
+sticker_lottie,sticker_lottie,stylize,,,ready,,mapped,cheap,Animated sticker,"sticker pixels top-right 11.4%, elsewhere 0.03%, after its window 0.03%"
+sticker_lottie.emoji=🔥,sticker_lottie,stylize,emoji,🔥,ready,,mapped,cheap,Animated sticker,vs plain: picture differs by 5.0
+sticker_lottie.emoji=❤️,sticker_lottie,stylize,emoji,❤️,ready,,mapped,cheap,Animated sticker,vs plain: picture differs by 4.1
+sticker_lottie.emoji=😂,sticker_lottie,stylize,emoji,😂,ready,,mapped,cheap,Animated sticker,vs plain: picture differs by 3.8
+sticker_lottie.emoji=🌹,sticker_lottie,stylize,emoji,🌹,ready,,mapped,cheap,Animated sticker,vs plain: picture differs by 5.4
+sticker_lottie.corner=top_right,sticker_lottie,stylize,corner,top_right,planned,,mapped,cheap,Animated sticker,"'corner' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+sticker_lottie.corner=bottom_left,sticker_lottie,stylize,corner,bottom_left,planned,,mapped,cheap,Animated sticker,"'corner' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+vhs_retro,vhs_retro,stylize,,,ready,,custom_shader,cheap,VHS retro,"picture changed 40.9 inside 1-3 s, 1.1 outside"
+vhs_retro.intensity=light,vhs_retro,stylize,intensity,light,ready,,custom_shader,cheap,VHS retro,vs plain: picture differs by 39.0
+vhs_retro.intensity=normal,vhs_retro,stylize,intensity,normal,rejected-duplicate,vhs_retro.intensity=light,custom_shader,cheap,VHS retro,"picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 0.0 dB (< 1.5), same length"
+auto_captions,auto_captions,text,,,ready,,server_only,medium,Auto captions,"7 captions; text pixels in the bottom band 3.78% while 'the weather was amazing' is said, top 0.00%; in a pause 0.00%"
+auto_captions.style=classic,auto_captions,text,style,classic,ready,,server_only,medium,Auto captions,vs plain: one part of the picture differs by 124.5
+auto_captions.style=hormozi,auto_captions,text,style,hormozi,ready,,server_only,medium,Auto captions,vs plain: one part of the picture differs by 55.8
+auto_captions.style=bold_pop,auto_captions,text,style,bold_pop,ready,,server_only,medium,Auto captions,vs plain: one part of the picture differs by 64.3
+auto_captions.style=minimal,auto_captions,text,style,minimal,ready,,server_only,medium,Auto captions,vs plain: one part of the picture differs by 66.6
+auto_captions.words=1,auto_captions,text,words,1,planned,,server_only,medium,Auto captions,"'words' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+auto_captions.words=3,auto_captions,text,words,3,planned,,server_only,medium,Auto captions,"'words' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+auto_captions.words=6,auto_captions,text,words,6,planned,,server_only,medium,Auto captions,"'words' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+caption_style,caption_style,text,,,ready,,mapped,cheap,Caption style,"recoloured caption pixels: yellow in the old 0.000%, in the new 0.045%"
+caption_style.preset=hormozi,caption_style,text,preset,hormozi,ready,,mapped,cheap,Caption style,vs plain: one part of the picture differs by 111.9
+caption_style.preset=bold_pop,caption_style,text,preset,bold_pop,rejected-duplicate,caption_style.preset=hormozi,mapped,cheap,Caption style,"picture 0.8 (< 3.0), part 7.3 (< 10.0), sound 0.1 dB (< 1.5), same length"
+caption_style.preset=neon,caption_style,text,preset,neon,ready,,mapped,cheap,Caption style,vs plain: one part of the picture differs by 84.6
+caption_style.preset=minimal,caption_style,text,preset,minimal,ready,,mapped,cheap,Caption style,vs plain: one part of the picture differs by 106.7
+caption_style.preset=desi,caption_style,text,preset,desi,ready,,mapped,cheap,Caption style,vs plain: one part of the picture differs by 104.7
+caption_style.color=white,caption_style,text,color,white,rejected-no-effect,,mapped,cheap,Caption style,"same as the plain video: picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 0.0 dB (< 1.5), same length"
+caption_style.color=yellow,caption_style,text,color,yellow,ready,,mapped,cheap,Caption style,vs plain: one part of the picture differs by 15.7
+karaoke_captions,karaoke_captions,text,,,ready,,server_only,medium,Karaoke captions,"part of 'the old town together.' lit yellow (0.040% of the frame), the rest white (0.060%)"
+karaoke_captions.color=yellow,karaoke_captions,text,color,yellow,ready,,server_only,medium,Karaoke captions,vs plain: one part of the picture differs by 48.4
+karaoke_captions.color=green,karaoke_captions,text,color,green,ready,,server_only,medium,Karaoke captions,vs plain: one part of the picture differs by 47.5
+karaoke_captions.color=pink,karaoke_captions,text,color,pink,ready,,server_only,medium,Karaoke captions,vs plain: one part of the picture differs by 48.3
+lower_third,lower_third,text,,,ready,,mapped,cheap,Lower third (name strap),"text box (x0 y0 x1 y1 share of frame) (0.05, 0.87, 0.17, 0.93); after its window 0.01%"
+lower_third.style=name_tag,lower_third,text,style,name_tag,planned,,mapped,cheap,Lower third (name strap),"'style' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+lower_third.style=news,lower_third,text,style,news,planned,,mapped,cheap,Lower third (name strap),"'style' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+lower_third.length=3s,lower_third,text,length,3s,planned,,mapped,cheap,Lower third (name strap),"'length' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+lower_third.length=5s,lower_third,text,length,5s,planned,,mapped,cheap,Lower third (name strap),"'length' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+progress_bar,progress_bar,text,,,ready,,custom_shader,cheap,Progress bar,"bar width at 1 / 6 / 11.5 s: 25%, 50%, 96%"
+progress_bar.edge=bottom,progress_bar,text,edge,bottom,planned,,custom_shader,cheap,Progress bar,"'edge' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+progress_bar.edge=top,progress_bar,text,edge,top,planned,,custom_shader,cheap,Progress bar,"'edge' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+progress_bar.color=yellow,progress_bar,text,color,yellow,ready,,custom_shader,cheap,Progress bar,vs plain: one part of the picture differs by 28.4
+progress_bar.color=white,progress_bar,text,color,white,ready,,custom_shader,cheap,Progress bar,vs plain: one part of the picture differs by 45.0
+progress_bar.color=red,progress_bar,text,color,red,ready,,custom_shader,cheap,Progress bar,vs plain: one part of the picture differs by 31.9
+text_glow_neon,text_glow_neon,text,,,ready,,mapped,cheap,Neon glow text,bright letter core 0.16%; pink glow 0.12%
+text_glow_neon.color=pink,text_glow_neon,text,color,pink,ready,,mapped,cheap,Neon glow text,vs plain: one part of the picture differs by 55.0
+text_glow_neon.color=blue,text_glow_neon,text,color,blue,ready,,mapped,cheap,Neon glow text,vs plain: one part of the picture differs by 62.0
+text_glow_neon.color=green,text_glow_neon,text,color,green,ready,,mapped,cheap,Neon glow text,vs plain: one part of the picture differs by 57.1
+text_overlay,text_overlay,text,,,ready,,mapped,cheap,Text on screen,"text pixels before 0.00%, inside 1-4 s 0.70%, after 0.01%; box (0.42, 0.47, 0.58, 0.52)"
+text_overlay.position=top,text_overlay,text,position,top,ready,,mapped,cheap,Text on screen,vs plain: one part of the picture differs by 54.6
+text_overlay.position=center,text_overlay,text,position,center,ready,,mapped,cheap,Text on screen,vs plain: one part of the picture differs by 44.9
+text_overlay.position=bottom,text_overlay,text,position,bottom,ready,,mapped,cheap,Text on screen,vs plain: one part of the picture differs by 58.3
+text_overlay.box=none,text_overlay,text,box,none,ready,,mapped,cheap,Text on screen,vs plain: one part of the picture differs by 44.9
+text_overlay.box=box,text_overlay,text,box,box,ready,,mapped,cheap,Text on screen,vs plain: one part of the picture differs by 113.3
+text_pop_in,text_pop_in,text,,,ready,,mapped,cheap,Pop-in text,"text width at 1.05 s 0.05, at 1.8 s 0.06 (grows in)"
+text_pop_in.style=bold_pop,text_pop_in,text,style,bold_pop,planned,,mapped,cheap,Pop-in text,"'style' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+text_pop_in.style=comic,text_pop_in,text,style,comic,planned,,mapped,cheap,Pop-in text,"'style' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+text_slide,text_slide,text,,,ready,,mapped,cheap,Sliding text,"text centre x at 1.08 s -1.00, at 2.5 s 0.50 (comes in from the left)"
+text_slide.direction=left,text_slide,text,direction,left,ready,,mapped,cheap,Sliding text,vs plain: one part of the picture differs by 42.7
+text_slide.direction=right,text_slide,text,direction,right,ready,,mapped,cheap,Sliding text,vs plain: one part of the picture differs by 46.5
+text_slide.direction=up,text_slide,text,direction,up,ready,,mapped,cheap,Sliding text,vs plain: one part of the picture differs by 34.3
+text_slide.direction=down,text_slide,text,direction,down,ready,,mapped,cheap,Sliding text,vs plain: one part of the picture differs by 64.4
+text_typewriter,text_typewriter,text,,,ready,,mapped,cheap,Typewriter text,text pixels at 1.15 / 1.8 / 3.5 s: 0.55% < 0.61% < 0.61% (typed out)
+text_typewriter.speed=fast,text_typewriter,text,speed,fast,planned,,mapped,cheap,Typewriter text,"'speed' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+text_typewriter.speed=slow,text_typewriter,text,speed,slow,planned,,mapped,cheap,Typewriter text,"'speed' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+title_card,title_card,text,,,ready,,mapped,cheap,Title card,12.00→13.50s (+1.5); text pixels in the card 1.8%; video after the card diff 0.7
+title_card.background=black,title_card,text,background,black,ready,,mapped,cheap,Title card,vs plain: length 13.50s vs 12.00s
+title_card.background=gradient,title_card,text,background,gradient,ready,,mapped,cheap,Title card,vs plain: length 13.50s vs 12.00s
+title_card.background=warm,title_card,text,background,warm,ready,,mapped,cheap,Title card,vs plain: length 13.50s vs 12.00s
+title_card.at=start,title_card,text,at,start,planned,,mapped,cheap,Title card,"'start' is a word, not a number for this parameter"
+title_card.at=middle,title_card,text,at,middle,planned,,mapped,cheap,Title card,"'middle' is a word, not a number for this parameter"
+watermark_logo,watermark_logo,text,,,ready,,mapped,cheap,Logo watermark,red logo pixels in the top-right corner 61.9%; rest of the frame changed 0.03%
+watermark_logo.corner=top_left,watermark_logo,text,corner,top_left,planned,,mapped,cheap,Logo watermark,"'corner' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+watermark_logo.corner=top_right,watermark_logo,text,corner,top_right,planned,,mapped,cheap,Logo watermark,"'corner' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+watermark_logo.corner=bottom_left,watermark_logo,text,corner,bottom_left,planned,,mapped,cheap,Logo watermark,"'corner' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+watermark_logo.corner=bottom_right,watermark_logo,text,corner,bottom_right,planned,,mapped,cheap,Logo watermark,"'corner' is a design axis, not a parameter yet — it needs a parameter before it can be picked and tested"
+watermark_logo.opacity=0.4,watermark_logo,text,opacity,0.4,ready,,mapped,cheap,Logo watermark,vs plain: picture differs by 3.2
+watermark_logo.opacity=0.7,watermark_logo,text,opacity,0.7,ready,,mapped,cheap,Logo watermark,vs plain: picture differs by 4.8
+watermark_logo.opacity=1.0,watermark_logo,text,opacity,1.0,ready,,mapped,cheap,Logo watermark,vs plain: picture differs by 6.4
+crossfade,crossfade,transitions,,,ready,,mapped,cheap,Crossfade,"12.00→11.20s (−0.80 overlap); middle frame vs 50/50 mix 2.5, vs A 60.2, vs B 60.0"
+crossfade.duration=0.3s,crossfade,transitions,duration,0.3s,ready,,mapped,cheap,Crossfade,vs plain: length 11.70s vs 12.00s
+crossfade.duration=0.6s,crossfade,transitions,duration,0.6s,ready,,mapped,cheap,Crossfade,vs plain: length 11.40s vs 12.00s
+crossfade.duration=1.2s,crossfade,transitions,duration,1.2s,ready,,mapped,cheap,Crossfade,vs plain: length 10.80s vs 12.00s
+fade_black,fade_black,transitions,,,ready,,mapped,cheap,Fade through black,"12.00→11.20s (−0.80 overlap); middle brightness 27 (A 127, B 104)"
+fade_black.where=cuts,fade_black,transitions,where,cuts,ready,,mapped,cheap,Fade through black,vs plain: length 11.20s vs 12.00s
+fade_black.where=start,fade_black,transitions,where,start,ready,,mapped,cheap,Fade through black,vs plain: picture differs by 115.9
+fade_black.where=end,fade_black,transitions,where,end,ready,,mapped,cheap,Fade through black,vs plain: picture differs by 90.6
+fade_black.where=start_end,fade_black,transitions,where,start_end,ready,,mapped,cheap,Fade through black,vs plain: picture differs by 115.9
+fade_black.duration=0.4s,fade_black,transitions,duration,0.4s,ready,,mapped,cheap,Fade through black,vs plain: length 11.60s vs 12.00s
+fade_black.duration=0.8s,fade_black,transitions,duration,0.8s,ready,,mapped,cheap,Fade through black,vs plain: length 11.20s vs 12.00s
+fade_white,fade_white,transitions,,,ready,,mapped,cheap,Fade through white,"12.00→11.20s (−0.80 overlap); middle brightness 215 (A 127, B 104)"
+fade_white.duration=0.3s,fade_white,transitions,duration,0.3s,ready,,mapped,cheap,Fade through white,vs plain: length 11.70s vs 12.00s
+fade_white.duration=0.6s,fade_white,transitions,duration,0.6s,ready,,mapped,cheap,Fade through white,vs plain: length 11.40s vs 12.00s
+glitch_transition,glitch_transition,transitions,,,ready,,custom_shader,cheap,Glitch transition,"12.00→11.40s (−0.60 overlap); fine noise in the middle 8.48 (A 1.61, B 1.75); R/B tear 87.0 (A 158.8)"
+glitch_transition.duration=0.25s,glitch_transition,transitions,duration,0.25s,ready,,custom_shader,cheap,Glitch transition,vs plain: length 11.77s vs 12.00s
+glitch_transition.duration=0.4s,glitch_transition,transitions,duration,0.4s,ready,,custom_shader,cheap,Glitch transition,vs plain: length 11.60s vs 12.00s
+glitch_transition.duration=0.8s,glitch_transition,transitions,duration,0.8s,ready,,custom_shader,cheap,Glitch transition,vs plain: length 11.20s vs 12.00s
+iris_circle,iris_circle,transitions,,,ready,,custom_shader,cheap,Iris (circle),"12.00→11.20s (−0.80 overlap); centre closer to B (5.8 vs A 116.6), corner closer to A (9.4 vs B 99.4); vs blend 31.3"
+iris_circle.mode=open,iris_circle,transitions,mode,open,ready,,custom_shader,cheap,Iris (circle),vs plain: length 11.20s vs 12.00s
+iris_circle.mode=close,iris_circle,transitions,mode,close,ready,,custom_shader,cheap,Iris (circle),vs plain: length 11.20s vs 12.00s
+slide,slide,transitions,,,ready,,custom_shader,cheap,Slide,12.00→11.20s (−0.80 overlap); middle frame = A pushed out + B pushed in by 320px of 640 (diff 1.5); vs a blend 119.2
+slide.direction=left,slide,transitions,direction,left,ready,,custom_shader,cheap,Slide,vs plain: length 11.20s vs 12.00s
+slide.direction=right,slide,transitions,direction,right,ready,,custom_shader,cheap,Slide,vs plain: length 11.20s vs 12.00s
+slide.direction=up,slide,transitions,direction,up,ready,,custom_shader,cheap,Slide,vs plain: length 11.20s vs 12.00s
+slide.direction=down,slide,transitions,direction,down,ready,,custom_shader,cheap,Slide,vs plain: length 11.20s vs 12.00s
+whip_pan,whip_pan,transitions,,,ready,,custom_shader,cheap,Whip pan,"12.00→11.50s (−0.50 overlap); middle frame vs the slide frame blurred sideways 8.9, vs sharp 22.3; broadband sound +79 dB (whoosh)"
+whip_pan.direction=left,whip_pan,transitions,direction,left,ready,,custom_shader,cheap,Whip pan,vs plain: length 11.50s vs 12.00s
+whip_pan.direction=right,whip_pan,transitions,direction,right,ready,,custom_shader,cheap,Whip pan,vs plain: length 11.50s vs 12.00s
+whip_pan.whoosh=on,whip_pan,transitions,whoosh,on,ready,,custom_shader,cheap,Whip pan,vs plain: length 11.50s vs 12.00s
+whip_pan.whoosh=off,whip_pan,transitions,whoosh,off,ready,,custom_shader,cheap,Whip pan,vs plain: length 11.50s vs 12.00s
+wipe,wipe,transitions,,,ready,,custom_shader,cheap,Wipe,"12.00→11.20s (−0.80 overlap); frame already B 49%, still A 50%; vs a 50/50 blend 59.7 (not a blend)"
+wipe.direction=left,wipe,transitions,direction,left,ready,,custom_shader,cheap,Wipe,vs plain: length 11.20s vs 12.00s
+wipe.direction=right,wipe,transitions,direction,right,ready,,custom_shader,cheap,Wipe,vs plain: length 11.20s vs 12.00s
+wipe.direction=up,wipe,transitions,direction,up,ready,,custom_shader,cheap,Wipe,vs plain: length 11.20s vs 12.00s
+wipe.direction=down,wipe,transitions,direction,down,ready,,custom_shader,cheap,Wipe,vs plain: length 11.20s vs 12.00s
+wipe.duration=0.4s,wipe,transitions,duration,0.4s,ready,,custom_shader,cheap,Wipe,vs plain: length 11.60s vs 12.00s
+wipe.duration=0.8s,wipe,transitions,duration,0.8s,ready,,custom_shader,cheap,Wipe,vs plain: length 11.20s vs 12.00s
+zoom_transition,zoom_transition,transitions,,,ready,,custom_shader,cheap,Zoom transition,"12.00→11.20s (−0.80 overlap); middle frame vs A 124.0, vs B 94.8, vs blend 94.7"
+zoom_transition.duration=0.4s,zoom_transition,transitions,duration,0.4s,ready,,custom_shader,cheap,Zoom transition,vs plain: length 11.60s vs 12.00s
+zoom_transition.duration=0.8s,zoom_transition,transitions,duration,0.8s,ready,,custom_shader,cheap,Zoom transition,vs plain: length 11.20s vs 12.00s
+ffmpeg_afir,ffmpeg_afir,planned (FFmpeg filter),,,planned,,unknown,unknown,convolution reverb,"FFmpeg `afir`: convolution reverb — a later tier, no spec / synonyms / test yet"
+ffmpeg_afreqshift,ffmpeg_afreqshift,planned (FFmpeg filter),,,planned,,unknown,unknown,voice effect,"FFmpeg `afreqshift`: voice effect — a later tier, no spec / synonyms / test yet"
+ffmpeg_anlmdn,ffmpeg_anlmdn,planned (FFmpeg filter),,,planned,,unknown,unknown,audio denoise,"FFmpeg `anlmdn`: audio denoise — a later tier, no spec / synonyms / test yet"
+ffmpeg_aphaser,ffmpeg_aphaser,planned (FFmpeg filter),,,planned,,unknown,unknown,audio phaser effect,"FFmpeg `aphaser`: audio phaser effect — a later tier, no spec / synonyms / test yet"
+ffmpeg_asetrate,ffmpeg_asetrate,planned (FFmpeg filter),,,planned,,unknown,unknown,voice pitch effect,"FFmpeg `asetrate`: voice pitch effect — a later tier, no spec / synonyms / test yet"
+ffmpeg_atadenoise,ffmpeg_atadenoise,planned (FFmpeg filter),,,planned,,unknown,unknown,video denoise,"FFmpeg `atadenoise`: video denoise — a later tier, no spec / synonyms / test yet"
+ffmpeg_avectorscope,ffmpeg_avectorscope,planned (FFmpeg filter),,,planned,,unknown,unknown,visualiser,"FFmpeg `avectorscope`: visualiser — a later tier, no spec / synonyms / test yet"
+ffmpeg_bm3d,ffmpeg_bm3d,planned (FFmpeg filter),,,planned,,unknown,unknown,video denoise (very slow),"FFmpeg `bm3d`: video denoise (very slow) — a later tier, no spec / synonyms / test yet"
+ffmpeg_cas,ffmpeg_cas,planned (FFmpeg filter),,,planned,,unknown,unknown,contrast-adaptive sharpen,"FFmpeg `cas`: contrast-adaptive sharpen — a later tier, no spec / synonyms / test yet"
+ffmpeg_chorus,ffmpeg_chorus,planned (FFmpeg filter),,,planned,,unknown,unknown,audio effect,"FFmpeg `chorus`: audio effect — a later tier, no spec / synonyms / test yet"
+ffmpeg_chromakey,ffmpeg_chromakey,planned (FFmpeg filter),,,planned,,unknown,unknown,green-screen key (needs a background plate UI),"FFmpeg `chromakey`: green-screen key (needs a background plate UI) — a later tier, no spec / synonyms / test yet"
+ffmpeg_colorbalance,ffmpeg_colorbalance,planned (FFmpeg filter),,,planned,,unknown,unknown,lift/gamma/gain wheels,"FFmpeg `colorbalance`: lift/gamma/gain wheels — a later tier, no spec / synonyms / test yet"
+ffmpeg_colorcorrect,ffmpeg_colorcorrect,planned (FFmpeg filter),,,planned,,unknown,unknown,colour wheels,"FFmpeg `colorcorrect`: colour wheels — a later tier, no spec / synonyms / test yet"
+ffmpeg_compand,ffmpeg_compand,planned (FFmpeg filter),,,planned,,unknown,unknown,compressor,"FFmpeg `compand`: compressor — a later tier, no spec / synonyms / test yet"
+ffmpeg_deband,ffmpeg_deband,planned (FFmpeg filter),,,planned,,unknown,unknown,banding fix,"FFmpeg `deband`: banding fix — a later tier, no spec / synonyms / test yet"
+ffmpeg_deflicker,ffmpeg_deflicker,planned (FFmpeg filter),,,planned,,unknown,unknown,timelapse flicker fix,"FFmpeg `deflicker`: timelapse flicker fix — a later tier, no spec / synonyms / test yet"
+ffmpeg_drawtext,ffmpeg_drawtext,planned (FFmpeg filter),,,planned,,unknown,unknown,simple text without libass,"FFmpeg `drawtext`: simple text without libass — a later tier, no spec / synonyms / test yet"
+ffmpeg_dynaudnorm,ffmpeg_dynaudnorm,planned (FFmpeg filter),,,planned,,unknown,unknown,dialogue levelling,"FFmpeg `dynaudnorm`: dialogue levelling — a later tier, no spec / synonyms / test yet"
+ffmpeg_exposure,ffmpeg_exposure,planned (FFmpeg filter),,,planned,,unknown,unknown,exposure stops,"FFmpeg `exposure`: exposure stops — a later tier, no spec / synonyms / test yet"
+ffmpeg_flanger,ffmpeg_flanger,planned (FFmpeg filter),,,planned,,unknown,unknown,audio effect,"FFmpeg `flanger`: audio effect — a later tier, no spec / synonyms / test yet"
+ffmpeg_framerate,ffmpeg_framerate,planned (FFmpeg filter),,,planned,,unknown,unknown,frame blending slow motion,"FFmpeg `framerate`: frame blending slow motion — a later tier, no spec / synonyms / test yet"
+ffmpeg_hstack,ffmpeg_hstack,planned (FFmpeg filter),,,planned,,unknown,unknown,side by side,"FFmpeg `hstack`: side by side — a later tier, no spec / synonyms / test yet"
+ffmpeg_huesaturation,ffmpeg_huesaturation,planned (FFmpeg filter),,,planned,,unknown,unknown,HSL,"FFmpeg `huesaturation`: HSL — a later tier, no spec / synonyms / test yet"
+ffmpeg_lenscorrection,ffmpeg_lenscorrection,planned (FFmpeg filter),,,planned,,unknown,unknown,fix GoPro barrel distortion,"FFmpeg `lenscorrection`: fix GoPro barrel distortion — a later tier, no spec / synonyms / test yet"
+ffmpeg_loop,ffmpeg_loop,planned (FFmpeg filter),,,planned,,unknown,unknown,loops,"FFmpeg `loop`: loops — a later tier, no spec / synonyms / test yet"
+ffmpeg_lut1d,ffmpeg_lut1d,planned (FFmpeg filter),,,planned,,unknown,unknown,1D curves,"FFmpeg `lut1d`: 1D curves — a later tier, no spec / synonyms / test yet"
+ffmpeg_minterpolate,ffmpeg_minterpolate,planned (FFmpeg filter),,,planned,,unknown,unknown,smooth slow motion (very slow on CPU),"FFmpeg `minterpolate`: smooth slow motion (very slow on CPU) — a later tier, no spec / synonyms / test yet"
+ffmpeg_nlmeans,ffmpeg_nlmeans,planned (FFmpeg filter),,,planned,,unknown,unknown,video denoise (slow),"FFmpeg `nlmeans`: video denoise (slow) — a later tier, no spec / synonyms / test yet"
+ffmpeg_removegrain,ffmpeg_removegrain,planned (FFmpeg filter),,,planned,,unknown,unknown,denoise,"FFmpeg `removegrain`: denoise — a later tier, no spec / synonyms / test yet"
+ffmpeg_selectivecolor,ffmpeg_selectivecolor,planned (FFmpeg filter),,,planned,,unknown,unknown,HSL secondary,"FFmpeg `selectivecolor`: HSL secondary — a later tier, no spec / synonyms / test yet"
+ffmpeg_showcqt,ffmpeg_showcqt,planned (FFmpeg filter),,,planned,,unknown,unknown,music visualiser,"FFmpeg `showcqt`: music visualiser — a later tier, no spec / synonyms / test yet"
+ffmpeg_showwaves,ffmpeg_showwaves,planned (FFmpeg filter),,,planned,,unknown,unknown,waveform visual (music videos),"FFmpeg `showwaves`: waveform visual (music videos) — a later tier, no spec / synonyms / test yet"
+ffmpeg_silenceremove,ffmpeg_silenceremove,planned (FFmpeg filter),,,planned,,unknown,unknown,alternative to our cut list,"FFmpeg `silenceremove`: alternative to our cut list — a later tier, no spec / synonyms / test yet"
+ffmpeg_speechnorm,ffmpeg_speechnorm,planned (FFmpeg filter),,,planned,,unknown,unknown,speech levelling,"FFmpeg `speechnorm`: speech levelling — a later tier, no spec / synonyms / test yet"
+ffmpeg_superequalizer,ffmpeg_superequalizer,planned (FFmpeg filter),,,planned,,unknown,unknown,music EQ,"FFmpeg `superequalizer`: music EQ — a later tier, no spec / synonyms / test yet"
+ffmpeg_tmix,ffmpeg_tmix,planned (FFmpeg filter),,,planned,,unknown,unknown,motion blur / echo (Tier 3 style),"FFmpeg `tmix`: motion blur / echo (Tier 3 style) — a later tier, no spec / synonyms / test yet"
+ffmpeg_v360,ffmpeg_v360,planned (FFmpeg filter),,,planned,,unknown,unknown,360° video reframing,"FFmpeg `v360`: 360° video reframing — a later tier, no spec / synonyms / test yet"
+ffmpeg_vibrance,ffmpeg_vibrance,planned (FFmpeg filter),,,planned,,unknown,unknown,vibrance,"FFmpeg `vibrance`: vibrance — a later tier, no spec / synonyms / test yet"
+ffmpeg_vstack,ffmpeg_vstack,planned (FFmpeg filter),,,planned,,unknown,unknown,stacked,"FFmpeg `vstack`: stacked — a later tier, no spec / synonyms / test yet"
+ffmpeg_xstack,ffmpeg_xstack,planned (FFmpeg filter),,,planned,,unknown,unknown,multi-video grid (split screen 3+),"FFmpeg `xstack`: multi-video grid (split screen 3+) — a later tier, no spec / synonyms / test yet"
+ffmpeg_zoompan,ffmpeg_zoompan,planned (FFmpeg filter),,,planned,,unknown,unknown,Ken Burns on stills (we use keyframed crop instead),"FFmpeg `zoompan`: Ken Burns on stills (we use keyframed crop instead) — a later tier, no spec / synonyms / test yet"

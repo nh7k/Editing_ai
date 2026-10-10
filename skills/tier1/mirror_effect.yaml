@@ -1,0 +1,98 @@
+# written by skills/tools/write_tier1_stylize.py — edit this file directly from now on
+id: mirror_effect
+seed: 70
+category: stylize
+name: Mirror
+name_hi: Aaina
+description: 'Mirror the picture: left onto right (h), top onto bottom (v), or four-way.'
+params:
+  axis:
+    type: choice
+    choices:
+    - h
+    - v
+    - both
+    default: h
+    extract: mirror_axis
+    desc: which way
+time_modes:
+- whole
+- segment
+- between_times
+- intermittent
+builder: stylize.mirror_effect
+graph: geq (mirrored coordinates)
+media3:
+  status: custom_shader
+  how: a GlEffect fragment shader port — NOT TESTED
+stage: effect
+conflicts: []
+cost: cheap
+licence: 'own code; FFmpeg filters (server process); shapes drawn with Pillow (MIT-CMU); emoji font: Noto Color Emoji (OFL)
+  on the server'
+changes_duration: false
+needs: []
+variant_axes:
+  axis:
+  - h
+  - v
+  - both
+synonyms:
+  en:
+  - mirror effect
+  - symmetric
+  - kaleidoscope
+  - mirrored image
+  - reflection effect
+  - symmetry
+  hinglish:
+  - aaina
+  - mirror effect do
+  - dono taraf same
+  - symmetric banao
+  - aaine jaisa
+  - ulta seedha same
+  - chaar taraf mirror
+  hi:
+  - आईना
+  - मिरर इफ़ेक्ट
+  - दोनों तरफ़ एक जैसा
+  slang:
+  - trippy mirror
+  typos:
+  - miror
+  - mirror efect
+  - aina effect
+negations:
+- mirror mat karo
+examples:
+- prompt: mirror effect
+  lang: en
+- prompt: kaleidoscope
+  lang: en
+  params:
+    axis: both
+- prompt: आईना इफ़ेक्ट
+  lang: hi
+- prompt: dono taraf same karo
+  lang: hinglish
+- prompt: upar neeche mirror effect
+  lang: hinglish
+  params:
+    axis: v
+- prompt: miror
+  lang: typo
+- prompt: trippy sa banao
+  lang: vague
+- prompt: mirror effect aur slow motion
+  lang: multi
+  also:
+  - slow_motion
+test:
+  check: mirrored
+  params:
+    axis: h
+  time:
+    mode: between_times
+    start: 1.0
+    end: 3.0

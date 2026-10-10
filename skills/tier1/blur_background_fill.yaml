@@ -1,0 +1,37 @@
+id: blur_background_fill
+seed: 81
+category: layout
+name: Blurred background fill
+name_hi: Side me blur
+description: Show the whole picture centred, with a blurred, enlarged copy of itself filling the empty sides (no black bars, nothing cropped).
+params:
+  strength: {type: number, default: 1.0, min: 0.3, max: 2.0, extract: magnitude, desc: blur amount}
+time_modes: [whole]
+builder: layout.blur_background_fill
+graph: split → scale+crop+boxblur (background) | scale to fit (foreground) → overlay
+media3: {status: custom_shader, how: "two layers: blurred (GaussianBlur, Media3 1.4+) + fitted foreground composited", reason: "NOT TESTED on a device"}
+stage: geometry
+conflicts: []
+cost: medium
+licence: own code; FFmpeg boxblur/overlay (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  blur: [light, normal, heavy]
+synonyms:
+  en: [background blur, blur bars, blurred sides, blur fill, no black bars, blurry background, fill with blur]
+  hinglish: [side me blur, blur wala background, kaali patti nahi blur, khali jagah blur karo, side blur karo, peeche blur, blur se bharo]
+  hi: [साइड में ब्लर, पीछे धुंधला, किनारे ब्लर करो]
+  slang: [blur wala bg]
+  typos: [blurr sides, bg blurr, blur backgrund]
+negations: [blur mat karo, kaali patti hi theek]
+examples:
+  - {prompt: "fill the sides with blur", lang: en}
+  - {prompt: "no black bars, blurred background", lang: en}
+  - {prompt: "साइड में ब्लर लगाओ", lang: hi}
+  - {prompt: "side me blur karo", lang: hinglish}
+  - {prompt: "khali jagah blur se bharo", lang: hinglish}
+  - {prompt: "blurr sides pls", lang: typo}
+  - {prompt: "kaali patti achhi nahi lagti", lang: vague}
+  - {prompt: "vertical banao aur side me blur", lang: multi, also: [aspect_9_16]}
+test: {check: blurred_sides, media: vertical}

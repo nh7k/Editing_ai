@@ -1,0 +1,104 @@
+# written by skills/tools/write_tier1_motion.py — edit this file directly from now on
+id: speed_up
+seed: 32
+category: motion
+name: Speed up
+name_hi: Tez karo
+description: Faster playback (factor x), picture and sound, for the whole video or a part.
+params:
+  factor:
+    type: number
+    default: 2.0
+    min: 1.1
+    max: 4.0
+    extract: multiplier
+    desc: how much faster
+time_modes:
+- whole
+- segment
+- between_times
+- intermittent
+builder: motion.speed_up
+graph: setpts / atempo per segment
+media3:
+  status: mapped
+  how: EditedMediaItem.setSpeed / SpeedChangeEffect
+stage: time
+conflicts:
+- slow_motion
+cost: cheap
+licence: own code (engines/motion.py easings); FFmpeg filters (server process)
+changes_duration: true
+needs: []
+variant_axes:
+  factor:
+  - 1.5x
+  - 2x
+  - 3x
+synonyms:
+  en:
+  - speed up
+  - faster
+  - fast forward
+  - 2x speed
+  - timelapse
+  - make it quicker
+  - double speed
+  hinglish:
+  - tez karo
+  - jaldi chalao
+  - fast karo
+  - speed badhao
+  - 2x kar do
+  - tezi se chalao
+  - fatafat chalao
+  hi:
+  - तेज़ करो
+  - जल्दी चलाओ
+  - स्पीड बढ़ाओ
+  slang:
+  - bullet train speed
+  - slow lag raha hai
+  typos:
+  - speedup
+  - fast kro
+  - spead up
+negations:
+- speed mat badhao
+- fast mat karo
+examples:
+- prompt: speed it up 2x
+  lang: en
+  params:
+    factor: 2.0
+- prompt: fast forward from 2 to 5 sec
+  lang: en
+  time:
+    start: 2
+    end: 5
+- prompt: तेज़ करो
+  lang: hi
+- prompt: video jaldi chalao
+  lang: hinglish
+- prompt: 3x kar do
+  lang: hinglish
+  params:
+    factor: 3.0
+- prompt: spead up
+  lang: typo
+- prompt: bahut slow lag raha hai
+  lang: vague
+- prompt: 2x speed aur music
+  lang: multi
+  also:
+  - add_music
+  params:
+    factor: 2.0
+test:
+  check: faster
+  params:
+    factor: 2.0
+  time:
+    mode: between_times
+    start: 1.0
+    end: 3.0

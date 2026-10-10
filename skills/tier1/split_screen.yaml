@@ -1,0 +1,40 @@
+id: split_screen
+seed: 84
+category: layout
+name: Split screen
+name_hi: Do video saath
+description: Two clips side by side (left/right) or stacked (top/bottom). The edit's own sound continues.
+params:
+  layout: {type: choice, choices: [left_right, top_bottom], default: left_right, desc: arrangement}
+  left: {type: string, desc: first clip (default clip 1)}
+  right: {type: string, desc: second clip (default clip 2)}
+time_modes: [whole, between_times]
+builder: layout.split_screen
+graph: two inputs → scale/crop to halves → overlay
+media3: {status: mapped, how: "Composition with two sequences + VideoCompositorSettings (two boxes), Media3 1.4+", reason: "NOT TESTED on a device"}
+stage: overlay
+conflicts: [picture_in_picture]
+cost: medium
+licence: own code; FFmpeg overlay (server process)
+changes_duration: false
+needs: [two_clips]
+variant_axes:
+  layout: [left_right, top_bottom]
+  gap: [none, thin_line]
+synonyms:
+  en: [split screen, side by side, two videos together, half and half, compare side by side, dual screen, before and after]
+  hinglish: [do video saath, aadha aadha, ek taraf ye ek taraf wo, saath saath dikhao, split screen karo, upar neeche do video, dono video ek saath]
+  hi: [दो वीडियो साथ, आधा आधा, साथ साथ दिखाओ]
+  slang: [before after wala, stack top bottom]
+  typos: [splitscreen, split scren, side bi side]
+negations: [split screen mat karo]
+examples:
+  - {prompt: "split screen with both clips", lang: en}
+  - {prompt: "stack them top and bottom", lang: en, params: {layout: top_bottom}}
+  - {prompt: "दो वीडियो साथ दिखाओ", lang: hi}
+  - {prompt: "aadha aadha karo dono video", lang: hinglish}
+  - {prompt: "upar neeche do video", lang: hinglish, params: {layout: top_bottom}}
+  - {prompt: "split scren", lang: typo}
+  - {prompt: "pehle aur baad me ka comparison", lang: vague}
+  - {prompt: "split screen karo aur music lagao", lang: multi, also: [add_music]}
+test: {check: two_halves, media: tones}

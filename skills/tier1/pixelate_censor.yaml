@@ -1,0 +1,120 @@
+# written by skills/tools/write_tier1_stylize.py — edit this file directly from now on
+id: pixelate_censor
+seed: 71
+category: stylize
+name: Pixelate (censor)
+name_hi: Chehra chhupao
+description: A pixelated box over an area (or the face found there) for a time window.
+params:
+  region:
+    type: choice
+    choices:
+    - face
+    - center
+    - top
+    - bottom
+    - left
+    - right
+    - top_left
+    - top_right
+    - bottom_left
+    - bottom_right
+    default: center
+    extract: region
+    desc: where
+  strength:
+    type: number
+    default: 1.0
+    min: 0.5
+    max: 3.0
+    extract: magnitude
+    desc: how strong
+time_modes:
+- whole
+- between_times
+- segment
+builder: stylize.pixelate_censor
+graph: crop → scale down / up (neighbour) → overlay
+media3:
+  status: mapped
+  how: Crop + low-res scale on a second layer — NOT TESTED
+stage: overlay
+conflicts: []
+cost: medium
+licence: 'own code; FFmpeg filters (server process); shapes drawn with Pillow (MIT-CMU); emoji font: Noto Color Emoji (OFL)
+  on the server'
+changes_duration: false
+needs:
+- faces
+variant_axes:
+  region:
+  - face
+  - center
+  - corner
+  blocks:
+  - fine
+  - coarse
+synonyms:
+  en:
+  - pixelate
+  - censor
+  - mosaic
+  - hide the face
+  - pixel blur
+  - blur the face
+  - pixelate the number plate
+  hinglish:
+  - chehra chhupao
+  - pixel kar do
+  - mosaic lagao
+  - number plate chhupao
+  - censor karo
+  - dabba bana do chehre pe
+  - pehchaan na aaye
+  hi:
+  - चेहरा छुपाओ
+  - पिक्सेल कर दो
+  - मोज़ेक लगाओ
+  slang:
+  - blur wala dabba
+  typos:
+  - pixlate
+  - censer
+  - mozaic
+negations:
+- pixelate mat karo
+examples:
+- prompt: pixelate the face
+  lang: en
+  params:
+    region: face
+- prompt: mosaic the top right corner
+  lang: en
+  params:
+    region: top_right
+- prompt: चेहरा छुपाओ
+  lang: hi
+- prompt: number plate chhupao
+  lang: hinglish
+- prompt: pixel kar do neeche wala hissa
+  lang: hinglish
+  params:
+    region: bottom
+- prompt: pixlate
+  lang: typo
+- prompt: pehchaan na aaye
+  lang: vague
+- prompt: chehra chhupao aur mute
+  lang: multi
+  also:
+  - mute
+test:
+  check: censored_pixelate
+  params:
+    region: bottom_right
+    strength: 1.5
+  time:
+    mode: between_times
+    start: 1.0
+    end: 3.0
+  note: 'bottom right: the test picture''s textured checkerboard (a flat area cannot show blocks)'

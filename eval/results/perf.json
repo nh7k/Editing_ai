@@ -1,0 +1,79 @@
+{
+ "cpu": "Intel64 Family 6 Model 186 Stepping 3, GenuineIntel",
+ "cores": 12,
+ "prompt": "vertical banao blur sides ke saath, warm karo, zoom in 2 se 6 sec, music lagao, fade in fade out, progress bar",
+ "runs": [
+  {
+   "minutes": 1.0,
+   "source": "1920x1080 30fps testsrc2 + tone",
+   "generate_s": 20.6,
+   "edit_wall_s": 84.2,
+   "x_realtime": 1.404,
+   "output_s": 60.0,
+   "output": "1080x1920",
+   "plays": true,
+   "python_peak_mb": 46,
+   "ffmpeg_peak_mb": 1088,
+   "stages": {
+    "parse+plan": 1.4,
+    "render": 82.8,
+    "calls": [
+     "aspect_9_16",
+     "warm",
+     "zoom_in",
+     "add_music",
+     "fade_black",
+     "progress_bar"
+    ]
+   }
+  },
+  {
+   "minutes": 5.0,
+   "source": "1920x1080 30fps testsrc2 + tone",
+   "generate_s": 216.2,
+   "edit_wall_s": 719.0,
+   "x_realtime": 2.397,
+   "output_s": 300.0,
+   "output": "1080x1920",
+   "plays": true,
+   "python_peak_mb": 46,
+   "ffmpeg_peak_mb": 1096,
+   "stages": {
+    "parse+plan": 6.4,
+    "render": 712.5,
+    "calls": [
+     "aspect_9_16",
+     "warm",
+     "zoom_in",
+     "add_music",
+     "fade_black",
+     "progress_bar"
+    ]
+   }
+  },
+  {
+   "minutes": 20.0,
+   "source": "1920x1080 30fps testsrc2 + tone",
+   "generate_s": 823.6,
+   "edit_wall_s": 4481.7,
+   "x_realtime": 3.735,
+   "output_s": 1200.0,
+   "output": "1080x1920",
+   "plays": true,
+   "python_peak_mb": 46,
+   "ffmpeg_peak_mb": 1095,
+   "stages": {
+    "parse+plan": 9.7,
+    "render": 4472.0,
+    "calls": [
+     "aspect_9_16",
+     "warm",
+     "zoom_in",
+     "add_music",
+     "fade_black",
+     "progress_bar"
+    ]
+   }
+  }
+ ]
+}

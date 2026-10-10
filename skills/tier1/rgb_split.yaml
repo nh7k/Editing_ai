@@ -1,0 +1,94 @@
+# written by skills/tools/write_tier1_stylize.py — edit this file directly from now on
+id: rgb_split
+seed: 67
+category: stylize
+name: RGB split
+name_hi: Rang alag alag
+description: 'Chromatic aberration: red and blue pulled apart.'
+params:
+  amount:
+    type: number
+    default: 1.0
+    min: 0.3
+    max: 3.0
+    extract: magnitude
+    desc: how strong
+time_modes:
+- whole
+- segment
+- between_times
+- intermittent
+- at_beats
+builder: stylize.rgb_split
+graph: rgbashift
+media3:
+  status: custom_shader
+  how: a GlEffect fragment shader port — NOT TESTED
+stage: effect
+conflicts: []
+cost: cheap
+licence: 'own code; FFmpeg filters (server process); shapes drawn with Pillow (MIT-CMU); emoji font: Noto Color Emoji (OFL)
+  on the server'
+changes_duration: false
+needs: []
+variant_axes:
+  amount:
+  - light
+  - normal
+  - heavy
+synonyms:
+  en:
+  - rgb split
+  - chromatic aberration
+  - colour split
+  - rgb shift
+  - channel split
+  - aberration
+  - colour fringe
+  hinglish:
+  - rang alag alag
+  - rgb split lagao
+  - rang khiske hue
+  - lal neela alag
+  - color shift karo
+  - rang ki parchhai
+  - chromatic do
+  hi:
+  - रंग अलग अलग
+  - आरजीबी स्प्लिट
+  - रंग खिसके
+  slang:
+  - 3d glasses wala
+  typos:
+  - rgb splt
+  - rbg split
+  - chromatik
+negations:
+- rgb split mat karo
+examples:
+- prompt: rgb split
+  lang: en
+- prompt: chromatic aberration on the drop
+  lang: en
+- prompt: रंग अलग अलग करो
+  lang: hi
+- prompt: rgb split lagao
+  lang: hinglish
+- prompt: rang khiske hue dikhao
+  lang: hinglish
+- prompt: rbg split
+  lang: typo
+- prompt: 3d jaisa rang
+  lang: vague
+- prompt: rgb split aur shake
+  lang: multi
+  also:
+  - shake
+test:
+  check: channels_apart
+  params:
+    amount: 2.0
+  time:
+    mode: between_times
+    start: 1.0
+    end: 3.0

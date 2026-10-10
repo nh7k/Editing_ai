@@ -1,0 +1,118 @@
+# written by skills/tools/write_tier1_delivery.py — edit this file directly from now on
+id: export_preset
+seed: 100
+category: delivery
+name: Export for a platform
+name_hi: Instagram ke liye
+description: 'Size, frame rate and bitrate for a platform (specs checked 2026-10-09, third-party guides): Reels / Shorts 1080x1920
+  30 fps; WhatsApp Status 720p, ≤ 30 s (safe value; guides disagree).'
+params:
+  platform:
+    type: choice
+    choices:
+    - instagram_reels
+    - youtube_shorts
+    - whatsapp_status
+    - youtube
+    - linkedin
+    - instagram_feed
+    default: instagram_reels
+    extract: platform
+    desc: platform
+  quality:
+    type: choice
+    choices:
+    - high
+    - light
+    default: high
+    desc: 1080p or a lighter 720p
+time_modes:
+- whole
+builder: delivery.export_preset
+graph: canvas size / fps + libx264 crf + maxrate, AAC 128k
+media3:
+  status: mapped
+  how: Transformer with Presentation + VideoEncoderSettings (bitrate)
+stage: export
+conflicts: []
+cost: cheap
+licence: own code; FFmpeg + libx264 (GPL build, server process only)
+changes_duration: false
+needs: []
+variant_axes:
+  platform:
+  - instagram_reels
+  - youtube_shorts
+  - whatsapp_status
+  - youtube
+  - linkedin
+  quality:
+  - high
+  - light
+synonyms:
+  en:
+  - export
+  - export for instagram
+  - save for youtube
+  - for whatsapp
+  - export settings
+  - upload ready
+  - platform export
+  hinglish:
+  - export karo
+  - save karo
+  - instagram ke liye
+  - whatsapp ke liye
+  - youtube quality
+  - status ke liye export
+  - upload ke liye ready karo
+  hi:
+  - एक्सपोर्ट करो
+  - सेव करो
+  - इंस्टाग्राम के लिए
+  slang:
+  - final nikal do
+  typos:
+  - exprot
+  - insta ke liya
+  - export kro
+negations:
+- export mat karo
+examples:
+- prompt: export for instagram reels
+  lang: en
+  params:
+    platform: instagram_reels
+- prompt: save it for youtube shorts
+  lang: en
+  params:
+    platform: youtube_shorts
+- prompt: इंस्टाग्राम के लिए एक्सपोर्ट करो
+  lang: hi
+  params:
+    platform: instagram_reels
+- prompt: whatsapp status ke liye export karo
+  lang: hinglish
+  params:
+    platform: whatsapp_status
+- prompt: youtube quality me save karo
+  lang: hinglish
+  params:
+    platform: youtube
+- prompt: exprot insta
+  lang: typo
+  params:
+    platform: instagram_reels
+- prompt: ab final nikal do
+  lang: vague
+- prompt: insta ke liye export aur captions
+  lang: multi
+  also:
+  - auto_captions
+  params:
+    platform: instagram_reels
+test:
+  check: platform_specs
+  params:
+    platform: instagram_reels
+    quality: light

@@ -1,0 +1,98 @@
+# written by skills/tools/write_tier1_audio.py — edit this file directly from now on
+id: beat_sync
+seed: 94
+category: audio
+name: Beat sync
+name_hi: Beat par cut
+description: Move every cut onto the nearest music beat (by at most max_shift s); one long shot is cut on every Nth beat.
+params:
+  every:
+    type: integer
+    default: 1
+    min: 1
+    max: 8
+    extract: nth
+    desc: every Nth beat
+  max_shift:
+    type: number
+    default: 0.4
+    min: 0.05
+    max: 1.0
+    unit: s
+    desc: how far a cut may move
+time_modes:
+- whole
+builder: audio.beat_sync
+graph: analysis (librosa beats) → segment out points
+media3:
+  status: mapped
+  how: server finds the beats; the phone applies the clippings
+stage: audio
+conflicts: []
+cost: medium
+licence: own code; FFmpeg audio filters (server process); generated sounds; librosa (ISC) for beats
+changes_duration: true
+needs:
+- music
+variant_axes:
+  every:
+  - '1'
+  - '2'
+  - '4'
+synonyms:
+  en:
+  - beat sync
+  - cut on the beat
+  - sync to the music
+  - on beat cuts
+  - cut to the rhythm
+  - music sync
+  - beat match
+  hinglish:
+  - beat par cut
+  - music ke saath cut
+  - rhythm pe kaato
+  - beat pe cut karo
+  - gaane ke saath kaato
+  - dhun pe cut
+  - taal pe cut
+  hi:
+  - बीट पर कट
+  - म्यूज़िक के साथ कट
+  - ताल पर काटो
+  slang:
+  - beat pe nacha do
+  - sync cuts
+  typos:
+  - beet sync
+  - beat sinc
+  - bit pe cut
+negations:
+- beat sync mat karo
+examples:
+- prompt: cut on the beat
+  lang: en
+- prompt: sync cuts to every 2nd beat
+  lang: en
+  params:
+    every: 2
+- prompt: बीट पर कट करो
+  lang: hi
+- prompt: beat par cut karo
+  lang: hinglish
+- prompt: gaane ke saath kaato
+  lang: hinglish
+- prompt: beet sync
+  lang: typo
+- prompt: music ke saath match ho
+  lang: vague
+- prompt: beat sync aur music
+  lang: multi
+  also:
+  - add_music
+test:
+  check: cuts_on_beats
+  setup:
+  - id: add_music
+    params:
+      volume: 0.5

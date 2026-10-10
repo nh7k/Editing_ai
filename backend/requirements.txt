@@ -1,0 +1,27 @@
+# CutMind backend — all packages are free & open source.
+fastapi>=0.115
+uvicorn[standard]>=0.30
+pydantic>=2.7
+python-multipart>=0.0.9
+httpx>=0.27
+numpy>=1.26
+opencv-python-headless>=4.9
+scenedetect>=0.6.4
+librosa>=0.10.2
+soundfile>=0.12
+# numba 0.68 DLLs are blocked by Windows Smart App Control on some PCs; 0.61/0.62 work.
+numba>=0.61,<0.63
+faster-whisper>=1.0.3
+# in-process LLM (PLANNER_MODE=local); both already come with faster-whisper, pinned here explicitly
+onnxruntime>=1.18
+tokenizers>=0.15
+huggingface-hub>=0.23
+# orchestration (LangGraph workflow with SQLite checkpoints) and the MCP tool server
+langgraph>=1.2
+langgraph-checkpoint-sqlite>=3.1
+mcp>=2.3
+httpx>=0.27
+# Copy an Edit reads on-screen text (Apache-2.0, CPU; optional — without it the text is not copied)
+rapidocr-onnxruntime>=1.2
+# template preview cards
+Pillow>=10

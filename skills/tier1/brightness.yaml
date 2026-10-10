@@ -1,0 +1,99 @@
+# written by skills/tools/write_tier1_color.py — edit this file directly from now on
+id: brightness
+seed: 39
+category: color
+name: Brightness
+name_hi: Roshni
+description: Lighter (positive) or darker (negative). 'thoda' = half, 'bahut' = 1.6x; 'dark karo' goes down.
+params:
+  amount:
+    type: number
+    default: 0.12
+    min: -0.5
+    max: 0.5
+    extract: signed_amount
+    desc: brightness change
+time_modes:
+- whole
+- segment
+- between_times
+- intermittent
+builder: color.brightness
+graph: eq=brightness
+media3:
+  status: mapped
+  how: Brightness(amount) effect
+stage: color
+conflicts: []
+cost: cheap
+licence: own code; generated LUTs (own maths); FFmpeg filters (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  amount:
+  - '-0.2'
+  - '-0.1'
+  - '+0.1'
+  - '+0.2'
+synonyms:
+  en:
+  - brightness
+  - brighter
+  - brighten
+  - make it bright
+  - lighter
+  - darker
+  - too dark
+  hinglish:
+  - roshni badhao
+  - ujala karo
+  - bright karo
+  - dark hai
+  - andhera hai
+  - dark karo
+  - roshni kam karo
+  hi:
+  - रोशनी बढ़ाओ
+  - उजाला करो
+  - अंधेरा है
+  slang:
+  - thoda chamka do
+  typos:
+  - brite karo
+  - brightnes
+  - brigt
+negations:
+- brightness mat badlo
+examples:
+- prompt: make it brighter
+  lang: en
+- prompt: darker please
+  lang: en
+  params:
+    amount: -0.12
+- prompt: रोशनी बढ़ाओ
+  lang: hi
+- prompt: thoda bright karo
+  lang: hinglish
+  params:
+    amount: 0.06
+- prompt: bahut dark hai, ujala karo
+  lang: hinglish
+  params:
+    amount: 0.192
+- prompt: brite karo
+  lang: typo
+- prompt: kuch dikh nahi raha
+  lang: vague
+- prompt: bright karo aur saturation badhao
+  lang: multi
+  also:
+  - saturation
+test:
+  check: luma_up
+  params:
+    amount: 0.15
+  time:
+    mode: between_times
+    start: 1.0
+    end: 3.0

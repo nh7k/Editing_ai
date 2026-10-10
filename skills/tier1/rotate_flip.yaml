@@ -1,0 +1,39 @@
+id: rotate_flip
+seed: 85
+category: layout
+name: Rotate / flip
+name_hi: Ghumao / palat do
+description: Rotate the picture 90 / 180 / 270 degrees (clockwise) and/or mirror it horizontally / vertically.
+params:
+  angle: {type: choice, choices: [0, 90, 180, 270], default: 0, extract: angle, desc: rotation (clockwise)}
+  axis: {type: choice, choices: [none, h, v], default: none, extract: flip_axis, desc: mirror}
+time_modes: [whole]
+builder: layout.rotate_flip
+graph: transpose / hflip / vflip before the reframe
+media3: {status: mapped, how: "ScaleAndRotateTransformation (setRotationDegrees, setScale(-1, 1))"}
+stage: geometry
+conflicts: []
+cost: cheap
+licence: own code; FFmpeg transpose/hflip/vflip (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  angle: [90, 180, 270]
+  mirror: [h, v]
+synonyms:
+  en: [rotate, flip, mirror, turn the video, upside down, rotate 90, sideways video fix]
+  hinglish: [ghumao, palat do, ulta kar do upar neeche, mirror karo, seedha karo video, tircha video theek karo, ghuma do]
+  hi: [घुमाओ, पलट दो, मिरर करो]
+  slang: [video tedha hai]
+  typos: [rotat, flipp, roate]
+negations: [mat ghumao, flip mat karo]
+examples:
+  - {prompt: "rotate 90 degrees", lang: en, params: {angle: 90}}
+  - {prompt: "mirror the video", lang: en, params: {axis: h}}
+  - {prompt: "वीडियो घुमाओ 180", lang: hi, params: {angle: 180}}
+  - {prompt: "video ko 90 degree ghumao", lang: hinglish, params: {angle: 90}}
+  - {prompt: "mirror kar do", lang: hinglish, params: {axis: h}}
+  - {prompt: "rotat 270", lang: typo, params: {angle: 270}}
+  - {prompt: "video tedha hai seedha karo", lang: vague}
+  - {prompt: "180 ghumao aur black and white karo", lang: multi, params: {angle: 180}, also: [grayscale]}
+test: {check: rotated, params: {angle: 180}}

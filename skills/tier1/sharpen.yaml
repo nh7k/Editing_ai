@@ -1,0 +1,89 @@
+# written by skills/tools/write_tier1_color.py — edit this file directly from now on
+id: sharpen
+seed: 49
+category: color
+name: Sharpen
+name_hi: Sharp karo
+description: Crisper detail (unsharp mask).
+params:
+  amount:
+    type: number
+    default: 1.2
+    min: 0.3
+    max: 3.0
+    extract: magnitude
+    desc: how sharp
+time_modes:
+- whole
+- segment
+- between_times
+- intermittent
+builder: color.sharpen
+graph: unsharp
+media3:
+  status: custom_shader
+  how: 3x3 sharpen convolution GlEffect — NOT TESTED
+stage: color
+conflicts:
+- blur
+cost: cheap
+licence: own code; generated LUTs (own maths); FFmpeg filters (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  amount:
+  - light
+  - normal
+  - strong
+synonyms:
+  en:
+  - sharpen
+  - sharper
+  - crisp
+  - more detail
+  - clearer picture
+  - make it sharp
+  - crisper
+  hinglish:
+  - sharp karo
+  - clear karo
+  - saaf karo
+  - detail badhao
+  - dhundhla hai sharp karo
+  - tez picture
+  - crisp banao
+  hi:
+  - शार्प करो
+  - साफ़ करो
+  - क्लियर करो
+  slang:
+  - HD jaisa karo
+  typos:
+  - sharpn
+  - sharp kro
+  - sharpe
+negations:
+- sharp mat karo
+examples:
+- prompt: sharpen the video
+  lang: en
+- prompt: a little sharper
+  lang: en
+  params:
+    amount: 0.6
+- prompt: शार्प करो
+  lang: hi
+- prompt: sharp karo
+  lang: hinglish
+- prompt: video saaf karo
+  lang: hinglish
+- prompt: sharpn it
+  lang: typo
+- prompt: thoda HD jaisa lage
+  lang: vague
+- prompt: sharp karo aur contrast
+  lang: multi
+  also:
+  - contrast
+test:
+  check: edges_up

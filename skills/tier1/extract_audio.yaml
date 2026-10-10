@@ -1,0 +1,94 @@
+# written by skills/tools/write_tier1_audio.py — edit this file directly from now on
+id: extract_audio
+seed: 98
+category: audio
+name: Export the audio
+name_hi: Sirf awaaz
+description: Also save the finished sound as MP3 / WAV / M4A next to the video.
+params:
+  format:
+    type: choice
+    choices:
+    - mp3
+    - wav
+    - m4a
+    default: mp3
+    desc: file type
+time_modes:
+- whole
+builder: audio.extract_audio
+graph: -vn copy / encode of the final mix
+media3:
+  status: mapped
+  how: Transformer with removeVideo
+stage: audio
+conflicts: []
+cost: cheap
+licence: own code; FFmpeg audio filters (server process); generated sounds; librosa (ISC) for beats
+changes_duration: false
+needs: []
+variant_axes:
+  format:
+  - mp3
+  - wav
+  - m4a
+synonyms:
+  en:
+  - extract audio
+  - export audio
+  - audio only
+  - save as mp3
+  - get the sound
+  - export mp3
+  - audio file
+  hinglish:
+  - audio nikalo
+  - mp3 banao
+  - sirf awaaz
+  - gaana nikal do
+  - audio alag karo
+  - mp3 chahiye
+  - sound file do
+  hi:
+  - ऑडियो निकालो
+  - एमपी3 बनाओ
+  - सिर्फ़ आवाज़
+  slang:
+  - ringtone banao
+  - save as wav
+  - save as mp3
+  - mp3 bhi
+  - mp3
+  typos:
+  - mp 3
+  - audio nikalo na
+  - exract audio
+negations:
+- audio mat nikalo
+examples:
+- prompt: export the audio as mp3
+  lang: en
+  params:
+    format: mp3
+- prompt: save it as wav too
+  lang: en
+  params:
+    format: wav
+- prompt: ऑडियो निकालो
+  lang: hi
+- prompt: mp3 banao
+  lang: hinglish
+  params:
+    format: mp3
+- prompt: sirf awaaz chahiye
+  lang: hinglish
+- prompt: exract audio
+  lang: typo
+- prompt: ringtone banana hai
+  lang: vague
+- prompt: mp3 bhi do aur video bhi
+  lang: multi
+test:
+  check: audio_file
+  params:
+    format: mp3

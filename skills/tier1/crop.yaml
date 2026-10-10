@@ -1,0 +1,40 @@
+id: crop
+seed: 102
+category: layout
+name: Crop (zoom into a region)
+name_hi: Ek hissa bada karo
+description: Keep only a box of the picture (x, y, w, h as shares of the frame) and enlarge it to fill the frame; for the whole video or a part. Added in TIER1_REVIEW (missing from the list).
+params:
+  x: {type: number, default: 0.25, min: 0, max: 0.95, desc: left edge (share of width)}
+  y: {type: number, default: 0.25, min: 0, max: 0.95, desc: top edge (share of height)}
+  w: {type: number, default: 0.5, min: 0.05, max: 1, extract: percent, desc: box width}
+  h: {type: number, default: 0.5, min: 0.05, max: 1, desc: box height}
+time_modes: [whole, segment, between_times, intermittent]
+builder: layout.crop
+graph: crop=iw*w:ih*h:iw*x:ih*y, scale back to the canvas
+media3: {status: mapped, how: "Crop(left, right, bottom, top) effect"}
+stage: geometry
+conflicts: [auto_reframe]
+cost: cheap
+licence: own code; FFmpeg crop/scale (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  region: [center, left_half, right_half, top_half, bottom_half]
+synonyms:
+  en: [crop, crop in, zoom into the corner, cut the edges, crop the frame, crop to the middle, tighter frame]
+  hinglish: [crop karo, kinare kaato, beech ka hissa bada karo, frame chhota karo, side kaat do, crop kar do beech me, ek hissa bada dikhao]
+  hi: [क्रॉप करो, किनारे काटो, बीच का हिस्सा बड़ा करो]
+  slang: [tight kar do frame]
+  typos: [corp, crp, croop]
+negations: [crop mat karo, poora frame rakho]
+examples:
+  - {prompt: "crop to the center", lang: en}
+  - {prompt: "crop in 50 percent", lang: en, params: {w: 0.5}}
+  - {prompt: "किनारे काटो", lang: hi}
+  - {prompt: "crop karo beech ka hissa", lang: hinglish}
+  - {prompt: "2 se 5 sec crop karo", lang: hinglish}
+  - {prompt: "croop it", lang: typo}
+  - {prompt: "frame thoda tight karo", lang: vague}
+  - {prompt: "crop karo aur sharp karo", lang: multi, also: [sharpen]}
+test: {check: cropped_region, params: {x: 0.25, y: 0.25, w: 0.5, h: 0.5}}

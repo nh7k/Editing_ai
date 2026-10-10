@@ -1,0 +1,86 @@
+# written by skills/tools/write_tier1_audio.py — edit this file directly from now on
+id: mute
+seed: 89
+category: audio
+name: Mute
+name_hi: Awaaz band
+description: The video's own sound off — all of it, or a part (music, if any, stays).
+params: {}
+time_modes:
+- whole
+- between_times
+- segment
+builder: audio.mute
+graph: volume=0 (whole) / volume=enable (a part)
+media3:
+  status: mapped
+  how: volume 0 on the sequence / a gain AudioProcessor with a time window
+stage: audio
+conflicts:
+- volume
+cost: cheap
+licence: own code; FFmpeg audio filters (server process); generated sounds; librosa (ISC) for beats
+changes_duration: false
+needs: []
+variant_axes:
+  scope:
+  - whole
+  - part
+synonyms:
+  en:
+  - mute
+  - no sound
+  - silent
+  - remove the sound
+  - turn off the audio
+  - mute the audio
+  - sound off
+  hinglish:
+  - awaaz band
+  - sound hatao
+  - mute karo
+  - chup karo video
+  - awaaz hata do
+  - bina awaaz
+  - sound band karo
+  hi:
+  - आवाज़ बंद
+  - म्यूट करो
+  - आवाज़ हटा दो
+  slang:
+  - shhh kar do
+  typos:
+  - mut karo
+  - muet
+  - awaz band
+negations:
+- mute mat karo
+- awaaz rehne do
+examples:
+- prompt: mute the video
+  lang: en
+- prompt: mute from 2 to 4 seconds
+  lang: en
+  time:
+    start: 2
+    end: 4
+- prompt: आवाज़ बंद करो
+  lang: hi
+- prompt: sound hatao
+  lang: hinglish
+- prompt: shuru me awaaz band
+  lang: hinglish
+- prompt: mut karo
+  lang: typo
+- prompt: ye bekaar shor hai
+  lang: vague
+- prompt: mute karo aur music lagao
+  lang: multi
+  also:
+  - add_music
+test:
+  check: muted_window
+  time:
+    mode: between_times
+    start: 1.0
+    end: 3.0

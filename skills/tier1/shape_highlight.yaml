@@ -1,0 +1,132 @@
+# written by skills/tools/write_tier1_stylize.py — edit this file directly from now on
+id: shape_highlight
+seed: 73
+category: stylize
+name: Highlight shape
+name_hi: Circle / arrow lagao
+description: A box, ring or arrow (own drawing) pointing at an area for a while.
+params:
+  shape:
+    type: choice
+    choices:
+    - box
+    - ring
+    - arrow
+    default: ring
+    desc: shape
+  region:
+    type: choice
+    choices:
+    - face
+    - center
+    - top
+    - bottom
+    - left
+    - right
+    - top_left
+    - top_right
+    - bottom_left
+    - bottom_right
+    default: center
+    extract: region
+    desc: where
+  color:
+    type: color
+    default: '#FFD60A'
+    extract: color
+    desc: colour
+  angle:
+    type: number
+    default: 0
+    min: -180
+    max: 180
+    desc: arrow direction (degrees)
+time_modes:
+- whole
+- between_times
+- at_time
+builder: stylize.shape_highlight
+graph: drawbox / generated PNG (Pillow) overlay with pop-in
+media3:
+  status: mapped
+  how: BitmapOverlay
+stage: overlay
+conflicts: []
+cost: cheap
+licence: 'own code; FFmpeg filters (server process); shapes drawn with Pillow (MIT-CMU); emoji font: Noto Color Emoji (OFL)
+  on the server'
+changes_duration: false
+needs: []
+variant_axes:
+  shape:
+  - box
+  - ring
+  - arrow
+  color:
+  - yellow
+  - red
+synonyms:
+  en:
+  - mark this spot
+  - yahan highlight karo
+  - circle it
+  - add an arrow
+  - point at
+  - draw a box
+  - circle this
+  - arrow pointing
+  hinglish:
+  - circle lagao
+  - arrow lagao
+  - yahan dikhao
+  - gol ghera banao
+  - teer lagao
+  - dabba banao
+  - is cheez pe nishaan
+  hi:
+  - गोला लगाओ
+  - तीर लगाओ
+  - यहाँ दिखाओ
+  slang:
+  - youtuber wala circle
+  - arrow
+  - teer
+  typos:
+  - circel lagao
+  - arow
+  - hilite this
+negations:
+- circle mat lagao
+examples:
+- prompt: circle this
+  lang: en
+- prompt: add an arrow pointing at the top right
+  lang: en
+  params:
+    shape: arrow
+    region: top_right
+- prompt: यहाँ गोला लगाओ
+  lang: hi
+- prompt: circle lagao
+  lang: hinglish
+- prompt: teer lagao yahan
+  lang: hinglish
+  params:
+    shape: arrow
+- prompt: circel lagao
+  lang: typo
+- prompt: yahan dhyan jaye
+  lang: vague
+- prompt: arrow aur zoom
+  lang: multi
+  also:
+  - zoom_in
+test:
+  check: shape_drawn
+  params:
+    shape: ring
+    region: center
+  time:
+    mode: between_times
+    start: 1.0
+    end: 3.0

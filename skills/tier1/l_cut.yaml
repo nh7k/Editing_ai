@@ -1,0 +1,41 @@
+id: l_cut
+seed: 14
+category: cutting
+name: L-cut (sound carries over)
+name_hi: Pichle ki awaaz chalti rahe
+description: At a cut, this shot's sound keeps playing tail_sec over the next shot's picture. Needs that much sound after this shot's out-point.
+same_engine_as: j_cut
+params:
+  tail_sec: {type: number, default: 0.5, min: 0.1, max: 3, unit: s, extract: seconds, desc: how long the sound carries over}
+  cut: {type: integer, min: 1, max: 500, extract: cut_number, desc: which cut (default every cut)}
+time_modes: [whole]
+builder: cutting.l_cut
+graph: the joined sound with a window replaced by the previous source's audio (atrim + adelay + amix)
+media3: {status: server_only, reason: "split audio needs a separate audio sequence (designed, NOT TESTED)"}
+stage: audio
+conflicts: [crossfade]
+cost: cheap
+licence: own code; FFmpeg (server process)
+changes_duration: false
+needs: [two_clips]
+variant_axes:
+  tail: [0.25s, 0.5s, 1s]
+  where: [every_cut, one_cut]
+synonyms:
+  en: [l cut, l-cut, audio carries over, sound continues, let the audio run over, audio after the cut, overlap the sound]
+  hinglish: [awaaz aage tak chale, pichle ki awaaz chalti rahe, awaaz rukni nahi chahiye cut pe, l cut lagao, sound aage tak, purani awaaz chalti rahe, cut ke baad bhi awaaz]
+  hi: [आवाज़ आगे तक चले, पिछले की आवाज़ चलती रहे, एल कट]
+  slang: [awaaz khinch do, audio carry over]
+  typos: [lcut, l cutt, awaz aage]
+negations: [l cut mat lagao]
+examples:
+  - {prompt: "add an l cut", lang: en}
+  - {prompt: "let the audio carry over 1 second into the next shot", lang: en, params: {tail_sec: 1}}
+  - {prompt: "पिछले क्लिप की आवाज़ आगे तक चले", lang: hi}
+  - {prompt: "pichle ki awaaz chalti rahe", lang: hinglish}
+  - {prompt: "l cut lagao 1 second", lang: hinglish, params: {tail_sec: 1}}
+  - {prompt: "lcut karo", lang: typo}
+  - {prompt: "cut pe awaaz ekdum na ruke", lang: vague}
+  - {prompt: "l cut aur crossfade nahi, hard cut rakho", lang: multi}
+test: {check: audio_trails, media: default, params: {tail_sec: 0.6}, setup: [{id: delete_segment, params: {start: 5.0, end: 6.0}}],
+       note: the first shot must end inside its clip (at 5 s) so there is sound after its cut}

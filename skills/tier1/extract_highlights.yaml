@@ -1,0 +1,40 @@
+id: extract_highlights
+seed: 10
+category: cutting
+name: Best moments (highlights)
+name_hi: Sabse achha hissa
+description: Pick `count` moments of `length` seconds that score highest on picture change + speech, in story order. The score is measured, not a human's taste.
+params:
+  count: {type: integer, default: 3, min: 1, max: 20, extract: count, desc: how many moments}
+  length: {type: number, default: 3, min: 1, max: 30, unit: s, extract: seconds, desc: length of each moment}
+time_modes: [whole]
+builder: cutting.extract_highlights
+graph: analysis (motion curve, words, silences) → new segments
+media3: {status: mapped, how: "server scores the moments; the phone applies the clippings", reason: "scoring reads every frame"}
+stage: structure
+conflicts: []
+cost: medium
+licence: own code (OpenCV frame differences, BSD-3/Apache-2.0)
+changes_duration: true
+needs: [analysis]
+variant_axes:
+  count: [1, 3, 5]
+  length: [2s, 4s, 8s]
+synonyms:
+  en: [highlights, best moments, best parts, the best bits, top moments, viral part, highlight reel]
+  hinglish: [sabse achha hissa nikalo, best part nikalo, achhe moments, mast wale part, highlight banao, kaam ke hisse nikalo, best scenes]
+  hi: [सबसे अच्छा हिस्सा, हाइलाइट्स, बेस्ट मोमेंट्स]
+  slang: [viral wala part]
+  typos: [hilights, best momnts, higlight]
+negations: [poora rakho, highlights mat banao]
+examples:
+  - {prompt: "make a highlights reel", lang: en}
+  - {prompt: "pick the 3 best moments, 4 seconds each", lang: en, params: {count: 3, length: 4}}
+  - {prompt: "सबसे अच्छे हिस्से निकालो", lang: hi}
+  - {prompt: "best part nikal do", lang: hinglish}
+  - {prompt: "5 achhe moments nikalo", lang: hinglish, params: {count: 5}}
+  - {prompt: "hilights banao", lang: typo}
+  - {prompt: "jo viral ho sake wo part do", lang: vague}
+  - {prompt: "highlights banao aur music daalo", lang: multi, also: [add_music]}
+test: {check: highlights_scored, params: {count: 2, length: 2}}
+limits: "'Best' = most picture change + speech; it does not understand what is happening."

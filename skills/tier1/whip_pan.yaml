@@ -1,0 +1,113 @@
+# written by skills/tools/write_tier1_transitions.py — edit this file directly from now on
+id: whip_pan
+seed: 23
+category: transitions
+name: Whip pan
+name_hi: Jhatke se badlo
+description: A fast sideways slide with motion blur (and a whoosh) — the travel-vlog cut. Each overlap makes the video that
+  much shorter.
+params:
+  direction:
+    type: choice
+    choices:
+    - left
+    - right
+    default: left
+    extract: direction
+    desc: direction
+  duration:
+    type: number
+    default: 0.35
+    min: 0.15
+    max: 0.8
+    unit: s
+    extract: seconds
+    desc: length
+  cut:
+    type: integer
+    min: 1
+    max: 500
+    extract: cut_number
+    desc: which cut (default every cut)
+  whoosh:
+    type: bool
+    default: true
+    desc: add a whoosh sound
+time_modes:
+- whole
+- between_times
+builder: transitions.whip_pan
+graph: xfade=slideleft/right + gblur (horizontal) over the overlap; a generated whoosh
+media3:
+  status: custom_shader
+  how: a GlEffect over the overlap of two sequences (Composition) — NOT TESTED
+stage: structure
+conflicts:
+- crossfade
+cost: cheap
+licence: own code; FFmpeg xfade / gblur / rgbashift (server process); whoosh generated
+changes_duration: true
+needs:
+- two_clips
+variant_axes:
+  direction:
+  - left
+  - right
+  whoosh:
+  - 'on'
+  - 'off'
+synonyms:
+  en:
+  - whip pan
+  - whip transition
+  - swoosh transition
+  - fast pan transition
+  - whip
+  - smear transition
+  - speed pan
+  hinglish:
+  - jhatke se badlo
+  - whip lagao
+  - swoosh wala transition
+  - tez pan ke badle
+  - jhatak ke badle
+  - whoosh transition
+  - phatak se badle
+  hi:
+  - झटके से बदलो
+  - व्हिप पैन
+  - स्वूश ट्रांज़िशन
+  slang:
+  - fast cut wala
+  typos:
+  - wip pan
+  - whipp
+  - wip transition
+negations:
+- whip mat lagao
+examples:
+- prompt: whip pan between shots
+  lang: en
+- prompt: whip transition to the right
+  lang: en
+  params:
+    direction: right
+- prompt: झटके से बदलो
+  lang: hi
+- prompt: jhatke se badlo scene
+  lang: hinglish
+- prompt: whoosh transition do
+  lang: hinglish
+- prompt: wip pan
+  lang: typo
+- prompt: energetic travel cut
+  lang: vague
+- prompt: whip pan aur shake
+  lang: multi
+  also:
+  - shake
+test:
+  check: smeared_mid
+  params:
+    direction: left
+    duration: 0.5

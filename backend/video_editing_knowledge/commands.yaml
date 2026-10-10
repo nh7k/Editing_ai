@@ -1,0 +1,83 @@
+# The command catalog: everything the editor can do, as short commands the LLM picks from (it can only choose
+# these ids — grammar-constrained), each with the exact phrase the deterministic parser understands.
+# {v} = the value the LLM fills (a number, a colour word, a text, a mood). tests/unit/test_commands.py checks that
+# every "say" phrase (with an example value) is understood by the rule parser.
+#
+# Fields: id, say (phrase for the rule parser), desc (what the LLM reads), value (none|seconds|number|text|color|mood|
+# aspect|platform|effect|time), example (a value used in tests)
+
+commands:
+  # ---- whole edit / style
+  - {id: auto_edit, say: "mast sa edit kar do", desc: "make a good edit, choose everything automatically", value: none}
+  - {id: start_over, say: "naya edit shuru se", desc: "forget the current edit and start a new one", value: none}
+  - {id: style_cinematic, say: "cinematic look", desc: "cinematic / filmy colour and feel", value: none}
+  - {id: style_fan_edit, say: "fan edit", desc: "fast velocity fan edit of a player or star", value: none}
+  - {id: style_travel, say: "travel vlog", desc: "travel / trip video", value: none}
+  - {id: style_podcast, say: "podcast clip, remove silences, add captions, clean up the audio", desc: "podcast / interview clip", value: none}
+  - {id: style_wedding, say: "wedding film", desc: "wedding highlight", value: none}
+  - {id: style_gym, say: "gym motivation reel", desc: "gym / fitness motivation", value: none}
+  - {id: style_lyrics, say: "lyrics on screen", desc: "show the song's words as they are sung", value: none}
+  - {id: style_lyric_poster, say: "poster style text, lyrics on screen", desc: "huge red/black/yellow lyric words", value: none}
+  # ---- length / pace / order
+  - {id: duration, say: "{v} second ka video", desc: "make the video this many seconds long", value: seconds, example: "15"}
+  - {id: shorter, say: "thoda chhota karo", desc: "make it shorter than now", value: none}
+  - {id: longer, say: "thoda lamba karo", desc: "make it longer than now", value: none}
+  - {id: faster, say: "thoda fast karo", desc: "quicker cuts / faster pace", value: none}
+  - {id: slower, say: "thoda slow karo", desc: "longer shots / calmer pace", value: none}
+  - {id: fast_cuts, say: "fast cuts", desc: "many quick cuts", value: none}
+  - {id: beat_cuts, say: "cut on the beat", desc: "cuts follow the music beat", value: none}
+  - {id: slow_motion, say: "slow motion", desc: "slow motion", value: none}
+  - {id: slow_motion_end, say: "end me slow motion", desc: "slow motion only on the last shot", value: none}
+  - {id: best_first, say: "best part pehle", desc: "start with the best / strongest moment (hook)", value: none}
+  - {id: order_smart, say: "arrange the clips in the right order", desc: "put the clips in a good order", value: none}
+  - {id: reverse, say: "reverse the video", desc: "play backwards", value: none}
+  - {id: remove_boring, say: "boring part hata do", desc: "cut out dull / dead parts", value: none}
+  - {id: remove_silence, say: "remove silences", desc: "cut the pauses where nobody talks", value: none}
+  - {id: remove_fillers, say: "remove filler words", desc: "cut um / uh", value: none}
+  - {id: drop_clip, say: "{v} clip hata do", desc: "leave out one clip (pehla / dusra / last)", value: text, example: "pehla"}
+  # ---- shape
+  - {id: aspect, say: "{v}", desc: "aspect ratio 9:16 / 16:9 / 1:1", value: aspect, example: "9:16"}
+  - {id: platform, say: "{v} ke liye", desc: "for a platform: instagram reel, youtube shorts, youtube", value: platform, example: "instagram reel"}
+  # ---- colour
+  - {id: color_warm, say: "warm color", desc: "warm colours", value: none}
+  - {id: color_cool, say: "cool color", desc: "cool / blue colours", value: none}
+  - {id: color_vivid, say: "vivid colors", desc: "bright saturated colours", value: none}
+  - {id: color_bw, say: "black and white karo", desc: "the whole video black and white", value: none}
+  - {id: color_bw_some, say: "some shots black and white", desc: "only some shots black and white", value: none}
+  - {id: color_bw_last, say: "last shot black and white", desc: "only the last shot black and white", value: none}
+  - {id: color_vintage, say: "vintage look", desc: "old / vintage colours", value: none}
+  - {id: brighter, say: "thoda bright karo", desc: "brighter picture", value: none}
+  - {id: darker, say: "thoda dark karo", desc: "darker picture", value: none}
+  - {id: color_back, say: "original colour wapas lao", desc: "remove colour grade / black and white", value: none}
+  # ---- sound
+  - {id: music, say: "{v} music lagao", desc: "add background music with a mood (upbeat, calm, sad, romantic)", value: mood, example: "upbeat"}
+  - {id: my_song, say: "use my song", desc: "use the song the user uploaded", value: none}
+  - {id: no_music, say: "gaana hata do", desc: "remove the music", value: none}
+  - {id: music_softer, say: "music thoda kam karo", desc: "music quieter", value: none}
+  - {id: music_louder, say: "music thoda tez karo", desc: "music louder", value: none}
+  - {id: voice_louder, say: "voice tej karo", desc: "the people's voice louder / clearer", value: none}
+  - {id: mute, say: "mute the original sound", desc: "remove the video's own sound", value: none}
+  - {id: sound_back, say: "audio wapas lao", desc: "the video's own sound back", value: none}
+  - {id: clean_audio, say: "clean up the audio", desc: "remove noise from the voice", value: none}
+  - {id: bass, say: "bass boost", desc: "more bass", value: none}
+  # ---- text
+  - {id: captions, say: "add captions", desc: "subtitles of what is said", value: none}
+  - {id: no_captions, say: "captions hata do", desc: "remove captions", value: none}
+  - {id: title, say: "'{v}' likh do", desc: "write this text on screen at the start", value: text, example: "GOA TRIP"}
+  - {id: end_text, say: "last me {v} likh do", desc: "write this text at the end", value: text, example: "The End"}
+  - {id: text_color, say: "text {v} karo", desc: "colour of the text (white, black, red, yellow, …)", value: color, example: "white"}
+  - {id: text_bigger, say: "text bada karo", desc: "bigger text", value: none}
+  - {id: text_smaller, say: "text chhota karo", desc: "smaller text", value: none}
+  - {id: text_behind, say: "text behind the person", desc: "text behind the person", value: none}
+  - {id: no_text, say: "text hata do", desc: "no text on screen", value: none}
+  - {id: stickers, say: "jo bol raha hu uske stickers daal do", desc: "emoji stickers of things that are said", value: none}
+  - {id: no_stickers, say: "stickers hata do", desc: "remove the stickers", value: none}
+  # ---- effects / motion / transitions
+  - {id: effect, say: "{v} effect", desc: "add an effect (zoom, shake, glitch, film grain, vhs, rgb split, flash, vignette, blur background, ghost trail)", value: effect, example: "zoom"}
+  - {id: no_effect, say: "{v} mat lagao", desc: "do NOT use this effect", value: effect, example: "zoom"}
+  - {id: no_effects, say: "effects hata do", desc: "remove all effects", value: none}
+  - {id: smooth, say: "thoda smooth karo", desc: "soft crossfade transitions", value: none}
+  - {id: transition, say: "{v} transition", desc: "a transition between shots (fade, crossfade, zoom, wipe)", value: text, example: "fade"}
+  - {id: no_transitions, say: "transitions hata do", desc: "remove transitions", value: none}
+  - {id: use_reference, say: "edit like the reference video", desc: "edit like the reference / sample video the user uploaded", value: none}
+  - {id: undo, say: "pehle jaisa kar do", desc: "go back to how it was before (same as last time)", value: none}

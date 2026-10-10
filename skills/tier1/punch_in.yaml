@@ -1,0 +1,108 @@
+# written by skills/tools/write_tier1_motion.py — edit this file directly from now on
+id: punch_in
+seed: 28
+category: motion
+name: Punch in
+name_hi: Jhatka zoom
+description: A quick zoom hit (to `scale`) that eases back, on beats, words, cuts or given times.
+params:
+  scale:
+    type: number
+    default: 1.2
+    min: 1.05
+    max: 1.28
+    extract: level
+    desc: how far
+time_modes:
+- whole
+- at_time
+- at_beats
+- on_words
+- on_scene_change
+- intermittent
+builder: motion.punch_in
+graph: scale with a per-frame bump expression + crop
+media3:
+  status: mapped
+  how: MatrixTransformation whose matrix is the same eased keyframes per frame
+  reason: NOT TESTED on a device
+stage: geometry
+conflicts: []
+cost: cheap
+licence: own code (engines/motion.py easings); FFmpeg filters (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  scale:
+  - '1.1'
+  - '1.2'
+  - '1.28'
+  'on':
+  - beats
+  - words
+  - cuts
+synonyms:
+  en:
+  - punch in
+  - punch zoom
+  - zoom hit
+  - quick zoom
+  - snap zoom
+  - impact zoom
+  - jump zoom
+  hinglish:
+  - jhatka zoom
+  - beat par zoom
+  - jhatke se zoom
+  - fatak se zoom
+  - punch karo
+  - zoom ka jhatka
+  - dhak se zoom
+  hi:
+  - झटका ज़ूम
+  - पंच ज़ूम
+  - झटके से ज़ूम
+  slang:
+  - dhamaka zoom
+  typos:
+  - punchin
+  - panch zoom
+  - punch inn
+negations:
+- punch mat karo
+- jhatka mat do
+examples:
+- prompt: punch in on every beat
+  lang: en
+  time:
+    mode: at_beats
+- prompt: punch zoom at 3 seconds
+  lang: en
+  time:
+    mode: at_time
+    at: 3
+- prompt: झटका ज़ूम लगाओ
+  lang: hi
+- prompt: har cut pe jhatka zoom
+  lang: hinglish
+  time:
+    mode: on_scene_change
+- prompt: beat par zoom karo
+  lang: hinglish
+  time:
+    mode: at_beats
+- prompt: punchin
+  lang: typo
+- prompt: thoda energy daalo zoom se
+  lang: vague
+- prompt: punch in aur flash
+  lang: multi
+  also:
+  - flash
+test:
+  check: punch_at_times
+  params:
+    scale: 1.25
+  time:
+    mode: at_time
+    at: 2.0

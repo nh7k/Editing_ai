@@ -1,0 +1,123 @@
+# written by skills/tools/write_tier1_text.py — edit this file directly from now on
+id: text_pop_in
+seed: 60
+category: text
+name: Pop-in text
+name_hi: Uchhalta text
+description: Text that pops in (scales up with a bounce).
+params:
+  text:
+    type: text
+    extract: quoted_text
+    desc: the words (in quotes)
+  position:
+    type: choice
+    choices:
+    - bottom
+    - center
+    - top
+    - top_right
+    - bottom_right
+    - bottom_left
+    - top_left
+    default: center
+    extract: position
+    desc: where
+  size:
+    type: integer
+    default: 72
+    min: 20
+    max: 160
+    desc: size
+time_modes:
+- whole
+- between_times
+- segment
+- at_time
+builder: text.text_pop_in
+graph: ASS \t scale (pop)
+media3:
+  status: mapped
+  how: TextOverlay (SpannableString) per item; animations as per-frame alpha / scale / position — NOT TESTED
+stage: text
+conflicts: []
+cost: cheap
+licence: own code; libass + HarfBuzz via FFmpeg (server process); fonts SIL OFL (Hind, Kalam, Poppins, Anton, Bebas)
+changes_duration: false
+needs: []
+variant_axes:
+  style:
+  - bold_pop
+  - comic
+synonyms:
+  en:
+  - pop text
+  - bounce text
+  - pop in
+  - text pops up
+  - bouncy title
+  - zoom in text
+  - pop animation
+  hinglish:
+  - uchhalta text
+  - pop karke aaye text
+  - text jhatke se aaye
+  - bounce wala text
+  - text pop karo
+  - uchhal ke aaye
+  - pop up text
+  hi:
+  - उछलता टेक्स्ट
+  - पॉप टेक्स्ट
+  - झटके से आए
+  slang:
+  - dhamakedar text
+  - pop karke aaye
+  - pop karke
+  typos:
+  - pop txt
+  - poop text
+  - bounc text
+negations:
+- pop mat karo
+examples:
+- prompt: pop in text 'WOW'
+  lang: en
+  params:
+    text: WOW
+- prompt: bouncy title 'Day 3'
+  lang: en
+  params:
+    text: Day 3
+- prompt: '''वाह'' उछलता टेक्स्ट'
+  lang: hi
+  params:
+    text: वाह
+- prompt: '''OMG'' pop karke aaye'
+  lang: hinglish
+  params:
+    text: OMG
+- prompt: uchhalta text 'Party'
+  lang: hinglish
+  params:
+    text: Party
+- prompt: pop txt 'Yay'
+  lang: typo
+  params:
+    text: Yay
+- prompt: text me energy chahiye
+  lang: vague
+- prompt: '''Boom'' pop text aur shake'
+  lang: multi
+  also:
+  - shake
+  params:
+    text: Boom
+test:
+  check: text_pops
+  params:
+    text: WOW
+  time:
+    mode: between_times
+    start: 1.0
+    end: 4.0

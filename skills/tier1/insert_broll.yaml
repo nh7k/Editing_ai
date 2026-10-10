@@ -1,0 +1,41 @@
+id: insert_broll
+seed: 15
+category: cutting
+name: B-roll cutaway
+name_hi: Beech me doosra shot
+description: Show another clip's picture over the edit from `start` for `len` seconds; the main sound keeps playing (a cutaway).
+params:
+  clip: {type: string, extract: clip_ref, desc: the B-roll clip (default the first clip not in the edit)}
+  start: {type: number, min: 0, max: 36000, unit: s, extract: time_point, desc: when it starts (default a third in)}
+  len: {type: number, default: 2.5, min: 0.3, max: 60, unit: s, extract: seconds, desc: how long}
+  src_in: {type: number, default: 0, min: 0, max: 36000, unit: s, desc: where in the B-roll clip to start}
+time_modes: [whole]
+builder: cutting.insert_broll
+graph: overlay of the B-roll clip (trim, scale/crop to the canvas) enabled between start and end
+media3: {status: mapped, how: "a second EditedMediaItemSequence (video only) composited over the main one", reason: "multi-sequence compositing exists in Media3 1.4+ (NOT TESTED on a device)"}
+stage: overlay
+conflicts: []
+cost: cheap
+licence: own code; FFmpeg overlay (server process)
+changes_duration: false
+needs: [two_clips]
+variant_axes:
+  length: [1.5s, 2.5s, 4s]
+  entry: [cut, crossfade]
+synonyms:
+  en: [b-roll, broll, cutaway, insert a shot, show another clip over, add b roll, cover shot]
+  hinglish: [broll daalo, beech me doosra shot lagao, doosra clip upar dikhao, awaaz ye wali aur video doosri, cutaway lagao, beech me doosra scene, b roll lagao]
+  hi: [बीच में दूसरा शॉट, बी रोल लगाओ, दूसरा क्लिप दिखाओ]
+  slang: [filler shot daal do, dusra shot dikhao]
+  typos: [b rol, brol, cut away]
+negations: [b roll mat daalo]
+examples:
+  - {prompt: "add b-roll at 3 seconds", lang: en, params: {start: 3}}
+  - {prompt: "cutaway to clip 2 for 2 seconds at 4 sec", lang: en, params: {start: 4, len: 2}}
+  - {prompt: "4 सेकंड पर दूसरा शॉट दिखाओ", lang: hi, params: {start: 4}}
+  - {prompt: "beech me doosra shot lagao", lang: hinglish}
+  - {prompt: "5 sec pe broll daalo 3 second ka", lang: hinglish, params: {start: 5, len: 3}}
+  - {prompt: "add brol at 2 sec", lang: typo, params: {start: 2}}
+  - {prompt: "bolte waqt kuch aur dikhao", lang: vague}
+  - {prompt: "broll daalo aur captions lagao", lang: multi, also: [auto_captions]}
+test: {check: broll_picture_main_audio, media: tones, params: {start: 1.0, len: 1.5}}

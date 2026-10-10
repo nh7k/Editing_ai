@@ -1,0 +1,83 @@
+# CutMind eval set — instruction → expected properties of the understood edit (Intent).
+# Checks:  field: value (equal) · field__has: x (list contains / string contains) · field__not: x (list lacks) ·
+#          field__min / field__max (numbers) · understood: true|false · error: <code> (the API refuses with it)
+# Tags: lang (en|hi|hinglish), kind (direct|paraphrase|typo|slang|vague|negation|magnitude|contradiction|long|empty|
+#       reference|chitchat|devanagari). "paraphrase" cases use words the rules were never taught: they measure
+#       what the planner LLM adds.
+
+cases:
+  # ---- direct (the rules know these)
+  - {id: d01, lang: en, kind: direct, prompt: "make a 15 second reel with captions", expect: {target_duration: 15, captions: true}}
+  - {id: d02, lang: hinglish, kind: direct, prompt: "30 sec ka video bana do warm color ke saath", expect: {target_duration: 30, color_preset: warm}}
+  - {id: d03, lang: hinglish, kind: direct, prompt: "silence hata aur captions laga", expect: {remove_silence: true, captions: true}}
+  - {id: d04, lang: en, kind: direct, prompt: "black and white, slow motion", expect: {color_preset: bw, slow_motion: true}}
+  - {id: d05, lang: hinglish, kind: direct, prompt: "gaana hata do", expect: {no_music: true}}
+  - {id: d06, lang: en, kind: direct, prompt: "add upbeat music and fast cuts", expect: {music: true, music_mood: upbeat, fast_cuts: true}}
+  - {id: d07, lang: hinglish, kind: direct, prompt: "9:16 me bana do insta ke liye", expect: {aspect_ratio: "9:16"}}
+  - {id: d08, lang: en, kind: direct, prompt: "remove filler words and clean up the audio", expect: {remove_fillers: true, voice_cleanup: true}}
+  - {id: d09, lang: hinglish, kind: direct, prompt: "start me 'GOA TRIP' likh do", expect: {title: "GOA TRIP"}}
+  - {id: d10, lang: hinglish, kind: direct, prompt: "pehla clip hata do", expect: {drop_clips__has: 1}}
+  - {id: d11, lang: en, kind: direct, prompt: "glitch effect", expect: {effects__has: glitch}}
+  - {id: d12, lang: hinglish, kind: direct, prompt: "text white karo", expect: {text_color: "#FFFFFF"}}
+  - {id: d13, lang: hinglish, kind: direct, prompt: "last shot black and white", expect: {color_preset: null, timed_effects__min: 1}}
+  - {id: d14, lang: en, kind: direct, prompt: "use my song, lyrics on screen", expect: {use_my_song: true, lyrics: true}}
+  - {id: d15, lang: hinglish, kind: direct, prompt: "jo bol raha hu uske stickers daal do", expect: {word_stickers: true}}
+  # ---- magnitude
+  - {id: m01, lang: hinglish, kind: magnitude, prompt: "thoda slow karo", expect: {pace_change__min: 1.2, pace_change__max: 1.8}}
+  - {id: m02, lang: hinglish, kind: magnitude, prompt: "bahut slow karo", expect: {pace_change__min: 1.8}}
+  - {id: m03, lang: hinglish, kind: magnitude, prompt: "thoda chhota karo", expect: {length_change__min: 0.6, length_change__max: 0.8}}
+  - {id: m04, lang: hinglish, kind: magnitude, prompt: "bahut chhota kar do", expect: {length_change__max: 0.55}}
+  - {id: m05, lang: hinglish, kind: magnitude, prompt: "music thoda kam karo", expect: {music_volume__max: 0.2}}
+  - {id: m06, lang: hinglish, kind: magnitude, prompt: "text bada karo", expect: {text_scale__min: 1.2}}
+  - {id: m07, lang: hinglish, kind: magnitude, prompt: "thoda bright karo", expect: {understood: true}}
+  # ---- negation
+  - {id: n01, lang: hinglish, kind: negation, prompt: "zoom mat lagao", expect: {effects__not: zoom, avoid__has: zoom}}
+  - {id: n02, lang: en, kind: negation, prompt: "no music please", expect: {music: false}}
+  - {id: n03, lang: hinglish, kind: negation, prompt: "captions nahi chahiye", expect: {captions: false}}
+  - {id: n04, lang: hinglish, kind: negation, prompt: "transitions hata do", expect: {transition: null}}
+  - {id: n05, lang: hinglish, kind: negation, prompt: "black and white mat karna", expect: {color_preset__not: bw}}
+  - {id: n06, lang: hinglish, kind: negation, prompt: "glitch effect mat daalna", expect: {effects__not: glitch}}
+  # ---- typos / slang
+  - {id: t01, lang: hinglish, kind: typo, prompt: "captins lagao", expect: {captions: true}}
+  - {id: t02, lang: hinglish, kind: typo, prompt: "slow moshan daal do", expect: {slow_motion: true}}
+  - {id: t03, lang: en, kind: typo, prompt: "blak and wite", expect: {color_preset: bw}}
+  - {id: t04, lang: hinglish, kind: slang, prompt: "ekdum jhakaas bana de", expect: {auto: true}}
+  - {id: t05, lang: hinglish, kind: slang, prompt: "aag laga de bhai, hype edit", expect: {understood: true}}
+  - {id: t06, lang: en, kind: typo, prompt: "remov silense", expect: {remove_silence: true}}
+  # ---- vague
+  - {id: v01, lang: hinglish, kind: vague, prompt: "achha sa bana do", expect: {auto: true}}
+  - {id: v02, lang: hinglish, kind: vague, prompt: "mast sa edit kar do", expect: {auto: true}}
+  - {id: v03, lang: en, kind: vague, prompt: "make it better", expect: {understood: true}}
+  - {id: v04, lang: hinglish, kind: vague, prompt: "professional bana do", expect: {understood: true}}
+  # ---- paraphrases the rules were not taught (the LLM's job)
+  - {id: p01, lang: hinglish, kind: paraphrase, prompt: "gaane ki awaaz thodi dheemi kar do", expect: {music_volume__max: 0.2}}
+  - {id: p02, lang: hinglish, kind: paraphrase, prompt: "colour thoda garam karo", expect: {color_preset: warm}}
+  - {id: p03, lang: hinglish, kind: paraphrase, prompt: "subtitles peele rang mein", expect: {text_color: "#FFE600"}}
+  - {id: p04, lang: hinglish, kind: paraphrase, prompt: "aakhri wala video nikal do", expect: {drop_clips__has: -1}}
+  - {id: p05, lang: hinglish, kind: paraphrase, prompt: "awaaz saaf karo", expect: {voice_cleanup: true}}
+  - {id: p06, lang: hinglish, kind: paraphrase, prompt: "isko MrBeast jaisa edit karo", expect: {understood: true, fast_cuts: true}}
+  - {id: p07, lang: hinglish, kind: paraphrase, prompt: "purane zamane ki film jaisa lagna chahiye", expect: {understood: true}}
+  - {id: p08, lang: en, kind: paraphrase, prompt: "make the colours pop", expect: {color_preset: vivid}}
+  - {id: p09, lang: hinglish, kind: paraphrase, prompt: "jo hissa bekaar hai wo kaat do", expect: {understood: true}}
+  - {id: p10, lang: en, kind: paraphrase, prompt: "make the words on screen larger", expect: {text_scale__min: 1.2}}
+  - {id: p11, lang: hinglish, kind: paraphrase, prompt: "peeche koi gaana chala do jo romantic ho", expect: {music: true, music_mood: calm}}
+  - {id: p12, lang: en, kind: paraphrase, prompt: "get rid of the background track", expect: {no_music: true}}
+  - {id: p13, lang: hinglish, kind: paraphrase, prompt: "video bahut dheema lag raha hai", expect: {pace_change__max: 0.9}}
+  - {id: p14, lang: en, kind: paraphrase, prompt: "make it feel like an old vhs tape", expect: {effects__has: vhs}}
+  - {id: p15, lang: hinglish, kind: paraphrase, prompt: "shuruat dhamakedar honi chahiye", expect: {understood: true}}
+  # ---- Devanagari Hindi
+  - {id: h01, lang: hi, kind: devanagari, prompt: "वीडियो को 30 सेकंड का बना दो", expect: {target_duration: 30}}
+  - {id: h02, lang: hi, kind: devanagari, prompt: "कैप्शन लगा दो", expect: {captions: true}}
+  - {id: h03, lang: hi, kind: devanagari, prompt: "गाना हटा दो", expect: {no_music: true}}
+  - {id: h04, lang: hi, kind: devanagari, prompt: "थोड़ा स्लो करो", expect: {pace_change__min: 1.2}}
+  # ---- contradictions / long / empty / chit-chat / reference
+  - {id: c01, lang: hinglish, kind: contradiction, prompt: "5 sec ka bhi aur 60 sec ka bhi", expect: {target_duration__min: 5, target_duration__max: 60}}
+  - {id: c02, lang: en, kind: contradiction, prompt: "fast but cinematic", expect: {understood: true}}
+  - {id: c03, lang: hinglish, kind: contradiction, prompt: "music lagao aur music mat lagao", expect: {understood: true}}
+  - {id: l01, lang: hinglish, kind: long, prompt: "bhai sun na mere paas goa trip ke kuch clips hai aur mujhe ek insta reel chahiye jo 20 second ki ho jisme upbeat music ho captions ho aur colour thoda warm ho aur shuru mein sabse best shot aaye aur last mein THE END likh dena please", expect: {target_duration: 20, music_mood: upbeat, captions: true, color_preset: warm, end_text__has: "THE END"}}
+  - {id: e01, lang: en, kind: empty, prompt: "", expect: {error: bad_prompt}}
+  - {id: e02, lang: en, kind: empty, prompt: "   ", expect: {error: bad_prompt}}
+  - {id: x01, lang: hinglish, kind: chitchat, prompt: "kya haal hai bhai", expect: {understood: false}}
+  - {id: x02, lang: en, kind: chitchat, prompt: "what is the weather today", expect: {understood: false}}
+  - {id: r01, lang: hinglish, kind: reference, prompt: "is reference video jaisa edit karo", expect: {use_reference: true}}
+  - {id: r02, lang: en, kind: reference, prompt: "edit it like the uploaded video", expect: {use_reference: true}}

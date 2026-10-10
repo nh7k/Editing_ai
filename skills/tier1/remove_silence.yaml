@@ -1,0 +1,40 @@
+id: remove_silence
+seed: 6
+category: cutting
+name: Remove silences
+name_hi: Khamoshi hatao
+description: Cut every pause longer than min_gap that is quieter than threshold_db, keeping `keep` seconds on each side so words are not chopped.
+params:
+  threshold_db: {type: number, default: -35, min: -60, max: -15, unit: " dB", extract: db, desc: how quiet counts as silence}
+  min_gap: {type: number, default: 0.6, min: 0.2, max: 5, unit: s, extract: seconds, desc: shortest pause to cut}
+  keep: {type: number, default: 0.15, min: 0.0, max: 0.5, unit: s, desc: pause kept either side of a cut}
+time_modes: [whole]
+builder: cutting.remove_silence
+graph: silencedetect on each source → segments without the pauses
+media3: {status: mapped, how: "server measures the pauses (silencedetect); the phone applies the cut list as clippings", reason: "the measuring needs FFmpeg"}
+stage: structure
+conflicts: []
+cost: cheap
+licence: own code; FFmpeg silencedetect (server process)
+changes_duration: true
+needs: [silence_map]
+variant_axes:
+  aggressiveness: [gentle_1s, normal_0.6s, tight_0.3s]
+  keep_padding: [0.05, 0.15, 0.3]
+synonyms:
+  en: [remove silence, cut silences, remove pauses, cut the dead air, no silence, remove quiet parts, cut gaps]
+  hinglish: [silence hatao, khamoshi hatao, chup wala hissa hatao, chup hissa kaato, dead air hatao, ruk ruk ke bolna hatao, gap hatao]
+  hi: [चुप वाले हिस्से हटाओ, खामोशी हटाओ, साइलेंस हटाओ]
+  slang: [bakwas pause uda do, khali gap nikalo, cut pause]
+  typos: [silense hatao, remov silence, silnce]
+negations: [silence mat hatao, pause rehne do]
+examples:
+  - {prompt: "remove the silences", lang: en}
+  - {prompt: "cut pauses longer than 1 second", lang: en, params: {min_gap: 1.0}}
+  - {prompt: "खामोशी वाले हिस्से हटाओ", lang: hi}
+  - {prompt: "silence hata do", lang: hinglish}
+  - {prompt: "jahan chup hai wo hissa kaat do", lang: hinglish}
+  - {prompt: "remov silense", lang: typo}
+  - {prompt: "beech ke khali gap nikal do", lang: vague}
+  - {prompt: "silence hatao aur captions lagao", lang: multi, also: [auto_captions]}
+test: {check: shorter_no_long_silence, media: talk}

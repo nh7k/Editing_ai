@@ -1,0 +1,38 @@
+id: fit_to_duration
+seed: 9
+category: cutting
+name: Fit to a length
+name_hi: Itne second me fit karo
+description: Make the whole edit target_sec long by shortening every shot from its end (every shot's start is kept). It never stretches a shorter video.
+params:
+  target_sec: {type: number, min: 1, max: 3600, unit: s, extract: duration, required: true, desc: length in seconds}
+time_modes: [whole]
+builder: cutting.fit_to_duration
+graph: shorter segment out points
+media3: {status: mapped, how: "ClippingConfiguration end points"}
+stage: structure
+conflicts: []
+cost: cheap
+licence: own code
+changes_duration: true
+needs: []
+variant_axes:
+  target: [15s, 30s, 60s, 90s]
+  strategy: [shorten_every_shot, drop_weakest_shots]
+synonyms:
+  en: [make it seconds, fit to, cut to length, cut down to, make it seconds long, shorten to, under a minute, length of]
+  hinglish: [second ka karo, sec ka video, itne second me fit karo, minute ka bana do, chhota karke, tak ka karo, ki reel bana do]
+  hi: [सेकंड का बनाओ, मिनट का वीडियो, इतने सेकंड में करो]
+  slang: [sec me nipta do, sec me fit karo]
+  typos: [secnd ka video, sec ka vdo, minit ka video]
+negations: [length mat badlo]
+examples:
+  - {prompt: "make it 30 seconds", lang: en, params: {target_sec: 30}}
+  - {prompt: "cut it down to 15 secs", lang: en, params: {target_sec: 15}}
+  - {prompt: "20 सेकंड का बनाओ", lang: hi, params: {target_sec: 20}}
+  - {prompt: "30 sec ka karo", lang: hinglish, params: {target_sec: 30}}
+  - {prompt: "aadha minute ki reel bana do", lang: hinglish, params: {target_sec: 30}}
+  - {prompt: "15 secnd ka vdo", lang: typo, params: {target_sec: 15}}
+  - {prompt: "das second me fit kar do", lang: vague, params: {target_sec: 10}}
+  - {prompt: "20 sec ka karo, vertical banao aur music daalo", lang: multi, params: {target_sec: 20}, also: [aspect_9_16, add_music]}
+test: {check: duration_target, params: {target_sec: 12}}

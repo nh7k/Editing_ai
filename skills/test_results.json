@@ -1,0 +1,738 @@
+{
+ "anim_blur_in": {
+  "detail": "1 variant(s) render, Devanagari + Latin text visible only in its window",
+  "ok": true
+ },
+ "anim_bounce": {
+  "detail": "1 variant(s) render, Devanagari + Latin text visible only in its window",
+  "ok": true
+ },
+ "anim_cascade": {
+  "detail": "1 variant(s) render, Devanagari + Latin text visible only in its window",
+  "ok": true
+ },
+ "anim_color_cycle": {
+  "detail": "1 variant(s) render, Devanagari + Latin text visible only in its window",
+  "ok": true
+ },
+ "anim_drop_in": {
+  "detail": "1 variant(s) render, Devanagari + Latin text visible only in its window",
+  "ok": true
+ },
+ "anim_fade": {
+  "detail": "1 variant(s) render, Devanagari + Latin text visible only in its window",
+  "ok": true
+ },
+ "anim_flicker": {
+  "detail": "1 variant(s) render, Devanagari + Latin text visible only in its window",
+  "ok": true
+ },
+ "anim_flip_in": {
+  "detail": "1 variant(s) render, Devanagari + Latin text visible only in its window",
+  "ok": true
+ },
+ "anim_fly_left": {
+  "detail": "1 variant(s) render, Devanagari + Latin text visible only in its window",
+  "ok": true
+ },
+ "anim_fly_right": {
+  "detail": "1 variant(s) render, Devanagari + Latin text visible only in its window",
+  "ok": true
+ },
+ "anim_glow_pulse": {
+  "detail": "1 variant(s) render, Devanagari + Latin text visible only in its window",
+  "ok": true
+ },
+ "anim_heartbeat": {
+  "detail": "1 variant(s) render, Devanagari + Latin text visible only in its window",
+  "ok": true
+ },
+ "anim_karaoke": {
+  "detail": "1 variant(s) render, Devanagari + Latin text visible only in its window",
+  "ok": true
+ },
+ "anim_pop": {
+  "detail": "1 variant(s) render, Devanagari + Latin text visible only in its window",
+  "ok": true
+ },
+ "anim_shake": {
+  "detail": "1 variant(s) render, Devanagari + Latin text visible only in its window",
+  "ok": true
+ },
+ "anim_slide_up": {
+  "detail": "1 variant(s) render, Devanagari + Latin text visible only in its window",
+  "ok": true
+ },
+ "anim_spin_in": {
+  "detail": "1 variant(s) render, Devanagari + Latin text visible only in its window",
+  "ok": true
+ },
+ "anim_stretch": {
+  "detail": "1 variant(s) render, Devanagari + Latin text visible only in its window",
+  "ok": true
+ },
+ "anim_swing": {
+  "detail": "1 variant(s) render, Devanagari + Latin text visible only in its window",
+  "ok": true
+ },
+ "anim_typewriter": {
+  "detail": "1 variant(s) render, Devanagari + Latin text visible only in its window",
+  "ok": true
+ },
+ "anim_wave": {
+  "detail": "1 variant(s) render, Devanagari + Latin text visible only in its window",
+  "ok": true
+ },
+ "anim_zoom_in": {
+  "detail": "1 variant(s) render, Devanagari + Latin text visible only in its window",
+  "ok": true
+ },
+ "anim_zoom_out": {
+  "detail": "1 variant(s) render, Devanagari + Latin text visible only in its window",
+  "ok": true
+ },
+ "arctic": {
+  "detail": "changed 19.94, warm moved -11.80 (on a grey ramp)",
+  "ok": true
+ },
+ "aspect": {
+  "detail": "'9:16': in intent; 720x1280 for 9:16",
+  "ok": true
+ },
+ "audio_fade": {
+  "detail": "'fade the audio in and out': in intent",
+  "ok": true
+ },
+ "beat_cuts": {
+  "detail": "'cut on the beat': in intent",
+  "ok": true
+ },
+ "blur": {
+  "detail": "changed 5.38 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "blur_fill": {
+  "detail": "'blur background': in intent",
+  "ok": true
+ },
+ "brightness": {
+  "detail": "'thoda bright karo': in intent; brighter by 9.3",
+  "ok": true
+ },
+ "camera_move": {
+  "detail": "changed 47.09 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "captions": {
+  "detail": "'add captions': in intent; 7 captions",
+  "ok": true
+ },
+ "color_pop": {
+  "detail": "changed 110.49 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "crossfade": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 110.62",
+  "ok": true
+ },
+ "cyberpunk": {
+  "detail": "changed 5.04",
+  "ok": true
+ },
+ "dreamy": {
+  "detail": "changed 15.92 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "drift": {
+  "detail": "changed 4.37 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "drop_clip": {
+  "detail": "'pehla clip hata do': in intent",
+  "ok": true
+ },
+ "ducking": {
+  "detail": "'duck the music under the voice': in intent",
+  "ok": true
+ },
+ "duotone_blue_pink": {
+  "detail": "changed 105.23 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "duotone_teal_gold": {
+  "detail": "changed 93.09 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "echo": {
+  "detail": "changed 5.44 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "end_text": {
+  "detail": "'last me The End likh do': in intent",
+  "ok": true
+ },
+ "fade_black": {
+  "detail": "first frame mean 16.6",
+  "ok": true
+ },
+ "faded_film": {
+  "detail": "changed 32.77",
+  "ok": true
+ },
+ "film_bw": {
+  "detail": "changed 105.84 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "film_grain": {
+  "detail": "changed 2.75 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "fisheye": {
+  "detail": "changed 21.17 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "flash": {
+  "detail": "changed 91.02 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "flash_transition": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 151.99",
+  "ok": true
+ },
+ "follow": {
+  "detail": "changed 28.48 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "forest": {
+  "detail": "changed 6.60",
+  "ok": true
+ },
+ "ghost_trail": {
+  "detail": "changed 1.52 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "glitch": {
+  "detail": "changed 11.84 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "glitch_transition": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 112.00",
+  "ok": true
+ },
+ "golden_hour": {
+  "detail": "changed 3.96, warm moved +12.64 (on a grey ramp)",
+  "ok": true
+ },
+ "gradient_overlay": {
+  "detail": "'gradient glow frame': in intent",
+  "ok": true
+ },
+ "hard_cuts": {
+  "detail": "'transitions hata do': in intent",
+  "ok": true
+ },
+ "hook_first": {
+  "detail": "'best part pehle': in intent",
+  "ok": true
+ },
+ "impact": {
+  "detail": "changed 33.53 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "invert_mono": {
+  "detail": "changed 153.69 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "kaleidoscope": {
+  "detail": "changed 116.03 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "karaoke_captions": {
+  "detail": "'karaoke captions': in intent",
+  "ok": true
+ },
+ "kinetic_words": {
+  "detail": "'lyrics on screen': in intent",
+  "ok": true
+ },
+ "letterbox": {
+  "detail": "changed 25.65 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "look_bw": {
+  "detail": "changed 101.96 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "look_cinematic": {
+  "detail": "changed 2.33",
+  "ok": true
+ },
+ "look_cool": {
+  "detail": "changed 10.19, warm moved -16.94 (on a grey ramp)",
+  "ok": true
+ },
+ "look_vintage": {
+  "detail": "changed 52.02",
+  "ok": true
+ },
+ "look_vivid": {
+  "detail": "changed 1.75, sat moved +1.65",
+  "ok": true
+ },
+ "look_warm": {
+  "detail": "changed 15.18, warm moved +28.34 (on a grey ramp)",
+  "ok": true
+ },
+ "loudness": {
+  "detail": "'make it louder': in intent",
+  "ok": true
+ },
+ "mirror": {
+  "detail": "changed 114.47 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "moody_blue": {
+  "detail": "changed 31.73, warm moved -8.85 (on a grey ramp)",
+  "ok": true
+ },
+ "motion_preset": {
+  "detail": "changed 30.96 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "music": {
+  "detail": "'upbeat music lagao': in intent; music upbeat_120bpm.m4a",
+  "ok": true
+ },
+ "music_level": {
+  "detail": "'music thoda kam karo': in intent",
+  "ok": true
+ },
+ "mute": {
+  "detail": "'mute the original sound': in intent; max volume -91.0",
+  "ok": true
+ },
+ "negative": {
+  "detail": "changed 246.64 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "neon_edges": {
+  "detail": "changed 36.12 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "night_vision": {
+  "detail": "changed 111.11 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "no_music": {
+  "detail": "'gaana hata do': in intent; music None",
+  "ok": true
+ },
+ "noir": {
+  "detail": "changed 101.91, sat moved -251.86",
+  "ok": true
+ },
+ "old_film": {
+  "detail": "changed 65.84 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "pan": {
+  "detail": "changed 17.19 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "pan_down": {
+  "detail": "changed 18.13 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "pan_right": {
+  "detail": "changed 17.24 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "pan_up": {
+  "detail": "changed 14.92 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "pastel": {
+  "detail": "changed 45.38",
+  "ok": true
+ },
+ "person_zoom": {
+  "detail": "changed 62.73 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "pixelate": {
+  "detail": "changed 3.12 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "posterize": {
+  "detail": "changed 9.19 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "pulse": {
+  "detail": "changed 33.45 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "punch_in": {
+  "detail": "changed 24.96 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "punch_static": {
+  "detail": "changed 10.92 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "remove_boring": {
+  "detail": "'boring part hata do': in intent",
+  "ok": true
+ },
+ "remove_fillers": {
+  "detail": "'remove filler words': in intent",
+  "ok": true
+ },
+ "remove_silence": {
+  "detail": "'remove silences': in intent",
+  "ok": true
+ },
+ "reverse": {
+  "detail": "'reverse the video': in intent; a reversed shot",
+  "ok": true
+ },
+ "rgb_split": {
+  "detail": "changed 7.97 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "rotate_slow": {
+  "detail": "changed 21.45 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "scanlines": {
+  "detail": "changed 37.33 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "shake": {
+  "detail": "changed 2.39 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "sharpen": {
+  "detail": "changed 3.74 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "shorter": {
+  "detail": "'thoda chhota karo': in intent; 18.4s from 26.5s of footage",
+  "ok": true
+ },
+ "silhouette": {
+  "detail": "changed 101.71 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "sketch": {
+  "detail": "changed 128.13 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "slow_motion": {
+  "detail": "'slow motion': in intent; speeds [1.0, 0.5], 26.5s vs 10.7s",
+  "ok": true
+ },
+ "sound_back": {
+  "detail": "'audio wapas lao': in intent",
+  "ok": true
+ },
+ "speed_ramp": {
+  "detail": "changed 5.21 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "speed_up": {
+  "detail": "'thoda fast karo': in intent; speeds [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], 9.1s vs 10.7s",
+  "ok": true
+ },
+ "spotlight": {
+  "detail": "changed 76.83 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "strobe": {
+  "detail": "changed 34.34 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "swing": {
+  "detail": "changed 10.59 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "target_duration": {
+  "detail": "'30 second ka video': in intent; 26.5s for 26.5s",
+  "ok": true
+ },
+ "text_color": {
+  "detail": "'text white karo': in intent",
+  "ok": true
+ },
+ "text_size": {
+  "detail": "'text bada karo': in intent",
+  "ok": true
+ },
+ "text_style": {
+  "detail": "17 variant(s) render, Devanagari + Latin text visible only in its window",
+  "ok": true
+ },
+ "thermal": {
+  "detail": "changed 95.86 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "title_text": {
+  "detail": "''TITLE' likh do': in intent",
+  "ok": true
+ },
+ "tr_circleclose": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 118.72",
+  "ok": true
+ },
+ "tr_circlecrop": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 127.10",
+  "ok": true
+ },
+ "tr_circleopen": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 103.26",
+  "ok": true
+ },
+ "tr_coverdown": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 103.97",
+  "ok": true
+ },
+ "tr_coverleft": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 19.00",
+  "ok": true
+ },
+ "tr_coverright": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 27.02",
+  "ok": true
+ },
+ "tr_coverup": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 118.95",
+  "ok": true
+ },
+ "tr_diagbl": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 53.17",
+  "ok": true
+ },
+ "tr_diagbr": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 52.27",
+  "ok": true
+ },
+ "tr_diagtl": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 45.08",
+  "ok": true
+ },
+ "tr_diagtr": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 48.01",
+  "ok": true
+ },
+ "tr_dissolve": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 108.83",
+  "ok": true
+ },
+ "tr_distance": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 215.08",
+  "ok": true
+ },
+ "tr_fadefast": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 144.42",
+  "ok": true
+ },
+ "tr_fadegrays": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 143.94",
+  "ok": true
+ },
+ "tr_fadeslow": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 124.28",
+  "ok": true
+ },
+ "tr_hblur": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 113.78",
+  "ok": true
+ },
+ "tr_hlslice": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 111.12",
+  "ok": true
+ },
+ "tr_hlwind": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 108.56",
+  "ok": true
+ },
+ "tr_horzclose": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 112.54",
+  "ok": true
+ },
+ "tr_horzopen": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 109.96",
+  "ok": true
+ },
+ "tr_hrslice": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 114.98",
+  "ok": true
+ },
+ "tr_hrwind": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 112.84",
+  "ok": true
+ },
+ "tr_radial": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 89.43",
+  "ok": true
+ },
+ "tr_rectcrop": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 127.10",
+  "ok": true
+ },
+ "tr_revealdown": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 124.15",
+  "ok": true
+ },
+ "tr_revealleft": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 225.25",
+  "ok": true
+ },
+ "tr_revealright": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 234.15",
+  "ok": true
+ },
+ "tr_revealup": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 100.89",
+  "ok": true
+ },
+ "tr_slidedown": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 107.83",
+  "ok": true
+ },
+ "tr_slideleft": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 134.67",
+  "ok": true
+ },
+ "tr_slideright": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 147.03",
+  "ok": true
+ },
+ "tr_slideup": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 116.44",
+  "ok": true
+ },
+ "tr_smoothdown": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 117.55",
+  "ok": true
+ },
+ "tr_smoothleft": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 109.89",
+  "ok": true
+ },
+ "tr_smoothright": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 112.12",
+  "ok": true
+ },
+ "tr_smoothup": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 104.02",
+  "ok": true
+ },
+ "tr_squeezeh": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 107.12",
+  "ok": true
+ },
+ "tr_squeezev": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 103.66",
+  "ok": true
+ },
+ "tr_vdslice": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 121.72",
+  "ok": true
+ },
+ "tr_vdwind": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 120.02",
+  "ok": true
+ },
+ "tr_vertclose": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 104.08",
+  "ok": true
+ },
+ "tr_vertopen": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 118.60",
+  "ok": true
+ },
+ "tr_vuslice": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 103.26",
+  "ok": true
+ },
+ "tr_vuwind": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 103.66",
+  "ok": true
+ },
+ "tr_wipebl": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 165.20",
+  "ok": true
+ },
+ "tr_wipebr": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 171.60",
+  "ok": true
+ },
+ "tr_wipedown": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 120.58",
+  "ok": true
+ },
+ "tr_wiperight": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 114.73",
+  "ok": true
+ },
+ "tr_wipetl": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 160.06",
+  "ok": true
+ },
+ "tr_wipetr": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 159.22",
+  "ok": true
+ },
+ "tr_wipeup": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 103.09",
+  "ok": true
+ },
+ "vhs": {
+  "detail": "changed 34.61 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "vignette": {
+  "detail": "changed 16.93 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "voice_clean": {
+  "detail": "'clean up the audio': in intent",
+  "ok": true
+ },
+ "voice_louder": {
+  "detail": "'voice tej karo': in intent",
+  "ok": true
+ },
+ "warm_film": {
+  "detail": "changed 4.49",
+  "ok": true
+ },
+ "watermark": {
+  "detail": "'watermark @me': in intent",
+  "ok": true
+ },
+ "whip": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 134.67",
+  "ok": true
+ },
+ "wipe": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 109.07",
+  "ok": true
+ },
+ "word_stickers": {
+  "detail": "'jo bol raha hu uske stickers daal do': in intent",
+  "ok": true
+ },
+ "zoom_in": {
+  "detail": "changed 7.68 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "zoom_out": {
+  "detail": "changed 9.68 in its shot, 0.00 elsewhere",
+  "ok": true
+ },
+ "zoom_transition": {
+  "detail": "length 4.40 (want 4.40), mid-transition differs 125.60",
+  "ok": true
+ }
+}

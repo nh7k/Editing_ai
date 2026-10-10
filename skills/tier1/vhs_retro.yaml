@@ -1,0 +1,92 @@
+# written by skills/tools/write_tier1_stylize.py — edit this file directly from now on
+id: vhs_retro
+seed: 66
+category: stylize
+name: VHS retro
+name_hi: Purana camera
+description: 'Retro tape: colour bleed, noise, scanlines, washed colours.'
+params:
+  intensity:
+    type: number
+    default: 1.0
+    min: 0.3
+    max: 3.0
+    extract: magnitude
+    desc: how strong
+time_modes:
+- whole
+- segment
+- between_times
+- intermittent
+builder: stylize.vhs_retro
+graph: chromashift + vintage curves + noise + drawgrid
+media3:
+  status: custom_shader
+  how: a GlEffect fragment shader port — NOT TESTED
+stage: effect
+conflicts: []
+cost: cheap
+licence: 'own code; FFmpeg filters (server process); shapes drawn with Pillow (MIT-CMU); emoji font: Noto Color Emoji (OFL)
+  on the server'
+changes_duration: false
+needs: []
+variant_axes:
+  intensity:
+  - light
+  - normal
+synonyms:
+  en:
+  - vhs
+  - vhs effect
+  - retro tape
+  - camcorder look
+  - 90s tape
+  - old video look
+  - tape effect
+  hinglish:
+  - purana camera
+  - vhs lagao
+  - 90s wala look
+  - purani cassette jaisa
+  - handycam jaisa
+  - retro tape look
+  - purani shaadi ki video jaisa
+  hi:
+  - पुराना कैमरा
+  - वीएचएस
+  - पुरानी कैसेट जैसा
+  slang:
+  - dad ki handycam
+  typos:
+  - vhs effct
+  - vsh
+  - vhs efect
+negations:
+- vhs mat lagao
+examples:
+- prompt: vhs effect
+  lang: en
+- prompt: 90s camcorder look
+  lang: en
+- prompt: पुरानी कैसेट जैसा
+  lang: hi
+- prompt: vhs lagao
+  lang: hinglish
+- prompt: purani shaadi ki video jaisa banao
+  lang: hinglish
+- prompt: vsh effect
+  lang: typo
+- prompt: nostalgia wala camera
+  lang: vague
+- prompt: vhs aur grain
+  lang: multi
+  also:
+  - film_grain
+test:
+  check: differs_in_window
+  params:
+    intensity: 1.0
+  time:
+    mode: between_times
+    start: 1.0
+    end: 3.0

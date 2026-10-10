@@ -1,0 +1,84 @@
+# written by skills/tools/write_tier1_delivery.py — edit this file directly from now on
+id: srt_export
+seed: 105
+category: delivery
+name: Captions as .srt
+name_hi: Subtitle file
+description: The captions also saved as an .srt subtitle file (YouTube accepts it; accessibility).
+params:
+  format:
+    type: choice
+    choices:
+    - srt
+    default: srt
+    desc: file type
+time_modes:
+- whole
+builder: delivery.srt_export
+graph: caption items → SubRip text
+media3:
+  status: mapped
+  how: a sidecar file (no video work)
+stage: export
+conflicts: []
+cost: cheap
+licence: own code
+changes_duration: false
+needs:
+- speech
+variant_axes:
+  format:
+  - srt
+synonyms:
+  en:
+  - srt
+  - subtitle file
+  - export subtitles
+  - caption file
+  - save the captions
+  - srt file
+  - download subtitles
+  hinglish:
+  - subtitle file do
+  - srt banao
+  - captions ki file
+  - subtitle alag file
+  - srt chahiye
+  - caption download
+  - subtitle file nikalo
+  hi:
+  - सबटाइटल फ़ाइल
+  - एसआरटी
+  - कैप्शन की फ़ाइल
+  slang:
+  - youtube wali subtitle file
+  typos:
+  - str file
+  - subtitel file
+  - srtt
+negations:
+- srt mat banao
+examples:
+- prompt: export the subtitles as srt
+  lang: en
+- prompt: give me a subtitle file
+  lang: en
+- prompt: सबटाइटल फ़ाइल दो
+  lang: hi
+- prompt: srt banao
+  lang: hinglish
+- prompt: captions ki file do
+  lang: hinglish
+- prompt: subtitel file
+  lang: typo
+- prompt: youtube pe subtitles daalne hain
+  lang: vague
+- prompt: captions lagao aur srt bhi
+  lang: multi
+  also:
+  - auto_captions
+test:
+  check: srt_file
+  media: talk
+  setup:
+  - id: auto_captions

@@ -1,0 +1,85 @@
+# written by skills/tools/write_tier1_audio.py — edit this file directly from now on
+id: echo_reverb
+seed: 96
+category: audio
+name: Echo / reverb
+name_hi: Gunj
+description: Room / hall sound (a set of short echoes, aecho).
+params:
+  amount:
+    type: number
+    default: 0.5
+    min: 0.1
+    max: 1.0
+    extract: magnitude
+    desc: how much
+time_modes:
+- whole
+builder: audio.echo_reverb
+graph: aecho (4 taps)
+media3:
+  status: server_only
+  reason: 'FFmpeg audio filters; Media3 has no equivalent audio processor (design: AudioProcessor ports, NOT TESTED)'
+stage: audio
+conflicts: []
+cost: cheap
+licence: own code; FFmpeg audio filters (server process); generated sounds; librosa (ISC) for beats
+changes_duration: false
+needs: []
+variant_axes:
+  amount:
+  - room
+  - hall
+  - cave
+synonyms:
+  en:
+  - echo
+  - reverb
+  - hall sound
+  - room echo
+  - cathedral sound
+  - echo effect
+  - big room
+  hinglish:
+  - gunj
+  - echo daalo
+  - hall jaisa awaaz
+  - gunj wali awaaz
+  - awaaz goonje
+  - mandir jaisi gunj
+  - reverb lagao
+  hi:
+  - गूँज
+  - इको
+  - हॉल जैसी आवाज़
+  slang:
+  - dramatic echo
+  typos:
+  - eco
+  - reverbb
+  - gunjj
+negations:
+- echo mat daalo
+- echo hatao
+examples:
+- prompt: add some reverb
+  lang: en
+- prompt: big hall echo
+  lang: en
+- prompt: गूँज डालो
+  lang: hi
+- prompt: echo daalo
+  lang: hinglish
+- prompt: mandir jaisi gunj
+  lang: hinglish
+- prompt: eco effect
+  lang: typo
+- prompt: awaaz bade kamre jaisi
+  lang: vague
+- prompt: echo aur slow motion
+  lang: multi
+  also:
+  - slow_motion
+test:
+  check: tail_added
+  media: gap

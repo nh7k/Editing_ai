@@ -1,0 +1,492 @@
+{
+ "single": {
+  "prompts": 320,
+  "hits": 273,
+  "accuracy": 0.853
+ },
+ "by_skill": {
+  "zoom_in": "5/8",
+  "punch_in": "7/8",
+  "shake": "7/8",
+  "slow_motion": "8/8",
+  "speed_up": "6/8",
+  "crossfade": "6/8",
+  "fade_black": "7/8",
+  "whip": "8/8",
+  "hard_cuts": "4/8",
+  "look_warm": "8/8",
+  "look_bw": "7/8",
+  "look_cinematic": "8/8",
+  "look_vintage": "6/8",
+  "look_vivid": "6/8",
+  "brightness": "8/8",
+  "captions": "6/8",
+  "title_text": "8/8",
+  "end_text": "5/8",
+  "kinetic_words": "6/8",
+  "text_style": "7/8",
+  "text_color": "7/8",
+  "text_size": "4/8",
+  "word_stickers": "8/8",
+  "moment_sticker": "5/8",
+  "target_duration": "8/8",
+  "shorter": "7/8",
+  "remove_silence": "8/8",
+  "remove_fillers": "5/8",
+  "aspect": "8/8",
+  "beat_cuts": "7/8",
+  "hook_first": "7/8",
+  "drop_clip": "7/8",
+  "remove_boring": "6/8",
+  "music": "8/8",
+  "no_music": "7/8",
+  "music_level": "7/8",
+  "voice_clean": "8/8",
+  "voice_louder": "8/8",
+  "sound_back": "8/8",
+  "ducking": "7/8"
+ },
+ "needs_model_share": 0.553,
+ "multi_skill": [
+  {
+   "prompt": "15 sec ka vertical reel, captions, warm colour, upbeat music aur best part pehle",
+   "recall": 1.0,
+   "missing": []
+  },
+  {
+   "prompt": "black and white, slow motion, no music, fade in fade out and remove silences",
+   "recall": 0.6,
+   "missing": [
+    "look_bw",
+    "slow_motion"
+   ]
+  },
+  {
+   "prompt": "zoom karo, shake daalo, glitch transitions, text bada karo aur gaana hata do",
+   "recall": 0.8,
+   "missing": [
+    "glitch_transition"
+   ]
+  }
+ ],
+ "contradictory": [
+  {
+   "prompt": "music lagao aur music mat lagao",
+   "ok": true
+  },
+  {
+   "prompt": "fast bhi aur slow bhi",
+   "ok": true
+  },
+  {
+   "prompt": "black and white but very colourful",
+   "ok": true
+  }
+ ],
+ "unsupported": [
+  {
+   "prompt": "remove the background and put me on the moon",
+   "understood": false,
+   "skills": [],
+   "suggestions": [
+    "music",
+    "no_music",
+    "music_level"
+   ],
+   "planned_named": []
+  },
+  {
+   "prompt": "4k upscale kar do",
+   "understood": true,
+   "skills": [],
+   "suggestions": [],
+   "planned_named": []
+  },
+  {
+   "prompt": "make my face look younger",
+   "understood": false,
+   "skills": [],
+   "suggestions": [
+    "look_warm",
+    "look_cool",
+    "look_cinematic"
+   ],
+   "planned_named": []
+  }
+ ],
+ "misses": [
+  {
+   "skill": "zoom_in",
+   "prompt": "slowly push into the scene",
+   "ok": false,
+   "got": [],
+   "needs_model": true
+  },
+  {
+   "skill": "zoom_in",
+   "prompt": "zooom in thoda",
+   "ok": false,
+   "got": [],
+   "needs_model": true
+  },
+  {
+   "skill": "zoom_in",
+   "prompt": "add a gentle zoom on the face",
+   "ok": false,
+   "got": [
+    "person_zoom"
+   ],
+   "needs_model": true
+  },
+  {
+   "skill": "punch_in",
+   "prompt": "hit zoom on every beat",
+   "ok": false,
+   "got": [
+    "music",
+    "zoom_in",
+    "beat_cuts"
+   ],
+   "needs_model": true
+  },
+  {
+   "skill": "shake",
+   "prompt": "shaky cam effect",
+   "ok": false,
+   "got": [],
+   "needs_model": false
+  },
+  {
+   "skill": "speed_up",
+   "prompt": "speed thodi badhao",
+   "ok": false,
+   "got": [],
+   "needs_model": true
+  },
+  {
+   "skill": "speed_up",
+   "prompt": "pace up the edit",
+   "ok": false,
+   "got": [],
+   "needs_model": true
+  },
+  {
+   "skill": "crossfade",
+   "prompt": "smooth transitions chahiye",
+   "ok": false,
+   "got": [
+    "tr_smoothleft"
+   ],
+   "needs_model": false
+  },
+  {
+   "skill": "crossfade",
+   "prompt": "मिक्स होके बदले",
+   "ok": false,
+   "got": [],
+   "needs_model": true
+  },
+  {
+   "skill": "fade_black",
+   "prompt": "फेड इन फेड आउट",
+   "ok": false,
+   "got": [],
+   "needs_model": true
+  },
+  {
+   "skill": "hard_cuts",
+   "prompt": "remove all transitions",
+   "ok": false,
+   "got": [
+    "crossfade"
+   ],
+   "needs_model": true
+  },
+  {
+   "skill": "hard_cuts",
+   "prompt": "seedha cut, transition nahi",
+   "ok": false,
+   "got": [
+    "crossfade"
+   ],
+   "needs_model": true
+  },
+  {
+   "skill": "hard_cuts",
+   "prompt": "बिना ट्रांजिशन",
+   "ok": false,
+   "got": [],
+   "needs_model": true
+  },
+  {
+   "skill": "hard_cuts",
+   "prompt": "straight cuts",
+   "ok": false,
+   "got": [],
+   "needs_model": true
+  },
+  {
+   "skill": "look_bw",
+   "prompt": "blak n white",
+   "ok": false,
+   "got": [],
+   "needs_model": false
+  },
+  {
+   "skill": "look_vintage",
+   "prompt": "old photo look",
+   "ok": false,
+   "got": [],
+   "needs_model": false
+  },
+  {
+   "skill": "look_vintage",
+   "prompt": "purani film jaisa colour",
+   "ok": false,
+   "got": [
+    "old_film",
+    "film_bw"
+   ],
+   "needs_model": false
+  },
+  {
+   "skill": "look_vivid",
+   "prompt": "रंग चटकीले करो",
+   "ok": false,
+   "got": [],
+   "needs_model": true
+  },
+  {
+   "skill": "look_vivid",
+   "prompt": "colours ko pop karao",
+   "ok": false,
+   "got": [
+    "anim_pop",
+    "anim_karaoke",
+    "captions",
+    "karaoke_captions"
+   ],
+   "needs_model": false
+  },
+  {
+   "skill": "captions",
+   "prompt": "jo bol raha hai wo neeche likho",
+   "ok": false,
+   "got": [
+    "title_text"
+   ],
+   "needs_model": false
+  },
+  {
+   "skill": "captions",
+   "prompt": "text of the speech on screen",
+   "ok": false,
+   "got": [],
+   "needs_model": false
+  },
+  {
+   "skill": "end_text",
+   "prompt": "end with 'Thanks for watching'",
+   "ok": false,
+   "got": [],
+   "needs_model": true
+  },
+  {
+   "skill": "end_text",
+   "prompt": "last me 'Follow karo' likh do",
+   "ok": false,
+   "got": [
+    "follow",
+    "title_text"
+   ],
+   "needs_model": true
+  },
+  {
+   "skill": "end_text",
+   "prompt": "aakhir me 'Subscribe' likho",
+   "ok": false,
+   "got": [
+    "title_text"
+   ],
+   "needs_model": true
+  },
+  {
+   "skill": "kinetic_words",
+   "prompt": "kinetic typography",
+   "ok": false,
+   "got": [
+    "gradient_overlay"
+   ],
+   "needs_model": true
+  },
+  {
+   "skill": "kinetic_words",
+   "prompt": "song ke words screen pe",
+   "ok": false,
+   "got": [
+    "music"
+   ],
+   "needs_model": false
+  },
+  {
+   "skill": "text_style",
+   "prompt": "comic font",
+   "ok": false,
+   "got": [
+    "posterize"
+   ],
+   "needs_model": true
+  },
+  {
+   "skill": "text_color",
+   "prompt": "टेक्स्ट लाल करो",
+   "ok": false,
+   "got": [],
+   "needs_model": true
+  },
+  {
+   "skill": "text_size",
+   "prompt": "टेक्स्ट बड़ा करो",
+   "ok": false,
+   "got": [
+    "shorter"
+   ],
+   "needs_model": true
+  },
+  {
+   "skill": "text_size",
+   "prompt": "larger text",
+   "ok": false,
+   "got": [],
+   "needs_model": true
+  },
+  {
+   "skill": "text_size",
+   "prompt": "words bade karo",
+   "ok": false,
+   "got": [],
+   "needs_model": false
+  },
+  {
+   "skill": "text_size",
+   "prompt": "smaller captions",
+   "ok": false,
+   "got": [
+    "captions"
+   ],
+   "needs_model": true
+  },
+  {
+   "skill": "moment_sticker",
+   "prompt": "yaha phool daal do",
+   "ok": false,
+   "got": [],
+   "needs_model": true
+  },
+  {
+   "skill": "moment_sticker",
+   "prompt": "tree dikhao yaha",
+   "ok": false,
+   "got": [],
+   "needs_model": true
+  },
+  {
+   "skill": "moment_sticker",
+   "prompt": "yaha dil lagao",
+   "ok": false,
+   "got": [],
+   "needs_model": true
+  },
+  {
+   "skill": "shorter",
+   "prompt": "reduce the length",
+   "ok": false,
+   "got": [],
+   "needs_model": true
+  },
+  {
+   "skill": "remove_fillers",
+   "prompt": "umm hatao",
+   "ok": false,
+   "got": [],
+   "needs_model": true
+  },
+  {
+   "skill": "remove_fillers",
+   "prompt": "no filler words",
+   "ok": false,
+   "got": [],
+   "needs_model": false
+  },
+  {
+   "skill": "remove_fillers",
+   "prompt": "clean up the umms please",
+   "ok": false,
+   "got": [],
+   "needs_model": true
+  },
+  {
+   "skill": "beat_cuts",
+   "prompt": "sync cuts to the music",
+   "ok": false,
+   "got": [
+    "music"
+   ],
+   "needs_model": false
+  },
+  {
+   "skill": "hook_first",
+   "prompt": "open with the highlight",
+   "ok": false,
+   "got": [],
+   "needs_model": true
+  },
+  {
+   "skill": "drop_clip",
+   "prompt": "remove clip 2",
+   "ok": false,
+   "got": [],
+   "needs_model": false
+  },
+  {
+   "skill": "remove_boring",
+   "prompt": "remove dull bits",
+   "ok": false,
+   "got": [],
+   "needs_model": true
+  },
+  {
+   "skill": "remove_boring",
+   "prompt": "remove the dead parts",
+   "ok": false,
+   "got": [],
+   "needs_model": true
+  },
+  {
+   "skill": "no_music",
+   "prompt": "no background music",
+   "ok": false,
+   "got": [],
+   "needs_model": false
+  },
+  {
+   "skill": "music_level",
+   "prompt": "music volume down",
+   "ok": false,
+   "got": [
+    "music"
+   ],
+   "needs_model": true
+  },
+  {
+   "skill": "ducking",
+   "prompt": "lower music when talking",
+   "ok": false,
+   "got": [
+    "music"
+   ],
+   "needs_model": true
+  }
+ ],
+ "seconds": 192.8
+}

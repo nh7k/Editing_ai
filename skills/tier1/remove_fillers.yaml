@@ -1,0 +1,39 @@
+id: remove_fillers
+seed: 7
+category: cutting
+name: Remove filler sounds
+name_hi: Umm aaa hatao
+description: Cut um / uh / aa sounds found by speech-to-text. Only sounds that are never a real word are removed ("matlab", "toh" stay).
+params:
+  languages: {type: list, default: [en, hi], extract: languages, desc: languages of the filler list}
+time_modes: [whole]
+builder: cutting.remove_fillers
+graph: speech-to-text word times → segments without the filler words
+media3: {status: server_only, reason: "needs speech-to-text (Vosk / faster-whisper) on the server"}
+stage: structure
+conflicts: []
+cost: medium
+licence: own code; Vosk (Apache-2.0) / faster-whisper (MIT) models on the server
+changes_duration: true
+needs: [speech]
+variant_axes:
+  list: [english, hindi, both]
+  padding: [tight, normal]
+synonyms:
+  en: [remove umm, remove fillers, cut filler words, remove uh, cut the ums, no umms, clean the ums]
+  hinglish: [filler words hatao, umm aaa hatao, umm hatao, aaa hatao, faltu awaaz hatao, atakna hatao, hmm hatao]
+  hi: [अम्म हटाओ, फालतू आवाज़ हटाओ, आ आ वाली आवाज़ हटाओ]
+  slang: [umm aaa saaf karo, faltu awaaz nikalo]
+  typos: [filer words, remove umms, fillr]
+negations: [umm rehne do, fillers mat hatao]
+examples:
+  - {prompt: "remove the umms and uhs", lang: en}
+  - {prompt: "cut filler words", lang: en}
+  - {prompt: "फालतू आवाज़ें हटाओ", lang: hi}
+  - {prompt: "umm aaa hata do", lang: hinglish}
+  - {prompt: "jahan atak ke bola hai wo hatao", lang: hinglish}
+  - {prompt: "remove filer words", lang: typo}
+  - {prompt: "bolne me jo faltu awaaz hai wo nikal do", lang: vague}
+  - {prompt: "umm hatao, silence hatao aur captions lagao", lang: multi, also: [remove_silence, auto_captions]}
+test: {check: filler_gone, media: talk}
+limits: "Only what speech-to-text writes as a filler is cut; Windows' test voice says 'Um' clearly, real mumbling may be missed."

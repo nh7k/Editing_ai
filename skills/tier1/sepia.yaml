@@ -1,0 +1,87 @@
+# written by skills/tools/write_tier1_color.py — edit this file directly from now on
+id: sepia
+seed: 38
+category: color
+name: Sepia
+name_hi: Purana brown look
+description: Warm brown old-photo tone at a strength.
+params:
+  strength:
+    type: number
+    default: 0.85
+    min: 0.1
+    max: 1.0
+    extract: percent
+    desc: how strong
+time_modes:
+- whole
+- segment
+- between_times
+- intermittent
+builder: color.sepia
+graph: lut3d (sepia matrix LUT mixed at the strength)
+media3:
+  status: mapped
+  how: SingleColorLut from the same generated cube
+stage: color
+conflicts:
+- grayscale
+cost: cheap
+licence: own code; generated LUTs (own maths); FFmpeg filters (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  strength:
+  - light
+  - full
+synonyms:
+  en:
+  - sepia
+  - brown tone
+  - old photo look
+  - antique look
+  - sepia tone
+  - brownish
+  - old picture
+  hinglish:
+  - purana look
+  - brown tone do
+  - purani photo jaisa
+  - sepia lagao
+  - bhura rang
+  - dada ji ki photo jaisa
+  - purana brown
+  hi:
+  - सीपिया
+  - पुरानी फोटो जैसा
+  - भूरा रंग
+  slang:
+  - vintage brown
+  typos:
+  - sepiya
+  - sipia
+  - sepea
+negations:
+- sepia mat karo
+examples:
+- prompt: add a sepia tone
+  lang: en
+- prompt: light sepia on the intro
+  lang: en
+- prompt: पुरानी फोटो जैसा बनाओ
+  lang: hi
+- prompt: sepia lagao
+  lang: hinglish
+- prompt: purani photo jaisa brown kar do
+  lang: hinglish
+- prompt: sepiya
+  lang: typo
+- prompt: dada ji ke zamane wala look
+  lang: vague
+- prompt: sepia aur vignette lagao
+  lang: multi
+  also:
+  - vignette
+test:
+  check: sepia_tone
+  media: soft

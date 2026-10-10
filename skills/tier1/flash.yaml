@@ -1,0 +1,98 @@
+# written by skills/tools/write_tier1_stylize.py — edit this file directly from now on
+id: flash
+seed: 68
+category: stylize
+name: Flash
+name_hi: Chamak
+description: A white flash at cuts, beats or given times.
+params:
+  intensity:
+    type: number
+    default: 1.0
+    min: 0.3
+    max: 1.0
+    extract: magnitude
+    desc: how strong
+time_modes:
+- whole
+- at_time
+- at_beats
+- on_scene_change
+- intermittent
+builder: stylize.flash
+graph: eq brightness bumps at the times
+media3:
+  status: mapped
+  how: Brightness effect keyed per frame — NOT TESTED
+stage: effect
+conflicts: []
+cost: cheap
+licence: 'own code; FFmpeg filters (server process); shapes drawn with Pillow (MIT-CMU); emoji font: Noto Color Emoji (OFL)
+  on the server'
+changes_duration: false
+needs: []
+variant_axes:
+  'on':
+  - cuts
+  - beats
+  - time
+synonyms:
+  en:
+  - flash
+  - white flash
+  - camera flash
+  - flash on the beat
+  - flash at cuts
+  - bright flash
+  - photo flash
+  hinglish:
+  - chamak
+  - flash lagao
+  - safed chamak
+  - beat pe flash
+  - camera ki chamak
+  - chamakna
+  - flash do cut pe
+  hi:
+  - चमक
+  - फ़्लैश
+  - सफ़ेद चमक
+  slang:
+  - paparazzi flash
+  typos:
+  - flsh
+  - flash lgao
+  - flah
+negations:
+- flash mat karo
+examples:
+- prompt: white flash at every cut
+  lang: en
+  time:
+    mode: on_scene_change
+- prompt: flash at 2 seconds
+  lang: en
+  time:
+    mode: at_time
+    at: 2
+- prompt: सफ़ेद चमक लगाओ
+  lang: hi
+- prompt: beat pe flash
+  lang: hinglish
+  time:
+    mode: at_beats
+- prompt: har cut pe chamak
+  lang: hinglish
+- prompt: flsh
+  lang: typo
+- prompt: paparazzi jaisa
+  lang: vague
+- prompt: flash aur punch zoom
+  lang: multi
+  also:
+  - punch_in
+test:
+  check: flash_peaks
+  time:
+    mode: at_time
+    at: 2.0

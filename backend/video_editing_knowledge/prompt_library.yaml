@@ -1,0 +1,120 @@
+# Ready-made professional briefs ("boost prompts"). One tap in the app sends the prompt.
+# Written by us for CutMind. Each prompt is worded so the planner + editorial brain understand every part of it
+# (tests/unit/test_prompt_library.py checks that).
+
+prompts:
+  - id: magic
+    title: ✨ Mast sa edit (auto)
+    genre: auto
+    prompt: mast sa edit kar do
+    does: The editor looks at your clips and decides everything — order, cuts, music, colour, captions.
+  - id: fan_edit
+    title: 🔥 Fan / velocity edit
+    genre: fan_edit
+    prompt: Make a "NO LIMITS" edit with nice animations, 9:16 vertical.
+    does: Beat cuts, punch on every beat, colour pass (colour ↔ black & white), big glassy words on the beat, flashes on peaks.
+  - id: party_reel
+    title: 🎉 Party reel
+    genre: party
+    prompt: Party reel for Instagram, 30 seconds, hook first, cut on the beat with upbeat music, warm color, flash on the peaks, end strong.
+    does: Best crowd moment first, beat cuts, warm vibrant colour, two flashes on the peaks, strongest moment last.
+  - id: travel_cinematic
+    title: ✈️ Cinematic travel
+    genre: travel
+    prompt: Cinematic travel vlog, arrange the clips in the right order, slow cinematic pacing, cinematic color, calm music, minimal text style, no transitions.
+    does: Filming order as a journey, long holds on beautiful shots, restrained grade, hard cuts.
+  - id: talking_pro
+    title: 🎙️ Talking head pro
+    genre: talking_head
+    prompt: Talking head reel, 9:16 vertical, remove silences, remove filler words, add captions, hormozi text style, zoom on important words, clean up the audio.
+    does: Jump cuts without the pauses and ums, bold captions, push-ins on key words, cleaner voice.
+  - id: podcast_clip
+    title: 🎧 Podcast clip
+    genre: podcast
+    prompt: Podcast clip for YouTube Shorts, remove silences, add captions, premium captions, clean up the audio, calm music.
+    does: Tight, clear speech with premium captions and soft music under the voice.
+  - id: wedding_film
+    title: 💍 Wedding film
+    genre: wedding
+    prompt: Wedding film, cinematic look, slow cinematic pacing, crossfade transitions, wedding text style, calm music, end strong.
+    does: Gentle pacing, soft dissolves, warm-cinematic colour, elegant titles, emotional ending.
+  - id: food_reel
+    title: 🍜 Food reel
+    genre: food
+    prompt: Food reel for Instagram, 20 seconds, hook first, warm color, fast cuts, upbeat music, bold pop text style.
+    does: Final dish teased first, quick process cuts, appetising warm colour.
+  - id: gym_hype
+    title: 💪 Gym / sports hype
+    genre: sports
+    prompt: Gym workout hype reel, 9:16 vertical, cut on the beat with upbeat music, speed ramp, flash on the peaks, hook first, end strong.
+    does: Beat-locked cuts, one speed ramp on a big rep, flashes on peaks.
+  - id: product_ad
+    title: 🛍️ Product ad
+    genre: product
+    prompt: Product ad, 15 seconds, hook first, slow zoom, cinematic color, premium captions, no transitions, keep it simple.
+    does: Clean, restrained product video with a strong first frame.
+  - id: birthday_memories
+    title: 🎂 Birthday memories
+    genre: party
+    prompt: Birthday memories video, arrange the clips in the right order, warm color, upbeat music, karaoke captions, end strong.
+    does: Moments in order, warm colour, happy music, a memorable last shot.
+  - id: drone_cinematic
+    title: 🚁 Drone cinematic
+    genre: drone
+    prompt: Drone aerial film, cinematic look, slow cinematic pacing, hook first, calm music, no transitions.
+    does: Strongest aerial move first, long holds, filmic grade.
+  - id: day_vlog
+    title: 📹 Day vlog
+    genre: vlog
+    prompt: Day in my life vlog, arrange the clips in the right order, remove silences, add captions, calm music.
+    does: The day in order, pauses removed, captions for muted viewers.
+  - id: gaming_highlight
+    title: 🎮 Gaming highlight
+    genre: gaming
+    prompt: Gaming highlight, hook first, fast cuts, gaming text style, upbeat music, 9:16 vertical.
+    does: Best play first, quick cuts, gaming-style text.
+  - id: meme_edit
+    title: 😂 Meme / comedy
+    genre: meme
+    prompt: Funny meme edit, hook first, comic text style, shaky text, upbeat music.
+    does: Punchline-first comedy edit with comic text.
+  - id: fashion_lookbook
+    title: 👗 Fashion lookbook
+    genre: fashion
+    prompt: Fashion lookbook reel, cut on the beat with upbeat music, warm color, minimal text style, end strong.
+    does: Looks revealed on the beat, best look last.
+  - id: tutorial_clean
+    title: 📚 Clean tutorial
+    genre: tutorial
+    prompt: Step by step tutorial, remove silences, remove filler words, add captions, clean up the audio, no transitions.
+    does: Clear, tight instructions with captions.
+  - id: event_recap
+    title: 🎤 Event recap
+    genre: event
+    prompt: Event recap, arrange the clips in the right order, hook first, upbeat music, minimal text style, end strong.
+    does: Arrival → highlights → peak, with clean titles.
+  - id: music_video
+    title: 🎵 Music video
+    genre: music_video
+    prompt: Music video, cut on the beat with upbeat music, flash on the peaks, vivid color, end strong.
+    does: Every cut on the music, flashes on drops.
+  - id: youtube_long
+    title: ▶️ YouTube video
+    genre: youtube
+    prompt: YouTube video, 16:9 landscape, remove silences, remove filler words, clean up the audio, calm music.
+    does: A clean long-form cut for YouTube.
+  - id: linkedin_pro
+    title: 💼 LinkedIn professional
+    genre: talking_head
+    prompt: Professional LinkedIn talking head video, 1:1 square, remove silences, add captions, minimal text style, clean up the audio, no music.
+    does: Square, calm, credible — captions on, no gimmicks.
+  - id: emotional
+    title: 🥹 Emotional / nostalgic
+    genre: cinematic
+    prompt: Emotional nostalgic video, moody look, slow cinematic pacing, crossfade transitions, calm music, typewriter text.
+    does: Slow, reflective edit with a moody grade.
+  - id: hook_fixer
+    title: ⚡ Strong hook
+    genre: reel
+    prompt: Starting 3 seconds killer chahiye, hook first, fast cuts, upbeat music, 9:16 vertical.
+    does: Moves the most eye-catching moment to the first seconds.

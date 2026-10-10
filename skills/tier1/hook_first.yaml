@@ -1,0 +1,39 @@
+id: hook_first
+seed: 11
+category: cutting
+name: Hook first
+name_hi: Shuru me best part
+description: Open with the strongest moment (hook_len s). "teaser" plays it at the start AND in its place; "move" takes it out of its place.
+params:
+  hook_len: {type: number, default: 2, min: 0.5, max: 10, unit: s, extract: seconds, desc: hook length}
+  mode: {type: choice, choices: [teaser, move], default: teaser, desc: copy as a teaser or move it}
+time_modes: [whole]
+builder: cutting.hook_first
+graph: analysis → a first segment from the best window
+media3: {status: mapped, how: "server picks the moment; the phone inserts an EditedMediaItem at the start"}
+stage: structure
+conflicts: []
+cost: medium
+licence: own code
+changes_duration: true
+needs: [analysis]
+variant_axes:
+  mode: [teaser, move]
+  length: [1s, 2s, 3s]
+synonyms:
+  en: [add hook, hook first, start with the best part, strong opening, open with the highlight, grab attention at the start, best moment first]
+  hinglish: [hook lagao, shuru me best part, intro strong karo, best part pehle, shuruat dhamakedar, pehle best wala dikhao, shuru me dhamaka]
+  hi: [शुरू में सबसे अच्छा हिस्सा, हुक लगाओ, शुरुआत दमदार]
+  slang: [shuru me hi jhakaas, shuru me dhamakedar]
+  typos: [hok first, hookk, bestpart pehle]
+negations: [hook mat lagao, shuru se hi chalao]
+examples:
+  - {prompt: "start with the best part", lang: en}
+  - {prompt: "add a 3 second hook", lang: en, params: {hook_len: 3}}
+  - {prompt: "शुरू में सबसे अच्छा हिस्सा दिखाओ", lang: hi}
+  - {prompt: "best part pehle", lang: hinglish}
+  - {prompt: "intro strong karo hook laga ke", lang: hinglish}
+  - {prompt: "hok at start", lang: typo}
+  - {prompt: "shuru me kuch dhamakedar chahiye", lang: vague}
+  - {prompt: "hook lagao, 20 sec ka karo aur captions", lang: multi, also: [fit_to_duration, auto_captions]}
+test: {check: hook_starts, params: {hook_len: 1.5}}

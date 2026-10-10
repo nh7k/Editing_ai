@@ -1,0 +1,38 @@
+id: merge_clips
+seed: 4
+category: cutting
+name: Join all clips
+name_hi: Sab jod do
+description: Every uploaded clip, whole, in upload order, hard cuts — the plain join (a fresh start for the structure; look / music settings stay).
+params:
+  order: {type: choice, choices: [upload], default: upload, desc: order of the clips}
+time_modes: [whole]
+builder: cutting.merge_clips
+graph: concat of whole clips
+media3: {status: mapped, how: "one EditedMediaItemSequence with every clip"}
+stage: structure
+conflicts: []
+cost: cheap
+licence: own code; FFmpeg concat (server process)
+changes_duration: true
+needs: []
+variant_axes:
+  order: [upload, filming_time]
+  joins: [hard_cut, crossfade]
+synonyms:
+  en: [merge, join, combine clips, put together, stitch, one video, join all]
+  hinglish: [jodo, sab jod do, ek video banao, saare clips jodo, sab milao, ek saath karo, sab ek me daal do]
+  hi: [जोड़ो, सब जोड़ दो, एक वीडियो बनाओ]
+  slang: [sab chipka do]
+  typos: [mearge, jodd do, joint karo]
+negations: [mat jodo, alag rakho]
+examples:
+  - {prompt: "merge all clips", lang: en}
+  - {prompt: "join the videos into one", lang: en}
+  - {prompt: "सब क्लिप जोड़ दो", lang: hi}
+  - {prompt: "saare clips jod do", lang: hinglish}
+  - {prompt: "sab ko milake ek video banao", lang: hinglish}
+  - {prompt: "mearge all vids", lang: typo}
+  - {prompt: "sab ek saath kar do bas", lang: vague}
+  - {prompt: "sab jod do aur music lagao", lang: multi, also: [add_music]}
+test: {check: merged_all}

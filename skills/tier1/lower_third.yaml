@@ -1,0 +1,109 @@
+# written by skills/tools/write_tier1_text.py — edit this file directly from now on
+id: lower_third
+seed: 57
+category: text
+name: Lower third (name strap)
+name_hi: Naam patti
+description: A name strap at the bottom left (name + optional role), sliding in.
+params:
+  text:
+    type: text
+    extract: quoted_text
+    desc: the words (in quotes)
+    required: true
+  subtitle:
+    type: text
+    desc: second line (role)
+time_modes:
+- whole
+- between_times
+- segment
+- at_time
+builder: text.lower_third
+graph: ASS text (name_tag preset) bottom-left, fly-in
+media3:
+  status: mapped
+  how: TextOverlay (SpannableString) per item; animations as per-frame alpha / scale / position — NOT TESTED
+stage: text
+conflicts: []
+cost: cheap
+licence: own code; libass + HarfBuzz via FFmpeg (server process); fonts SIL OFL (Hind, Kalam, Poppins, Anton, Bebas)
+changes_duration: false
+needs: []
+variant_axes:
+  style:
+  - name_tag
+  - news
+  length:
+  - 3s
+  - 5s
+synonyms:
+  en:
+  - lower third
+  - name strap
+  - name tag
+  - name at the bottom
+  - introduce the speaker
+  - name title
+  - caption with name
+  hinglish:
+  - naam patti
+  - niche naam likho
+  - naam dikhao neeche
+  - lower third lagao
+  - naam ka tag
+  - kaun bol raha hai likho
+  - naam ki patti
+  hi:
+  - नाम पट्टी
+  - नीचे नाम लिखो
+  - नाम दिखाओ
+  slang:
+  - news wala naam
+  typos:
+  - lower thrid
+  - lowerthird
+  - naam pati
+negations:
+- naam patti mat lagao
+examples:
+- prompt: add a lower third 'Anmol Gumber'
+  lang: en
+  params:
+    text: Anmol Gumber
+- prompt: name strap 'Dr. Mehta' from 2 to 6 seconds
+  lang: en
+  params:
+    text: Dr. Mehta
+- prompt: नीचे नाम लिखो 'राहुल'
+  lang: hi
+  params:
+    text: राहुल
+- prompt: naam patti 'Priya' lagao
+  lang: hinglish
+  params:
+    text: Priya
+- prompt: niche naam likho 'Coach Ravi'
+  lang: hinglish
+  params:
+    text: Coach Ravi
+- prompt: lower thrid 'Sam'
+  lang: typo
+  params:
+    text: Sam
+- prompt: log jaane kaun bol raha hai
+  lang: vague
+- prompt: naam patti 'Asha' aur captions
+  lang: multi
+  also:
+  - auto_captions
+  params:
+    text: Asha
+test:
+  check: text_bottom_left
+  params:
+    text: Anmol Gumber
+  time:
+    mode: between_times
+    start: 1.0
+    end: 4.0

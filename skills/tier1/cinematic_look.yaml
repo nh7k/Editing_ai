@@ -1,0 +1,93 @@
+# written by skills/tools/write_tier1_color.py — edit this file directly from now on
+id: cinematic_look
+seed: 44
+category: color
+name: Cinematic look
+name_hi: Filmy look
+description: 'Film-style grade: soft S-curve, cool shadows, warm highlights, slightly muted colour (own LUT).'
+params:
+  strength:
+    type: number
+    default: 0.85
+    min: 0.1
+    max: 1.0
+    extract: percent
+    desc: how strong
+time_modes:
+- whole
+- segment
+- between_times
+- intermittent
+builder: color.cinematic_look
+graph: lut3d (generated 'cinematic' cube at the strength)
+media3:
+  status: mapped
+  how: SingleColorLut from the same cube
+stage: color
+conflicts:
+- teal_orange
+- vintage_faded
+cost: cheap
+licence: own code; generated LUTs (own maths); FFmpeg filters (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  strength:
+  - '0.5'
+  - '0.85'
+  - '1.0'
+synonyms:
+  en:
+  - cinematic
+  - cinematic look
+  - film look
+  - movie look
+  - filmic
+  - hollywood grade
+  - cinema colour
+  hinglish:
+  - filmy look
+  - movie jaisa
+  - theatre jaisa
+  - cinematic bana do
+  - film wala color
+  - picture jaisa
+  - cinema jaisa
+  hi:
+  - सिनेमैटिक
+  - फ़िल्मी लुक
+  - मूवी जैसा
+  slang:
+  - bollywood wala look
+  typos:
+  - cinamatic
+  - cinemetic
+  - sinematic
+negations:
+- cinematic mat karo
+examples:
+- prompt: give it a cinematic look
+  lang: en
+- prompt: subtle film look, 50 percent
+  lang: en
+  params:
+    strength: 0.5
+- prompt: सिनेमैटिक बना दो
+  lang: hi
+- prompt: filmy look do
+  lang: hinglish
+- prompt: movie jaisa color karo
+  lang: hinglish
+- prompt: cinamatic look
+  lang: typo
+- prompt: bade parde wali feel
+  lang: vague
+- prompt: cinematic look aur kali patti
+  lang: multi
+  also:
+  - letterbox
+test:
+  check: look_matches
+  media: soft
+  params:
+    strength: 1.0

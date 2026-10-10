@@ -1,0 +1,52 @@
+# Delivery targets. Safe zones are the share of the frame covered by the app's own buttons/captions.
+platforms:
+  - id: instagram_reels
+    name: Instagram Reels
+    prompt: ['insta', 'instagram', '\breels?\b']
+    aspect: '9:16'
+    resolution: 1080
+    duration: [7, 90]
+    safe_bottom: 0.24
+    safe_top: 0.10
+    loudness: -14
+    hook_seconds: 1.5
+  - id: tiktok
+    name: TikTok
+    prompt: ['tiktok', 'tik tok', 'moj', 'josh app']
+    aspect: '9:16'
+    resolution: 1080
+    duration: [7, 60]
+    safe_bottom: 0.22
+    safe_top: 0.10
+    loudness: -14
+    hook_seconds: 1.5
+  - id: youtube_shorts
+    name: YouTube Shorts
+    prompt: ['\bshorts?\b', 'yt short']
+    aspect: '9:16'
+    resolution: 1080
+    duration: [10, 60]
+    safe_bottom: 0.18
+    safe_top: 0.10
+    loudness: -14
+    hook_seconds: 2
+  - id: youtube
+    name: YouTube
+    prompt: ['youtube(?! short)', '\byt\b(?! short)']
+    aspect: '16:9'
+    resolution: 1080
+    duration: [30, 1800]
+    safe_bottom: 0.12
+    safe_top: 0.0
+    loudness: -14
+    hook_seconds: 5
+  - id: linkedin
+    name: LinkedIn
+    prompt: ['linkedin']
+    aspect: '1:1'
+    resolution: 1080
+    duration: [15, 120]
+    safe_bottom: 0.12
+    safe_top: 0.0
+    loudness: -14
+    hook_seconds: 3

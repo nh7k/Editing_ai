@@ -1,0 +1,122 @@
+# written by skills/tools/write_tier1_text.py — edit this file directly from now on
+id: text_typewriter
+seed: 59
+category: text
+name: Typewriter text
+name_hi: Type hota text
+description: Text that types itself letter by letter (Devanagari by akshara, so conjuncts stay whole).
+params:
+  text:
+    type: text
+    extract: quoted_text
+    desc: the words (in quotes)
+  position:
+    type: choice
+    choices:
+    - bottom
+    - center
+    - top
+    - top_right
+    - bottom_right
+    - bottom_left
+    - top_left
+    default: center
+    extract: position
+    desc: where
+  size:
+    type: integer
+    default: 64
+    min: 20
+    max: 160
+    desc: size
+time_modes:
+- whole
+- between_times
+- segment
+- at_time
+builder: text.text_typewriter
+graph: ASS \k per letter (grapheme clusters)
+media3:
+  status: mapped
+  how: TextOverlay (SpannableString) per item; animations as per-frame alpha / scale / position — NOT TESTED
+stage: text
+conflicts: []
+cost: cheap
+licence: own code; libass + HarfBuzz via FFmpeg (server process); fonts SIL OFL (Hind, Kalam, Poppins, Anton, Bebas)
+changes_duration: false
+needs: []
+variant_axes:
+  speed:
+  - fast
+  - slow
+synonyms:
+  en:
+  - typewriter
+  - typing text
+  - type it out
+  - typewriter effect
+  - letters appear one by one
+  - typed text
+  - typing animation
+  hinglish:
+  - type hota hua text
+  - typewriter wala text
+  - ek ek akshar aaye
+  - type hota dikhe
+  - typing effect do
+  - likhta hua text
+  - akshar dar akshar
+  hi:
+  - टाइप होता टेक्स्ट
+  - एक एक अक्षर आए
+  - टाइपराइटर
+  - टाइप होता दिखाओ
+  slang:
+  - hacker wala text
+  - type hota
+  - type hota hua
+  typos:
+  - typwriter
+  - type writer
+  - typewritter
+negations:
+- typewriter mat karo
+examples:
+- prompt: typewriter text 'Coming soon'
+  lang: en
+  params:
+    text: Coming soon
+- prompt: make the title type out
+  lang: en
+- prompt: '''नमस्ते दोस्तों'' टाइप होता दिखाओ'
+  lang: hi
+  params:
+    text: नमस्ते दोस्तों
+- prompt: '''Goa'' type hota hua likho'
+  lang: hinglish
+  params:
+    text: Goa
+- prompt: ek ek akshar aaye 'Hello'
+  lang: hinglish
+  params:
+    text: Hello
+- prompt: typwriter 'Hi'
+  lang: typo
+  params:
+    text: Hi
+- prompt: hacker jaisa text
+  lang: vague
+- prompt: typewriter 'Day 1' aur music
+  lang: multi
+  also:
+  - add_music
+  params:
+    text: Day 1
+test:
+  check: text_grows
+  params:
+    text: नमस्ते क्षत्रिय दोस्तों
+  time:
+    mode: between_times
+    start: 1.0
+    end: 4.0

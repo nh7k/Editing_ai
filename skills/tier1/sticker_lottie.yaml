@@ -1,0 +1,119 @@
+# written by skills/tools/write_tier1_stylize.py — edit this file directly from now on
+id: sticker_lottie
+seed: 74
+category: stylize
+name: Animated sticker
+name_hi: Sticker lagao
+description: 'An animated emoji sticker (pops in, fades out). Server: our emoji renderer; Lottie files: phone only (lottie-android,
+  Apache-2.0).'
+params:
+  emoji:
+    type: string
+    default: 🔥
+    extract: emoji
+    desc: emoji
+  position:
+    type: choice
+    choices:
+    - top_left
+    - top_right
+    - bottom_left
+    - bottom_right
+    - center
+    default: top_right
+    extract: position
+    desc: where
+  size:
+    type: number
+    default: 0.22
+    min: 0.08
+    max: 0.5
+    desc: size (share of the short side)
+time_modes:
+- whole
+- between_times
+- at_time
+builder: stylize.sticker_lottie
+graph: emoji PNG (colour emoji font) + scale/fade animation overlay
+media3:
+  status: mapped
+  how: lottie-android LottieDrawable → BitmapOverlay frames (NOT TESTED)
+stage: overlay
+conflicts: []
+cost: cheap
+licence: 'own code; FFmpeg filters (server process); shapes drawn with Pillow (MIT-CMU); emoji font: Noto Color Emoji (OFL)
+  on the server'
+changes_duration: false
+needs: []
+variant_axes:
+  emoji:
+  - 🔥
+  - ❤️
+  - 😂
+  - 🌹
+  corner:
+  - top_right
+  - bottom_left
+synonyms:
+  en:
+  - sticker
+  - add a sticker
+  - emoji sticker
+  - animated sticker
+  - add an emoji
+  - put an emoji
+  - lottie
+  hinglish:
+  - sticker lagao
+  - emoji lagao
+  - animation lagao
+  - sticker daalo
+  - dil wala sticker
+  - aag wala emoji
+  - emoji chipkao
+  hi:
+  - स्टिकर लगाओ
+  - इमोजी लगाओ
+  - एनिमेशन लगाओ
+  slang:
+  - fire emoji daalo
+  - emoji
+  - heart emoji
+  typos:
+  - stiker
+  - emogi
+  - sticer
+negations:
+- sticker mat lagao
+examples:
+- prompt: add a fire sticker
+  lang: en
+- prompt: heart emoji in the top left
+  lang: en
+  params:
+    position: top_left
+- prompt: स्टिकर लगाओ
+  lang: hi
+- prompt: emoji lagao 😂
+  lang: hinglish
+  params:
+    emoji: 😂
+- prompt: dil wala sticker daalo
+  lang: hinglish
+- prompt: stiker
+  lang: typo
+- prompt: thoda fun daalo
+  lang: vague
+- prompt: sticker aur music
+  lang: multi
+  also:
+  - add_music
+test:
+  check: sticker_shown
+  params:
+    emoji: 🔥
+    position: top_right
+  time:
+    mode: between_times
+    start: 1.0
+    end: 3.0

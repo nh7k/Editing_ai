@@ -1,0 +1,94 @@
+# written by skills/tools/write_tier1_color.py — edit this file directly from now on
+id: color_pop
+seed: 52
+category: color
+name: Colour pop
+name_hi: Ek rang rakho
+description: Keep one colour (red by default), everything else black and white.
+params:
+  color:
+    type: color
+    default: red
+    extract: color
+    desc: colour to keep
+time_modes:
+- whole
+- segment
+- between_times
+- intermittent
+builder: color.color_pop
+graph: colorhold
+media3:
+  status: custom_shader
+  how: hue-keyed desaturation GlEffect — NOT TESTED
+stage: color
+conflicts:
+- grayscale
+cost: cheap
+licence: own code; generated LUTs (own maths); FFmpeg filters (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  color:
+  - red
+  - yellow
+  - blue
+  - green
+synonyms:
+  en:
+  - color pop
+  - colour pop
+  - colour splash
+  - only red
+  - keep one colour
+  - selective colour
+  - splash of colour
+  hinglish:
+  - ek rang rakho
+  - baaki black white
+  - sirf laal rakho
+  - ek hi rang
+  - color pop karo
+  - baaki sab grey
+  - sirf ek color
+  hi:
+  - एक रंग रखो
+  - बाकी ब्लैक एंड व्हाइट
+  - कलर पॉप
+  slang:
+  - laal wala pop
+  typos:
+  - colour pup
+  - colorpop
+  - color pp
+negations:
+- color pop mat karo
+examples:
+- prompt: color pop, keep the red
+  lang: en
+  params:
+    color: '#FF3B30'
+- prompt: keep only yellow
+  lang: en
+  params:
+    color: '#FFD60A'
+- prompt: एक रंग रखो बाकी ब्लैक एंड व्हाइट
+  lang: hi
+- prompt: sirf laal rakho baaki black white
+  lang: hinglish
+  params:
+    color: '#FF3B30'
+- prompt: ek rang rakho
+  lang: hinglish
+- prompt: colorpop
+  lang: typo
+- prompt: sirf saree ka rang dikhe
+  lang: vague
+- prompt: color pop aur slow motion
+  lang: multi
+  also:
+  - slow_motion
+test:
+  check: only_color_kept
+  params:
+    color: red

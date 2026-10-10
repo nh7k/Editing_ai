@@ -1,0 +1,23 @@
+# Default editing taste. Priority (highest first):
+#   what the user says for this video > project memory (favourite look, past choices) > user taste > this file
+# A project can override any key with its own taste file (data/projects/<id>/taste.yaml).
+
+philosophy: Every cut needs a reason. Restraint over effects. Story, emotion and rhythm first.
+pacing:
+  default: varied          # varied | fast | slow
+  min_shot_seconds: 0.3
+transitions:
+  default: none            # hard cuts unless a transition means something
+  max_per_video: 8
+effects:
+  max_per_video: 3         # stacked video effects the autopilot may add on its own
+  punch_in_max_scale: 1.12
+captions:
+  words_per_chunk: 3
+  default_style: classic
+color:
+  default: none            # no look unless asked or the genre calls for one
+  protect_skin: true
+audio:
+  loudness_lufs: -14
+  music_under_voice_db: 15

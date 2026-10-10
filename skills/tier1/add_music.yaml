@@ -1,0 +1,121 @@
+# written by skills/tools/write_tier1_audio.py — edit this file directly from now on
+id: add_music
+seed: 86
+category: audio
+name: Add music
+name_hi: Gaana daalo
+description: 'Background music: a named song, else the library song for the mood. Ducked under speech automatically.'
+params:
+  track:
+    type: string
+    extract: quoted_text
+    desc: 'song name (default: the library song for the mood)'
+  mood:
+    type: choice
+    choices:
+    - upbeat
+    - calm
+    default: upbeat
+    desc: mood when no song is named
+  volume:
+    type: number
+    min: 0.0
+    max: 1.0
+    extract: percent
+    desc: music level 0-1
+  start:
+    type: number
+    default: 0.0
+    min: 0
+    max: 3600
+    unit: s
+    desc: where in the song to start
+  duck:
+    type: choice
+    choices:
+    - auto
+    - 'on'
+    - 'off'
+    default: auto
+    desc: lower it under speech (auto = when someone speaks)
+time_modes:
+- whole
+builder: audio.add_music
+graph: second input (stream_loop) → volume → (sidechaincompress) → amix
+media3:
+  status: mapped
+  how: a second audio sequence in the Composition
+stage: audio
+conflicts:
+- replace_audio
+cost: cheap
+licence: own code; FFmpeg audio filters (server process); generated sounds; librosa (ISC) for beats
+changes_duration: false
+needs: []
+variant_axes:
+  mood:
+  - upbeat
+  - calm
+  level:
+  - bed
+  - featured
+synonyms:
+  en:
+  - add music
+  - background music
+  - add a song
+  - bgm
+  - music track
+  - put music
+  - soundtrack
+  hinglish:
+  - gaana daalo
+  - music lagao
+  - background music daalo
+  - bgm lagao
+  - gaana lagao
+  - koi song daalo
+  - music add karo
+  hi:
+  - गाना डालो
+  - म्यूज़िक लगाओ
+  - बैकग्राउंड म्यूज़िक
+  slang:
+  - beat daalo
+  - music
+  - gaana
+  - song
+  typos:
+  - musik
+  - mujic lagao
+  - gana dalo
+negations:
+- music mat lagao
+- gaana nahi chahiye
+- bina music
+examples:
+- prompt: add some background music
+  lang: en
+- prompt: add calm music
+  lang: en
+  params:
+    mood: calm
+- prompt: गाना डालो
+  lang: hi
+- prompt: bgm lagao
+  lang: hinglish
+- prompt: upbeat gaana daalo
+  lang: hinglish
+  params:
+    mood: upbeat
+- prompt: musik add karo
+  lang: typo
+- prompt: thoda mahaul banao
+  lang: vague
+- prompt: music lagao aur captions
+  lang: multi
+  also:
+  - auto_captions
+test:
+  check: music_present
+  media: talk

@@ -1,0 +1,121 @@
+# written by skills/tools/write_tier1_audio.py — edit this file directly from now on
+id: volume
+seed: 88
+category: audio
+name: Volume
+name_hi: Awaaz tez / kam
+description: 'Change the level by an exact number of dB: the whole mix (measured and corrected), the music, the video''s own
+  sound, or a part.'
+params:
+  gain_db:
+    type: number
+    default: 6
+    min: -30
+    max: 20
+    unit: ' dB'
+    extract: db_signed
+    desc: change in dB
+  what:
+    type: choice
+    choices:
+    - mix
+    - music
+    - voice
+    default: mix
+    extract: what_sound
+    desc: which sound
+time_modes:
+- whole
+- between_times
+- segment
+builder: audio.volume
+graph: volume (+ measured 2-pass correction for the mix)
+media3:
+  status: mapped
+  how: volume of the sequence / a gain AudioProcessor
+stage: audio
+conflicts: []
+cost: cheap
+licence: own code; FFmpeg audio filters (server process); generated sounds; librosa (ISC) for beats
+changes_duration: false
+needs: []
+variant_axes:
+  gain:
+  - -6 dB
+  - +3 dB
+  - +6 dB
+  what:
+  - mix
+  - music
+  - voice
+synonyms:
+  en:
+  - volume
+  - louder
+  - quieter
+  - volume up
+  - volume down
+  - turn it up
+  - turn it down
+  hinglish:
+  - awaaz tez karo
+  - awaaz kam karo
+  - volume badhao
+  - volume kam karo
+  - awaaz badhao
+  - dheemi awaaz karo
+  - sound tez karo
+  hi:
+  - आवाज़ तेज़ करो
+  - आवाज़ कम करो
+  - वॉल्यूम बढ़ाओ
+  slang:
+  - full volume
+  - music kam
+  - music tez
+  - gaana kam
+  - music volume
+  - music down
+  - music up
+  typos:
+  - volum
+  - volume badhoa
+  - awaz tez
+negations:
+- volume mat badlo
+examples:
+- prompt: make it louder
+  lang: en
+  params:
+    gain_db: 6
+- prompt: music volume down 6 dB
+  lang: en
+  params:
+    gain_db: -6
+    what: music
+- prompt: आवाज़ तेज़ करो
+  lang: hi
+  params:
+    gain_db: 6
+- prompt: awaaz thodi kam karo
+  lang: hinglish
+  params:
+    gain_db: -3
+- prompt: gaane ki awaaz kam karo
+  lang: hinglish
+  params:
+    what: music
+    gain_db: -6
+- prompt: volum up
+  lang: typo
+- prompt: sunai nahi de raha
+  lang: vague
+- prompt: volume badhao aur music lagao
+  lang: multi
+  also:
+  - add_music
+test:
+  check: louder_by
+  params:
+    gain_db: 6
+    what: mix

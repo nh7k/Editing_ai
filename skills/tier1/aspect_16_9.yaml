@@ -1,0 +1,38 @@
+id: aspect_16_9
+seed: 78
+category: layout
+name: Landscape 16:9 (YouTube)
+name_hi: YouTube size
+description: Make the edit landscape 16:9. A vertical phone clip gets blurred sides with fit_mode blur, black bars with fit.
+same_engine_as: aspect_9_16
+params:
+  fit_mode: {type: choice, choices: [crop, blur, fit], default: blur, desc: how a tall picture fits}
+time_modes: [whole]
+builder: layout.aspect_16_9
+graph: scale + crop / blurred background / pad
+media3: {status: mapped, how: "Presentation.createForWidthAndHeight(w, h, …)"}
+stage: geometry
+conflicts: [aspect_9_16, aspect_1_1, aspect_4_5]
+cost: cheap
+licence: own code; FFmpeg (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  fit: [crop, blur, fit]
+synonyms:
+  en: [landscape, "16:9", horizontal, youtube size, widescreen, make it landscape, wide video]
+  hinglish: [landscape banao, youtube ke liye, leta hua video, horizontal karo, chauda video, youtube size me, tv size]
+  hi: [लैंडस्केप बनाओ, यूट्यूब साइज़, आड़ा वीडियो]
+  slang: [full screen wala]
+  typos: [landscap, horizantal, youtub size]
+negations: [landscape mat karo]
+examples:
+  - {prompt: "make it landscape", lang: en}
+  - {prompt: "16:9 and crop to fill", lang: en, params: {fit_mode: crop}}
+  - {prompt: "यूट्यूब साइज़ में करो", lang: hi}
+  - {prompt: "youtube ke liye horizontal karo", lang: hinglish}
+  - {prompt: "leta hua video banao", lang: hinglish}
+  - {prompt: "landscap pls", lang: typo}
+  - {prompt: "tv pe dikhana hai", lang: vague}
+  - {prompt: "landscape banao aur music lagao", lang: multi, also: [add_music]}
+test: {check: aspect_exact, params: {fit_mode: fit}}

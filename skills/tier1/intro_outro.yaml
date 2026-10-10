@@ -1,0 +1,43 @@
+id: intro_outro
+seed: 16
+category: cutting
+name: Intro / outro card
+name_hi: Shuru / ant ka title
+description: A title card before the video (intro), after it (outro) or both, on a generated background with the text centred (Devanagari shaped by libass + HarfBuzz).
+params:
+  text: {type: text, default: "Welcome", extract: quoted_text, desc: card text}
+  outro_text: {type: text, default: "Thanks for watching", desc: outro text when both}
+  which: {type: choice, choices: [intro, outro, both], default: intro, extract: intro_outro, desc: where}
+  duration: {type: number, default: 2, min: 0.5, max: 10, unit: s, extract: seconds, desc: card length}
+  background: {type: choice, choices: [black, white, brand, gradient, warm], default: gradient, desc: card background}
+time_modes: [whole]
+builder: cutting.intro_outro
+graph: generated card clip (color / gradients + anullsrc) + ASS title
+media3: {status: mapped, how: "a generated image EditedMediaItem (setDurationUs) + TextOverlay"}
+stage: structure
+conflicts: []
+cost: cheap
+licence: own code; FFmpeg color/gradients sources; Noto / Hind fonts (SIL OFL)
+changes_duration: true
+needs: []
+variant_axes:
+  which: [intro, outro, both]
+  background: [black, white, brand, gradient, warm]
+  length: [1.5s, 2s, 3s]
+synonyms:
+  en: [intro, outro, intro card, end card, opening title, closing card, thank you card]
+  hinglish: [shuruaat me title, ant me thank you, intro lagao, outro lagao, shuru me naam dikhao, end me thanks likho, last me card]
+  hi: [शुरुआत में टाइटल, अंत में धन्यवाद, इंट्रो लगाओ, शुरुआत में लिखो]
+  slang: [ending pe shukriya]
+  typos: [intor, outtro, intro card lgao]
+negations: [intro mat lagao, outro hatao]
+examples:
+  - {prompt: "add an intro saying 'Goa Trip'", lang: en, params: {text: Goa Trip, which: intro}}
+  - {prompt: "add an outro card 'Thanks for watching'", lang: en, params: {text: Thanks for watching, which: outro}}
+  - {prompt: "शुरुआत में 'मेरा सफ़र' लिखो", lang: hi, params: {text: मेरा सफ़र, which: intro}}
+  - {prompt: "intro lagao 'Diwali Vlog'", lang: hinglish, params: {text: Diwali Vlog, which: intro}}
+  - {prompt: "end me thank you card lagao", lang: hinglish, params: {which: outro}}
+  - {prompt: "intor 'My Day'", lang: typo, params: {text: My Day, which: intro}}
+  - {prompt: "shuru me kuch naam vaam dikhao", lang: vague, params: {which: intro}}
+  - {prompt: "intro 'Shaadi' lagao aur warm color karo", lang: multi, params: {text: Shaadi, which: intro}, also: [warm]}
+test: {check: card_then_video, params: {text: "नमस्ते Goa", which: intro, duration: 1.5}}

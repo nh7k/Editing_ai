@@ -1,0 +1,39 @@
+id: auto_reframe
+seed: 80
+category: layout
+name: Auto reframe (follow the subject)
+name_hi: Chehra follow karo
+description: The crop moves with the person (or face) so they stay in frame when a wide clip becomes vertical. Shots where the subject is not found clearly stay centred.
+params:
+  target: {type: choice, choices: [person, face], default: person, desc: what to follow}
+time_modes: [whole]
+builder: layout.auto_reframe
+graph: per-frame detection (YOLOX-nano / face detector, server) → smoothed path → scale + crop with x(t), y(t)
+media3: {status: mapped, how: "the server computes the crop path; the phone applies it as a keyframed Crop/MatrixTransformation", reason: "detection needs ONNX models on the server"}
+stage: geometry
+conflicts: [crop]
+cost: heavy
+licence: own code; YOLOX-nano (Apache-2.0) via onnxruntime (MIT); OpenCV (Apache-2.0)
+changes_duration: false
+needs: [faces]
+variant_axes:
+  target: [person, face]
+  smoothing: [steady, responsive]
+synonyms:
+  en: [auto reframe, follow the person, keep me in frame, track the face, keep the subject centered, smart crop, follow subject]
+  hinglish: [chehra follow karo, mujhe frame me rakho, center me rakho, insaan ko follow karo, camera mere saath chale, frame se bahar na jaun, face track karo]
+  hi: [चेहरा फ़ॉलो करो, मुझे फ्रेम में रखो, बीच में रखो]
+  slang: [auto follow, follow karo, follow my face, follow me]
+  typos: [auto refram, follw me, chehra folow]
+negations: [follow mat karo, centre me hi rakho]
+examples:
+  - {prompt: "auto reframe to vertical", lang: en}
+  - {prompt: "follow my face", lang: en, params: {target: face}}
+  - {prompt: "चेहरा फ़ॉलो करो", lang: hi}
+  - {prompt: "mujhe frame me rakho", lang: hinglish}
+  - {prompt: "camera mere saath chale", lang: hinglish}
+  - {prompt: "auto refram pls", lang: typo}
+  - {prompt: "main side me chala jata hu, sambhal lo", lang: vague}
+  - {prompt: "vertical banao aur mujhe follow karo", lang: multi, also: [aspect_9_16]}
+test: {check: follows_subject, media: box}
+limits: "Tested on a moving box with a known path. Real-person detection quality is NOT TESTED here (no licence-safe people footage on this machine)."

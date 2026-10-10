@@ -1,0 +1,99 @@
+# written by skills/tools/write_tier1_stylize.py — edit this file directly from now on
+id: glitch
+seed: 65
+category: stylize
+name: Glitch
+name_hi: Hang jaisa
+description: 'Digital glitch: jittering RGB split + noise bursts.'
+params:
+  intensity:
+    type: number
+    default: 1.0
+    min: 0.3
+    max: 3.0
+    extract: magnitude
+    desc: how strong
+time_modes:
+- whole
+- segment
+- between_times
+- intermittent
+- at_beats
+builder: stylize.glitch
+graph: rgbashift with jitter + noise
+media3:
+  status: custom_shader
+  how: a GlEffect fragment shader port — NOT TESTED
+stage: effect
+conflicts: []
+cost: cheap
+licence: 'own code; FFmpeg filters (server process); shapes drawn with Pillow (MIT-CMU); emoji font: Noto Color Emoji (OFL)
+  on the server'
+changes_duration: false
+needs: []
+variant_axes:
+  intensity:
+  - light
+  - normal
+  - heavy
+synonyms:
+  en:
+  - glitch
+  - glitch effect
+  - digital glitch
+  - glitchy
+  - corrupted look
+  - datamosh
+  - error effect
+  hinglish:
+  - hang hua jaisa
+  - glitch lagao
+  - toota hua screen
+  - glitch wala effect
+  - digital effect do
+  - kharab tv jaisa
+  - atakta hua video
+  hi:
+  - ग्लिच
+  - हैंग जैसा
+  - टूटी स्क्रीन
+  slang:
+  - gaming wala glitch
+  typos:
+  - glich
+  - gltch
+  - glitchh
+negations:
+- glitch mat karo
+examples:
+- prompt: add a glitch effect
+  lang: en
+- prompt: glitch from 1 to 3 seconds
+  lang: en
+  time:
+    start: 1
+    end: 3
+- prompt: ग्लिच लगाओ
+  lang: hi
+- prompt: glitch lagao
+  lang: hinglish
+- prompt: beat pe glitch karo
+  lang: hinglish
+  time:
+    mode: at_beats
+- prompt: glich effect
+  lang: typo
+- prompt: video thoda kharab sa dikhe
+  lang: vague
+- prompt: glitch aur rgb split
+  lang: multi
+  also:
+  - rgb_split
+test:
+  check: differs_in_window
+  params:
+    intensity: 1.5
+  time:
+    mode: between_times
+    start: 1.0
+    end: 3.0

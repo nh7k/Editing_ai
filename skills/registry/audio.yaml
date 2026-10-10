@@ -1,0 +1,218 @@
+skills:
+- id: music
+  tier: 1
+  category: audio
+  name: Background music (mood)
+  description: Adds a song from the library (or the user's song) by mood.
+  synonyms:
+    en: [add music, background music, song]
+    hi: [गाना लगाओ, म्यूज़िक]
+    hinglish: [gaana lagao, music daal do, peeche gaana]
+    slang: [bgm daalo, banger song]
+    typos: [musik, msuic]
+  params:
+    mood: {type: enum, default: upbeat, choices: [upbeat, calm, sad, romantic, party, emotional, chill]}
+  time_modes: [whole]
+  impl: {kind: intent, ref: "{mood} music lagao", fields: [music]}
+  stage: audio
+  conflicts: [no_music]
+  cost: cheap
+  media3: "second audio sequence in the Composition — NOT TESTED"
+  licence: library generated locally (cutmind.media_gen); user uploads are the user's
+  preview: same
+  examples: [add upbeat music, calm music lagao, gaana lagao, bgm daalo, romantic song peeche]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: no_music
+  tier: 1
+  category: audio
+  name: Remove music
+  description: No background music.
+  synonyms:
+    en: [no music, remove music]
+    hi: [गाना हटाओ]
+    hinglish: [gaana hata do, music mat lagao]
+    typos: [no musik]
+  params: {}
+  time_modes: [whole]
+  impl: {kind: intent, ref: gaana hata do, fields: [no_music]}
+  stage: audio
+  conflicts: [music]
+  cost: cheap
+  media3: n/a
+  licence: own code
+  preview: same
+  examples: [gaana hata do, no music please, remove the background track, गाना हटा दो, no musik]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: music_level
+  tier: 1
+  category: audio
+  name: Music quieter / louder
+  description: Changes only the music level (not the cut).
+  synonyms:
+    en: [music softer, lower the music, music louder]
+    hinglish: [music thoda kam karo, gaane ki awaaz dheemi, gaana tez karo]
+    typos: [music lowr]
+  params:
+    level: {type: number, default: 0.12, min: 0.0, max: 1.0}
+  time_modes: [whole]
+  impl: {kind: intent, ref: music thoda kam karo, fields: [music_volume]}
+  stage: audio
+  conflicts: []
+  cost: cheap
+  media3: "volume on the music sequence — NOT TESTED"
+  licence: own code
+  preview: same
+  examples: [music thoda kam karo, gaane ki awaaz thodi dheemi kar do, lower the music, gaana tez karo, music lowr]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: ducking
+  tier: 1
+  category: audio
+  name: Duck music under the voice
+  description: Music dips automatically while someone talks.
+  synonyms:
+    en: [ducking, duck the music, music under voice]
+    hinglish: [bolte waqt gaana dheema, awaaz ke neeche music]
+    typos: [duking]
+  params:
+    db: {type: number, default: 12, min: 3, max: 30}
+  time_modes: [whole]
+  impl: {kind: intent, ref: duck the music under the voice, fields: [ducking]}
+  stage: audio
+  conflicts: []
+  cost: cheap
+  media3: "server-only (sidechain compressor)"
+  licence: own code (FFmpeg sidechaincompress)
+  preview: same
+  examples: [duck the music under the voice, bolte waqt gaana dheema, ducking on, music under voice, duking]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: voice_clean
+  tier: 1
+  category: audio
+  name: Clean the voice (noise removal)
+  description: RNNoise voice denoise + high-pass.
+  synonyms:
+    en: [clean audio, remove noise, denoise]
+    hi: [आवाज़ साफ़ करो]
+    hinglish: [awaaz saaf karo, shor hatao, noise hata do]
+    typos: [clen audio, noize]
+  params: {}
+  time_modes: [whole]
+  impl: {kind: intent, ref: clean up the audio}
+  stage: audio
+  conflicts: []
+  cost: cheap
+  media3: "server-only (arnndn)"
+  licence: RNNoise BSD-3-Clause model (assets/models/rnnoise_sh.rnnn)
+  preview: same
+  examples: [clean up the audio, awaaz saaf karo, remove the background noise, आवाज़ साफ़ करो, noize hatao]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: voice_louder
+  tier: 1
+  category: audio
+  name: Voice louder
+  description: The people's voice louder than the music.
+  synonyms:
+    en: [voice louder, boost voice]
+    hinglish: [voice tej karo, awaaz badhao, bolne wali awaaz tez]
+    typos: [voise]
+  params: {}
+  time_modes: [whole]
+  impl: {kind: intent, ref: voice tej karo}
+  stage: audio
+  conflicts: [mute]
+  cost: cheap
+  media3: "VolumeAudioProcessor-style gain — NOT TESTED"
+  licence: own code
+  preview: same
+  examples: [voice tej karo, make the voice louder, awaaz badhao, boost dialogue, voise louder]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: mute
+  tier: 2
+  category: audio
+  name: Mute the original sound
+  description: Removes the clip's own sound (music stays).
+  synonyms:
+    en: [mute, mute original sound, no original audio]
+    hinglish: [original awaaz band, mute karo]
+    typos: [mut]
+  params: {}
+  time_modes: [whole]
+  impl: {kind: intent, ref: mute the original sound}
+  stage: audio
+  conflicts: [voice_louder]
+  cost: cheap
+  media3: "drop the audio track of the sequence — NOT TESTED"
+  licence: own code
+  preview: same
+  examples: [mute the original sound, original awaaz band karo, mute karo, only music no voice, mut]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: sound_back
+  tier: 1
+  category: audio
+  name: Sound back
+  description: Unmutes / restores the clip's own sound.
+  synonyms:
+    en: [sound back, unmute, audio back]
+    hinglish: [audio wapas lao, awaaz nahi aa rahi, pehle jaisa audio]
+    typos: [audo back]
+  params: {}
+  time_modes: [whole]
+  impl: {kind: intent, ref: audio wapas lao}
+  stage: audio
+  conflicts: [mute]
+  cost: cheap
+  media3: n/a
+  licence: own code
+  preview: same
+  examples: [audio wapas lao, awaaz nahi aa rahi, unmute it, pehle jaisa audio la do, audo back]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: loudness
+  tier: 2
+  category: audio
+  name: Normalize loudness (-14 LUFS)
+  description: Social-media loudness with a -1.4 dBFS limiter.
+  synonyms:
+    en: [normalize audio, louder overall, quieter overall]
+    hinglish: [awaaz barabar karo, poori video ki awaaz tez]
+    typos: [normlize]
+  params:
+    lufs: {type: number, default: -14, min: -30, max: -8}
+  time_modes: [whole]
+  impl: {kind: intent, ref: make it louder}
+  stage: audio
+  conflicts: []
+  cost: cheap
+  media3: "server-only (loudnorm two-stage)"
+  licence: own code (FFmpeg loudnorm + alimiter)
+  preview: same
+  examples: [normalize the audio, make it louder, awaaz barabar karo, normlize, quieter overall]
+  status: untested
+- id: audio_fade
+  tier: 2
+  category: audio
+  name: Audio fade in / out
+  description: The sound fades at the start and the end.
+  synonyms:
+    en: [audio fade, fade the music out]
+    hinglish: [awaaz dheere khatam, gaana fade out]
+    typos: [audio fde]
+  params: {}
+  time_modes: [whole]
+  impl: {kind: intent, ref: fade the audio in and out}
+  stage: audio
+  conflicts: []
+  cost: cheap
+  media3: "volume ramp — NOT TESTED"
+  licence: own code (FFmpeg afade)
+  preview: same
+  examples: [fade the audio in and out, gaana fade out karo, music fades at the end, audio fde, awaaz dheere khatam]
+  status: tested
+  test: tests/integration/test_skill_renders.py

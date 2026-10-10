@@ -1,0 +1,45 @@
+{
+ "model": "qwen3-4b",
+ "file": "Qwen3-4B-Q4_K_M.gguf",
+ "size_gb": 2.5,
+ "load_s": 40.9,
+ "ram_mb_after_load": 3238,
+ "ram_mb_peak": null,
+ "first_request_s": 101.6,
+ "p50_s": 12.12,
+ "p95_s": 35.64,
+ "json_valid_rate": 1.0,
+ "threads": 6,
+ "load_test": [
+  {
+   "concurrent": 1,
+   "ok": 1,
+   "busy_rejected": 0,
+   "timed_out": 0,
+   "errors": 0,
+   "wall_s": 13.2,
+   "p95_ok_s": 13.17
+  },
+  {
+   "concurrent": 5,
+   "ok": 1,
+   "busy_rejected": 0,
+   "timed_out": 4,
+   "errors": 0,
+   "wall_s": 30.3,
+   "p95_ok_s": 18.6
+  },
+  {
+   "concurrent": 20,
+   "ok": 3,
+   "busy_rejected": 12,
+   "timed_out": 5,
+   "errors": 0,
+   "wall_s": 30.4,
+   "p95_ok_s": 28.37
+  }
+ ],
+ "timeout_s": 30.0,
+ "max_queue": 8,
+ "ram_note": "private bytes after load + warm-up (n_ctx 4096), measured with Get-Process in a separate run (scratch ram_probe); the bench run's own RAM reading was broken (0) and is fixed in bench_llm.py"
+}

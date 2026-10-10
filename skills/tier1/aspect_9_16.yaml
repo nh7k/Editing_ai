@@ -1,0 +1,38 @@
+id: aspect_9_16
+seed: 76
+category: layout
+name: Vertical 9:16 (Reels / Shorts / Status)
+name_hi: Reel size
+description: Make the edit vertical 9:16. fit_mode crop fills the frame, blur shows the whole picture on a blurred copy, fit adds black bars.
+params:
+  fit_mode: {type: choice, choices: [crop, blur, fit], default: crop, desc: how a wide picture fits}
+time_modes: [whole]
+builder: layout.aspect_9_16
+graph: scale + crop (or blurred background + overlay, or pad) per segment
+media3: {status: mapped, how: "Presentation.createForWidthAndHeight(w, h, LAYOUT_SCALE_TO_FIT_WITH_CROP / SCALE_TO_FIT)"}
+stage: geometry
+conflicts: [aspect_1_1, aspect_16_9, aspect_4_5]
+cost: cheap
+licence: own code; FFmpeg scale/crop/boxblur (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  fit: [crop, blur, fit]
+  platform: [instagram_reels, youtube_shorts, whatsapp_status]
+synonyms:
+  en: [vertical, "9:16", reel size, shorts size, portrait video, make it vertical, tiktok size]
+  hinglish: [vertical banao, reel banao, reel size me, shorts ke liye, status ke liye, khada video, lamba wala video]
+  hi: [वर्टिकल बनाओ, रील बनाओ, खड़ा वीडियो]
+  slang: [insta reel wala size]
+  typos: [vertcal, verticle, reeel]
+negations: [vertical mat karo, reel size nahi]
+examples:
+  - {prompt: "make it vertical", lang: en}
+  - {prompt: "9:16 with blurred sides", lang: en, params: {fit_mode: blur}}
+  - {prompt: "वर्टिकल बनाओ", lang: hi}
+  - {prompt: "reel size me kar do", lang: hinglish}
+  - {prompt: "whatsapp status ke liye khada video", lang: hinglish}
+  - {prompt: "verticle pls", lang: typo}
+  - {prompt: "phone pe poora dikhe aisa", lang: vague}
+  - {prompt: "vertical banao, captions lagao aur 30 sec ka karo", lang: multi, also: [auto_captions, fit_to_duration]}
+test: {check: aspect_exact, params: {fit_mode: crop}}

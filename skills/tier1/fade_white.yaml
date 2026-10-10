@@ -1,0 +1,98 @@
+# written by skills/tools/write_tier1_transitions.py — edit this file directly from now on
+id: fade_white
+seed: 19
+category: transitions
+name: Fade through white
+name_hi: Safed fade
+description: Dip to white between shots. Each overlap makes the video that much shorter.
+same_engine_as: fade_black
+params:
+  duration:
+    type: number
+    default: 0.6
+    min: 0.15
+    max: 2.0
+    unit: s
+    extract: seconds
+    desc: length
+  cut:
+    type: integer
+    min: 1
+    max: 500
+    extract: cut_number
+    desc: which cut (default every cut)
+time_modes:
+- whole
+- between_times
+builder: transitions.fade_white
+graph: xfade=fadewhite + acrossfade (tri)
+media3:
+  status: mapped
+  how: brightness ramp to white around the cut — NOT TESTED
+stage: structure
+conflicts:
+- crossfade
+- fade_black
+cost: cheap
+licence: own code; FFmpeg xfade / gblur / rgbashift (server process); whoosh generated
+changes_duration: true
+needs:
+- two_clips
+variant_axes:
+  duration:
+  - 0.3s
+  - 0.6s
+synonyms:
+  en:
+  - fade to white
+  - white fade
+  - white flash fade
+  - dip to white
+  - flash transition
+  - white transition
+  - bright fade
+  hinglish:
+  - safed fade
+  - white flash fade
+  - safed me badlo
+  - chamak ke badle
+  - white transition do
+  - ujale me badlo
+  - flash wala badlav
+  hi:
+  - सफ़ेद फ़ेड
+  - सफ़ेद में बदलो
+  - चमक के बदले
+  slang:
+  - dream flash
+  - fade through white
+  - flash between shots
+  typos:
+  - white fad
+  - whit fade
+  - safed fad
+negations:
+- white fade mat lagao
+examples:
+- prompt: fade through white
+  lang: en
+- prompt: white flash between shots
+  lang: en
+- prompt: सफ़ेद में बदलो
+  lang: hi
+- prompt: safed fade lagao
+  lang: hinglish
+- prompt: chamak ke badle scene
+  lang: hinglish
+- prompt: whit fade
+  lang: typo
+- prompt: sapne jaisa badlav
+  lang: vague
+- prompt: white fade aur slow motion
+  lang: multi
+  also:
+  - slow_motion
+test:
+  check: bright_mid
+  params:
+    duration: 0.8

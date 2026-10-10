@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CutMind Tier 1 skill",
+  "description": "One Tier 1 skill (skills/tier1/<id>.yaml). Checked by backend/cutmind/tools/spec.py and tests/unit/test_tier1_specs.py.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "seed", "category", "name", "description", "params", "time_modes", "builder", "graph",
+               "media3", "stage", "conflicts", "cost", "licence", "variant_axes", "synonyms", "examples", "test",
+               "changes_duration", "needs"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+    "seed": {"type": "integer", "minimum": 1, "maximum": 200, "description": "number in the founder's list (101+ = added in TIER1_REVIEW)"},
+    "category": {"enum": ["cutting", "transitions", "motion", "color", "text", "stylize", "layout", "audio", "delivery"]},
+    "name": {"type": "string"},
+    "name_hi": {"type": "string", "description": "Hinglish alias shown in the app"},
+    "description": {"type": "string"},
+    "same_engine_as": {"type": "string", "description": "this id is a preset of another skill's engine (TIER1_REVIEW §1)"},
+    "params": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type"],
+        "properties": {
+          "type": {"enum": ["number", "integer", "string", "bool", "choice", "list", "color", "text", "time", "region"]},
+          "default": {},
+          "min": {"type": "number"},
+          "max": {"type": "number"},
+          "choices": {"type": "array"},
+          "unit": {"type": "string"},
+          "extract": {"type": "string", "description": "prompt extractor name (tools/parse.py EXTRACTORS)"},
+          "desc": {"type": "string"},
+          "required": {"type": "boolean"}
+        }
+      }
+    },
+    "time_modes": {"type": "array", "minItems": 1,
+                   "items": {"enum": ["whole", "segment", "between_times", "intermittent", "at_beats", "on_words",
+                                      "on_scene_change", "at_time"]}},
+    "builder": {"type": "string", "pattern": "^[a-z_]+\\.[a-z_0-9]+$", "description": "module.function in cutmind/tools/"},
+    "graph": {"type": "string", "description": "the FFmpeg filters it uses (human readable)"},
+    "media3": {
+      "type": "object", "additionalProperties": false, "required": ["status"],
+      "properties": {
+        "status": {"enum": ["mapped", "custom_shader", "server_only"]},
+        "how": {"type": "string"},
+        "reason": {"type": "string"}
+      }
+    },
+    "stage": {"enum": ["structure", "geometry", "time", "color", "effect", "overlay", "text", "audio", "export"]},
+    "conflicts": {"type": "array", "items": {"type": "string"}},
+    "cost": {"enum": ["cheap", "medium", "heavy"]},
+    "licence": {"type": "string"},
+    "changes_duration": {"type": "boolean"},
+    "needs": {"type": "array", "items": {"enum": ["speech", "silence_map", "faces", "music", "two_clips", "still", "scenes", "analysis", "logo", "second_audio"]}},
+    "variant_axes": {
+      "type": "object", "minProperties": 1,
+      "additionalProperties": {"type": "array", "minItems": 1}
+    },
+    "synonyms": {
+      "type": "object", "additionalProperties": false, "required": ["en", "hinglish", "hi"],
+      "properties": {
+        "en": {"type": "array", "items": {"type": "string"}},
+        "hinglish": {"type": "array", "items": {"type": "string"}},
+        "hi": {"type": "array", "items": {"type": "string"}},
+        "slang": {"type": "array", "items": {"type": "string"}},
+        "typos": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "negations": {"type": "array", "items": {"type": "string"}, "description": "phrases that must NOT apply the skill"},
+    "examples": {
+      "type": "array", "minItems": 8,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["prompt", "lang"],
+        "properties": {
+          "prompt": {"type": "string"},
+          "lang": {"enum": ["en", "hi", "hinglish", "typo", "vague", "multi"]},
+          "params": {"type": "object", "description": "expected parameters (subset) the parser must extract"},
+          "time": {"type": "object", "description": "expected time (subset of the call's time) the parser must extract"},
+          "also": {"type": "array", "items": {"type": "string"}, "description": "other skills a multi prompt must also find"}
+        }
+      }
+    },
+    "test": {
+      "type": "object", "additionalProperties": false, "required": ["check"],
+      "properties": {
+        "check": {"type": "string", "description": "content check name (tests/integration/tier1_checks.py)"},
+        "media": {"type": "string"},
+        "params": {"type": "object"},
+        "time": {"type": "object"},
+        "setup": {"type": "array", "items": {"type": "object"}, "description": "tool calls applied first (plain = after them)"},
+        "note": {"type": "string"}
+      }
+    },
+    "limits": {"type": "string", "description": "known limits, said plainly"}
+  }
+}

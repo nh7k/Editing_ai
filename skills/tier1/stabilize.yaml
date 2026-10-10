@@ -1,0 +1,88 @@
+# written by skills/tools/write_tier1_delivery.py — edit this file directly from now on
+id: stabilize
+seed: 101
+category: motion
+name: Stabilise
+name_hi: Hilna band karo
+description: 'Steadier handheld footage: FFmpeg deshake (LGPL; vid.stab is GPL and is not used), edges cropped slightly.'
+params:
+  strength:
+    type: number
+    default: 1.0
+    min: 0.5
+    max: 3.0
+    extract: magnitude
+    desc: how much
+time_modes:
+- whole
+- segment
+- between_times
+builder: delivery.stabilize
+graph: deshake + crop + scale
+media3:
+  status: server_only
+  reason: needs motion analysis of every frame
+stage: geometry
+conflicts: []
+cost: medium
+licence: own code; FFmpeg deshake (LGPL part of FFmpeg)
+changes_duration: false
+needs: []
+variant_axes:
+  strength:
+  - light
+  - normal
+  - strong
+synonyms:
+  en:
+  - stabilize
+  - stabilise
+  - steady
+  - remove shake
+  - fix the shaky video
+  - smooth the camera
+  - anti shake
+  hinglish:
+  - hilna band karo
+  - video stable karo
+  - shake hatao
+  - kampan hatao
+  - camera hil raha hai theek karo
+  - stable banao
+  - jhatke hatao
+  hi:
+  - हिलना बंद करो
+  - स्थिर करो
+  - शेक हटाओ
+  slang:
+  - gimbal jaisa
+  - remove camera shake
+  - remove shake
+  typos:
+  - stablize
+  - stabilse
+  - stable kro
+negations:
+- stabilize mat karo
+examples:
+- prompt: stabilize the video
+  lang: en
+- prompt: remove the camera shake
+  lang: en
+- prompt: वीडियो स्थिर करो
+  lang: hi
+- prompt: video stable karo
+  lang: hinglish
+- prompt: camera hil raha hai theek karo
+  lang: hinglish
+- prompt: stablize
+  lang: typo
+- prompt: chalte hue shoot kiya tha
+  lang: vague
+- prompt: stable karo aur slow motion
+  lang: multi
+  also:
+  - slow_motion
+test:
+  check: steadier
+  media: shaky

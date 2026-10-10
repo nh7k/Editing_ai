@@ -1,0 +1,512 @@
+[
+ {
+  "step": 1,
+  "prompt": "vertical banao blur sides ke saath",
+  "http": 202,
+  "status": "done",
+  "seconds": 12.8,
+  "duration": 18.0,
+  "plan_duration": 18.0,
+  "prev_duration": 18.0,
+  "size": "720x1280",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "aspect_9_16"
+  ],
+  "ok": true
+ },
+ {
+  "step": 2,
+  "prompt": "thoda bright karo",
+  "http": 202,
+  "status": "done",
+  "seconds": 12.8,
+  "duration": 18.0,
+  "plan_duration": 18.0,
+  "prev_duration": 18.0,
+  "size": "720x1280",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "brightness"
+  ],
+  "ok": true
+ },
+ {
+  "step": 3,
+  "prompt": "contrast badhao",
+  "http": 202,
+  "status": "done",
+  "seconds": 11.8,
+  "duration": 18.0,
+  "plan_duration": 18.0,
+  "prev_duration": 18.0,
+  "size": "720x1280",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "contrast"
+  ],
+  "ok": true
+ },
+ {
+  "step": 4,
+  "prompt": "crossfade lagao",
+  "http": 202,
+  "status": "done",
+  "seconds": 14.8,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 18.0,
+  "size": "720x1280",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "crossfade"
+  ],
+  "ok": true
+ },
+ {
+  "step": 5,
+  "prompt": "zoom in karo 2 se 4 sec",
+  "http": 202,
+  "status": "done",
+  "seconds": 14.0,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 16.8,
+  "size": "720x1280",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "zoom_in"
+  ],
+  "ok": true
+ },
+ {
+  "step": 6,
+  "prompt": "vignette lagao",
+  "http": 202,
+  "status": "done",
+  "seconds": 15.8,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 16.8,
+  "size": "720x1280",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "vignette"
+  ],
+  "ok": true
+ },
+ {
+  "step": 7,
+  "prompt": "upbeat music lagao",
+  "http": 202,
+  "status": "done",
+  "seconds": 4.5,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 16.8,
+  "size": "720x1280",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "add_music"
+  ],
+  "ok": true
+ },
+ {
+  "step": 8,
+  "prompt": "music volume down 6 dB",
+  "http": 202,
+  "status": "done",
+  "seconds": 4.7,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 16.8,
+  "size": "720x1280",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "volume"
+  ],
+  "ok": true
+ },
+ {
+  "step": 9,
+  "prompt": "text 'Goa Trip' upar likho",
+  "http": 202,
+  "status": "done",
+  "seconds": 5.7,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 16.8,
+  "size": "720x1280",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "text_overlay"
+  ],
+  "ok": true
+ },
+ {
+  "step": 10,
+  "prompt": "progress bar lagao",
+  "http": 202,
+  "status": "done",
+  "seconds": 5.6,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 16.8,
+  "size": "720x1280",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "progress_bar"
+  ],
+  "ok": true
+ },
+ {
+  "step": 11,
+  "prompt": "film grain daalo",
+  "http": 202,
+  "status": "done",
+  "seconds": 25.2,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 16.8,
+  "size": "720x1280",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "film_grain"
+  ],
+  "ok": true
+ },
+ {
+  "step": 12,
+  "prompt": "teal orange look",
+  "http": 202,
+  "status": "done",
+  "seconds": 24.3,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 16.8,
+  "size": "720x1280",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "teal_orange"
+  ],
+  "ok": true
+ },
+ {
+  "step": 13,
+  "prompt": "shake karo 1 se 2 sec",
+  "http": 202,
+  "status": "done",
+  "seconds": 24.3,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 16.8,
+  "size": "720x1280",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "shake"
+  ],
+  "ok": true
+ },
+ {
+  "step": 14,
+  "prompt": "whoosh sound on every cut",
+  "http": 202,
+  "status": "done",
+  "seconds": 10.0,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 16.8,
+  "size": "720x1280",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "sfx_whoosh"
+  ],
+  "ok": true
+ },
+ {
+  "step": 15,
+  "prompt": "pan right karo",
+  "http": 202,
+  "status": "done",
+  "seconds": 25.3,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 16.8,
+  "size": "720x1280",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "pan"
+  ],
+  "ok": true
+ },
+ {
+  "step": 16,
+  "prompt": "rgb split 3 se 4 sec",
+  "http": 202,
+  "status": "done",
+  "seconds": 25.4,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 16.8,
+  "size": "720x1280",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "rgb_split"
+  ],
+  "ok": true
+ },
+ {
+  "step": 17,
+  "prompt": "kali patti lagao",
+  "http": 202,
+  "status": "done",
+  "seconds": 24.1,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 16.8,
+  "size": "720x1280",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "letterbox"
+  ],
+  "ok": true
+ },
+ {
+  "step": 18,
+  "prompt": "fade in and fade out",
+  "http": 202,
+  "status": "done",
+  "seconds": 5.8,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 16.8,
+  "size": "720x1280",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "fade_black"
+  ],
+  "ok": true
+ },
+ {
+  "step": 19,
+  "prompt": "sepia karo",
+  "http": 202,
+  "status": "done",
+  "seconds": 21.0,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 16.8,
+  "size": "720x1280",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "sepia"
+  ],
+  "ok": true
+ },
+ {
+  "step": 20,
+  "prompt": "saturation kam karo",
+  "http": 202,
+  "status": "done",
+  "seconds": 22.0,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 16.8,
+  "size": "720x1280",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "saturation"
+  ],
+  "ok": true
+ },
+ {
+  "step": 21,
+  "prompt": "glitch 5 se 6 sec",
+  "http": 202,
+  "status": "done",
+  "seconds": 22.0,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 16.8,
+  "size": "720x1280",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "glitch"
+  ],
+  "ok": true
+ },
+ {
+  "step": 22,
+  "prompt": "text ka color neon pink karo",
+  "http": 202,
+  "status": "done",
+  "seconds": 6.9,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 16.8,
+  "size": "720x1280",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "caption_style"
+  ],
+  "ok": true
+ },
+ {
+  "step": 23,
+  "prompt": "light leak lagao",
+  "http": 202,
+  "status": "done",
+  "seconds": 10.1,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 16.8,
+  "size": "720x1280",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "light_leak"
+  ],
+  "ok": true
+ },
+ {
+  "step": 24,
+  "prompt": "audio fade in and out",
+  "http": 202,
+  "status": "done",
+  "seconds": 12.0,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 16.8,
+  "size": "720x1280",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "audio_fade"
+  ],
+  "ok": true
+ },
+ {
+  "step": 25,
+  "prompt": "echo daalo halka",
+  "http": 202,
+  "status": "done",
+  "seconds": 10.9,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 16.8,
+  "size": "720x1280",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "echo_reverb"
+  ],
+  "ok": true
+ },
+ {
+  "step": 26,
+  "prompt": "square bana do",
+  "http": 202,
+  "status": "done",
+  "seconds": 15.0,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 16.8,
+  "size": "720x720",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "aspect_1_1"
+  ],
+  "ok": true
+ },
+ {
+  "step": 27,
+  "prompt": "countdown from 3",
+  "http": 202,
+  "status": "done",
+  "seconds": 7.8,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 16.8,
+  "size": "720x720",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "countdown_timer"
+  ],
+  "ok": true
+ },
+ {
+  "step": 28,
+  "prompt": "lower third 'Anmol' lagao",
+  "http": 202,
+  "status": "done",
+  "seconds": 7.8,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 16.8,
+  "size": "720x720",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "lower_third"
+  ],
+  "ok": true
+ },
+ {
+  "step": 29,
+  "prompt": "sticker 🔥 lagao",
+  "http": 202,
+  "status": "done",
+  "seconds": 11.0,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 16.8,
+  "size": "720x720",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "sticker_lottie"
+  ],
+  "ok": true
+ },
+ {
+  "step": 30,
+  "prompt": "export for instagram reels",
+  "http": 202,
+  "status": "done",
+  "seconds": 68.4,
+  "duration": 16.8,
+  "plan_duration": 16.8,
+  "prev_duration": 16.8,
+  "size": "1080x1920",
+  "audio": true,
+  "decodes": true,
+  "tools": [
+   "export_preset"
+  ],
+  "ok": true
+ }
+]

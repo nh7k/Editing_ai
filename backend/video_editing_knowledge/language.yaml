@@ -1,0 +1,64 @@
+# Desi / Hinglish / creator shorthand → editorial concepts.
+# Each entry: regex patterns (matched on the lower-cased prompt) → concept tags the skill retriever understands.
+# Written for CutMind; extend freely. Concepts are explained in skills.yaml.
+
+phrases:
+  - patterns: ['\bmast\b', 'jhakaa?s', 'badh?iya', 'zabardast|jabardast', 'dhaa?su', 'kadak', 'ekdum (mast|badhiya|zabardast)']
+    concepts: [make_it_good]
+  - patterns: ['dhamaa?k', 'high energy', 'energetic', '\bhype\b', 'josh', 'aag laga', '\bfire\b', 'banger']
+    concepts: [high_energy]
+  - patterns: ['boring (part|hissa|scene)?\s*(hata|nikal|kaat|remove|cut)', 'boring hata', 'faltu (part|hissa)?\s*(hata|nikal)',
+               'bekaar (part|hissa)? ?(hata|nikal)', 'dead air', 'remove the boring']
+    concepts: [remove_low_value]
+  - patterns: ['interesting bana', 'engaging', 'retention', 'drop.?off (kam|na)', 'log (dekhte|ruke) rahe']
+    concepts: [engaging]
+  - patterns: ['\bhook\b', 'starting (ke |ki )?\d* ?(sec|second)?\s*(killer|strong|mast|dhamaka)', 'starting (strong|mast|dhamakedar)',
+               'shuru(aat)? (strong|mast|dhamakedar)', 'pehle \d+ ?(sec|second) (killer|strong)', 'first \d+ seconds? (killer|strong)']
+    concepts: [strong_hook]
+  - patterns: ['ending (strong|mast|memorable)', 'end (strong|mast|achha) (ho|kar)', 'achanak (khatam|band) na', 'memorable (end|ending)']
+    concepts: [strong_ending]
+  - patterns: ['professional', '\bpro\b(?! look)', 'clean (edit|look)', 'saaf.?suthra', 'neat']
+    concepts: [professional, restraint]
+  - patterns: ['premium', 'luxury', 'expensive (look|feel)', 'classy']
+    concepts: [premium, restraint]
+  - patterns: ['cinematic', 'movie (jaisa|like)', 'film (jaisa|look)', 'filmy']
+    concepts: [cinematic]
+  - patterns: ['over mat kar', 'zyada (mat|nahi)', 'subtle', 'halka', 'thoda sa', 'restrained', 'simple rakh', 'simple kar',
+               'zyada flashy', 'too (much|flashy)', 'over.?edit', 'kam effect']
+    concepts: [restraint]
+  - patterns: ['shaa?nt', 'calm (vibe|feel|edit|video|look|mood)', 'peaceful', 'sukoon', 'relaxing (video|edit)', 'chill vibe', 'aaram se']
+    concepts: [calm]
+  - patterns: ['emotional', 'feel aaye', 'dil (chhoo|ko)', 'senti', 'rula de', 'nostalgic']
+    concepts: [emotional]
+  - patterns: ['funny', 'comedy', 'meme', 'hasi', 'mazedaar']
+    concepts: [comedy]
+  - patterns: ['viral', 'trending', 'insta (pe )?(viral|trend)', 'reach (badh|aaye)']
+    concepts: [engaging, strong_hook]
+  - patterns: ['(jab|jaise hi) (wo|vo|ye|yeh)? ?(banda|ladka|ladki|insaan)? ?(important|zaroori|main) (baat|point) bol\w* (tab|to) zoom',
+               'important (baat|point|words?) pe zoom', 'zoom on (key|important) (words?|points?)', 'emphasis zoom']
+    concepts: [emphasis_punch]
+  - patterns: ['music (ke )?beat pe cut', 'beat pe cut', 'cut (on|to) the beat', 'beat ke saath cut']
+    concepts: [beat_cut]
+  - patterns: ['captions? (thode |thoda )?premium', 'premium captions?', 'captions? (achhe|sundar|stylish)']
+    concepts: [premium_captions]
+  - patterns: ['ye (shot|scene|clip) rehne de', 'ye (shot|scene) mat (hata|kaat)', 'keep (this|that) (shot|scene)']
+    concepts: [keep_marked]
+  - patterns: ['nice animations?', 'animations? (daal|add|achhe|mast)', 'animated', 'motion graphics']
+    concepts: [animations]
+  - patterns: ['natural (sound|awaaz|feel)', 'asli awaaz', 'ambience', 'mahaul']
+    concepts: [natural_sound]
+  - patterns: ['story (bana|jaisa|telling)', 'kahani', 'beginning.{0,20}end', 'shuru se end tak']
+    concepts: [story]
+  - patterns: ['slow kar', 'thoda slow', 'dheere', 'aaram se chal']
+    concepts: [calm]
+  - patterns: ['fast kar', 'thoda fast', 'tez kar', 'jaldi jaldi', 'quick']
+    concepts: [high_energy]
+
+# Words that say "change the CURRENT edit" rather than "start a new one" (conversation context)
+adjustments:
+  - '^\s*(ab |aur |bas )'          # "thoda cinematic sa bana do" is a new style, not a tweak
+  - '\b(thoda|zara|aur) (dark|bright|slow|fast|warm|cool|chhota|lamba)'
+  - '\b(zyada|bahut) (dark|bright|flashy|slow|fast|lamba|chhota)'
+  - '\b(hata|nikal) (de|do|dena)\b'
+  - '\b(remove|drop|delete) the\b'
+  - '^\s*(make it|now) '

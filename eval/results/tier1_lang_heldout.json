@@ -1,0 +1,649 @@
+{
+ "prompts": 110,
+ "correct": 92,
+ "accuracy": 0.836,
+ "by_lang": {
+  "en": "57/69",
+  "hi": "3/3",
+  "hinglish": "32/38"
+ },
+ "per_skill": {
+  "add_music": "1/1",
+  "aspect_16_9": "1/1",
+  "aspect_1_1": "1/1",
+  "aspect_4_5": "1/1",
+  "aspect_9_16": "1/1",
+  "audio_fade": "0/1",
+  "auto_captions": "2/2",
+  "auto_enhance": "1/1",
+  "auto_reframe": "0/1",
+  "beat_sync": "0/1",
+  "blur": "1/1",
+  "blur_background_fill": "0/1",
+  "blur_box_censor": "1/1",
+  "brightness": "1/1",
+  "caption_style": "1/1",
+  "cinematic_look": "0/1",
+  "color_pop": "1/1",
+  "contrast": "1/1",
+  "cool": "1/1",
+  "countdown_timer": "1/1",
+  "crop": "1/1",
+  "crossfade": "1/1",
+  "delete_segment": "2/2",
+  "denoise": "1/1",
+  "duck_music": "0/1",
+  "echo_reverb": "1/1",
+  "export_preset": "1/1",
+  "extract_audio": "1/1",
+  "extract_highlights": "1/1",
+  "fade_black": "1/1",
+  "fade_white": "1/1",
+  "film_grain": "1/1",
+  "fit_to_duration": "2/2",
+  "flash": "1/1",
+  "freeze_frame": "1/1",
+  "glitch": "1/1",
+  "glitch_transition": "0/1",
+  "grayscale": "1/2",
+  "hook_first": "0/1",
+  "insert_broll": "1/1",
+  "intro_outro": "1/1",
+  "iris_circle": "1/1",
+  "j_cut": "1/1",
+  "jump_cut_tighten": "0/1",
+  "karaoke_captions": "1/1",
+  "ken_burns": "1/1",
+  "letterbox": "1/1",
+  "light_leak": "1/1",
+  "loop_boomerang": "1/1",
+  "lower_third": "1/1",
+  "merge_clips": "1/1",
+  "mirror_effect": "1/1",
+  "montage_builder": "1/1",
+  "mute": "1/1",
+  "normalize_loudness": "1/1",
+  "pan": "1/1",
+  "picture_in_picture": "1/1",
+  "pixelate_censor": "1/1",
+  "progress_bar": "1/1",
+  "punch_in": "0/1",
+  "remove_fillers": "0/1",
+  "remove_silence": "1/2",
+  "reorder_clips": "1/1",
+  "replace_audio": "1/1",
+  "reverse": "1/1",
+  "rgb_split": "1/1",
+  "rotate_flip": "1/1",
+  "saturation": "0/1",
+  "scene_detect": "0/1",
+  "sepia": "1/1",
+  "sfx_whoosh": "1/1",
+  "shake": "1/1",
+  "shape_highlight": "1/1",
+  "sharpen": "1/1",
+  "slide": "1/1",
+  "slow_motion": "1/1",
+  "speed_ramp": "1/1",
+  "speed_up": "1/1",
+  "split": "1/1",
+  "split_screen": "1/1",
+  "srt_export": "1/1",
+  "stabilize": "1/1",
+  "sticker_lottie": "1/1",
+  "teal_orange": "0/1",
+  "text_glow_neon": "1/1",
+  "text_overlay": "1/1",
+  "text_pop_in": "1/1",
+  "text_slide": "1/1",
+  "text_typewriter": "1/1",
+  "thumbnail": "1/1",
+  "title_card": "1/1",
+  "trim": "1/2",
+  "vhs_retro": "1/1",
+  "vignette": "0/1",
+  "vintage_faded": "1/1",
+  "voice_clarity": "1/1",
+  "volume": "1/1",
+  "warm": "1/1",
+  "watermark_logo": "1/1",
+  "whip_pan": "1/1",
+  "wipe": "1/1",
+  "zoom_in": "1/1",
+  "zoom_out": "1/1",
+  "zoom_transition": "1/1"
+ },
+ "misses": [
+  {
+   "skill": "trim",
+   "prompt": "keep just 3 to 12 seconds",
+   "lang": "en",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "remove_silence",
+   "prompt": "khamoshi wale gap kaat do",
+   "lang": "hinglish",
+   "why": "skill not found",
+   "got": [
+    [
+     "delete_segment",
+     {},
+     null
+    ]
+   ]
+  },
+  {
+   "skill": "remove_fillers",
+   "prompt": "umm aur aaa nikal do",
+   "lang": "hinglish",
+   "why": "skill not found",
+   "got": [
+    [
+     "delete_segment",
+     {},
+     null
+    ]
+   ]
+  },
+  {
+   "skill": "jump_cut_tighten",
+   "prompt": "make the talking tighter",
+   "lang": "en",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "hook_first",
+   "prompt": "open with the most exciting part",
+   "lang": "en",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "blur_background_fill",
+   "prompt": "blur the empty sides",
+   "lang": "en",
+   "why": "skill not found",
+   "got": [
+    [
+     "blur",
+     {},
+     null
+    ]
+   ]
+  },
+  {
+   "skill": "auto_reframe",
+   "prompt": "keep my face in the frame",
+   "lang": "en",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "grayscale",
+   "prompt": "black white bana do",
+   "lang": "hinglish",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "saturation",
+   "prompt": "colours ko aur gehra karo",
+   "lang": "hinglish",
+   "why": "skill not found",
+   "got": [
+    [
+     "contrast",
+     {
+      "amount": 1.25
+     },
+     null
+    ]
+   ]
+  },
+  {
+   "skill": "cinematic_look",
+   "prompt": "film jaisa grade karo",
+   "lang": "hinglish",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "teal_orange",
+   "prompt": "orange and teal look",
+   "lang": "en",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "vignette",
+   "prompt": "darken the edges a little",
+   "lang": "en",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "punch_in",
+   "prompt": "zoom punch on every beat",
+   "lang": "en",
+   "why": "skill not found",
+   "got": [
+    [
+     "zoom_in",
+     {},
+     null
+    ]
+   ]
+  },
+  {
+   "skill": "glitch_transition",
+   "prompt": "glitchy cuts between scenes",
+   "lang": "en",
+   "why": "skill not found",
+   "got": [
+    [
+     "glitch",
+     {},
+     null
+    ]
+   ]
+  },
+  {
+   "skill": "duck_music",
+   "prompt": "music should go down when I talk",
+   "lang": "en",
+   "why": "skill not found",
+   "got": [
+    [
+     "volume",
+     {
+      "gain_db": -6.0,
+      "what": "music"
+     },
+     null
+    ]
+   ]
+  },
+  {
+   "skill": "audio_fade",
+   "prompt": "music fade out at the end",
+   "lang": "en",
+   "why": "skill not found",
+   "got": [
+    [
+     "add_music",
+     {},
+     null
+    ],
+    [
+     "fade_black",
+     {
+      "where": "end"
+     },
+     {
+      "mode": "between_times",
+      "start": -3.0,
+      "end": 0.0
+     }
+    ]
+   ]
+  },
+  {
+   "skill": "beat_sync",
+   "prompt": "cuts ko beat ke saath milao",
+   "lang": "hinglish",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "scene_detect",
+   "prompt": "automatically split the scenes",
+   "lang": "en",
+   "why": "skill not found",
+   "got": [
+    [
+     "split",
+     {},
+     null
+    ]
+   ]
+  }
+ ],
+ "multi": {
+  "prompts": 30,
+  "mean_recall": 0.988,
+  "exact": 28,
+  "items": [
+   {
+    "prompt": "silence hatao, captions lagao aur 30 sec ka karo",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "vertical banao, warm color, music lagao aur fade out",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "black and white, slow motion and add a vignette",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "zoom in karo, shake daalo aur glitch transitions",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "remove fillers, tighten the pauses, add karaoke captions and duck the music",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "crossfade lagao, contrast badhao, grain daalo",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "square bana do, captions peele karo aur progress bar",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "best part pehle, 20 sec ka karo, beat par cut aur music",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "teal orange look, kali patti and slow zoom in",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "noise hatao, awaaz clear karo, -14 LUFS",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "intro 'Goa' lagao, whip pan transitions aur music",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "reverse karo, speed up 2x and add flash",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "pixelate his face, mute 2 to 4 sec, add captions",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "split screen, add music, fade in fade out",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "sepia, film grain, vignette aur slow motion",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "auto enhance, sharpen and export for instagram",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "lower third 'Ravi', captions and a logo watermark",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "montage banao, beat sync karo, rgb split lagao",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "4:5 karo, cool tone, light leak aur sticker",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "freeze frame at 3 sec, flash, whoosh sound",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "remove silence, j cut, crossfade and music",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "highlights banao, vertical, captions, music aur 15 sec",
+    "recall": 0.8,
+    "exact": false,
+    "missing": [
+     "fit_to_duration"
+    ],
+    "extra": []
+   },
+   {
+    "prompt": "stabilize, auto enhance, cinematic look and letterbox",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "count down from 3, then pop text 'GO' and shake",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "thumbnail at 2 sec, srt file and mp3",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "boomerang, saturation badhao, neon text 'Party'",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "picture in picture, karaoke captions, ducking",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "trim 2 to 20 sec, black and white, slow motion, music, fade out",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   },
+   {
+    "prompt": "16:9 karo, blur sides, title 'Vlog 1', crossfade, music, captions",
+    "recall": 0.83,
+    "exact": false,
+    "missing": [
+     "blur_background_fill"
+    ],
+    "extra": [
+     "blur"
+    ]
+   },
+   {
+    "prompt": "scenes alag karo, har cut pe flash aur whoosh",
+    "recall": 1.0,
+    "exact": true,
+    "missing": [],
+    "extra": []
+   }
+  ]
+ },
+ "contradictory": [
+  {
+   "prompt": "music lagao aur music mat lagao",
+   "ok": true,
+   "calls": [
+    "add_music"
+   ],
+   "negated": [
+    "add_music"
+   ]
+  },
+  {
+   "prompt": "zoom in and zoom out",
+   "ok": true,
+   "calls": [
+    "zoom_in"
+   ],
+   "negated": []
+  },
+  {
+   "prompt": "black and white but keep only red",
+   "ok": true,
+   "calls": [
+    "grayscale",
+    "color_pop"
+   ],
+   "negated": []
+  },
+  {
+   "prompt": "slow motion aur 2x speed",
+   "ok": true,
+   "calls": [
+    "slow_motion",
+    "speed_up"
+   ],
+   "negated": []
+  },
+  {
+   "prompt": "captions lagao, captions mat lagao",
+   "ok": true,
+   "calls": [
+    "auto_captions"
+   ],
+   "negated": [
+    "auto_captions"
+   ]
+  }
+ ],
+ "unsupported": [
+  {
+   "prompt": "remove the background and put me on the moon",
+   "refused": true,
+   "wrong_calls": [],
+   "not_available_yet": [
+    "background_removal"
+   ],
+   "nearest": [
+    "replace_audio",
+    "stabilize",
+    "jump_cut_tighten"
+   ],
+   "has_3": true
+  },
+  {
+   "prompt": "make my face look younger",
+   "refused": true,
+   "wrong_calls": [],
+   "not_available_yet": [],
+   "nearest": [
+    "vhs_retro",
+    "thumbnail",
+    "jump_cut_tighten"
+   ],
+   "has_3": true
+  },
+  {
+   "prompt": "translate my voice to tamil",
+   "refused": true,
+   "wrong_calls": [],
+   "not_available_yet": [],
+   "nearest": [
+    "duck_music",
+    "caption_style",
+    "voice_clarity"
+   ],
+   "has_3": true
+  },
+  {
+   "prompt": "4k upscale kar do",
+   "refused": true,
+   "wrong_calls": [],
+   "not_available_yet": [
+    "upscale"
+   ],
+   "nearest": [
+    "replace_audio",
+    "stabilize",
+    "hook_first"
+   ],
+   "has_3": true
+  },
+  {
+   "prompt": "ek naya video AI se bana do dragon wala",
+   "refused": false,
+   "wrong_calls": [
+    "merge_clips"
+   ],
+   "not_available_yet": [],
+   "nearest": [],
+   "has_3": false
+  }
+ ]
+}

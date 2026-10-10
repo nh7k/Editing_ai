@@ -1,0 +1,110 @@
+# written by skills/tools/write_tier1_stylize.py — edit this file directly from now on
+id: light_leak
+seed: 69
+category: stylize
+name: Light leak
+name_hi: Roshni ka leak
+description: A moving warm glow (procedural, own maths) washes over the picture.
+params:
+  color:
+    type: color
+    default: '#FF7A18'
+    extract: color
+    desc: colour
+  strength:
+    type: number
+    default: 1.0
+    min: 0.3
+    max: 2.0
+    extract: magnitude
+    desc: how strong
+  duration:
+    type: number
+    default: 2.0
+    min: 0.5
+    max: 10
+    unit: s
+    extract: seconds
+    desc: how long
+time_modes:
+- whole
+- between_times
+- at_time
+- on_scene_change
+builder: stylize.light_leak
+graph: gradients (radial, moving) + screen blend
+media3:
+  status: custom_shader
+  how: a GlEffect fragment shader port — NOT TESTED
+stage: overlay
+conflicts: []
+cost: cheap
+licence: 'own code; FFmpeg filters (server process); shapes drawn with Pillow (MIT-CMU); emoji font: Noto Color Emoji (OFL)
+  on the server'
+changes_duration: false
+needs: []
+variant_axes:
+  color:
+  - orange
+  - pink
+  - gold
+  length:
+  - 1s
+  - 2s
+  - 4s
+synonyms:
+  en:
+  - light leak
+  - light leaks
+  - film burn
+  - warm glow
+  - lens leak
+  - flare
+  - sun leak
+  hinglish:
+  - roshni ka leak
+  - light leak lagao
+  - garam roshni
+  - film burn wala
+  - roshni ki lehar
+  - chamakti roshni
+  - sunehri roshni
+  hi:
+  - रोशनी का लीक
+  - लाइट लीक
+  - गर्म रोशनी
+  slang:
+  - dreamy wali roshni
+  typos:
+  - lite leak
+  - light leek
+  - lightleak
+negations:
+- light leak mat lagao
+examples:
+- prompt: add a light leak
+  lang: en
+- prompt: pink light leak at the start
+  lang: en
+  params:
+    color: '#FF2D92'
+- prompt: लाइट लीक लगाओ
+  lang: hi
+- prompt: roshni ka leak lagao
+  lang: hinglish
+- prompt: film burn wala effect
+  lang: hinglish
+- prompt: lite leak
+  lang: typo
+- prompt: sapne jaisi roshni
+  lang: vague
+- prompt: light leak aur warm
+  lang: multi
+  also:
+  - warm
+test:
+  check: warm_glow
+  time:
+    mode: between_times
+    start: 1.0
+    end: 3.0

@@ -1,0 +1,55 @@
+# HELD-OUT prompts for the skill matcher: written separately from the registry synonyms / examples and NOT used to
+# tune them. 8 per Tier 1 skill (English, Devanagari Hindi, Hinglish, typos). Scored by eval/run_skill_eval.py.
+per_skill:
+  zoom_in: ["slowly push into the scene", "धीरे धीरे ज़ूम करो", "camera ko andar le jao zoom karke", "zooom in thoda", "add a gentle zoom on the face", "photo pe ken burns lagao", "zoom effect daalo intro me", "zoom in please"]
+  punch_in: ["punch in on the punchline", "jhatke se zoom on the drop", "quick punch zoom", "hit zoom on every beat", "punchin on key words", "beat pe punch in", "zoom hit when he laughs", "fast zoom hit"]
+  shake: ["shake the screen on the drop", "स्क्रीन हिलाओ", "thoda shake daal do", "earthquake shake jab bass aaye", "add camera shake", "shaky cam effect", "sheke effect", "hila do video ko"]
+  slow_motion: ["make it slow mo", "स्लो मोशन कर दो", "slow motion me chalao", "slomo the jump", "half speed slow motion", "slow-mo at the end", "dheere dheere chalao video", "slow motin please"]
+  speed_up: ["make it faster", "तेज़ करो", "speed thodi badhao", "pace up the edit", "fastr cuts chahiye", "video jaldi chale", "too slow, speed up", "thoda fast karo bhai"]
+  crossfade: ["smooth dissolves between clips", "smooth transitions chahiye", "crossfade between shots", "मिक्स होके बदले", "crosfade lagao", "blend the clips together", "dissolve transition", "soft transitions please"]
+  fade_black: ["fade in at the start and fade out at the end", "फेड इन फेड आउट", "end me fade out", "fade to black at the end", "shuru me fade in", "faed out at the end", "fade transitions", "fade lagao"]
+  whip: ["whip pan between clips", "swipe transition", "slide transitions", "whoosh slide between shots", "wip pan effect", "slide karke badle clips", "swipe wala transition", "fast slide transitions"]
+  hard_cuts: ["no transitions at all", "transition hata do", "hard cuts only please", "remove all transitions", "seedha cut, transition nahi", "बिना ट्रांजिशन", "straight cuts", "no transitons"]
+  look_warm: ["make the colours warmer", "गर्म रंग कर दो", "warm tone chahiye", "golden warm look", "colour thoda warm", "warmm colours", "sunset jaisa warm color", "warm color grading"]
+  look_bw: ["make it black and white", "ब्लैक एंड व्हाइट कर दो", "kala safed video", "grayscale please", "b&w filter", "blak n white", "black and white look", "monochrome kar do"]
+  look_cinematic: ["give it a cinematic grade", "सिनेमैटिक बना दो", "movie jaisa look", "teal and orange colour", "cinamatic look", "hollywood style color", "film look chahiye", "cinematic colour karo"]
+  look_vintage: ["make it look vintage", "पुराना लुक दो", "retro colours", "vintage filter", "old photo look", "vintge look", "purani film jaisa colour", "faded retro look"]
+  look_vivid: ["make the colours more vibrant", "रंग चटकीले करो", "colours ko pop karao", "saturated colours", "vivid look", "vibrent colors", "rang tez kar do", "punchy colours"]
+  brightness: ["video is too dark, brighten it", "रोशनी बढ़ाओ", "thoda bright kar do", "increase brightness", "brite karo", "andhera hai, bright karo", "make it brighter", "brightness up"]
+  captions: ["add subtitles", "कैप्शन लगा दो", "subtitle daal do", "auto captions please", "captons lagao", "jo bol raha hai wo neeche likho", "add captions in 3 words", "text of the speech on screen"]
+  title_text: ["write 'GOA 2026' at the start", "start me 'MERA SAFAR' likho", "title 'Day One'", "'WOW' likh do upar", "add a title saying 'Summer'", "शुरू में 'हैलो' लिखो", "heading 'Trip' daalo", "titel 'My Vlog'"]
+  end_text: ["end with 'Thanks for watching'", "last me 'Follow karo' likh do", "closing text 'The End'", "end me text 'Bye'", "aakhir me 'Subscribe' likho", "end txt 'see you'", "at the end write 'Fin'", "last me 'The End' daal do"]
+  kinetic_words: ["show the lyrics on screen", "gaane ke lyrics dikhao", "words on the beat", "lyrics edit banao", "kinetic typography", "lyrcs on screen", "song ke words screen pe", "lyric video"]
+  text_style: ["hormozi captions", "neon text style", "comic font", "desi bold text", "poster style words", "minimal clean text", "handwritten font", "gaming font"]
+  text_color: ["make the text yellow", "टेक्स्ट लाल करो", "text ka rang white", "captions green karo", "text colr blue", "white text", "text black karo", "subtitles yellow"]
+  text_size: ["make the text bigger", "टेक्स्ट बड़ा करो", "font bada karo", "text chhota karo", "larger text", "text bda", "words bade karo", "smaller captions"]
+  word_stickers: ["add stickers of what I say", "जो बोलूं उसके स्टिकर", "emoji daal do baaton ke", "stikers for the words", "emoji stickers", "jo bol raha hu uska emoji", "sticker lagao jo bole", "emojis for things I mention"]
+  moment_sticker: ["add rose here", "yaha gulab lagao", "put a heart sticker here", "yaha phool daal do", "tree dikhao yaha", "rose daal do yaha", "heart sticker here", "yaha dil lagao"]
+  target_duration: ["make it 20 seconds", "15 सेकंड का बना दो", "das second ka video", "trim to 30 secs", "1 minute ka video", "aadha minute ki reel", "pandrah second", "45 sec long"]
+  shorter: ["make it shorter", "थोड़ा छोटा करो", "video lamba hai chhota karo", "cut it down a bit", "shoter please", "bahut lamba hai", "thoda chhota", "reduce the length"]
+  remove_silence: ["cut out the pauses", "चुप वाले हिस्से हटाओ", "silence hata do", "remove dead air", "remov silense", "khamoshi wale part kaato", "remove silent parts", "jump cut the silences"]
+  remove_fillers: ["remove the ums and uhs", "um aa hata do", "cut filler words", "filer words remove karo", "remove fillers", "umm hatao", "no filler words", "clean up the umms please"]
+  aspect: ["make it vertical", "9:16 kar do", "square format", "landscape 16:9", "insta reel size", "youtube shorts size", "वर्टिकल बनाओ", "vertcal video"]
+  beat_cuts: ["cut on the beat", "beat pe cut karo", "sync cuts to the music", "beat sync edit", "beet sync", "gaane ki beat pe cuts", "cuts on every beat", "beat matching"]
+  hook_first: ["start with the best part", "best part pehle", "strong hook at the start", "shuruat dhamakedar", "hook first", "best moment shuru me", "open with the highlight", "hok at start"]
+  drop_clip: ["remove the first clip", "pehla clip hata do", "drop the last video", "dusra clip nikal do", "aakhri video mat dikhao", "remove clip 2", "last wala clip hata do", "teesra clip hatao"]
+  remove_boring: ["cut the boring parts", "boring hissa hata do", "remove dull bits", "faltu part kaato", "bekaar wala part nikal do", "boaring parts remove", "cut the slow boring bits", "remove the dead parts"]
+  music: ["add some music", "गाना लगाओ", "upbeat song daalo", "calm background music", "bgm lagao", "musik add karo", "romantic gaana peeche", "party music"]
+  no_music: ["remove the music", "गाना हटा दो", "music nahi chahiye", "no background music", "gaana band karo", "no musik", "without music", "music hatao"]
+  music_level: ["lower the music", "music thoda kam karo", "gaane ki awaaz kam", "make the music softer", "music volume down", "gaana dheema karo", "music louder", "gaana tez karo"]
+  voice_clean: ["clean up the audio", "आवाज़ साफ़ करो", "noise hatao", "remove background noise", "clen audio", "awaaz saaf kar do", "denoise the voice", "shor kam karo"]
+  voice_louder: ["make the voice louder", "awaaz badhao", "voice tej karo", "boost the dialogue", "voise louder", "bolne wali awaaz tez", "louder voice", "speech louder"]
+  sound_back: ["bring the audio back", "audio wapas lao", "awaaz nahi aa rahi", "unmute the video", "original sound back", "pehle jaisa audio", "audo back", "sound wapas"]
+  ducking: ["duck the music under the voice", "bolte waqt gaana dheema", "music ducking", "lower music when talking", "duking please", "awaaz ke neeche music", "duck music", "music under the speech"]
+multi_skill:
+  - {prompt: "15 sec ka vertical reel, captions, warm colour, upbeat music aur best part pehle", expect: [target_duration, aspect, captions, look_warm, music, hook_first]}
+  - {prompt: "black and white, slow motion, no music, fade in fade out and remove silences", expect: [look_bw, slow_motion, no_music, fade_black, remove_silence]}
+  - {prompt: "zoom karo, shake daalo, glitch transitions, text bada karo aur gaana hata do", expect: [zoom_in, shake, glitch_transition, text_size, no_music]}
+contradictory:
+  - {prompt: "music lagao aur music mat lagao", note: "must not crash; either is acceptable, the explain card must say what was done"}
+  - {prompt: "fast bhi aur slow bhi", note: "must not crash"}
+  - {prompt: "black and white but very colourful", note: "must not crash"}
+unsupported:
+  - {prompt: "remove the background and put me on the moon"}
+  - {prompt: "4k upscale kar do"}
+  - {prompt: "make my face look younger"}

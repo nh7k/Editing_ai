@@ -1,0 +1,117 @@
+# written by skills/tools/write_tier1_motion.py — edit this file directly from now on
+id: ken_burns
+seed: 29
+category: motion
+name: Ken Burns
+name_hi: Photo animate karo
+description: 'Slow pan + zoom (meant for photos; works on video too). direction: in, out, left, right, up, down.'
+params:
+  direction:
+    type: choice
+    choices:
+    - in
+    - out
+    - left
+    - right
+    - up
+    - down
+    default: in
+    extract: direction
+    desc: where it drifts
+  amount:
+    type: number
+    default: 0.2
+    min: 0.05
+    max: 0.5
+    extract: magnitude
+    desc: how far
+time_modes:
+- whole
+- segment
+- between_times
+- intermittent
+builder: motion.ken_burns
+graph: keyframed scale + translate (linear)
+media3:
+  status: mapped
+  how: MatrixTransformation whose matrix is the same eased keyframes per frame
+  reason: NOT TESTED on a device
+stage: geometry
+conflicts:
+- zoom_in
+- zoom_out
+cost: cheap
+licence: own code (engines/motion.py easings); FFmpeg filters (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  direction:
+  - in
+  - out
+  - left
+  - right
+  amount:
+  - '0.1'
+  - '0.2'
+  - '0.35'
+synonyms:
+  en:
+  - ken burns
+  - animate the photo
+  - slow pan and zoom
+  - photo motion
+  - pan and zoom
+  - documentary zoom
+  - move the still
+  hinglish:
+  - photo ko hilao
+  - photo animate karo
+  - photo me motion
+  - photo pe ken burns
+  - tasveer chalao
+  - photo dheere zoom
+  - still ko move karo
+  hi:
+  - फोटो एनिमेट करो
+  - केन बर्न्स
+  - तस्वीर चलाओ
+  slang:
+  - photo me jaan daalo
+  typos:
+  - ken burn
+  - kenburns
+  - ken barns
+negations:
+- ken burns mat lagao
+examples:
+- prompt: add a ken burns effect
+  lang: en
+- prompt: ken burns to the right
+  lang: en
+  params:
+    direction: right
+- prompt: फोटो एनिमेट करो
+  lang: hi
+- prompt: photo animate karo
+  lang: hinglish
+- prompt: photo pe ken burns left me
+  lang: hinglish
+  params:
+    direction: left
+- prompt: ken burn
+  lang: typo
+- prompt: photos boring lag rahi hain
+  lang: vague
+- prompt: ken burns aur music
+  lang: multi
+  also:
+  - add_music
+test:
+  check: scale_increases
+  params:
+    direction: in
+    amount: 0.3
+  time:
+    mode: between_times
+    start: 1.0
+    end: 3.0

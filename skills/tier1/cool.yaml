@@ -1,0 +1,90 @@
+# written by skills/tools/write_tier1_color.py — edit this file directly from now on
+id: cool
+seed: 43
+category: color
+name: Cooler
+name_hi: Thanda tone
+description: Cooler colour temperature (more blue).
+same_engine_as: warm
+params:
+  amount:
+    type: number
+    default: 0.5
+    min: 0.05
+    max: 1.0
+    extract: magnitude
+    desc: how cool
+time_modes:
+- whole
+- segment
+- between_times
+- intermittent
+builder: color.cool
+graph: colortemperature
+media3:
+  status: custom_shader
+  how: white-balance matrix (RgbMatrix) — NOT TESTED
+stage: color
+conflicts:
+- warm
+cost: cheap
+licence: own code; generated LUTs (own maths); FFmpeg filters (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  amount:
+  - light
+  - normal
+  - strong
+synonyms:
+  en:
+  - cool
+  - cooler
+  - cool tone
+  - blue tone
+  - cold look
+  - icy
+  - winter look
+  hinglish:
+  - thanda tone
+  - cool karo
+  - neela pan
+  - blue tone do
+  - sardi jaisa
+  - thanda look
+  - cool color
+  hi:
+  - ठंडा रंग
+  - नीला टोन
+  - कूल करो
+  slang:
+  - chill blue
+  typos:
+  - cooll
+  - kool tone
+  - cul
+negations:
+- cool mat karo
+examples:
+- prompt: make it cooler
+  lang: en
+- prompt: blue tone please
+  lang: en
+- prompt: ठंडा रंग कर दो
+  lang: hi
+- prompt: thanda tone do
+  lang: hinglish
+- prompt: thoda cool karo
+  lang: hinglish
+  params:
+    amount: 0.25
+- prompt: kool tone
+  lang: typo
+- prompt: sardi wali feel
+  lang: vague
+- prompt: cool karo aur grain daalo
+  lang: multi
+  also:
+  - film_grain
+test:
+  check: cooler

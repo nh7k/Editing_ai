@@ -1,0 +1,183 @@
+# Built-in edit templates (the Templates tab). Each one is a professional brief the agents understand
+# (tests/unit/test_templates.py checks that every prompt is understood and what it turns into).
+# "My templates" made from Copy an Edit live in data/templates/ instead.
+templates:
+  - id: tpl_velocity
+    name: Velocity Fan Edit
+    category: Sports
+    description: Fast cuts on the beat, a stutter and a speed ramp, old-movie B&W shots, flashes, big name titles.
+    tags: [fast, beat, fan edit]
+    duration: 15
+    aspect: "9:16"
+    colors: ["#0b0b0b", "#f2f2f2"]
+    prompt: "Fan edit of the player, 15 seconds, 9:16"
+
+  - id: tpl_highlights
+    name: Highlight Reel
+    category: Sports
+    description: The best moments only, quick cuts, punchy music, open on the strongest shot.
+    tags: [highlights, quick]
+    duration: 30
+    aspect: "16:9"
+    colors: ["#0f3d2e", "#c8f169"]
+    prompt: "Highlights video, 30 seconds, 16:9, best moments first, fast cuts, upbeat music, vivid colors"
+
+  - id: tpl_slowmo_hero
+    name: Slow-mo Hero
+    category: Sports
+    description: Dramatic slow motion, cinema bars, teal & orange grade, calm music.
+    tags: [slow motion, dramatic]
+    duration: 20
+    aspect: "16:9"
+    colors: ["#0e3b4a", "#f08a3c"]
+    prompt: "Slow motion, cinematic, teal and orange, cinema bars, calm music, 20 seconds"
+
+  - id: tpl_travel_diary
+    name: Travel Diary
+    category: Travel
+    description: Shots that breathe (~4 s), warm golden grade, soft crossfades, calm music.
+    tags: [travel, calm]
+    duration: 30
+    aspect: "9:16"
+    colors: ["#f5b041", "#7d3c98"]
+    prompt: "Travel edit, 30 seconds, 9:16, golden hour look, crossfade transitions, calm music, slow motion at the end"
+
+  - id: tpl_road_trip
+    name: Road Trip Montage
+    category: Travel
+    description: Energetic montage cut to the beat, vivid colours, zoom punches.
+    tags: [montage, beat]
+    duration: 20
+    aspect: "9:16"
+    colors: ["#1abc9c", "#f4d03f"]
+    prompt: "Montage, 20 seconds, 9:16, fast cuts on the beat, upbeat music, vivid colors, beat pulse"
+
+  - id: tpl_daily_vlog
+    name: Daily Vlog
+    category: Vlog
+    description: Silences and filler words removed, captions, light zoom-ins on emphasis.
+    tags: [vlog, captions]
+    duration: 0
+    aspect: "9:16"
+    colors: ["#ff6b6b", "#ffe66d"]
+    prompt: "Vlog, remove silence, remove filler words, add captions, punch in on emphasis, 9:16"
+
+  - id: tpl_talking_pro
+    name: Talking Head Pro
+    category: Vlog
+    description: Clean voice, word-by-word karaoke captions, jump cuts hidden with punch-ins.
+    tags: [podcast, captions]
+    duration: 0
+    aspect: "9:16"
+    colors: ["#111827", "#facc15"]
+    prompt: "Remove silence, remove background noise, karaoke captions, punch in on emphasis, 9:16"
+
+  - id: tpl_trailer
+    name: Movie Trailer
+    category: Cinematic
+    description: Cinema bars, teal & orange, dramatic titles, slow-motion ending.
+    tags: [cinematic, trailer]
+    duration: 30
+    aspect: "16:9"
+    colors: ["#1b2631", "#e67e22"]
+    prompt: "Movie trailer, cinematic, teal and orange, cinema bars, fade transitions, calm music, slow motion at the end, 30 seconds"
+
+  - id: tpl_old_movie
+    name: Old Movie
+    category: Cinematic
+    description: Old-movie black & white, film grain, vignette, fades.
+    tags: [vintage, b&w]
+    duration: 0
+    aspect: "16:9"
+    colors: ["#2b2b2b", "#d9d2c5"]
+    prompt: "Old movie black and white look, film grain, vignette, fade transitions"
+
+  - id: tpl_moody
+    name: Moody Blue
+    category: Cinematic
+    description: Dark desaturated blues, slow pace, calm music.
+    tags: [moody, calm]
+    duration: 20
+    aspect: "9:16"
+    colors: ["#1f2a44", "#5d7b9d"]
+    prompt: "Moody blue look, crossfade transitions, calm music, 20 seconds, 9:16"
+
+  - id: tpl_insta_hook
+    name: Insta Reel Hook
+    category: Social
+    description: 9:16, the best moment first, pop captions, -14 LUFS, 15 s.
+    tags: [reel, hook]
+    duration: 15
+    aspect: "9:16"
+    colors: ["#833ab4", "#fd1d1d"]
+    prompt: "Instagram reel, 15 seconds, fast cuts, pop text, upbeat music"
+
+  - id: tpl_shorts
+    name: YouTube Short
+    category: Social
+    description: 30 s vertical short, fast pace, captions if people talk.
+    tags: [shorts, fast]
+    duration: 30
+    aspect: "9:16"
+    colors: ["#ff0000", "#282828"]
+    prompt: "YouTube shorts, 30 seconds, fast cuts, captions, upbeat music"
+
+  - id: tpl_beat_sync
+    name: Beat Sync Montage
+    category: Music
+    description: Every cut on a beat of the song, beat pulse zooms, no text.
+    tags: [beat, music]
+    duration: 20
+    aspect: "9:16"
+    colors: ["#00c9ff", "#92fe9d"]
+    prompt: "Cut on the beat, upbeat music, beat pulse, fast cuts, 20 seconds, 9:16"
+
+  - id: tpl_lyrics
+    name: Lyrics Edit
+    category: Music
+    description: The song's words on screen, cuts that follow the song, uses your uploaded song.
+    tags: [lyrics, song]
+    duration: 0
+    aspect: "9:16"
+    colors: ["#ee0979", "#ff6a00"]
+    prompt: "Use my song, lyrics on screen, cut on the beat, 9:16"
+
+  - id: tpl_lyric_poster
+    name: Lyric Poster
+    category: Music
+    description: The song's words as huge poster letters (red, black, yellow) behind the people, a heart when love is sung, push-in + shake on every shot, the last shot black & white.
+    tags: [lyrics, song, poster, love]
+    duration: 0
+    aspect: "9:16"
+    colors: ["#E10600", "#FFE600"]
+    prompt: "Use my song, lyrics on screen, poster style text, text behind the person, stickers of the words, zoom and shake, last shot black and white, 9:16"
+
+  - id: tpl_memories
+    name: Memories
+    category: Emotional
+    description: Faded film look, soft crossfades, calm music, slow-motion ending.
+    tags: [emotional, family]
+    duration: 30
+    aspect: "9:16"
+    colors: ["#f7cac9", "#92a8d1"]
+    prompt: "Memories edit, faded film look, crossfade transitions, calm music, slow motion at the end, 30 seconds"
+
+  - id: tpl_vhs
+    name: Vintage VHS
+    category: Aesthetic
+    description: 90s tape look — colour bleed, scanlines, grain.
+    tags: [retro, vhs]
+    duration: 0
+    aspect: "9:16"
+    colors: ["#6a0572", "#ab83a1"]
+    prompt: "VHS look, film grain, upbeat music"
+
+  - id: tpl_neon
+    name: Neon Night
+    category: Aesthetic
+    description: Cyberpunk magenta & cyan, glitch transitions, beat pulse.
+    tags: [neon, night]
+    duration: 15
+    aspect: "9:16"
+    colors: ["#ff00cc", "#00e5ff"]
+    prompt: "Cyberpunk look, glitch, beat pulse, fast cuts on the beat, upbeat music, 15 seconds, 9:16"

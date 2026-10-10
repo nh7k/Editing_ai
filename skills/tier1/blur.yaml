@@ -1,0 +1,95 @@
+# written by skills/tools/write_tier1_color.py — edit this file directly from now on
+id: blur
+seed: 50
+category: color
+name: Blur
+name_hi: Dhundhla karo
+description: Gaussian-like blur of the whole frame (for a region use blur_box_censor).
+params:
+  radius:
+    type: number
+    default: 6
+    min: 1
+    max: 20
+    extract: magnitude
+    desc: blur radius
+time_modes:
+- whole
+- segment
+- between_times
+- intermittent
+builder: color.blur
+graph: boxblur
+media3:
+  status: mapped
+  how: GaussianBlur(sigma) effect (Media3 1.4+)
+stage: color
+conflicts:
+- sharpen
+cost: cheap
+licence: own code; generated LUTs (own maths); FFmpeg filters (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  radius:
+  - '2'
+  - '6'
+  - '12'
+synonyms:
+  en:
+  - blur
+  - blurry
+  - soft focus
+  - defocus
+  - out of focus
+  - make it blurry
+  - blur effect
+  hinglish:
+  - dhundhla karo
+  - blur lagao
+  - dhundh
+  - dhundhla sa
+  - blur kar do
+  - saaf na dikhe
+  - halka blur
+  hi:
+  - धुंधला
+  - धुंधला करो
+  - ब्लर करो
+  slang:
+  - dream jaisa dhundh
+  typos:
+  - blurr
+  - bluer
+  - blr
+negations:
+- blur mat karo
+- blur hatao
+examples:
+- prompt: blur the video
+  lang: en
+- prompt: blur from 1 to 3 seconds
+  lang: en
+  time:
+    start: 1
+    end: 3
+- prompt: धुंधला करो
+  lang: hi
+- prompt: blur lagao
+  lang: hinglish
+- prompt: end me dhundhla kar do
+  lang: hinglish
+- prompt: blurr it
+  lang: typo
+- prompt: sapne jaisa
+  lang: vague
+- prompt: blur aur fade out
+  lang: multi
+  also:
+  - fade_black
+test:
+  check: edges_down
+  time:
+    mode: between_times
+    start: 1.0
+    end: 3.0

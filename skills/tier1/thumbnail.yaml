@@ -1,0 +1,89 @@
+# written by skills/tools/write_tier1_delivery.py — edit this file directly from now on
+id: thumbnail
+seed: 104
+category: delivery
+name: Thumbnail
+name_hi: Cover photo
+description: A cover image (JPG) from a moment of the edit, next to the video.
+params:
+  at:
+    type: number
+    min: 0
+    max: 36000
+    unit: s
+    extract: time_point
+    desc: which moment (default a third in)
+time_modes:
+- whole
+builder: delivery.thumbnail
+graph: one frame of the final video → JPG
+media3:
+  status: mapped
+  how: MediaMetadataRetriever.getFrameAtTime
+stage: export
+conflicts: []
+cost: cheap
+licence: own code; FFmpeg (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  moment:
+  - start
+  - third
+  - best
+synonyms:
+  en:
+  - thumbnail
+  - cover image
+  - cover photo
+  - poster frame
+  - make a thumbnail
+  - video cover
+  - preview image
+  hinglish:
+  - cover photo banao
+  - thumbnail chahiye
+  - cover image do
+  - thumbnail banao
+  - photo nikalo cover ke liye
+  - poster frame do
+  - video ka cover
+  hi:
+  - थंबनेल
+  - कवर फोटो
+  - कवर इमेज
+  slang:
+  - dp jaisa cover
+  typos:
+  - thumnail
+  - thumbnial
+  - cover foto
+negations:
+- thumbnail mat banao
+examples:
+- prompt: make a thumbnail
+  lang: en
+- prompt: cover image from 3 seconds
+  lang: en
+  params:
+    at: 3.0
+- prompt: थंबनेल बनाओ
+  lang: hi
+- prompt: cover photo banao
+  lang: hinglish
+- prompt: 2 sec pe thumbnail
+  lang: hinglish
+  params:
+    at: 2.0
+- prompt: thumnail
+  lang: typo
+- prompt: youtube ke liye cover
+  lang: vague
+- prompt: thumbnail aur mp3
+  lang: multi
+  also:
+  - extract_audio
+test:
+  check: thumbnail_file
+  params:
+    at: 2.0

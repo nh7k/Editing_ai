@@ -1,0 +1,42 @@
+id: picture_in_picture
+seed: 83
+category: layout
+name: Picture in picture
+name_hi: Kone me chhota video
+description: Another clip, small, in a corner (reaction video), with a thin white border. The edit's own sound continues.
+params:
+  clip: {type: string, extract: clip_ref, desc: the small clip (default the first clip not in the edit)}
+  position: {type: choice, choices: [top_left, top_right, bottom_left, bottom_right, center], default: top_right, extract: position, desc: corner}
+  size: {type: number, default: 0.32, min: 0.15, max: 0.6, extract: percent, desc: width (share of the frame)}
+  src_in: {type: number, default: 0, min: 0, max: 36000, unit: s, desc: where in the small clip to start}
+time_modes: [whole, between_times]
+builder: layout.picture_in_picture
+graph: second input → scale/crop to the box → pad border → overlay (enabled in the window)
+media3: {status: mapped, how: "Composition with two sequences + VideoCompositorSettings (overlay position/scale), Media3 1.4+", reason: "NOT TESTED on a device"}
+stage: overlay
+conflicts: []
+cost: medium
+licence: own code; FFmpeg overlay (server process)
+changes_duration: false
+needs: [two_clips]
+variant_axes:
+  corner: [top_left, top_right, bottom_left, bottom_right]
+  size: [small, medium, large]
+  border: [none, white]
+synonyms:
+  en: [picture in picture, pip, small video in the corner, reaction video, overlay video, inset video, mini video]
+  hinglish: [chhota video kone me, kone me video, reaction video banao, upar kone me doosra video, pip lagao, chhoti window me video, ek ke upar ek video]
+  hi: [कोने में छोटा वीडियो, रिएक्शन वीडियो, छोटी विंडो]
+  slang: [reaction wala, small in the corner]
+  typos: [pic in pic, pipp, reacton video]
+negations: [pip mat lagao, chhota video hatao]
+examples:
+  - {prompt: "picture in picture with clip 2", lang: en, params: {clip: "#2"}}
+  - {prompt: "put the second video small in the bottom left corner", lang: en, params: {position: bottom_left}}
+  - {prompt: "कोने में छोटा वीडियो लगाओ", lang: hi}
+  - {prompt: "reaction video banao", lang: hinglish}
+  - {prompt: "upar right kone me chhota video", lang: hinglish, params: {position: top_right}}
+  - {prompt: "pic in pic", lang: typo}
+  - {prompt: "mera reaction bhi dikhe saath me", lang: vague}
+  - {prompt: "pip lagao aur captions", lang: multi, also: [auto_captions]}
+test: {check: pip_corner, media: tones, params: {position: top_right, size: 0.3}}

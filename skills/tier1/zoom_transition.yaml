@@ -1,0 +1,93 @@
+# written by skills/tools/write_tier1_transitions.py — edit this file directly from now on
+id: zoom_transition
+seed: 22
+category: transitions
+name: Zoom transition
+name_hi: Zoom karke badlo
+description: Zoom into the cut and land on the next shot. Each overlap makes the video that much shorter.
+params:
+  duration:
+    type: number
+    default: 0.6
+    min: 0.15
+    max: 2.0
+    unit: s
+    extract: seconds
+    desc: length
+  cut:
+    type: integer
+    min: 1
+    max: 500
+    extract: cut_number
+    desc: which cut (default every cut)
+time_modes:
+- whole
+- between_times
+builder: transitions.zoom_transition
+graph: xfade=zoomin + acrossfade (tri)
+media3:
+  status: custom_shader
+  how: a GlEffect over the overlap of two sequences (Composition) — NOT TESTED
+stage: structure
+conflicts:
+- crossfade
+cost: cheap
+licence: own code; FFmpeg xfade / gblur / rgbashift (server process); whoosh generated
+changes_duration: true
+needs:
+- two_clips
+variant_axes:
+  duration:
+  - 0.4s
+  - 0.8s
+synonyms:
+  en:
+  - zoom transition
+  - zoom through
+  - zoom cut
+  - zoom into the next
+  - punch transition
+  - zoom blur transition
+  - zoom between
+  hinglish:
+  - zoom karke badlo
+  - zoom wala transition
+  - zoom se badle
+  - andar ghus ke badle
+  - zoom transition do
+  - zoom kat
+  - zoom karke agla
+  hi:
+  - ज़ूम ट्रांज़िशन
+  - ज़ूम करके बदलो
+  slang:
+  - travel wala zoom
+  typos:
+  - zoom transtion
+  - zom transition
+  - zoom transision
+negations:
+- zoom transition mat lagao
+examples:
+- prompt: zoom transition
+  lang: en
+- prompt: zoom through to the next clip
+  lang: en
+- prompt: ज़ूम करके बदलो
+  lang: hi
+- prompt: zoom karke badlo
+  lang: hinglish
+- prompt: zoom wala transition do
+  lang: hinglish
+- prompt: zom transition
+  lang: typo
+- prompt: travel vlog jaisa transition
+  lang: vague
+- prompt: zoom transition aur beat sync
+  lang: multi
+  also:
+  - beat_sync
+test:
+  check: differs_mid
+  params:
+    duration: 0.8

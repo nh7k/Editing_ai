@@ -1,0 +1,1058 @@
+# Tier 3: not built yet (or blocked). Each says what it needs. Planned skills are never matched for an edit.
+skills:
+- id: freeze_frame
+  tier: 3
+  category: motion
+  name: Freeze frame
+  description: hold one frame for N s (needs a segment-split op in the cutter)
+  synonyms:
+    en:
+    - freeze frame
+    - pause the frame
+    hinglish:
+    - frame rok do
+    - yaha ruk jaye
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: hold one frame for N s (needs a segment-split op in the cutter)
+  stage: geometry
+  conflicts: []
+  cost: cheap
+  media3: not designed yet
+  licence: own code (FFmpeg tpad/loop)
+  preview: n/a
+  examples:
+  - add freeze frame
+  - frame rok do
+  - freeze frame please
+  - use pause the frame
+  - freeze frame on the intro
+  status: planned
+- id: time_remap
+  tier: 3
+  category: motion
+  name: Time remap curve
+  description: arbitrary speed curve per shot (generalises speed_ramp)
+  synonyms:
+    en:
+    - time remap
+    - speed curve
+    hinglish:
+    - speed curve banao
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: arbitrary speed curve per shot (generalises speed_ramp)
+  stage: geometry
+  conflicts: []
+  cost: medium
+  media3: not designed yet
+  licence: own code
+  preview: n/a
+  examples:
+  - add time remap
+  - speed curve banao
+  - time remap please
+  - use speed curve
+  - time remap on the intro
+  status: planned
+- id: bounce_loop
+  tier: 3
+  category: motion
+  name: Bounce loop (boomerang)
+  description: forward + reverse loop of a short moment
+  synonyms:
+    en:
+    - boomerang
+    - bounce loop
+    hinglish:
+    - boomerang banao
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: forward + reverse loop of a short moment
+  stage: geometry
+  conflicts: []
+  cost: cheap
+  media3: not designed yet
+  licence: own code
+  preview: n/a
+  examples:
+  - add boomerang
+  - boomerang banao
+  - boomerang please
+  - use bounce loop
+  - boomerang on the intro
+  status: planned
+- id: parallax
+  tier: 3
+  category: motion
+  name: Parallax (2.5D)
+  description: needs a depth / person mask per frame; heavy on CPU
+  synonyms:
+    en:
+    - parallax
+    - 2.5d effect
+    hinglish:
+    - 3d jaisa photo
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: needs a depth / person mask per frame; heavy on CPU
+  stage: geometry
+  conflicts: []
+  cost: heavy
+  media3: not designed yet
+  licence: would use PP-HumanSeg (Apache-2.0)
+  preview: n/a
+  examples:
+  - add parallax
+  - 3d jaisa photo
+  - parallax please
+  - use 2.5d effect
+  - parallax on the intro
+  status: planned
+- id: stabilize
+  tier: 3
+  category: motion
+  name: Stabilize
+  description: 'vidstab two-pass (our FFmpeg build has libvidstab, GPL build: server only)'
+  synonyms:
+    en:
+    - stabilize
+    - remove shake
+    - steady
+    hinglish:
+    - hilna band karo
+    - stable karo
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: 'vidstab two-pass (our FFmpeg build has libvidstab, GPL build: server only)'
+  stage: geometry
+  conflicts: []
+  cost: medium
+  media3: not designed yet
+  licence: FFmpeg vidstab (GPL build, server-only)
+  preview: n/a
+  examples:
+  - add stabilize
+  - hilna band karo
+  - stabilize please
+  - use steady
+  - stabilize on the intro
+  status: planned
+- id: split_screen
+  tier: 3
+  category: structure
+  name: Split screen
+  description: two clips side by side / top-bottom
+  synonyms:
+    en:
+    - split screen
+    - side by side
+    hinglish:
+    - do video ek saath
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: two clips side by side / top-bottom
+  stage: structure
+  conflicts: []
+  cost: medium
+  media3: not designed yet
+  licence: own code (FFmpeg hstack/vstack)
+  preview: n/a
+  examples:
+  - add split screen
+  - do video ek saath
+  - split screen please
+  - use side by side
+  - split screen on the intro
+  status: planned
+- id: picture_in_picture
+  tier: 3
+  category: structure
+  name: Picture in picture
+  description: a second clip small in a corner
+  synonyms:
+    en:
+    - picture in picture
+    - pip
+    hinglish:
+    - chhoti window me dusra video
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: a second clip small in a corner
+  stage: structure
+  conflicts: []
+  cost: medium
+  media3: not designed yet
+  licence: own code (FFmpeg overlay)
+  preview: n/a
+  examples:
+  - add picture in picture
+  - chhoti window me dusra video
+  - picture in picture please
+  - use pip
+  - picture in picture on the intro
+  status: planned
+- id: collage
+  tier: 3
+  category: structure
+  name: Grid / collage
+  description: 2x2 / 3x3 grid of clips
+  synonyms:
+    en:
+    - collage
+    - grid
+    hinglish:
+    - collage banao
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: 2x2 / 3x3 grid of clips
+  stage: structure
+  conflicts: []
+  cost: medium
+  media3: not designed yet
+  licence: own code (FFmpeg xstack)
+  preview: n/a
+  examples:
+  - add collage
+  - collage banao
+  - collage please
+  - use grid
+  - collage on the intro
+  status: planned
+- id: intro_outro
+  tier: 3
+  category: structure
+  name: Intro / outro card
+  description: branded opening / closing card
+  synonyms:
+    en:
+    - intro card
+    - outro card
+    - end card
+    hinglish:
+    - intro daalo
+    - outro lagao
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: branded opening / closing card
+  stage: structure
+  conflicts: []
+  cost: cheap
+  media3: not designed yet
+  licence: own code
+  preview: n/a
+  examples:
+  - add intro card
+  - intro daalo
+  - intro card please
+  - use end card
+  - intro card on the intro
+  status: planned
+- id: broll_insert
+  tier: 3
+  category: structure
+  name: B-roll insertion
+  description: cover talking parts with other clips at keywords
+  synonyms:
+    en:
+    - b-roll
+    - broll
+    hinglish:
+    - beech me dusre clips
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: cover talking parts with other clips at keywords
+  stage: structure
+  conflicts: []
+  cost: medium
+  media3: not designed yet
+  licence: own code
+  preview: n/a
+  examples:
+  - add b-roll
+  - beech me dusre clips
+  - b-roll please
+  - use broll
+  - b-roll on the intro
+  status: planned
+- id: censor_box
+  tier: 3
+  category: overlay
+  name: Blur / pixelate box
+  description: 'blur or pixelate a region (face, number plate): needs a box param + tracking'
+  synonyms:
+    en:
+    - censor
+    - blur the face
+    - pixelate box
+    hinglish:
+    - chehra blur karo
+    - number plate chhupao
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: 'blur or pixelate a region (face, number plate): needs a box param + tracking'
+  stage: overlay
+  conflicts: []
+  cost: medium
+  media3: not designed yet
+  licence: own code (FFmpeg boxblur/pixelize with crop+overlay)
+  preview: n/a
+  examples:
+  - add censor
+  - chehra blur karo
+  - censor please
+  - use pixelate box
+  - censor on the intro
+  status: planned
+- id: progress_bar
+  tier: 3
+  category: overlay
+  name: Progress bar
+  description: a bar at the top that fills as the video plays
+  synonyms:
+    en:
+    - progress bar
+    hinglish:
+    - upar line chalti rahe
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: a bar at the top that fills as the video plays
+  stage: overlay
+  conflicts: []
+  cost: cheap
+  media3: not designed yet
+  licence: own code (FFmpeg drawbox with t)
+  preview: n/a
+  examples:
+  - add progress bar
+  - upar line chalti rahe
+  - progress bar please
+  - use progress bar
+  - progress bar on the intro
+  status: planned
+- id: countdown
+  tier: 3
+  category: overlay
+  name: Countdown
+  description: 3-2-1 or a timer on screen
+  synonyms:
+    en:
+    - countdown
+    - timer
+    hinglish:
+    - ulti ginti
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: 3-2-1 or a timer on screen
+  stage: overlay
+  conflicts: []
+  cost: cheap
+  media3: not designed yet
+  licence: own code (ASS)
+  preview: n/a
+  examples:
+  - add countdown
+  - ulti ginti
+  - countdown please
+  - use timer
+  - countdown on the intro
+  status: planned
+- id: lower_third
+  tier: 3
+  category: text
+  name: Lower third / name tag
+  description: name + title bar at the bottom
+  synonyms:
+    en:
+    - lower third
+    - name tag
+    hinglish:
+    - neeche naam ki patti
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: name + title bar at the bottom
+  stage: text
+  conflicts: []
+  cost: cheap
+  media3: not designed yet
+  licence: own code (ASS + drawbox)
+  preview: n/a
+  examples:
+  - add lower third
+  - neeche naam ki patti
+  - lower third please
+  - use name tag
+  - lower third on the intro
+  status: planned
+- id: callout_arrow
+  tier: 3
+  category: overlay
+  name: Arrow / highlight box callout
+  description: an arrow or a box pointing at something
+  synonyms:
+    en:
+    - arrow
+    - highlight box
+    - callout
+    hinglish:
+    - teer lagao
+    - box banao
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: an arrow or a box pointing at something
+  stage: overlay
+  conflicts: []
+  cost: cheap
+  media3: not designed yet
+  licence: own code (generated PNG)
+  preview: n/a
+  examples:
+  - add arrow
+  - teer lagao
+  - arrow please
+  - use callout
+  - arrow on the intro
+  status: planned
+- id: light_leak
+  tier: 3
+  category: overlay
+  name: Light leak / film burn
+  description: self-generated warm leaks over the picture
+  synonyms:
+    en:
+    - light leak
+    - film burn
+    hinglish:
+    - roshni ki lehar
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: self-generated warm leaks over the picture
+  stage: overlay
+  conflicts: []
+  cost: cheap
+  media3: not designed yet
+  licence: own generated overlays
+  preview: n/a
+  examples:
+  - add light leak
+  - roshni ki lehar
+  - light leak please
+  - use film burn
+  - light leak on the intro
+  status: planned
+- id: bokeh
+  tier: 3
+  category: overlay
+  name: Bokeh particles
+  description: self-generated soft circles
+  synonyms:
+    en:
+    - bokeh
+    hinglish:
+    - dhundhli roshni ke gole
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: self-generated soft circles
+  stage: overlay
+  conflicts: []
+  cost: cheap
+  media3: not designed yet
+  licence: own generated overlays
+  preview: n/a
+  examples:
+  - add bokeh
+  - dhundhli roshni ke gole
+  - bokeh please
+  - use bokeh
+  - bokeh on the intro
+  status: planned
+- id: lottie_overlay
+  tier: 3
+  category: overlay
+  name: Lottie animation overlay
+  description: 'server: rlottie (MIT + bundled attributions); phone: lottie-android (Apache-2.0). python-lottie is AGPL: never'
+  synonyms:
+    en:
+    - lottie
+    - animated sticker
+    hinglish:
+    - animated sticker lagao
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: 'server: rlottie (MIT + bundled attributions); phone: lottie-android (Apache-2.0). python-lottie is AGPL: never'
+  stage: overlay
+  conflicts: []
+  cost: medium
+  media3: not designed yet
+  licence: rlottie / lottie-android
+  preview: n/a
+  examples:
+  - add lottie
+  - animated sticker lagao
+  - lottie please
+  - use animated sticker
+  - lottie on the intro
+  status: planned
+- id: subscribe_button
+  tier: 3
+  category: overlay
+  name: Like / subscribe animation
+  description: self-made animation (no third-party assets)
+  synonyms:
+    en:
+    - subscribe button
+    - like button
+    hinglish:
+    - subscribe ka button
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: self-made animation (no third-party assets)
+  stage: overlay
+  conflicts: []
+  cost: cheap
+  media3: not designed yet
+  licence: own assets
+  preview: n/a
+  examples:
+  - add subscribe button
+  - subscribe ka button
+  - subscribe button please
+  - use like button
+  - subscribe button on the intro
+  status: planned
+- id: logo_watermark
+  tier: 3
+  category: overlay
+  name: Image logo watermark
+  description: user's PNG logo in a corner
+  synonyms:
+    en:
+    - logo
+    - image watermark
+    hinglish:
+    - mera logo lagao
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: user's PNG logo in a corner
+  stage: overlay
+  conflicts: []
+  cost: cheap
+  media3: not designed yet
+  licence: user asset
+  preview: n/a
+  examples:
+  - add logo
+  - mera logo lagao
+  - logo please
+  - use image watermark
+  - logo on the intro
+  status: planned
+- id: gradient_text
+  tier: 3
+  category: text
+  name: Gradient-filled text
+  description: ASS cannot fill text with a gradient; needs a mask overlay pass
+  synonyms:
+    en:
+    - gradient text
+    hinglish:
+    - rangeen text
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: ASS cannot fill text with a gradient; needs a mask overlay pass
+  stage: text
+  conflicts: []
+  cost: medium
+  media3: not designed yet
+  licence: own code
+  preview: n/a
+  examples:
+  - add gradient text
+  - rangeen text
+  - gradient text please
+  - use gradient text
+  - gradient text on the intro
+  status: planned
+- id: emoji_captions
+  tier: 3
+  category: text
+  name: Emoji in captions
+  description: 'emoji must be image stickers (ASS draws them monochrome: tested 2026-10-09)'
+  synonyms:
+    en:
+    - emoji captions
+    hinglish:
+    - captions me emoji
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: 'emoji must be image stickers (ASS draws them monochrome: tested 2026-10-09)'
+  stage: text
+  conflicts: []
+  cost: cheap
+  media3: not designed yet
+  licence: OS emoji font
+  preview: n/a
+  examples:
+  - add emoji captions
+  - captions me emoji
+  - emoji captions please
+  - use emoji captions
+  - emoji captions on the intro
+  status: planned
+- id: eq_voice
+  tier: 3
+  category: audio
+  name: Voice EQ / clarity
+  description: presence boost + low cut on speech
+  synonyms:
+    en:
+    - eq
+    - voice clarity
+    hinglish:
+    - awaaz clear karo
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: presence boost + low cut on speech
+  stage: audio
+  conflicts: []
+  cost: cheap
+  media3: not designed yet
+  licence: own code (FFmpeg equalizer)
+  preview: n/a
+  examples:
+  - add eq
+  - awaaz clear karo
+  - eq please
+  - use voice clarity
+  - eq on the intro
+  status: planned
+- id: compressor
+  tier: 3
+  category: audio
+  name: Compressor
+  description: even out loud and quiet speech
+  synonyms:
+    en:
+    - compressor
+    - compress the voice
+    hinglish:
+    - awaaz ek jaisi
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: even out loud and quiet speech
+  stage: audio
+  conflicts: []
+  cost: cheap
+  media3: not designed yet
+  licence: own code (FFmpeg acompressor)
+  preview: n/a
+  examples:
+  - add compressor
+  - awaaz ek jaisi
+  - compressor please
+  - use compress the voice
+  - compressor on the intro
+  status: planned
+- id: echo_reverb
+  tier: 3
+  category: audio
+  name: Echo / reverb
+  description: echo or room reverb on the voice
+  synonyms:
+    en:
+    - echo
+    - reverb
+    hinglish:
+    - goonj daalo
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: echo or room reverb on the voice
+  stage: audio
+  conflicts: []
+  cost: cheap
+  media3: not designed yet
+  licence: own code (FFmpeg aecho)
+  preview: n/a
+  examples:
+  - add echo
+  - goonj daalo
+  - echo please
+  - use reverb
+  - echo on the intro
+  status: planned
+- id: sfx_at_cuts
+  tier: 3
+  category: audio
+  name: Sound effects at cuts
+  description: 'whoosh / hit sounds on cuts: needs a self-made or CC0 sound pack'
+  synonyms:
+    en:
+    - sound effects
+    - whoosh sound
+    hinglish:
+    - whoosh ki awaaz
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: 'whoosh / hit sounds on cuts: needs a self-made or CC0 sound pack'
+  stage: audio
+  conflicts: []
+  cost: cheap
+  media3: not designed yet
+  licence: assets must be own / CC0
+  preview: n/a
+  examples:
+  - add sound effects
+  - whoosh ki awaaz
+  - sound effects please
+  - use whoosh sound
+  - sound effects on the intro
+  status: planned
+- id: audio_reactive
+  tier: 3
+  category: audio
+  name: Audio-reactive visuals
+  description: picture pulses with the bass (beat pulse exists; amplitude-driven is new)
+  synonyms:
+    en:
+    - audio reactive
+    - pulse with the music
+    hinglish:
+    - gaane ke saath hile
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: picture pulses with the bass (beat pulse exists; amplitude-driven is new)
+  stage: audio
+  conflicts: []
+  cost: medium
+  media3: not designed yet
+  licence: own code
+  preview: n/a
+  examples:
+  - add audio reactive
+  - gaane ke saath hile
+  - audio reactive please
+  - use pulse with the music
+  - audio reactive on the intro
+  status: planned
+- id: voice_isolation
+  tier: 3
+  category: audio
+  name: Voice isolation (stems)
+  description: adefossez/demucs (MIT) server job, minutes per minute on CPU
+  synonyms:
+    en:
+    - isolate the voice
+    - remove the music from the clip
+    hinglish:
+    - sirf awaaz rakho
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: adefossez/demucs (MIT) server job, minutes per minute on CPU
+  stage: audio
+  conflicts: []
+  cost: heavy
+  media3: not designed yet
+  licence: demucs MIT (adefossez fork)
+  preview: n/a
+  examples:
+  - add isolate the voice
+  - sirf awaaz rakho
+  - isolate the voice please
+  - use remove the music from the clip
+  - isolate the voice on the intro
+  status: planned
+- id: upscale
+  tier: 3
+  category: enhance
+  name: Upscale
+  description: 'Real-ESRGAN (BSD-3) / ncnn-vulkan (MIT): optional server job, GPU recommended'
+  synonyms:
+    en:
+    - upscale
+    - 4k
+    - enhance quality
+    hinglish:
+    - quality badhao
+    - hd karo
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: 'Real-ESRGAN (BSD-3) / ncnn-vulkan (MIT): optional server job, GPU recommended'
+  stage: effect
+  conflicts: []
+  cost: heavy
+  media3: not designed yet
+  licence: Real-ESRGAN BSD-3 / MIT
+  preview: n/a
+  examples:
+  - add upscale
+  - quality badhao
+  - upscale please
+  - use enhance quality
+  - upscale on the intro
+  status: planned
+- id: frame_interpolation
+  tier: 3
+  category: enhance
+  name: Smooth slow motion (interpolation)
+  description: 'Practical-RIFE (MIT): optional server job'
+  synonyms:
+    en:
+    - smooth slow motion
+    - interpolate frames
+    hinglish:
+    - makkhan jaisa slowmo
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: 'Practical-RIFE (MIT): optional server job'
+  stage: effect
+  conflicts: []
+  cost: heavy
+  media3: not designed yet
+  licence: Practical-RIFE MIT
+  preview: n/a
+  examples:
+  - add smooth slow motion
+  - makkhan jaisa slowmo
+  - smooth slow motion please
+  - use interpolate frames
+  - smooth slow motion on the intro
+  status: planned
+- id: background_removal
+  tier: 3
+  category: enhance
+  name: Background removal / green screen
+  description: rembg with birefnet (MIT) or u2net (Apache-2.0), never the default BRIA model; RVM is GPL
+  synonyms:
+    en:
+    - remove background
+    - green screen
+    hinglish:
+    - background hatao
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: rembg with birefnet (MIT) or u2net (Apache-2.0), never the default BRIA model; RVM is GPL
+  stage: effect
+  conflicts: []
+  cost: heavy
+  media3: not designed yet
+  licence: rembg MIT + birefnet MIT
+  preview: n/a
+  examples:
+  - add remove background
+  - background hatao
+  - remove background please
+  - use green screen
+  - remove background on the intro
+  status: planned
+- id: deflicker
+  tier: 3
+  category: enhance
+  name: Deflicker
+  description: FFmpeg deflicker for timelapses
+  synonyms:
+    en:
+    - deflicker
+    hinglish:
+    - chamak kam karo
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: FFmpeg deflicker for timelapses
+  stage: effect
+  conflicts: []
+  cost: cheap
+  media3: not designed yet
+  licence: own code (FFmpeg deflicker)
+  preview: n/a
+  examples:
+  - add deflicker
+  - chamak kam karo
+  - deflicker please
+  - use deflicker
+  - deflicker on the intro
+  status: planned
+- id: hdr_to_sdr
+  tier: 3
+  category: enhance
+  name: HDR to SDR tone mapping
+  description: zscale+tonemap (our build has libzimg)
+  synonyms:
+    en:
+    - hdr to sdr
+    - tone map
+    hinglish:
+    - hdr theek karo
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: zscale+tonemap (our build has libzimg)
+  stage: effect
+  conflicts: []
+  cost: medium
+  media3: not designed yet
+  licence: own code (FFmpeg zscale)
+  preview: n/a
+  examples:
+  - add hdr to sdr
+  - hdr theek karo
+  - hdr to sdr please
+  - use tone map
+  - hdr to sdr on the intro
+  status: planned
+- id: skin_smoothing
+  tier: 3
+  category: enhance
+  name: Skin smoothing
+  description: 'beauty filter: needs a policy / ethics decision and a face parsing model'
+  synonyms:
+    en:
+    - skin smoothing
+    - beauty filter
+    hinglish:
+    - chehra saaf karo
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: blocked
+    reason: 'beauty filter: needs a policy / ethics decision and a face parsing model'
+  stage: effect
+  conflicts: []
+  cost: heavy
+  media3: not designed yet
+  licence: 'BLOCKED: needs a human decision'
+  preview: n/a
+  examples:
+  - add skin smoothing
+  - chehra saaf karo
+  - skin smoothing please
+  - use beauty filter
+  - skin smoothing on the intro
+  status: blocked
+- id: highlight_detection
+  tier: 3
+  category: auto
+  name: Highlight detection as a skill
+  description: exists inside the cutter (best moments, hook); a separate skill API is planned
+  synonyms:
+    en:
+    - highlights
+    - best moments
+    hinglish:
+    - best moments nikalo
+  params: {}
+  time_modes:
+  - whole
+  impl:
+    kind: planned
+    reason: exists inside the cutter (best moments, hook); a separate skill API is planned
+  stage: structure
+  conflicts: []
+  cost: cheap
+  media3: not designed yet
+  licence: own code
+  preview: n/a
+  examples:
+  - add highlights
+  - best moments nikalo
+  - highlights please
+  - use best moments
+  - highlights on the intro
+  status: planned

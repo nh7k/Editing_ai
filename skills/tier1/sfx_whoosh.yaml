@@ -1,0 +1,88 @@
+# written by skills/tools/write_tier1_audio.py — edit this file directly from now on
+id: sfx_whoosh
+seed: 95
+category: audio
+name: Whoosh sound
+name_hi: Swoosh sound
+description: A generated whoosh at every cut (or given times).
+params:
+  volume:
+    type: number
+    default: 0.6
+    min: 0.1
+    max: 1.5
+    extract: magnitude
+    desc: level
+time_modes:
+- whole
+- at_time
+- on_scene_change
+builder: audio.sfx_whoosh
+graph: generated whoosh (pink noise, band-limited, swell) → adelay → amix
+media3:
+  status: mapped
+  how: a short audio item per whoosh in a second audio sequence
+stage: audio
+conflicts: []
+cost: cheap
+licence: own code; FFmpeg audio filters (server process); generated sounds; librosa (ISC) for beats
+changes_duration: false
+needs: []
+variant_axes:
+  volume:
+  - soft
+  - normal
+  - loud
+synonyms:
+  en:
+  - whoosh
+  - swoosh sound
+  - whoosh sound effect
+  - sound effect at cuts
+  - transition sound
+  - swish
+  - whoosh on cuts
+  hinglish:
+  - swoosh sound lagao
+  - whoosh daalo
+  - sound effect lagao
+  - cut pe whoosh
+  - transition pe awaaz
+  - swish wali awaaz
+  - hawa wali awaaz
+  hi:
+  - स्वूश साउंड
+  - व्हूश
+  - साउंड इफ़ेक्ट
+  slang:
+  - fatak awaaz
+  typos:
+  - wosh
+  - swoosh soud
+  - whoos
+negations:
+- whoosh mat daalo
+examples:
+- prompt: add whoosh sounds on the cuts
+  lang: en
+- prompt: a whoosh at 3 seconds
+  lang: en
+  time:
+    mode: at_time
+    at: 3
+- prompt: स्वूश साउंड लगाओ
+  lang: hi
+- prompt: cut pe whoosh daalo
+  lang: hinglish
+- prompt: transition pe awaaz lagao
+  lang: hinglish
+- prompt: whoos
+  lang: typo
+- prompt: thoda dramatic awaaz
+  lang: vague
+- prompt: whoosh aur whip pan
+  lang: multi
+  also:
+  - whip_pan
+test:
+  check: whoosh_at_cut

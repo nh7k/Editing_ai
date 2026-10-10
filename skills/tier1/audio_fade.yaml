@@ -1,0 +1,128 @@
+# written by skills/tools/write_tier1_audio.py — edit this file directly from now on
+id: audio_fade
+seed: 90
+category: audio
+name: Audio fade
+name_hi: Awaaz dheere kam
+description: The sound fades in at the start and / or out at the end.
+params:
+  fade_in:
+    type: number
+    default: 1.0
+    min: 0.1
+    max: 5
+    unit: s
+    extract: seconds
+    desc: fade-in length
+  fade_out:
+    type: number
+    default: 1.5
+    min: 0.1
+    max: 5
+    unit: s
+    desc: fade-out length
+  where:
+    type: choice
+    choices:
+    - in
+    - out
+    - both
+    default: both
+    extract: fade_side
+    desc: which end
+time_modes:
+- whole
+builder: audio.audio_fade
+graph: afade in/out on the final mix
+media3:
+  status: mapped
+  how: a gain ramp AudioProcessor
+stage: audio
+conflicts: []
+cost: cheap
+licence: own code; FFmpeg audio filters (server process); generated sounds; librosa (ISC) for beats
+changes_duration: false
+needs: []
+variant_axes:
+  where:
+  - in
+  - out
+  - both
+  length:
+  - 0.5s
+  - 1.5s
+  - 3s
+synonyms:
+  en:
+  - audio fade
+  - fade the audio
+  - sound fade out
+  - fade the music out
+  - audio fade in
+  - soft ending
+  - fade sound
+  hinglish:
+  - awaaz dheere kam
+  - awaaz dheere aaye
+  - gaana dheere khatam
+  - sound fade karo
+  - end me awaaz dheemi
+  - awaaz fade out
+  - dheere se band ho awaaz
+  hi:
+  - आवाज़ धीरे कम
+  - आवाज़ फ़ेड
+  - धीरे से बंद
+  slang:
+  - smooth ending sound
+  - fade the audio
+  - fade out the sound
+  - fade sound
+  - fade audio
+  - fade audio in and out
+  - audio fade in and out
+  - sound fade in and out
+  - awaaz fade in out
+  typos:
+  - audio fed
+  - awaz fade
+  - sound faed
+negations:
+- audio fade mat karo
+examples:
+- prompt: fade the audio in and out
+  lang: en
+  params:
+    where: both
+- prompt: fade out the sound at the end
+  lang: en
+  params:
+    where: out
+- prompt: आवाज़ धीरे कम करो अंत में
+  lang: hi
+  params:
+    where: out
+- prompt: gaana dheere khatam ho
+  lang: hinglish
+  params:
+    where: out
+- prompt: awaaz dheere aaye shuru me
+  lang: hinglish
+  params:
+    where: in
+- prompt: audio fed out
+  lang: typo
+  params:
+    where: out
+- prompt: ending achanak na lage
+  lang: vague
+- prompt: audio fade aur fade to black
+  lang: multi
+  also:
+  - fade_black
+test:
+  check: sound_fades
+  params:
+    where: both
+    fade_in: 1.0
+    fade_out: 1.5

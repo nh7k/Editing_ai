@@ -1,0 +1,93 @@
+# written by skills/tools/write_tier1_color.py — edit this file directly from now on
+id: contrast
+seed: 40
+category: color
+name: Contrast
+name_hi: Contrast
+description: More (>1) or less (<1) contrast. 'kam' lowers it.
+params:
+  amount:
+    type: number
+    default: 1.25
+    min: 0.5
+    max: 2.0
+    extract: level
+    desc: contrast
+time_modes:
+- whole
+- segment
+- between_times
+- intermittent
+builder: color.contrast
+graph: eq=contrast
+media3:
+  status: mapped
+  how: Contrast(amount - 1) effect
+stage: color
+conflicts: []
+cost: cheap
+licence: own code; generated LUTs (own maths); FFmpeg filters (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  amount:
+  - '0.8'
+  - '1.2'
+  - '1.5'
+synonyms:
+  en:
+  - contrast
+  - more contrast
+  - punchier
+  - less contrast
+  - flat look
+  - deeper blacks
+  - more pop
+  hinglish:
+  - contrast badhao
+  - gehra karo
+  - contrast kam karo
+  - thoda punchy karo
+  - kala aur gehra
+  - contrast do
+  - contrast tez
+  hi:
+  - कॉन्ट्रास्ट बढ़ाओ
+  - गहरा करो
+  - कॉन्ट्रास्ट कम करो
+  slang:
+  - thoda dum daalo
+  typos:
+  - contrst
+  - kontrast
+  - contrest
+negations:
+- contrast mat chhedo
+examples:
+- prompt: add more contrast
+  lang: en
+- prompt: less contrast please
+  lang: en
+  params:
+    amount: 0.75
+- prompt: कॉन्ट्रास्ट बढ़ाओ
+  lang: hi
+- prompt: contrast badhao
+  lang: hinglish
+- prompt: contrast thoda kam karo
+  lang: hinglish
+  params:
+    amount: 0.875
+- prompt: contrst up
+  lang: typo
+- prompt: picture bahut flat lag rahi
+  lang: vague
+- prompt: contrast badhao aur warm karo
+  lang: multi
+  also:
+  - warm
+test:
+  check: contrast_up
+  media: soft
+  params:
+    amount: 1.4

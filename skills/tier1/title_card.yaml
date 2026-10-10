@@ -1,0 +1,130 @@
+# written by skills/tools/write_tier1_text.py — edit this file directly from now on
+id: title_card
+seed: 56
+category: text
+name: Title card
+name_hi: Title card
+description: A full-screen title on its own background at the start (or at `at` seconds); the video waits for it.
+same_engine_as: intro_outro
+params:
+  text:
+    type: text
+    extract: quoted_text
+    desc: the words (in quotes)
+    default: Title
+  at:
+    type: number
+    default: 0
+    min: 0
+    max: 36000
+    unit: s
+    extract: time_point
+    desc: when
+  duration:
+    type: number
+    default: 2
+    min: 0.5
+    max: 10
+    unit: s
+    extract: seconds
+    desc: how long
+  background:
+    type: choice
+    choices:
+    - black
+    - white
+    - brand
+    - gradient
+    - warm
+    default: black
+    desc: background
+time_modes:
+- whole
+builder: text.title_card
+graph: generated card clip + ASS title
+media3:
+  status: mapped
+  how: a still EditedMediaItem + TextOverlay
+stage: text
+conflicts: []
+cost: cheap
+licence: own code; libass + HarfBuzz via FFmpeg (server process); fonts SIL OFL (Hind, Kalam, Poppins, Anton, Bebas)
+changes_duration: true
+needs: []
+variant_axes:
+  background:
+  - black
+  - gradient
+  - warm
+  at:
+  - start
+  - middle
+synonyms:
+  en:
+  - title card
+  - title
+  - heading
+  - full screen title
+  - chapter title
+  - title screen
+  - big title
+  hinglish:
+  - title lagao
+  - heading lagao
+  - title card do
+  - bada title
+  - chapter ka naam dikhao
+  - naam ka card
+  - heading wala card
+  hi:
+  - टाइटल लगाओ
+  - शीर्षक
+  - हेडिंग लगाओ
+  slang:
+  - movie wala title
+  typos:
+  - titel
+  - tittle card
+  - heding
+negations:
+- title mat lagao
+- title hatao
+examples:
+- prompt: add a title card 'Day 1'
+  lang: en
+  params:
+    text: Day 1
+- prompt: title 'Chapter 2' at 5 seconds
+  lang: en
+  params:
+    text: Chapter 2
+    at: 5
+- prompt: '''मेरा सफ़र'' टाइटल लगाओ'
+  lang: hi
+  params:
+    text: मेरा सफ़र
+- prompt: heading lagao 'Goa Trip'
+  lang: hinglish
+  params:
+    text: Goa Trip
+- prompt: bada title 'Shaadi' shuru me
+  lang: hinglish
+  params:
+    text: Shaadi
+- prompt: titel 'My Vlog'
+  lang: typo
+  params:
+    text: My Vlog
+- prompt: video ka naam dikhao
+  lang: vague
+- prompt: title 'Diwali' aur warm look
+  lang: multi
+  also:
+  - warm
+  params:
+    text: Diwali
+test:
+  check: card_then_video
+  params:
+    text: दिवाली मुबारक
+    duration: 1.5

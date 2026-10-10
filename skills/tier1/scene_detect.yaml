@@ -1,0 +1,85 @@
+# written by skills/tools/write_tier1_delivery.py — edit this file directly from now on
+id: scene_detect
+seed: 99
+category: delivery
+name: Scene detection
+name_hi: Scene alag karo
+description: Cut the shots wherever the picture changes scene (PySceneDetect content detector, measured per clip).
+params:
+  sensitivity:
+    type: choice
+    choices:
+    - normal
+    default: normal
+    desc: detector setting
+time_modes:
+- whole
+builder: delivery.scene_detect
+graph: analysis (PySceneDetect) → segment splits
+media3:
+  status: mapped
+  how: server finds the cuts; the phone splits the items
+stage: structure
+conflicts: []
+cost: medium
+licence: own code; PySceneDetect (BSD-3)
+changes_duration: false
+needs:
+- scenes
+variant_axes:
+  use:
+  - split_only
+  - split_and_transition
+synonyms:
+  en:
+  - scene detection
+  - detect scenes
+  - split into scenes
+  - find the scenes
+  - auto split
+  - cut at scene changes
+  - scene cuts
+  hinglish:
+  - scenes alag karo
+  - scene dhoondo
+  - auto split karo
+  - scene ke hisaab se kaato
+  - har scene alag
+  - scene change pe cut
+  - scenes pehchano
+  hi:
+  - सीन अलग करो
+  - सीन ढूँढो
+  - हर सीन अलग
+  slang:
+  - auto kaat do scenes
+  - at scene change
+  - scene changes
+  typos:
+  - sceen detect
+  - scene detction
+  - seen alag
+negations:
+- scene mat todo
+examples:
+- prompt: detect the scenes
+  lang: en
+- prompt: split the clip at scene changes
+  lang: en
+- prompt: सीन अलग करो
+  lang: hi
+- prompt: scenes alag karo
+  lang: hinglish
+- prompt: har scene alag kar do
+  lang: hinglish
+- prompt: sceen detect
+  lang: typo
+- prompt: lamba video hai tukde kar do
+  lang: vague
+- prompt: scenes alag karo aur crossfade
+  lang: multi
+  also:
+  - crossfade
+test:
+  check: cuts_at_scenes
+  media: scenes

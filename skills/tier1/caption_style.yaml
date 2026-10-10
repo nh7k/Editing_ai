@@ -1,0 +1,147 @@
+# written by skills/tools/write_tier1_text.py — edit this file directly from now on
+id: caption_style
+seed: 55
+category: text
+name: Caption style
+name_hi: Caption style badlo
+description: 'Restyle the captions: a preset, colour, size, font or position.'
+params:
+  preset:
+    type: choice
+    choices:
+    - classic
+    - hormozi
+    - bold_pop
+    - neon
+    - minimal
+    - comic
+    - desi
+    - news
+    - cinema
+    desc: preset
+  color:
+    type: color
+    extract: color
+    desc: text colour
+  size:
+    type: integer
+    min: 24
+    max: 160
+    extract: text_size
+    desc: size
+  position:
+    type: choice
+    choices:
+    - bottom
+    - center
+    - top
+    - top_right
+    - bottom_right
+    - bottom_left
+    - top_left
+    extract: position
+    desc: where
+  font:
+    type: choice
+    choices:
+    - poppins
+    - anton
+    - bebas
+    - hind
+    - kalam
+    - bangers
+    - marker
+    desc: font
+time_modes:
+- whole
+builder: text.caption_style
+graph: ASS style of the caption events
+media3:
+  status: mapped
+  how: TextOverlay (SpannableString) per item; animations as per-frame alpha / scale / position — NOT TESTED
+stage: text
+conflicts: []
+cost: cheap
+licence: own code; libass + HarfBuzz via FFmpeg (server process); fonts SIL OFL (Hind, Kalam, Poppins, Anton, Bebas)
+changes_duration: false
+needs:
+- speech
+variant_axes:
+  preset:
+  - hormozi
+  - bold_pop
+  - neon
+  - minimal
+  - desi
+  color:
+  - white
+  - yellow
+synonyms:
+  en:
+  - caption style
+  - change the caption font
+  - subtitle style
+  - bold yellow captions
+  - make captions bigger
+  - caption colour
+  - restyle captions
+  hinglish:
+  - caption style badlo
+  - font badlo captions ka
+  - captions peele karo
+  - captions bade karo
+  - subtitle ka color
+  - captions ka design
+  - caption ka font
+  hi:
+  - कैप्शन स्टाइल बदलो
+  - कैप्शन पीले करो
+  - कैप्शन बड़े करो
+  slang:
+  - captions ko mast karo
+  - captions yellow
+  - make the captions
+  - captions boring
+  - style captions
+  - text ka color
+  - text ka rang
+  - text color
+  - change the text colour
+  typos:
+  - capton style
+  - caption stile
+  - captions fnt
+negations:
+- caption style mat badlo
+examples:
+- prompt: make the captions yellow
+  lang: en
+  params:
+    color: '#FFD60A'
+- prompt: hormozi style captions
+  lang: en
+  params:
+    preset: hormozi
+- prompt: कैप्शन पीले करो
+  lang: hi
+- prompt: captions bade karo
+  lang: hinglish
+- prompt: caption ka font badlo bebas
+  lang: hinglish
+  params:
+    font: bebas
+- prompt: capton style bold
+  lang: typo
+- prompt: captions thode boring hain
+  lang: vague
+- prompt: captions peele aur music lagao
+  lang: multi
+  also:
+  - add_music
+test:
+  check: caption_recolored
+  media: talk
+  params:
+    color: '#FFD60A'
+  setup:
+  - id: auto_captions

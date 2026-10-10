@@ -1,0 +1,26 @@
+{
+  "_comment": "Planner LLM candidates (GGUF, Q4_K_M, free for commercial use). sha256 = the Hugging Face LFS object id, checked after download. Model files are never committed: they go to backend/models/ (git-ignored).",
+  "default": "qwen3-0.6b",
+  "models": {
+    "qwen3-0.6b": {
+      "repo": "unsloth/Qwen3-0.6B-GGUF", "file": "Qwen3-0.6B-Q4_K_M.gguf", "size": 396705472,
+      "sha256": "ac2d97712095a558e31573f62f466a3f9d93990898b0ec79d7c974c1780d524a",
+      "license": "Apache-2.0", "base": "Qwen/Qwen3-0.6B", "family": "qwen3"
+    },
+    "qwen3-1.7b": {
+      "repo": "ggml-org/Qwen3-1.7B-GGUF", "file": "Qwen3-1.7B-Q4_K_M.gguf", "size": 1282439264,
+      "sha256": "d2387ca2dbfee2ffabce7120d3770dadca0b293052bc2f0e138fdc940d9bc7b5",
+      "license": "Apache-2.0", "base": "Qwen/Qwen3-1.7B", "family": "qwen3"
+    },
+    "qwen3-4b": {
+      "repo": "ggml-org/Qwen3-4B-GGUF", "file": "Qwen3-4B-Q4_K_M.gguf", "size": 2497280640,
+      "sha256": "ab27b9bfa375a178d6cba48f3ad892b94b7739659dcc7aae8058ce0ffed6b328",
+      "license": "Apache-2.0", "base": "Qwen/Qwen3-4B", "family": "qwen3"
+    },
+    "phi-4-mini": {
+      "repo": "unsloth/Phi-4-mini-instruct-GGUF", "file": "Phi-4-mini-instruct-Q4_K_M.gguf", "size": 2491874272,
+      "sha256": "88c00229914083cd112853aab84ed51b87bdf6b9ce42f532d8c85c7c63b1730a",
+      "license": "MIT", "base": "microsoft/Phi-4-mini-instruct", "family": "phi"
+    }
+  }
+}

@@ -1,0 +1,114 @@
+# written by skills/tools/write_tier1_transitions.py — edit this file directly from now on
+id: wipe
+seed: 20
+category: transitions
+name: Wipe
+name_hi: Pardah transition
+description: A line wipes the next shot in (left / right / up / down). Each overlap makes the video that much shorter.
+params:
+  direction:
+    type: choice
+    choices:
+    - left
+    - right
+    - up
+    - down
+    default: left
+    extract: direction
+    desc: direction
+  duration:
+    type: number
+    default: 0.6
+    min: 0.15
+    max: 2.0
+    unit: s
+    extract: seconds
+    desc: length
+  cut:
+    type: integer
+    min: 1
+    max: 500
+    extract: cut_number
+    desc: which cut (default every cut)
+time_modes:
+- whole
+- between_times
+builder: transitions.wipe
+graph: xfade=wipeleft/right/up/down + acrossfade (tri)
+media3:
+  status: custom_shader
+  how: a GlEffect over the overlap of two sequences (Composition) — NOT TESTED
+stage: structure
+conflicts:
+- crossfade
+cost: cheap
+licence: own code; FFmpeg xfade / gblur / rgbashift (server process); whoosh generated
+changes_duration: true
+needs:
+- two_clips
+variant_axes:
+  direction:
+  - left
+  - right
+  - up
+  - down
+  duration:
+  - 0.4s
+  - 0.8s
+synonyms:
+  en:
+  - wipe
+  - wipe transition
+  - wipe left
+  - wipe right
+  - curtain transition
+  - line wipe
+  - wipe across
+  hinglish:
+  - side se mitao
+  - pardah transition
+  - wipe lagao
+  - pardah girao
+  - line se badle
+  - ek taraf se mitao
+  - wipe karke badlo
+  hi:
+  - वाइप
+  - पर्दा ट्रांज़िशन
+  - एक तरफ़ से मिटाओ
+  slang:
+  - curtain wala
+  typos:
+  - wipp
+  - wype
+  - wipe transtion
+negations:
+- wipe mat lagao
+examples:
+- prompt: wipe transition
+  lang: en
+- prompt: wipe to the right
+  lang: en
+  params:
+    direction: right
+- prompt: पर्दा ट्रांज़िशन लगाओ
+  lang: hi
+- prompt: pardah transition do
+  lang: hinglish
+- prompt: upar se wipe karo
+  lang: hinglish
+  params:
+    direction: up
+- prompt: wype
+  lang: typo
+- prompt: ek line chal ke badle
+  lang: vague
+- prompt: wipe aur whoosh
+  lang: multi
+  also:
+  - sfx_whoosh
+test:
+  check: split_mid
+  params:
+    direction: left
+    duration: 0.8

@@ -1,0 +1,114 @@
+# written by skills/tools/write_tier1_motion.py — edit this file directly from now on
+id: freeze_frame
+seed: 36
+category: motion
+name: Freeze frame
+name_hi: Frame rok do
+description: Hold the frame at `at` for `duration` seconds (the sound pauses), then continue.
+params:
+  at:
+    type: number
+    min: 0
+    max: 36000
+    unit: s
+    extract: time_point
+    required: true
+    desc: when
+  duration:
+    type: number
+    default: 1.5
+    min: 0.3
+    max: 10
+    unit: s
+    extract: seconds
+    desc: how long
+time_modes:
+- whole
+builder: motion.freeze_frame
+graph: one frame (trim end_frame=1) + tpad clone, silent sound
+media3:
+  status: mapped
+  how: a still EditedMediaItem (frame grab) with setDurationUs
+stage: time
+conflicts: []
+cost: cheap
+licence: own code (engines/motion.py easings); FFmpeg filters (server process)
+changes_duration: true
+needs: []
+variant_axes:
+  duration:
+  - 0.5s
+  - 1.5s
+  - 3s
+  with:
+  - plain
+  - flash
+  - zoom
+synonyms:
+  en:
+  - freeze frame
+  - freeze
+  - hold the frame
+  - pause the picture
+  - still frame
+  - stop the frame
+  - freeze it
+  hinglish:
+  - frame rok do
+  - ruk jao
+  - yahan freeze karo
+  - video rok do yahan
+  - tasveer rok do
+  - frame pakad lo
+  - ruk jaye video
+  hi:
+  - फ्रेम रोक दो
+  - रुक जाओ
+  - फ़्रीज़ करो
+  slang:
+  - photo jaisa ruk jaye
+  typos:
+  - freez frame
+  - frize
+  - freeze fram
+negations:
+- freeze mat karo
+examples:
+- prompt: freeze frame at 3 seconds
+  lang: en
+  params:
+    at: 3.0
+- prompt: hold the frame at 2 sec for 2 seconds
+  lang: en
+  params:
+    at: 2.0
+    duration: 2.0
+- prompt: 3 सेकंड पर फ्रेम रोक दो
+  lang: hi
+  params:
+    at: 3.0
+- prompt: 4 sec pe frame rok do
+  lang: hinglish
+  params:
+    at: 4.0
+- prompt: 5 second par ruk jaye video
+  lang: hinglish
+  params:
+    at: 5.0
+- prompt: freez frame at 1 sec
+  lang: typo
+  params:
+    at: 1.0
+- prompt: jab main koodun tab ruk jaye
+  lang: vague
+- prompt: 2 sec pe freeze aur flash
+  lang: multi
+  also:
+  - flash
+  params:
+    at: 2.0
+test:
+  check: frozen
+  params:
+    at: 2.0
+    duration: 1.5

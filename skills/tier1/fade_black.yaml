@@ -1,0 +1,121 @@
+# written by skills/tools/write_tier1_transitions.py — edit this file directly from now on
+id: fade_black
+seed: 18
+category: transitions
+name: Fade through black
+name_hi: Kala fade
+description: Dip to black between shots, or fade in / out at the start / end. Each overlap makes the video that much shorter.
+params:
+  duration:
+    type: number
+    default: 0.6
+    min: 0.15
+    max: 2.0
+    unit: s
+    extract: seconds
+    desc: length
+  cut:
+    type: integer
+    min: 1
+    max: 500
+    extract: cut_number
+    desc: which cut (default every cut)
+  where:
+    type: choice
+    choices:
+    - cuts
+    - start
+    - end
+    - start_end
+    default: cuts
+    extract: fade_where
+    desc: between shots or at the start / end
+time_modes:
+- whole
+- between_times
+builder: transitions.fade_black
+graph: xfade=fadeblack + acrossfade (tri); fade in/out filters at the edges
+media3:
+  status: mapped
+  how: alpha/brightness ramp to black around the cut — NOT TESTED
+stage: structure
+conflicts:
+- crossfade
+- fade_white
+cost: cheap
+licence: own code; FFmpeg xfade / gblur / rgbashift (server process); whoosh generated
+changes_duration: true
+needs:
+- two_clips
+variant_axes:
+  where:
+  - cuts
+  - start
+  - end
+  - start_end
+  duration:
+  - 0.4s
+  - 0.8s
+synonyms:
+  en:
+  - fade to black
+  - fade through black
+  - fade in
+  - fade out
+  - fade in and out
+  - dip to black
+  - black fade
+  hinglish:
+  - kala fade
+  - andhera karke badlo
+  - fade lagao
+  - end me fade out
+  - shuru me fade in
+  - fade in fade out karo
+  - kale me badlo
+  hi:
+  - फेड इन
+  - फेड आउट
+  - काला फ़ेड
+  slang:
+  - movie wala fade
+  typos:
+  - fad out
+  - faed in
+  - fade blak
+  - faed out
+negations:
+- fade mat lagao
+examples:
+- prompt: fade to black between shots
+  lang: en
+  params:
+    where: cuts
+- prompt: fade in at the start and fade out at the end
+  lang: en
+  params:
+    where: start_end
+- prompt: फेड इन फेड आउट
+  lang: hi
+  params:
+    where: start_end
+- prompt: end me fade out
+  lang: hinglish
+  params:
+    where: end
+- prompt: andhera karke badlo
+  lang: hinglish
+- prompt: faed out at end
+  lang: typo
+  params:
+    where: end
+- prompt: dheere se khatam ho
+  lang: vague
+- prompt: fade out aur music
+  lang: multi
+  also:
+  - add_music
+test:
+  check: dark_mid
+  params:
+    duration: 0.8

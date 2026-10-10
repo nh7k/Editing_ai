@@ -1,0 +1,130 @@
+# written by skills/tools/write_tier1_text.py — edit this file directly from now on
+id: text_glow_neon
+seed: 61
+category: text
+name: Neon glow text
+name_hi: Chamakta text
+description: Glowing neon text in `color`, pulsing.
+params:
+  text:
+    type: text
+    extract: quoted_text
+    desc: the words (in quotes)
+  position:
+    type: choice
+    choices:
+    - bottom
+    - center
+    - top
+    - top_right
+    - bottom_right
+    - bottom_left
+    - top_left
+    default: center
+    extract: position
+    desc: where
+  color:
+    type: color
+    default: '#FF2D92'
+    extract: color
+    desc: neon colour
+  size:
+    type: integer
+    default: 110
+    min: 20
+    max: 200
+    desc: size
+time_modes:
+- whole
+- between_times
+- segment
+- at_time
+builder: text.text_glow_neon
+graph: ASS neon preset (glow blur) + glow pulse
+media3:
+  status: mapped
+  how: TextOverlay (SpannableString) per item; animations as per-frame alpha / scale / position — NOT TESTED
+stage: text
+conflicts: []
+cost: cheap
+licence: own code; libass + HarfBuzz via FFmpeg (server process); fonts SIL OFL (Hind, Kalam, Poppins, Anton, Bebas)
+changes_duration: false
+needs: []
+variant_axes:
+  color:
+  - pink
+  - blue
+  - green
+synonyms:
+  en:
+  - neon text
+  - glow text
+  - glowing text
+  - neon title
+  - light up text
+  - neon sign
+  - glow effect text
+  hinglish:
+  - chamakta text
+  - neon wala text
+  - glow karta text
+  - roshni wala text
+  - neon likho
+  - chamakdaar text
+  - light wala text
+  hi:
+  - चमकता टेक्स्ट
+  - नियॉन टेक्स्ट
+  - रोशनी वाला
+  slang:
+  - club wala text
+  - glowing title
+  - neon title
+  typos:
+  - neaon text
+  - glow txt
+  - nion
+negations:
+- glow mat karo
+examples:
+- prompt: neon text 'OPEN'
+  lang: en
+  params:
+    text: OPEN
+- prompt: blue glowing title 'Night'
+  lang: en
+  params:
+    text: Night
+    color: '#0A84FF'
+- prompt: '''रात'' चमकता टेक्स्ट'
+  lang: hi
+  params:
+    text: रात
+- prompt: neon wala 'Party' likho
+  lang: hinglish
+  params:
+    text: Party
+- prompt: '''Love'' gulabi chamakta text'
+  lang: hinglish
+  params:
+    text: Love
+    color: '#FF2D92'
+- prompt: neaon text 'Hi'
+  lang: typo
+  params:
+    text: Hi
+- prompt: club jaisa text
+  lang: vague
+- prompt: neon 'DJ' aur strobe
+  lang: multi
+  params:
+    text: DJ
+test:
+  check: neon_glow
+  params:
+    text: NEON
+    color: '#FF2D92'
+  time:
+    mode: between_times
+    start: 1.0
+    end: 4.0

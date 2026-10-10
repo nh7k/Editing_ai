@@ -1,0 +1,90 @@
+# written by skills/tools/write_tier1_delivery.py — edit this file directly from now on
+id: loop_boomerang
+seed: 103
+category: motion
+name: Boomerang loop
+name_hi: Boomerang
+description: 'The clip forward, then backwards (x times): the Boomerang loop. Short edits only (≤ 20 s).'
+params:
+  times:
+    type: integer
+    default: 1
+    min: 1
+    max: 4
+    extract: count
+    desc: how many back-and-forths
+time_modes:
+- whole
+builder: delivery.loop_boomerang
+graph: segments + reversed copies
+media3:
+  status: server_only
+  reason: Media3 cannot decode backwards
+stage: time
+conflicts: []
+cost: medium
+licence: own code; FFmpeg reverse (server process)
+changes_duration: true
+needs: []
+variant_axes:
+  times:
+  - '1'
+  - '2'
+  - '3'
+synonyms:
+  en:
+  - boomerang
+  - loop back and forth
+  - forward and backward
+  - ping pong loop
+  - boomerang effect
+  - loop it
+  - rewind loop
+  hinglish:
+  - boomerang banao
+  - aage peeche chalao
+  - ulta seedha loop
+  - boomerang jaisa
+  - aage jaaye phir wapas
+  - loop karo
+  - insta boomerang
+  hi:
+  - बूमरैंग
+  - आगे पीछे चलाओ
+  - उल्टा सीधा लूप
+  slang:
+  - insta wala loop
+  typos:
+  - boomrang
+  - bumerang
+  - boomerange
+negations:
+- boomerang mat karo
+examples:
+- prompt: make it a boomerang
+  lang: en
+- prompt: boomerang 2 times
+  lang: en
+  params:
+    times: 2
+- prompt: बूमरैंग बनाओ
+  lang: hi
+- prompt: boomerang banao
+  lang: hinglish
+- prompt: aage peeche chalao
+  lang: hinglish
+- prompt: boomrang
+  lang: typo
+- prompt: insta jaisa loop
+  lang: vague
+- prompt: boomerang aur music
+  lang: multi
+  also:
+  - add_music
+test:
+  check: boomerang
+  setup:
+  - id: trim
+    params:
+      start: 0.0
+      end: 3.0

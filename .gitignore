@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.pyc
+backend/.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Runtime data (projects, uploads, renders, SQLite)
+data/
+
+# Generated test media (re-created by tests / cutmind.media_gen)
+tests/media/generated/
+tests/media/_gen/
+
+# Scratch
+.scratch/
+
+# Node / Expo (see also mobile/.gitignore)
+node_modules/
+mobile/.expo/
+mobile/dist/
+mobile/public/canvaskit.wasm
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# secrets
+.env
+backend/models/
+
+# AI models: large (up to 1.8 GB, over GitHub's 100 MB limit) and third-party — download them, see MODEL_SETUP.md
+backend/assets/models/
+
+# local tool settings
+.claude/settings.local.json

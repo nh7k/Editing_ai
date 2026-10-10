@@ -1,0 +1,38 @@
+id: aspect_1_1
+seed: 77
+category: layout
+name: Square 1:1
+name_hi: Square post
+description: Make the edit square (1:1), for feed posts.
+same_engine_as: aspect_9_16
+params:
+  fit_mode: {type: choice, choices: [crop, blur, fit], default: crop, desc: how the picture fits}
+time_modes: [whole]
+builder: layout.aspect_1_1
+graph: scale + crop (or blurred background, or pad)
+media3: {status: mapped, how: "Presentation.createForWidthAndHeight(s, s, …)"}
+stage: geometry
+conflicts: [aspect_9_16, aspect_16_9, aspect_4_5]
+cost: cheap
+licence: own code; FFmpeg (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  fit: [crop, blur, fit]
+synonyms:
+  en: [square, "1:1", square post, insta post, square format, make it square, feed post]
+  hinglish: [square banao, chaukor banao, square size, insta post size, barabar size wala, square kar do, post ke liye]
+  hi: [चौकोर बनाओ, स्क्वायर बनाओ, स्क्वेयर पोस्ट]
+  slang: [dabba size]
+  typos: [squar, sqare, skuare]
+negations: [square mat karo]
+examples:
+  - {prompt: "make it square", lang: en}
+  - {prompt: "1:1 with blur", lang: en, params: {fit_mode: blur}}
+  - {prompt: "चौकोर बनाओ", lang: hi}
+  - {prompt: "square banao insta post ke liye", lang: hinglish}
+  - {prompt: "square kar do poora dikhe", lang: hinglish}
+  - {prompt: "sqare format", lang: typo}
+  - {prompt: "feed pe daalna hai", lang: vague}
+  - {prompt: "square banao aur warm karo", lang: multi, also: [warm]}
+test: {check: aspect_exact, params: {fit_mode: blur}}

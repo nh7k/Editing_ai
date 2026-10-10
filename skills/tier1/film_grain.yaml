@@ -1,0 +1,91 @@
+# written by skills/tools/write_tier1_color.py — edit this file directly from now on
+id: film_grain
+seed: 48
+category: color
+name: Film grain
+name_hi: Film jaisa dana
+description: Moving analogue grain texture.
+params:
+  amount:
+    type: number
+    default: 1.0
+    min: 0.3
+    max: 3.0
+    extract: magnitude
+    desc: how much
+time_modes:
+- whole
+- segment
+- between_times
+- intermittent
+builder: color.film_grain
+graph: noise=alls:allf=t
+media3:
+  status: custom_shader
+  how: noise GlEffect — NOT TESTED
+stage: effect
+conflicts: []
+cost: medium
+licence: own code; generated LUTs (own maths); FFmpeg filters (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  amount:
+  - light
+  - normal
+  - heavy
+synonyms:
+  en:
+  - film grain
+  - grain
+  - grainy
+  - add texture
+  - noise texture
+  - analog grain
+  - film texture
+  hinglish:
+  - film jaisa dana
+  - grain daalo
+  - daanedar
+  - texture do
+  - thoda grain
+  - purani film ka dana
+  - grainy karo
+  hi:
+  - फ़िल्म ग्रेन
+  - दानेदार
+  - टेक्सचर दो
+  slang:
+  - kirkira look
+  typos:
+  - grane
+  - film grian
+  - grainy karo na
+negations:
+- grain mat daalo
+- grain hatao
+examples:
+- prompt: add film grain
+  lang: en
+- prompt: heavy grain
+  lang: en
+  params:
+    amount: 1.6
+- prompt: फ़िल्म ग्रेन डालो
+  lang: hi
+- prompt: grain daalo
+  lang: hinglish
+- prompt: thoda daanedar karo
+  lang: hinglish
+  params:
+    amount: 0.5
+- prompt: film grian
+  lang: typo
+- prompt: thoda purana sa texture
+  lang: vague
+- prompt: grain aur vintage
+  lang: multi
+  also:
+  - vintage_faded
+test:
+  check: noise_up

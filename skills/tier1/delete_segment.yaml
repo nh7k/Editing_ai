@@ -1,0 +1,40 @@
+id: delete_segment
+seed: 3
+category: cutting
+name: Delete a part
+name_hi: Ye hissa hatao
+description: Remove start..end (or a whole shot by number); later text and stickers move left with the video.
+params:
+  start: {type: number, min: 0, max: 36000, unit: s, extract: time_range_start, desc: start of the part}
+  end: {type: number, min: 0.1, max: 36000, unit: s, extract: time_range_end, desc: end of the part}
+  shot: {type: integer, min: 1, max: 500, extract: shot_number, desc: shot number instead of times}
+time_modes: [whole]
+builder: cutting.delete_segment
+graph: segments either side of the range (no filter)
+media3: {status: mapped, how: "ClippingConfiguration on the two remaining pieces"}
+stage: structure
+conflicts: []
+cost: cheap
+licence: own code
+changes_duration: true
+needs: []
+variant_axes:
+  target: [time_range, shot_number, first_shot, last_shot]
+  gap: [close_gap, leave_black]
+synonyms:
+  en: [delete part, remove part, remove from, cut out, delete the section, get rid of, remove shot, delete shot]
+  hinglish: [hata do, nikal do, ye hissa hatao, ye part hatao, se tak hata do, beech ka hissa nikalo, ye wala kaat do]
+  hi: [हटाओ, ये हिस्सा हटाओ, निकाल दो]
+  slang: [ye faltu part uda do]
+  typos: [hta do, delet, nikaal do]
+negations: [mat hatao, rehne do, delete mat karo]
+examples:
+  - {prompt: "remove from 3 to 5 seconds", lang: en, params: {start: 3, end: 5}}
+  - {prompt: "delete the second shot", lang: en, params: {shot: 2}}
+  - {prompt: "4 से 6 सेकंड हटाओ", lang: hi, params: {start: 4, end: 6}}
+  - {prompt: "2 se 4 sec wala hissa hata do", lang: hinglish, params: {start: 2, end: 4}}
+  - {prompt: "teesra shot nikal do", lang: hinglish, params: {shot: 3}}
+  - {prompt: "delet 1 to 3 sec", lang: typo, params: {start: 1, end: 3}}
+  - {prompt: "beech ka 5 se 7 sec ka faltu part uda do", lang: vague, params: {start: 5, end: 7}}
+  - {prompt: "3 se 5 sec hata do aur music lagao", lang: multi, params: {start: 3, end: 5}, also: [add_music]}
+test: {check: delete_range, params: {start: 2.0, end: 4.0}}

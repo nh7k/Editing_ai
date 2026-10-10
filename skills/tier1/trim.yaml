@@ -1,0 +1,39 @@
+id: trim
+seed: 1
+category: cutting
+name: Trim (keep a time range)
+name_hi: Sirf itna rakho
+description: Keep only start..end of the edit; everything before and after is cut away.
+params:
+  start: {type: number, min: 0, max: 36000, unit: s, extract: time_range_start, required: true, desc: start time}
+  end: {type: number, min: 0.2, max: 36000, unit: s, extract: time_range_end, desc: end time (default the end)}
+time_modes: [whole]
+builder: cutting.trim
+graph: segment in/out points (trim / atrim in each segment render)
+media3: {status: mapped, how: "MediaItem.ClippingConfiguration(start, end) per EditedMediaItem"}
+stage: structure
+conflicts: []
+cost: cheap
+licence: own code; FFmpeg trim/atrim (server process)
+changes_duration: true
+needs: []
+variant_axes:
+  range: [first_n_seconds, last_n_seconds, middle_range]
+  snap: [exact, nearest_cut]
+synonyms:
+  en: [trim, keep only, cut to, crop the time, keep from, only keep the part, clip it to]
+  hinglish: [sirf rakho, itna hi rakho, bas itna rakho, kaat ke rakho, sirf ye hissa rakho, baaki kaat do, se tak rakho]
+  hi: [सिर्फ़ इतना रखो, बाकी काट दो, यहाँ से वहाँ तक रखो]
+  slang: [bas itna chahiye]
+  typos: [trimm, trm, rakhho]
+negations: [trim mat karo, mat kaato, poora rakho]
+examples:
+  - {prompt: "keep only 5 to 10 seconds", lang: en, params: {start: 5, end: 10}}
+  - {prompt: "trim it from 2 sec to 8 sec", lang: en, params: {start: 2, end: 8}}
+  - {prompt: "सिर्फ़ 3 से 9 सेकंड रखो", lang: hi, params: {start: 3, end: 9}}
+  - {prompt: "sirf 5 se 10 sec rakho", lang: hinglish, params: {start: 5, end: 10}}
+  - {prompt: "bas 1 se 6 second tak ka rakho baaki kaat do", lang: hinglish, params: {start: 1, end: 6}}
+  - {prompt: "trimm 4 to 9 secs", lang: typo, params: {start: 4, end: 9}}
+  - {prompt: "sirf shuru ke 6 second rakho", lang: vague, params: {start: 0, end: 6}}
+  - {prompt: "sirf 2 se 10 sec rakho aur black and white kar do", lang: multi, params: {start: 2, end: 10}, also: [grayscale]}
+test: {check: trim_range, params: {start: 2.0, end: 7.0}}

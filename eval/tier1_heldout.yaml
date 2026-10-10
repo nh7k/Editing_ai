@@ -1,0 +1,156 @@
+# HELD-OUT Tier 1 prompts — written 2026-10-09 AFTER the synonyms were frozen, never used to tune them.
+# Run once: backend/.venv/Scripts/python.exe eval/run_tier1_lang.py heldout
+prompts:
+  - {skill: trim, prompt: "keep just 3 to 12 seconds", lang: en, params: {start: 3, end: 12}}
+  - {skill: trim, prompt: "बस 2 से 6 सेकंड का हिस्सा रखो", lang: hi, params: {start: 2, end: 6}}
+  - {skill: delete_segment, prompt: "cut out 10 to 14 sec", lang: en, params: {start: 10, end: 14}}
+  - {skill: delete_segment, prompt: "pehla shot hata do", lang: hinglish, params: {shot: 1}}
+  - {skill: split, prompt: "split at 7 seconds", lang: en, params: {at: 7}}
+  - {skill: remove_silence, prompt: "khamoshi wale gap kaat do", lang: hinglish}
+  - {skill: remove_silence, prompt: "cut all the dead air", lang: en}
+  - {skill: remove_fillers, prompt: "umm aur aaa nikal do", lang: hinglish}
+  - {skill: jump_cut_tighten, prompt: "make the talking tighter", lang: en}
+  - {skill: fit_to_duration, prompt: "45 second ka bana do", lang: hinglish, params: {target_sec: 45}}
+  - {skill: fit_to_duration, prompt: "shorten to 1 minute", lang: en, params: {target_sec: 60}}
+  - {skill: extract_highlights, prompt: "4 best moments nikalo", lang: hinglish, params: {count: 4}}
+  - {skill: hook_first, prompt: "open with the most exciting part", lang: en}
+  - {skill: montage_builder, prompt: "fast montage of everything", lang: en}
+  - {skill: reorder_clips, prompt: "3 1 2 order me lagao", lang: hinglish, params: {new_order: [3, 1, 2]}}
+  - {skill: merge_clips, prompt: "join all my clips", lang: en}
+  - {skill: j_cut, prompt: "next clip ki awaaz pehle shuru ho", lang: hinglish}
+  - {skill: insert_broll, prompt: "show the second clip as b-roll at 6 sec", lang: en, params: {start: 6}}
+  - {skill: intro_outro, prompt: "end me 'Subscribe karo' card", lang: hinglish, params: {text: "Subscribe karo", which: outro}}
+  - {skill: aspect_9_16, prompt: "convert to vertical for reels", lang: en}
+  - {skill: aspect_1_1, prompt: "square bana do", lang: hinglish}
+  - {skill: aspect_16_9, prompt: "horizontal youtube format", lang: en}
+  - {skill: aspect_4_5, prompt: "4:5 ratio me karo", lang: hinglish}
+  - {skill: blur_background_fill, prompt: "blur the empty sides", lang: en}
+  - {skill: letterbox, prompt: "add black bars top and bottom", lang: en}
+  - {skill: picture_in_picture, prompt: "small video in the top right corner", lang: en, params: {position: top_right}}
+  - {skill: split_screen, prompt: "show both videos side by side", lang: en}
+  - {skill: rotate_flip, prompt: "video ko 90 degree ghuma do", lang: hinglish, params: {angle: 90}}
+  - {skill: crop, prompt: "crop in on the middle", lang: en}
+  - {skill: auto_reframe, prompt: "keep my face in the frame", lang: en}
+  - {skill: grayscale, prompt: "black white bana do", lang: hinglish}
+  - {skill: grayscale, prompt: "पूरा वीडियो ब्लैक एंड व्हाइट", lang: hi}
+  - {skill: sepia, prompt: "old brown photo tone", lang: en}
+  - {skill: brightness, prompt: "video bahut andhera hai", lang: hinglish}
+  - {skill: contrast, prompt: "punchier contrast please", lang: en}
+  - {skill: saturation, prompt: "colours ko aur gehra karo", lang: hinglish}
+  - {skill: warm, prompt: "give it a golden warm tone", lang: en}
+  - {skill: cool, prompt: "thoda blue tone do", lang: hinglish}
+  - {skill: cinematic_look, prompt: "film jaisa grade karo", lang: hinglish}
+  - {skill: teal_orange, prompt: "orange and teal look", lang: en}
+  - {skill: vintage_faded, prompt: "matte retro colours", lang: en}
+  - {skill: vignette, prompt: "darken the edges a little", lang: en}
+  - {skill: film_grain, prompt: "add some grain", lang: en}
+  - {skill: sharpen, prompt: "make it crisper", lang: en}
+  - {skill: blur, prompt: "pura video dhundhla kar do", lang: hinglish}
+  - {skill: auto_enhance, prompt: "automatically fix the colours", lang: en}
+  - {skill: color_pop, prompt: "keep only the red, rest grey", lang: en}
+  - {skill: zoom_in, prompt: "slow zoom into the face", lang: en}
+  - {skill: zoom_out, prompt: "pull back at the end", lang: en}
+  - {skill: punch_in, prompt: "zoom punch on every beat", lang: en}
+  - {skill: ken_burns, prompt: "photos ko halka sa move karo ken burns", lang: hinglish}
+  - {skill: pan, prompt: "pan to the left slowly", lang: en, params: {direction: left}}
+  - {skill: shake, prompt: "bass pe screen hilao", lang: hinglish}
+  - {skill: speed_up, prompt: "1.5x speed karo", lang: hinglish, params: {factor: 1.5}}
+  - {skill: slow_motion, prompt: "slow-mo the last part", lang: en}
+  - {skill: speed_ramp, prompt: "speed ramp on the second shot", lang: en}
+  - {skill: reverse, prompt: "play it in reverse", lang: en}
+  - {skill: freeze_frame, prompt: "6 sec pe frame freeze karo", lang: hinglish, params: {at: 6}}
+  - {skill: crossfade, prompt: "soft dissolve between clips", lang: en}
+  - {skill: fade_black, prompt: "start me fade in karo", lang: hinglish, params: {where: start}}
+  - {skill: fade_white, prompt: "dip to white between shots", lang: en}
+  - {skill: wipe, prompt: "wipe transition from the right", lang: en, params: {direction: right}}
+  - {skill: slide, prompt: "slide transition upar se", lang: hinglish}
+  - {skill: zoom_transition, prompt: "zoom wala transition lagao", lang: hinglish}
+  - {skill: whip_pan, prompt: "swoosh transitions for travel", lang: en}
+  - {skill: iris_circle, prompt: "circle open transition", lang: en}
+  - {skill: glitch_transition, prompt: "glitchy cuts between scenes", lang: en}
+  - {skill: add_music, prompt: "koi calm gaana lagao", lang: hinglish, params: {mood: calm}}
+  - {skill: duck_music, prompt: "music should go down when I talk", lang: en}
+  - {skill: volume, prompt: "turn the volume up 3 dB", lang: en, params: {gain_db: 3}}
+  - {skill: mute, prompt: "video ki awaaz band kar do", lang: hinglish}
+  - {skill: audio_fade, prompt: "music fade out at the end", lang: en}
+  - {skill: normalize_loudness, prompt: "-14 LUFS pe karo", lang: hinglish, params: {target_lufs: -14}}
+  - {skill: denoise, prompt: "remove the fan noise", lang: en}
+  - {skill: voice_clarity, prompt: "voice ko clear aur crisp banao", lang: hinglish}
+  - {skill: beat_sync, prompt: "cuts ko beat ke saath milao", lang: hinglish}
+  - {skill: sfx_whoosh, prompt: "whoosh sound on every transition", lang: en}
+  - {skill: echo_reverb, prompt: "add echo to the voice", lang: en}
+  - {skill: replace_audio, prompt: "original sound hata ke sirf music", lang: hinglish}
+  - {skill: extract_audio, prompt: "give me the audio as mp3", lang: en, params: {format: mp3}}
+  - {skill: auto_captions, prompt: "add subtitles to the video", lang: en}
+  - {skill: auto_captions, prompt: "हिंदी में कैप्शन लगाओ", lang: hi}
+  - {skill: karaoke_captions, prompt: "word by word highlight captions", lang: en}
+  - {skill: caption_style, prompt: "captions ka color white karo", lang: hinglish}
+  - {skill: title_card, prompt: "title card 'Part 2'", lang: en, params: {text: "Part 2"}}
+  - {skill: lower_third, prompt: "name tag 'Chef Arjun' neeche", lang: hinglish, params: {text: "Chef Arjun"}}
+  - {skill: text_overlay, prompt: "write 'Day 5' in the center", lang: en, params: {text: "Day 5"}}
+  - {skill: text_typewriter, prompt: "'Loading...' typewriter style", lang: en, params: {text: "Loading..."}}
+  - {skill: text_pop_in, prompt: "'Yes!' pop in text", lang: en, params: {text: "Yes!"}}
+  - {skill: text_glow_neon, prompt: "'Open 24x7' neon sign", lang: en, params: {text: "Open 24x7"}}
+  - {skill: text_slide, prompt: "'Next up' text slide from left", lang: en, params: {text: "Next up"}}
+  - {skill: watermark_logo, prompt: "put my logo bottom left", lang: en, params: {position: bottom_left}}
+  - {skill: progress_bar, prompt: "show a progress bar at the bottom", lang: en}
+  - {skill: glitch, prompt: "glitch effect on the drop", lang: en}
+  - {skill: vhs_retro, prompt: "old camcorder vhs vibe", lang: en}
+  - {skill: rgb_split, prompt: "chromatic aberration effect", lang: en}
+  - {skill: flash, prompt: "camera flash at 4 seconds", lang: en}
+  - {skill: light_leak, prompt: "add warm light leaks", lang: en}
+  - {skill: mirror_effect, prompt: "kaleidoscope effect do", lang: hinglish, params: {axis: both}}
+  - {skill: pixelate_censor, prompt: "uska chehra pixelate kar do", lang: hinglish, params: {region: face}}
+  - {skill: blur_box_censor, prompt: "blur the number plate area", lang: en}
+  - {skill: shape_highlight, prompt: "draw a red circle around it", lang: en}
+  - {skill: sticker_lottie, prompt: "ek 🎉 sticker lagao", lang: hinglish, params: {emoji: "🎉"}}
+  - {skill: countdown_timer, prompt: "5 se countdown dikhao", lang: hinglish, params: {from: 5}}
+  - {skill: scene_detect, prompt: "automatically split the scenes", lang: en}
+  - {skill: export_preset, prompt: "export for youtube shorts", lang: en, params: {platform: youtube_shorts}}
+  - {skill: stabilize, prompt: "video bahut hil raha hai stable karo", lang: hinglish}
+  - {skill: loop_boomerang, prompt: "boomerang loop bana do", lang: hinglish}
+  - {skill: thumbnail, prompt: "thumbnail from 5 seconds", lang: en, params: {at: 5}}
+  - {skill: srt_export, prompt: "download srt subtitles", lang: en}
+multi:
+  - {prompt: "silence hatao, captions lagao aur 30 sec ka karo", expect: [remove_silence, auto_captions, fit_to_duration]}
+  - {prompt: "vertical banao, warm color, music lagao aur fade out", expect: [aspect_9_16, warm, add_music, fade_black]}
+  - {prompt: "black and white, slow motion and add a vignette", expect: [grayscale, slow_motion, vignette]}
+  - {prompt: "zoom in karo, shake daalo aur glitch transitions", expect: [zoom_in, shake, glitch_transition]}
+  - {prompt: "remove fillers, tighten the pauses, add karaoke captions and duck the music", expect: [remove_fillers, jump_cut_tighten, karaoke_captions, duck_music]}
+  - {prompt: "crossfade lagao, contrast badhao, grain daalo", expect: [crossfade, contrast, film_grain]}
+  - {prompt: "square bana do, captions peele karo aur progress bar", expect: [aspect_1_1, caption_style, progress_bar]}
+  - {prompt: "best part pehle, 20 sec ka karo, beat par cut aur music", expect: [hook_first, fit_to_duration, beat_sync, add_music]}
+  - {prompt: "teal orange look, kali patti and slow zoom in", expect: [teal_orange, letterbox, zoom_in]}
+  - {prompt: "noise hatao, awaaz clear karo, -14 LUFS", expect: [denoise, voice_clarity, normalize_loudness]}
+  - {prompt: "intro 'Goa' lagao, whip pan transitions aur music", expect: [intro_outro, whip_pan, add_music]}
+  - {prompt: "reverse karo, speed up 2x and add flash", expect: [reverse, speed_up, flash]}
+  - {prompt: "pixelate his face, mute 2 to 4 sec, add captions", expect: [pixelate_censor, mute, auto_captions]}
+  - {prompt: "split screen, add music, fade in fade out", expect: [split_screen, add_music, fade_black]}
+  - {prompt: "sepia, film grain, vignette aur slow motion", expect: [sepia, film_grain, vignette, slow_motion]}
+  - {prompt: "auto enhance, sharpen and export for instagram", expect: [auto_enhance, sharpen, export_preset]}
+  - {prompt: "lower third 'Ravi', captions and a logo watermark", expect: [lower_third, auto_captions, watermark_logo]}
+  - {prompt: "montage banao, beat sync karo, rgb split lagao", expect: [montage_builder, beat_sync, rgb_split]}
+  - {prompt: "4:5 karo, cool tone, light leak aur sticker", expect: [aspect_4_5, cool, light_leak, sticker_lottie]}
+  - {prompt: "freeze frame at 3 sec, flash, whoosh sound", expect: [freeze_frame, flash, sfx_whoosh]}
+  - {prompt: "remove silence, j cut, crossfade and music", expect: [remove_silence, j_cut, crossfade, add_music]}
+  - {prompt: "highlights banao, vertical, captions, music aur 15 sec", expect: [extract_highlights, aspect_9_16, auto_captions, add_music, fit_to_duration]}
+  - {prompt: "stabilize, auto enhance, cinematic look and letterbox", expect: [stabilize, auto_enhance, cinematic_look, letterbox]}
+  - {prompt: "count down from 3, then pop text 'GO' and shake", expect: [countdown_timer, text_pop_in, shake]}
+  - {prompt: "thumbnail at 2 sec, srt file and mp3", expect: [thumbnail, srt_export, extract_audio]}
+  - {prompt: "boomerang, saturation badhao, neon text 'Party'", expect: [loop_boomerang, saturation, text_glow_neon]}
+  - {prompt: "picture in picture, karaoke captions, ducking", expect: [picture_in_picture, karaoke_captions, duck_music]}
+  - {prompt: "trim 2 to 20 sec, black and white, slow motion, music, fade out", expect: [trim, grayscale, slow_motion, add_music, fade_black]}
+  - {prompt: "16:9 karo, blur sides, title 'Vlog 1', crossfade, music, captions", expect: [aspect_16_9, blur_background_fill, title_card, crossfade, add_music, auto_captions]}
+  - {prompt: "scenes alag karo, har cut pe flash aur whoosh", expect: [scene_detect, flash, sfx_whoosh]}
+contradictory:
+  - {prompt: "music lagao aur music mat lagao", note: "must not crash; one of them, said back"}
+  - {prompt: "zoom in and zoom out", note: "both are legal (the stack keeps the later)"}
+  - {prompt: "black and white but keep only red", note: "color pop after B&W: the later wins, said back"}
+  - {prompt: "slow motion aur 2x speed", note: "both legal; said back"}
+  - {prompt: "captions lagao, captions mat lagao", note: "must not crash"}
+unsupported:
+  - {prompt: "remove the background and put me on the moon"}
+  - {prompt: "make my face look younger"}
+  - {prompt: "translate my voice to tamil"}
+  - {prompt: "4k upscale kar do"}
+  - {prompt: "ek naya video AI se bana do dragon wala"}

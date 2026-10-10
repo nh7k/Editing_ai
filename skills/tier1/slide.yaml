@@ -1,0 +1,111 @@
+# written by skills/tools/write_tier1_transitions.py — edit this file directly from now on
+id: slide
+seed: 21
+category: transitions
+name: Slide
+name_hi: Sarkao
+description: The next shot slides in and pushes the old one out. Each overlap makes the video that much shorter.
+params:
+  direction:
+    type: choice
+    choices:
+    - left
+    - right
+    - up
+    - down
+    default: left
+    extract: direction
+    desc: direction
+  duration:
+    type: number
+    default: 0.6
+    min: 0.15
+    max: 2.0
+    unit: s
+    extract: seconds
+    desc: length
+  cut:
+    type: integer
+    min: 1
+    max: 500
+    extract: cut_number
+    desc: which cut (default every cut)
+time_modes:
+- whole
+- between_times
+builder: transitions.slide
+graph: xfade=slideleft/right/up/down + acrossfade (tri)
+media3:
+  status: custom_shader
+  how: a GlEffect over the overlap of two sequences (Composition) — NOT TESTED
+stage: structure
+conflicts:
+- crossfade
+cost: cheap
+licence: own code; FFmpeg xfade / gblur / rgbashift (server process); whoosh generated
+changes_duration: true
+needs:
+- two_clips
+variant_axes:
+  direction:
+  - left
+  - right
+  - up
+  - down
+synonyms:
+  en:
+  - slide
+  - slide transition
+  - slide in
+  - push transition
+  - slide left
+  - slide right
+  - swipe transition
+  hinglish:
+  - sarkao
+  - side se aaye
+  - slide karke badlo
+  - khisak ke aaye
+  - slide transition do
+  - dhakel ke badle
+  - swipe wala
+  hi:
+  - सरकाओ
+  - साइड से आए
+  - स्लाइड करो
+  slang:
+  - insta swipe
+  typos:
+  - slid
+  - sliide
+  - slyde
+negations:
+- slide mat karo
+examples:
+- prompt: slide transition
+  lang: en
+- prompt: slide in from the right
+  lang: en
+  params:
+    direction: right
+- prompt: साइड से आए
+  lang: hi
+- prompt: slide karke badlo
+  lang: hinglish
+- prompt: upar se sarkao
+  lang: hinglish
+  params:
+    direction: up
+- prompt: slyde
+  lang: typo
+- prompt: story ki tarah badle
+  lang: vague
+- prompt: slide transition aur music
+  lang: multi
+  also:
+  - add_music
+test:
+  check: split_mid
+  params:
+    direction: left
+    duration: 0.8

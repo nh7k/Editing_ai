@@ -1,0 +1,106 @@
+# written by skills/tools/write_tier1_transitions.py — edit this file directly from now on
+id: iris_circle
+seed: 24
+category: transitions
+name: Iris (circle)
+name_hi: Gola khule
+description: A circle opens on the next shot (or closes on the old one). Each overlap makes the video that much shorter.
+params:
+  mode:
+    type: choice
+    choices:
+    - open
+    - close
+    default: open
+    desc: opens or closes
+  duration:
+    type: number
+    default: 0.6
+    min: 0.15
+    max: 2.0
+    unit: s
+    extract: seconds
+    desc: length
+  cut:
+    type: integer
+    min: 1
+    max: 500
+    extract: cut_number
+    desc: which cut (default every cut)
+time_modes:
+- whole
+- between_times
+builder: transitions.iris_circle
+graph: xfade=circleopen/circleclose + acrossfade (tri)
+media3:
+  status: custom_shader
+  how: a GlEffect over the overlap of two sequences (Composition) — NOT TESTED
+stage: structure
+conflicts:
+- crossfade
+cost: cheap
+licence: own code; FFmpeg xfade / gblur / rgbashift (server process); whoosh generated
+changes_duration: true
+needs:
+- two_clips
+variant_axes:
+  mode:
+  - open
+  - close
+synonyms:
+  en:
+  - circle transition
+  - iris
+  - iris wipe
+  - circle open
+  - circle close
+  - round transition
+  - cartoon circle
+  hinglish:
+  - gola khule
+  - circle wala transition
+  - gol transition
+  - gola band ho
+  - cartoon jaisa gola
+  - iris lagao
+  - gol ghera
+  hi:
+  - गोला खुले
+  - सर्कल ट्रांज़िशन
+  - गोल ट्रांज़िशन
+  slang:
+  - that's all folks wala
+  typos:
+  - cirle transition
+  - irish
+  - circel
+negations:
+- circle mat lagao
+examples:
+- prompt: circle transition
+  lang: en
+- prompt: iris close
+  lang: en
+  params:
+    mode: close
+- prompt: गोला खुले
+  lang: hi
+- prompt: gola khule wala transition
+  lang: hinglish
+- prompt: cartoon jaisa gola band ho
+  lang: hinglish
+  params:
+    mode: close
+- prompt: cirle transition
+  lang: typo
+- prompt: purane cartoon jaisa
+  lang: vague
+- prompt: iris aur vintage
+  lang: multi
+  also:
+  - vintage_faded
+test:
+  check: split_mid
+  params:
+    mode: open
+    duration: 0.8

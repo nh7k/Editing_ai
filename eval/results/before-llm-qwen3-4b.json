@@ -1,0 +1,1030 @@
+{
+ "label": "before-llm-qwen3-4b",
+ "cases": 67,
+ "passed": 55,
+ "accuracy": 0.821,
+ "by_kind": {
+  "chitchat": "2/2",
+  "contradiction": "3/3",
+  "devanagari": "1/4",
+  "direct": "15/15",
+  "empty": "2/2",
+  "long": "1/1",
+  "magnitude": "7/7",
+  "negation": "6/6",
+  "paraphrase": "8/15",
+  "reference": "2/2",
+  "slang": "2/2",
+  "typo": "2/4",
+  "vague": "4/4"
+ },
+ "llm": {
+  "calls": 12,
+  "json_valid": 4,
+  "json_valid_rate": 0.333,
+  "used": 1,
+  "rejected": 1,
+  "p50_s": 15.01,
+  "p95_s": 15.72
+ },
+ "total_seconds": 351.4,
+ "rows": [
+  {
+   "id": "d01",
+   "kind": "direct",
+   "lang": "en",
+   "prompt": "make a 15 second reel with captions",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.09,
+   "llm": [],
+   "recognized": [
+    "target duration 15s",
+    "aspect ratio 9:16",
+    "captions"
+   ]
+  },
+  {
+   "id": "d02",
+   "kind": "direct",
+   "lang": "hinglish",
+   "prompt": "30 sec ka video bana do warm color ke saath",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "target duration 30s",
+    "warm color"
+   ]
+  },
+  {
+   "id": "d03",
+   "kind": "direct",
+   "lang": "hinglish",
+   "prompt": "silence hata aur captions laga",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "captions",
+    "remove silence"
+   ]
+  },
+  {
+   "id": "d04",
+   "kind": "direct",
+   "lang": "en",
+   "prompt": "black and white, slow motion",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "bw color",
+    "slow motion"
+   ]
+  },
+  {
+   "id": "d05",
+   "kind": "direct",
+   "lang": "hinglish",
+   "prompt": "gaana hata do",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "no music"
+   ]
+  },
+  {
+   "id": "d06",
+   "kind": "direct",
+   "lang": "en",
+   "prompt": "add upbeat music and fast cuts",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "fast cuts",
+    "upbeat music"
+   ]
+  },
+  {
+   "id": "d07",
+   "kind": "direct",
+   "lang": "hinglish",
+   "prompt": "9:16 me bana do insta ke liye",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "aspect ratio 9:16"
+   ]
+  },
+  {
+   "id": "d08",
+   "kind": "direct",
+   "lang": "en",
+   "prompt": "remove filler words and clean up the audio",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "remove filler words",
+    "voice cleanup"
+   ]
+  },
+  {
+   "id": "d09",
+   "kind": "direct",
+   "lang": "hinglish",
+   "prompt": "start me 'GOA TRIP' likh do",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "title 'GOA TRIP'",
+    "travel/vlog style"
+   ]
+  },
+  {
+   "id": "d10",
+   "kind": "direct",
+   "lang": "hinglish",
+   "prompt": "pehla clip hata do",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "leave out clip 1"
+   ]
+  },
+  {
+   "id": "d11",
+   "kind": "direct",
+   "lang": "en",
+   "prompt": "glitch effect",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "glitch effect"
+   ]
+  },
+  {
+   "id": "d12",
+   "kind": "direct",
+   "lang": "hinglish",
+   "prompt": "text white karo",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "white text"
+   ]
+  },
+  {
+   "id": "d13",
+   "kind": "direct",
+   "lang": "hinglish",
+   "prompt": "last shot black and white",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "black & white on the last shot"
+   ]
+  },
+  {
+   "id": "d14",
+   "kind": "direct",
+   "lang": "en",
+   "prompt": "use my song, lyrics on screen",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "upbeat music",
+    "your song",
+    "lyrics as text"
+   ]
+  },
+  {
+   "id": "d15",
+   "kind": "direct",
+   "lang": "hinglish",
+   "prompt": "jo bol raha hu uske stickers daal do",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "stickers of the things that are said"
+   ]
+  },
+  {
+   "id": "m01",
+   "kind": "magnitude",
+   "lang": "hinglish",
+   "prompt": "thoda slow karo",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "slower pace (longer shots)"
+   ]
+  },
+  {
+   "id": "m02",
+   "kind": "magnitude",
+   "lang": "hinglish",
+   "prompt": "bahut slow karo",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "slower pace (longer shots)"
+   ]
+  },
+  {
+   "id": "m03",
+   "kind": "magnitude",
+   "lang": "hinglish",
+   "prompt": "thoda chhota karo",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "shorter"
+   ]
+  },
+  {
+   "id": "m04",
+   "kind": "magnitude",
+   "lang": "hinglish",
+   "prompt": "bahut chhota kar do",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "auto edit (the agents choose effects, music, captions and order)",
+    "shorter"
+   ]
+  },
+  {
+   "id": "m05",
+   "kind": "magnitude",
+   "lang": "hinglish",
+   "prompt": "music thoda kam karo",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "music soft"
+   ]
+  },
+  {
+   "id": "m06",
+   "kind": "magnitude",
+   "lang": "hinglish",
+   "prompt": "text bada karo",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "bigger text"
+   ]
+  },
+  {
+   "id": "m07",
+   "kind": "magnitude",
+   "lang": "hinglish",
+   "prompt": "thoda bright karo",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "brighter"
+   ]
+  },
+  {
+   "id": "n01",
+   "kind": "negation",
+   "lang": "hinglish",
+   "prompt": "zoom mat lagao",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "no zoom"
+   ]
+  },
+  {
+   "id": "n02",
+   "kind": "negation",
+   "lang": "en",
+   "prompt": "no music please",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "no music"
+   ]
+  },
+  {
+   "id": "n03",
+   "kind": "negation",
+   "lang": "hinglish",
+   "prompt": "captions nahi chahiye",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "remove captions"
+   ]
+  },
+  {
+   "id": "n04",
+   "kind": "negation",
+   "lang": "hinglish",
+   "prompt": "transitions hata do",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "remove transition"
+   ]
+  },
+  {
+   "id": "n05",
+   "kind": "negation",
+   "lang": "hinglish",
+   "prompt": "black and white mat karna",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "no black & white"
+   ]
+  },
+  {
+   "id": "n06",
+   "kind": "negation",
+   "lang": "hinglish",
+   "prompt": "glitch effect mat daalna",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "no glitch",
+    "remove effects"
+   ]
+  },
+  {
+   "id": "t01",
+   "kind": "typo",
+   "lang": "hinglish",
+   "prompt": "captins lagao",
+   "pass": false,
+   "fails": [
+    "captions: got False, want True"
+   ],
+   "seconds": 112.93,
+   "llm": [
+    {
+     "provider": "llamacpp",
+     "model": "qwen3-4b",
+     "result": "failed: no answer within 25s"
+    }
+   ],
+   "recognized": []
+  },
+  {
+   "id": "t02",
+   "kind": "typo",
+   "lang": "hinglish",
+   "prompt": "slow moshan daal do",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "slow motion"
+   ]
+  },
+  {
+   "id": "t03",
+   "kind": "typo",
+   "lang": "en",
+   "prompt": "blak and wite",
+   "pass": false,
+   "fails": [
+    "color_preset: got None, want 'bw'"
+   ],
+   "seconds": 0.01,
+   "llm": [],
+   "recognized": []
+  },
+  {
+   "id": "t04",
+   "kind": "slang",
+   "lang": "hinglish",
+   "prompt": "ekdum jhakaas bana de",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "auto edit (the agents choose effects, music, captions and order)"
+   ]
+  },
+  {
+   "id": "t05",
+   "kind": "slang",
+   "lang": "hinglish",
+   "prompt": "aag laga de bhai, hype edit",
+   "pass": true,
+   "fails": [],
+   "seconds": 25.43,
+   "llm": [
+    {
+     "provider": "llamacpp",
+     "model": "qwen3-4b",
+     "result": "failed: no answer within 25s"
+    }
+   ],
+   "recognized": [
+    "fast cuts"
+   ]
+  },
+  {
+   "id": "t06",
+   "kind": "typo",
+   "lang": "en",
+   "prompt": "remov silense",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "remove silence"
+   ]
+  },
+  {
+   "id": "v01",
+   "kind": "vague",
+   "lang": "hinglish",
+   "prompt": "achha sa bana do",
+   "pass": true,
+   "fails": [],
+   "seconds": 25.22,
+   "llm": [
+    {
+     "provider": "llamacpp",
+     "model": "qwen3-4b",
+     "result": "failed: no answer within 25s"
+    }
+   ],
+   "recognized": [
+    "auto edit (the agents choose effects, music, captions and order)"
+   ]
+  },
+  {
+   "id": "v02",
+   "kind": "vague",
+   "lang": "hinglish",
+   "prompt": "mast sa edit kar do",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.01,
+   "llm": [],
+   "recognized": [
+    "auto edit (the agents choose effects, music, captions and order)"
+   ]
+  },
+  {
+   "id": "v03",
+   "kind": "vague",
+   "lang": "en",
+   "prompt": "make it better",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "auto edit (the agents choose effects, music, captions and order)"
+   ]
+  },
+  {
+   "id": "v04",
+   "kind": "vague",
+   "lang": "hinglish",
+   "prompt": "professional bana do",
+   "pass": true,
+   "fails": [],
+   "seconds": 25.12,
+   "llm": [
+    {
+     "provider": "llamacpp",
+     "model": "qwen3-4b",
+     "result": "failed: no answer within 25s"
+    }
+   ],
+   "recognized": [
+    "auto edit (the agents choose effects, music, captions and order)"
+   ]
+  },
+  {
+   "id": "p01",
+   "kind": "paraphrase",
+   "lang": "hinglish",
+   "prompt": "gaane ki awaaz thodi dheemi kar do",
+   "pass": false,
+   "fails": [
+    "music_volume__max: got None, want 0.2"
+   ],
+   "seconds": 0.01,
+   "llm": [],
+   "recognized": [
+    "upbeat music"
+   ]
+  },
+  {
+   "id": "p02",
+   "kind": "paraphrase",
+   "lang": "hinglish",
+   "prompt": "colour thoda garam karo",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "warm color"
+   ]
+  },
+  {
+   "id": "p03",
+   "kind": "paraphrase",
+   "lang": "hinglish",
+   "prompt": "subtitles peele rang mein",
+   "pass": false,
+   "fails": [
+    "text_color: got None, want '#FFE600'"
+   ],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "captions"
+   ]
+  },
+  {
+   "id": "p04",
+   "kind": "paraphrase",
+   "lang": "hinglish",
+   "prompt": "aakhri wala video nikal do",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.01,
+   "llm": [],
+   "recognized": [
+    "leave out clip last"
+   ]
+  },
+  {
+   "id": "p05",
+   "kind": "paraphrase",
+   "lang": "hinglish",
+   "prompt": "awaaz saaf karo",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "voice cleanup"
+   ]
+  },
+  {
+   "id": "p06",
+   "kind": "paraphrase",
+   "lang": "hinglish",
+   "prompt": "isko MrBeast jaisa edit karo",
+   "pass": false,
+   "fails": [
+    "fast_cuts: got False, want True"
+   ],
+   "seconds": 25.35,
+   "llm": [
+    {
+     "provider": "llamacpp",
+     "model": "qwen3-4b",
+     "result": "failed: no answer within 25s"
+    }
+   ],
+   "recognized": [
+    "auto edit (the agents choose effects, music, captions and order)"
+   ]
+  },
+  {
+   "id": "p07",
+   "kind": "paraphrase",
+   "lang": "hinglish",
+   "prompt": "purane zamane ki film jaisa lagna chahiye",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.01,
+   "llm": [],
+   "recognized": [
+    "cinematic color"
+   ]
+  },
+  {
+   "id": "p08",
+   "kind": "paraphrase",
+   "lang": "en",
+   "prompt": "make the colours pop",
+   "pass": false,
+   "fails": [
+    "color_preset: got None, want 'vivid'"
+   ],
+   "seconds": 0.01,
+   "llm": [],
+   "recognized": [
+    "pop text animation"
+   ]
+  },
+  {
+   "id": "p09",
+   "kind": "paraphrase",
+   "lang": "hinglish",
+   "prompt": "jo hissa bekaar hai wo kaat do",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "remove idle parts"
+   ]
+  },
+  {
+   "id": "p10",
+   "kind": "paraphrase",
+   "lang": "en",
+   "prompt": "make the words on screen larger",
+   "pass": false,
+   "fails": [
+    "text_scale__min: got None, want 1.2"
+   ],
+   "seconds": 25.11,
+   "llm": [
+    {
+     "provider": "llamacpp",
+     "model": "qwen3-4b",
+     "result": "failed: no answer within 25s"
+    }
+   ],
+   "recognized": []
+  },
+  {
+   "id": "p11",
+   "kind": "paraphrase",
+   "lang": "hinglish",
+   "prompt": "peeche koi gaana chala do jo romantic ho",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.01,
+   "llm": [],
+   "recognized": [
+    "calm music"
+   ]
+  },
+  {
+   "id": "p12",
+   "kind": "paraphrase",
+   "lang": "en",
+   "prompt": "get rid of the background track",
+   "pass": false,
+   "fails": [
+    "no_music: got False, want True"
+   ],
+   "seconds": 0.01,
+   "llm": [],
+   "recognized": [
+    "upbeat music"
+   ]
+  },
+  {
+   "id": "p13",
+   "kind": "paraphrase",
+   "lang": "hinglish",
+   "prompt": "video bahut dheema lag raha hai",
+   "pass": false,
+   "fails": [
+    "pace_change__max: got 2.0, want 0.9"
+   ],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": [
+    "slower pace (longer shots)"
+   ]
+  },
+  {
+   "id": "p14",
+   "kind": "paraphrase",
+   "lang": "en",
+   "prompt": "make it feel like an old vhs tape",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.01,
+   "llm": [],
+   "recognized": [
+    "vhs effect"
+   ]
+  },
+  {
+   "id": "p15",
+   "kind": "paraphrase",
+   "lang": "hinglish",
+   "prompt": "shuruat dhamakedar honi chahiye",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.01,
+   "llm": [],
+   "recognized": [
+    "bass boost + zoom punch on every beat",
+    "upbeat music",
+    "beat pulse for the first 3 seconds",
+    "auto edit (the agents choose effects, music, captions and order)"
+   ]
+  },
+  {
+   "id": "h01",
+   "kind": "devanagari",
+   "lang": "hi",
+   "prompt": "वीडियो को 30 सेकंड का बना दो",
+   "pass": false,
+   "fails": [
+    "target_duration: got None, want 30"
+   ],
+   "seconds": 26.59,
+   "llm": [
+    {
+     "provider": "llamacpp",
+     "model": "qwen3-4b",
+     "result": "failed: no answer within 25s"
+    }
+   ],
+   "recognized": []
+  },
+  {
+   "id": "h02",
+   "kind": "devanagari",
+   "lang": "hi",
+   "prompt": "कैप्शन लगा दो",
+   "pass": false,
+   "fails": [
+    "captions: got False, want True"
+   ],
+   "seconds": 25.36,
+   "llm": [
+    {
+     "provider": "llamacpp",
+     "model": "qwen3-4b",
+     "result": "failed: no answer within 25s"
+    }
+   ],
+   "recognized": []
+  },
+  {
+   "id": "h03",
+   "kind": "devanagari",
+   "lang": "hi",
+   "prompt": "गाना हटा दो",
+   "pass": false,
+   "fails": [
+    "no_music: got False, want True"
+   ],
+   "seconds": 14.43,
+   "llm": [
+    {
+     "provider": "llamacpp",
+     "model": "qwen3-4b",
+     "seconds": 14.39,
+     "commands": [
+      {
+       "id": "mute",
+       "value": ""
+      }
+     ],
+     "confidence": 0.9,
+     "text": "mute the original sound",
+     "result": "rejected: takes something away the user did not ask to remove"
+    }
+   ],
+   "recognized": []
+  },
+  {
+   "id": "h04",
+   "kind": "devanagari",
+   "lang": "hi",
+   "prompt": "थोड़ा स्लो करो",
+   "pass": true,
+   "fails": [],
+   "seconds": 15.77,
+   "llm": [
+    {
+     "provider": "llamacpp",
+     "model": "qwen3-4b",
+     "seconds": 15.72,
+     "commands": [
+      {
+       "id": "slower",
+       "value": ""
+      }
+     ],
+     "confidence": 0.9,
+     "text": "thoda slow karo",
+     "result": "used"
+    }
+   ],
+   "recognized": [
+    "slower pace (longer shots)"
+   ]
+  },
+  {
+   "id": "c01",
+   "kind": "contradiction",
+   "lang": "hinglish",
+   "prompt": "5 sec ka bhi aur 60 sec ka bhi",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.01,
+   "llm": [],
+   "recognized": [
+    "target duration 60s"
+   ]
+  },
+  {
+   "id": "c02",
+   "kind": "contradiction",
+   "lang": "en",
+   "prompt": "fast but cinematic",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.01,
+   "llm": [],
+   "recognized": [
+    "cinematic color"
+   ]
+  },
+  {
+   "id": "c03",
+   "kind": "contradiction",
+   "lang": "hinglish",
+   "prompt": "music lagao aur music mat lagao",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.01,
+   "llm": [],
+   "recognized": [
+    "no music"
+   ]
+  },
+  {
+   "id": "l01",
+   "kind": "long",
+   "lang": "hinglish",
+   "prompt": "bhai sun na mere paas goa trip ke kuch clips hai aur mujhe ek insta reel chahiye jo 20 second ki ho jisme upbeat music ho captions ho aur colour thoda warm ho aur shuru mein sabse best shot aaye aur last mein THE END likh dena please",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.04,
+   "llm": [],
+   "recognized": [
+    "target duration 20s",
+    "aspect ratio 9:16",
+    "warm color",
+    "captions",
+    "upbeat music",
+    "title 'THE END'",
+    "travel/vlog style",
+    "'THE END' at the end"
+   ]
+  },
+  {
+   "id": "e01",
+   "kind": "empty",
+   "lang": "en",
+   "prompt": "",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": []
+  },
+  {
+   "id": "e02",
+   "kind": "empty",
+   "lang": "en",
+   "prompt": "   ",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.0,
+   "llm": [],
+   "recognized": []
+  },
+  {
+   "id": "x01",
+   "kind": "chitchat",
+   "lang": "hinglish",
+   "prompt": "kya haal hai bhai",
+   "pass": true,
+   "fails": [],
+   "seconds": 15.69,
+   "llm": [
+    {
+     "provider": "llamacpp",
+     "model": "qwen3-4b",
+     "seconds": 15.63,
+     "commands": [],
+     "confidence": 0.2,
+     "text": "",
+     "result": "nothing / low confidence"
+    }
+   ],
+   "recognized": []
+  },
+  {
+   "id": "x02",
+   "kind": "chitchat",
+   "lang": "en",
+   "prompt": "what is the weather today",
+   "pass": true,
+   "fails": [],
+   "seconds": 14.03,
+   "llm": [
+    {
+     "provider": "llamacpp",
+     "model": "qwen3-4b",
+     "seconds": 13.92,
+     "commands": [],
+     "confidence": 0.2,
+     "text": "",
+     "result": "nothing / low confidence"
+    }
+   ],
+   "recognized": []
+  },
+  {
+   "id": "r01",
+   "kind": "reference",
+   "lang": "hinglish",
+   "prompt": "is reference video jaisa edit karo",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.01,
+   "llm": [],
+   "recognized": [
+    "auto edit (the agents choose effects, music, captions and order)",
+    "edit like the reference video"
+   ]
+  },
+  {
+   "id": "r02",
+   "kind": "reference",
+   "lang": "en",
+   "prompt": "edit it like the uploaded video",
+   "pass": true,
+   "fails": [],
+   "seconds": 0.01,
+   "llm": [],
+   "recognized": [
+    "auto edit (the agents choose effects, music, captions and order)",
+    "edit like the reference video"
+   ]
+  }
+ ]
+}

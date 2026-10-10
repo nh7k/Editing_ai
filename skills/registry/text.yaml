@@ -1,0 +1,180 @@
+skills:
+- id: captions
+  tier: 1
+  category: text
+  name: Auto captions
+  description: Subtitles of what is said, word-timed, 2-3 words per line, inside the app safe zone. Hindi speech → Hinglish words.
+  synonyms:
+    en: [captions, subtitles, auto captions, add subtitles]
+    hi: [कैप्शन, सबटाइटल]
+    hinglish: [captions laga do, subtitle daal do, jo bol raha uska text]
+    slang: [hormozi captions, reels captions]
+    typos: [captins, captons, subtitels]
+  params:
+    words: {type: integer, default: 3, min: 1, max: 8}
+  time_modes: [whole]
+  impl: {kind: intent, ref: add captions}
+  stage: text
+  conflicts: []
+  cost: medium
+  media3: "OverlayEffect + TextOverlay per caption (times from the server plan) — NOT TESTED"
+  licence: own code (ASS via libass); words from faster-whisper (MIT) / Vosk Hindi (Apache-2.0)
+  preview: same at 360p
+  examples: [add captions, captions laga do, कैप्शन लगा दो, captins lagao, subtitles in 2 words]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: karaoke_captions
+  tier: 2
+  category: text
+  name: Karaoke captions (word highlight)
+  description: Each word lights up as it is spoken.
+  synonyms:
+    en: [karaoke captions, word highlight, highlight the spoken word]
+    hinglish: [jo word bole wo highlight ho, karaoke wale captions]
+    typos: [karoke]
+  params: {}
+  time_modes: [whole]
+  impl: {kind: intent, ref: karaoke captions, fields: [text_animation]}
+  stage: text
+  conflicts: []
+  cost: medium
+  media3: "TextOverlay re-styled per word — NOT TESTED"
+  licence: own code (ASS \k tags)
+  preview: same at 360p
+  examples: [karaoke captions, highlight each word, jo word bole wo highlight ho, karoke subtitles, spoken word in yellow]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: title_text
+  tier: 1
+  category: text
+  name: Title / text on screen
+  description: Big text at the start (or at a commented moment).
+  synonyms:
+    en: [title, text on screen, write, heading]
+    hi: [लिखो, टाइटल]
+    hinglish: [likh do, title daalo, naam likh do]
+    typos: [titel, tittle]
+  params:
+    text: {type: string, default: TITLE}
+  time_modes: [whole, at_moment]
+  impl: {kind: intent, ref: "'{text}' likh do"}
+  stage: text
+  conflicts: []
+  cost: cheap
+  media3: "TextOverlay — NOT TESTED"
+  licence: own code (ASS)
+  preview: same at 360p
+  examples: ["start me 'GOA TRIP' likh do", "title GOA 2026", "'WOW' likh do", "नाम लिखो 'Riya'", "titel daalo 'My Trip'"]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: end_text
+  tier: 1
+  category: text
+  name: Closing text
+  description: Text on the last seconds ("The End", a call to action).
+  synonyms:
+    en: [end text, closing text, the end]
+    hinglish: [last me likh do, end me text]
+    typos: [end txt]
+  params:
+    text: {type: string, default: The End}
+  time_modes: [whole]
+  impl: {kind: intent, ref: "last me {text} likh do"}
+  stage: text
+  conflicts: []
+  cost: cheap
+  media3: "TextOverlay — NOT TESTED"
+  licence: own code (ASS)
+  preview: same at 360p
+  examples: [last me The End likh do, end with 'Follow for more', end me text, closing title thanks for watching, end txt]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: kinetic_words
+  tier: 1
+  category: text
+  name: Kinetic words / lyrics on the beat
+  description: Big single words landing on the beat (or the song's words as they are sung).
+  synonyms:
+    en: [kinetic text, words on the beat, lyrics on screen]
+    hinglish: [gaane ke words, beat pe words, lyrics dikhao]
+    slang: [lyric edit, word pop]
+    typos: [kinetik text, lyrcs]
+  params: {}
+  time_modes: [at_beats, on_words]
+  impl: {kind: intent, ref: lyrics on screen, fields: [lyrics]}
+  stage: text
+  conflicts: []
+  cost: medium
+  media3: "TextOverlay keyframed — NOT TESTED"
+  licence: own code (ASS)
+  preview: same at 360p
+  examples: [lyrics on screen, gaane ke words dikhao, kinetic text, words on the beat, lyrcs edit]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: text_style
+  tier: 1
+  category: text
+  name: Text style preset
+  description: One of the 22 text looks (Hormozi, neon, comic, poster, desi bold, …).
+  synonyms:
+    en: [text style, font style, bold captions, neon text]
+    hinglish: [text ka style badlo, mota font, neon wala text]
+    typos: [text stlye]
+  params:
+    preset: {type: enum, default: hormozi, choices: [hormozi, bold_pop, neon, minimal, comic, handwritten, retro, cinema, gaming, action, love, wedding, news, desi, cartoon, glass, poster]}
+  time_modes: [whole]
+  impl: {kind: text_style, ref: "{preset}"}
+  stage: text
+  conflicts: []
+  cost: cheap
+  media3: "TextOverlay TextStyle — NOT TESTED"
+  licence: own presets; fonts SIL OFL 1.1 (assets/fonts/OFL-NOTICE.txt)
+  preview: same at 360p
+  examples: [hormozi style captions, neon text, poster style text, desi bold font, text stlye comic]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: text_color
+  tier: 1
+  category: text
+  name: Text colour
+  description: Colour of the text (any change "X to Y" uses the last colour named).
+  synonyms:
+    en: [text color, white text, yellow captions]
+    hi: [टेक्स्ट का रंग]
+    hinglish: [text white karo, captions peele, text ka rang]
+    typos: [text colr]
+  params:
+    color: {type: string, default: white}
+  time_modes: [whole, at_moment]
+  impl: {kind: intent, ref: "text {color} karo", fields: [text_color]}
+  stage: text
+  conflicts: []
+  cost: cheap
+  media3: "TextOverlay colour span — NOT TESTED"
+  licence: own code
+  preview: same
+  examples: [text white karo, change the text colour black to white, captions yellow karo, text ka rang laal, text colr blue]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: text_size
+  tier: 1
+  category: text
+  name: Text bigger / smaller
+  description: Scales every text item.
+  synonyms:
+    en: [bigger text, smaller text, larger font]
+    hinglish: [text bada karo, text chhota karo, font bada]
+    typos: [text bda]
+  params:
+    scale: {type: number, default: 1.5, min: 0.3, max: 3.0}
+  time_modes: [whole, at_moment]
+  impl: {kind: intent, ref: text bada karo}
+  stage: text
+  conflicts: []
+  cost: cheap
+  media3: "TextOverlay size — NOT TESTED"
+  licence: own code
+  preview: same
+  examples: [text bada karo, make the words on screen larger, text chhota karo, font bada karo, text bda]
+  status: tested
+  test: tests/integration/test_skill_renders.py

@@ -1,0 +1,87 @@
+# written by skills/tools/write_tier1_audio.py — edit this file directly from now on
+id: denoise
+seed: 92
+category: audio
+name: Remove background noise
+name_hi: Shor hatao
+description: Reduce steady background noise (fan, hiss, hum) with FFmpeg afftdn — no model download.
+params:
+  amount:
+    type: choice
+    choices:
+    - light
+    - strong
+    default: light
+    desc: how much
+time_modes:
+- whole
+builder: audio.denoise
+graph: afftdn
+media3:
+  status: server_only
+  reason: 'FFmpeg audio filters; Media3 has no equivalent audio processor (design: AudioProcessor ports, NOT TESTED)'
+stage: audio
+conflicts: []
+cost: cheap
+licence: own code; FFmpeg audio filters (server process); generated sounds; librosa (ISC) for beats
+changes_duration: false
+needs: []
+variant_axes:
+  amount:
+  - light
+  - strong
+synonyms:
+  en:
+  - denoise
+  - remove background noise
+  - remove noise
+  - clean the audio
+  - remove hiss
+  - noise reduction
+  - remove the hum
+  hinglish:
+  - noise hatao
+  - shor hatao
+  - background awaaz saaf
+  - awaaz saaf karo
+  - hiss hatao
+  - pankhe ki awaaz hatao
+  - shor kam karo
+  hi:
+  - शोर हटाओ
+  - आवाज़ साफ़ करो
+  - बैकग्राउंड नॉइज़ हटाओ
+  slang:
+  - khar khar hatao
+  typos:
+  - denoize
+  - nois hatao
+  - shoor hatao
+negations:
+- noise mat hatao
+examples:
+- prompt: remove background noise
+  lang: en
+- prompt: strong noise reduction
+  lang: en
+  params:
+    amount: strong
+- prompt: शोर हटाओ
+  lang: hi
+- prompt: noise hatao
+  lang: hinglish
+- prompt: pankhe ki awaaz hatao
+  lang: hinglish
+- prompt: denoize
+  lang: typo
+- prompt: peeche se khar khar aa rahi hai
+  lang: vague
+- prompt: noise hatao aur voice clear
+  lang: multi
+  also:
+  - voice_clarity
+test:
+  check: noise_lower
+  media: noisy
+  params:
+    amount: strong

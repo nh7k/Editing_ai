@@ -1,0 +1,90 @@
+# written by skills/tools/write_tier1_color.py — edit this file directly from now on
+id: vignette
+seed: 47
+category: color
+name: Vignette
+name_hi: Kinare kale
+description: Darker corners, the eye goes to the centre.
+params:
+  amount:
+    type: number
+    default: 1.0
+    min: 0.3
+    max: 2.0
+    extract: magnitude
+    desc: how dark
+time_modes:
+- whole
+- segment
+- between_times
+- intermittent
+builder: color.vignette
+graph: vignette=angle
+media3:
+  status: custom_shader
+  how: radial darkening GlEffect — NOT TESTED
+stage: effect
+conflicts: []
+cost: cheap
+licence: own code; generated LUTs (own maths); FFmpeg filters (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  amount:
+  - light
+  - normal
+  - strong
+synonyms:
+  en:
+  - vignette
+  - dark corners
+  - dark edges
+  - focus on the centre
+  - edge darkening
+  - vignetting
+  - shadowy edges
+  hinglish:
+  - kinare kale
+  - kone kale karo
+  - center pe focus
+  - side me andhera
+  - vignette lagao
+  - kinare dark
+  - beech pe dhyan
+  hi:
+  - किनारे काले
+  - विनेट
+  - कोने अंधेरे
+  slang:
+  - dramatic kinare
+  typos:
+  - vignete
+  - vinyet
+  - vignett
+negations:
+- vignette mat lagao
+examples:
+- prompt: add a vignette
+  lang: en
+- prompt: strong dark corners
+  lang: en
+  params:
+    amount: 1.6
+- prompt: किनारे काले करो
+  lang: hi
+- prompt: vignette lagao
+  lang: hinglish
+- prompt: thoda kinare dark karo
+  lang: hinglish
+  params:
+    amount: 0.5
+- prompt: vignete
+  lang: typo
+- prompt: beech wale pe dhyan jaye
+  lang: vague
+- prompt: vignette aur sepia
+  lang: multi
+  also:
+  - sepia
+test:
+  check: corners_darker

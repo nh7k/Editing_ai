@@ -1,0 +1,45 @@
+{
+ "model": "phi-4-mini",
+ "file": "Phi-4-mini-instruct-Q4_K_M.gguf",
+ "size_gb": 2.49,
+ "load_s": 12.7,
+ "ram_mb_after_load": 2790,
+ "ram_mb_peak": null,
+ "first_request_s": 60.3,
+ "p50_s": 10.14,
+ "p95_s": 26.22,
+ "json_valid_rate": 1.0,
+ "threads": 6,
+ "load_test": [
+  {
+   "concurrent": 1,
+   "ok": 1,
+   "busy_rejected": 0,
+   "timed_out": 0,
+   "errors": 0,
+   "wall_s": 10.2,
+   "p95_ok_s": 9.93
+  },
+  {
+   "concurrent": 5,
+   "ok": 2,
+   "busy_rejected": 0,
+   "timed_out": 3,
+   "errors": 0,
+   "wall_s": 30.1,
+   "p95_ok_s": 20.43
+  },
+  {
+   "concurrent": 20,
+   "ok": 2,
+   "busy_rejected": 12,
+   "timed_out": 6,
+   "errors": 0,
+   "wall_s": 30.1,
+   "p95_ok_s": 24.09
+  }
+ ],
+ "timeout_s": 30.0,
+ "max_queue": 8,
+ "ram_note": "private bytes after load + warm-up (n_ctx 4096), measured with Get-Process in a separate run (scratch ram_probe); the bench run's own RAM reading was broken (0) and is fixed in bench_llm.py"
+}

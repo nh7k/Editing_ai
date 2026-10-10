@@ -1,0 +1,758 @@
+{
+ "prompts": 840,
+ "correct": 763,
+ "accuracy": 0.908,
+ "by_lang": {
+  "en": "209/210",
+  "hi": "105/105",
+  "hinglish": "209/210",
+  "typo": "105/105",
+  "vague": "30/105",
+  "multi": "105/105"
+ },
+ "per_skill": {
+  "add_music": "7/8",
+  "aspect_16_9": "6/8",
+  "aspect_1_1": "7/8",
+  "aspect_4_5": "8/8",
+  "aspect_9_16": "7/8",
+  "audio_fade": "7/8",
+  "auto_captions": "7/8",
+  "auto_enhance": "7/8",
+  "auto_reframe": "7/8",
+  "beat_sync": "7/8",
+  "blur": "7/8",
+  "blur_background_fill": "7/8",
+  "blur_box_censor": "7/8",
+  "brightness": "7/8",
+  "caption_style": "8/8",
+  "cinematic_look": "7/8",
+  "color_pop": "7/8",
+  "contrast": "7/8",
+  "cool": "7/8",
+  "countdown_timer": "8/8",
+  "crop": "7/8",
+  "crossfade": "7/8",
+  "delete_segment": "8/8",
+  "denoise": "7/8",
+  "duck_music": "7/8",
+  "echo_reverb": "7/8",
+  "export_preset": "8/8",
+  "extract_audio": "8/8",
+  "extract_highlights": "8/8",
+  "fade_black": "7/8",
+  "fade_white": "7/8",
+  "film_grain": "8/8",
+  "fit_to_duration": "8/8",
+  "flash": "7/8",
+  "freeze_frame": "7/8",
+  "glitch": "7/8",
+  "glitch_transition": "8/8",
+  "grayscale": "7/8",
+  "hook_first": "8/8",
+  "insert_broll": "7/8",
+  "intro_outro": "8/8",
+  "iris_circle": "7/8",
+  "j_cut": "8/8",
+  "jump_cut_tighten": "8/8",
+  "karaoke_captions": "7/8",
+  "ken_burns": "7/8",
+  "l_cut": "7/8",
+  "letterbox": "7/8",
+  "light_leak": "7/8",
+  "loop_boomerang": "8/8",
+  "lower_third": "7/8",
+  "merge_clips": "8/8",
+  "mirror_effect": "7/8",
+  "montage_builder": "7/8",
+  "mute": "7/8",
+  "normalize_loudness": "7/8",
+  "pan": "7/8",
+  "picture_in_picture": "8/8",
+  "pixelate_censor": "8/8",
+  "progress_bar": "7/8",
+  "punch_in": "7/8",
+  "remove_fillers": "7/8",
+  "remove_silence": "8/8",
+  "reorder_clips": "8/8",
+  "replace_audio": "7/8",
+  "reverse": "7/8",
+  "rgb_split": "7/8",
+  "rotate_flip": "8/8",
+  "saturation": "7/8",
+  "scene_detect": "7/8",
+  "sepia": "7/8",
+  "sfx_whoosh": "7/8",
+  "shake": "7/8",
+  "shape_highlight": "7/8",
+  "sharpen": "7/8",
+  "slide": "7/8",
+  "slow_motion": "7/8",
+  "speed_ramp": "7/8",
+  "speed_up": "8/8",
+  "split": "8/8",
+  "split_screen": "7/8",
+  "srt_export": "7/8",
+  "stabilize": "7/8",
+  "sticker_lottie": "7/8",
+  "teal_orange": "7/8",
+  "text_glow_neon": "8/8",
+  "text_overlay": "8/8",
+  "text_pop_in": "7/8",
+  "text_slide": "7/8",
+  "text_typewriter": "8/8",
+  "thumbnail": "7/8",
+  "title_card": "7/8",
+  "trim": "8/8",
+  "vhs_retro": "7/8",
+  "vignette": "8/8",
+  "vintage_faded": "8/8",
+  "voice_clarity": "7/8",
+  "volume": "7/8",
+  "warm": "7/8",
+  "watermark_logo": "7/8",
+  "whip_pan": "7/8",
+  "wipe": "7/8",
+  "zoom_in": "7/8",
+  "zoom_out": "7/8",
+  "zoom_transition": "7/8"
+ },
+ "misses": [
+  {
+   "skill": "add_music",
+   "prompt": "thoda mahaul banao",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "aspect_16_9",
+   "prompt": "16:9 and crop to fill",
+   "lang": "en",
+   "why": "fit_mode='blur' want 'crop'",
+   "got": [
+    [
+     "aspect_16_9",
+     {},
+     null
+    ],
+    [
+     "crop",
+     {},
+     null
+    ]
+   ]
+  },
+  {
+   "skill": "aspect_16_9",
+   "prompt": "tv pe dikhana hai",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "aspect_1_1",
+   "prompt": "feed pe daalna hai",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "aspect_9_16",
+   "prompt": "phone pe poora dikhe aisa",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "audio_fade",
+   "prompt": "ending achanak na lage",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "auto_captions",
+   "prompt": "bina awaaz ke bhi samajh aaye",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": [
+    [
+     "mute",
+     {},
+     null
+    ]
+   ]
+  },
+  {
+   "skill": "auto_enhance",
+   "prompt": "ye theek nahi dikh raha",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "auto_reframe",
+   "prompt": "main side me chala jata hu, sambhal lo",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "beat_sync",
+   "prompt": "music ke saath match ho",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": [
+    [
+     "add_music",
+     {},
+     null
+    ]
+   ]
+  },
+  {
+   "skill": "blur",
+   "prompt": "sapne jaisa",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "blur_background_fill",
+   "prompt": "kaali patti achhi nahi lagti",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "blur_box_censor",
+   "prompt": "ye dikhna nahi chahiye",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "brightness",
+   "prompt": "kuch dikh nahi raha",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "cinematic_look",
+   "prompt": "bade parde wali feel",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "color_pop",
+   "prompt": "sirf saree ka rang dikhe",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "contrast",
+   "prompt": "picture bahut flat lag rahi",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "cool",
+   "prompt": "sardi wali feel",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "crop",
+   "prompt": "frame thoda tight karo",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": [
+    [
+     "jump_cut_tighten",
+     {},
+     null
+    ]
+   ]
+  },
+  {
+   "skill": "crossfade",
+   "prompt": "jhatke se na badle",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": [
+    [
+     "shake",
+     {},
+     null
+    ]
+   ]
+  },
+  {
+   "skill": "denoise",
+   "prompt": "peeche se khar khar aa rahi hai",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "duck_music",
+   "prompt": "music me meri awaaz dab rahi hai",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": [
+    [
+     "add_music",
+     {},
+     null
+    ]
+   ]
+  },
+  {
+   "skill": "echo_reverb",
+   "prompt": "awaaz bade kamre jaisi",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "fade_black",
+   "prompt": "dheere se khatam ho",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "fade_white",
+   "prompt": "sapne jaisa badlav",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "flash",
+   "prompt": "paparazzi jaisa",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "freeze_frame",
+   "prompt": "jab main koodun tab ruk jaye",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "glitch",
+   "prompt": "video thoda kharab sa dikhe",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "grayscale",
+   "prompt": "purani yaadon jaisa feel",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "insert_broll",
+   "prompt": "bolte waqt kuch aur dikhao",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "iris_circle",
+   "prompt": "purane cartoon jaisa",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "karaoke_captions",
+   "prompt": "tiktok jaise words",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "ken_burns",
+   "prompt": "photos boring lag rahi hain",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "l_cut",
+   "prompt": "cut pe awaaz ekdum na ruke",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "letterbox",
+   "prompt": "film jaisa feel do patti se",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "light_leak",
+   "prompt": "sapne jaisi roshni",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "lower_third",
+   "prompt": "log jaane kaun bol raha hai",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "mirror_effect",
+   "prompt": "trippy sa banao",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "montage_builder",
+   "prompt": "reel jaisa fast kuch bana do",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": [
+    [
+     "speed_up",
+     {},
+     null
+    ]
+   ]
+  },
+  {
+   "skill": "mute",
+   "prompt": "ye bekaar shor hai",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "normalize_loudness",
+   "prompt": "kabhi tez kabhi dheemi awaaz",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "pan",
+   "prompt": "thoda camera chalao",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "progress_bar",
+   "prompt": "log aakhir tak dekhein",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "punch_in",
+   "prompt": "thoda energy daalo zoom se",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": [
+    [
+     "zoom_in",
+     {
+      "amount": 0.075
+     },
+     null
+    ]
+   ]
+  },
+  {
+   "skill": "remove_fillers",
+   "prompt": "jahan atak ke bola hai wo hatao",
+   "lang": "hinglish",
+   "why": "skill not found",
+   "got": [
+    [
+     "delete_segment",
+     {},
+     null
+    ]
+   ]
+  },
+  {
+   "skill": "replace_audio",
+   "prompt": "sirf gaane wali reel",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "reverse",
+   "prompt": "waqt ko peeche le jao",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": [
+    [
+     "zoom_out",
+     {},
+     null
+    ]
+   ]
+  },
+  {
+   "skill": "rgb_split",
+   "prompt": "3d jaisa rang",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "saturation",
+   "prompt": "thoda zinda sa lage",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "scene_detect",
+   "prompt": "lamba video hai tukde kar do",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": [
+    [
+     "aspect_9_16",
+     {},
+     null
+    ]
+   ]
+  },
+  {
+   "skill": "sepia",
+   "prompt": "dada ji ke zamane wala look",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "sfx_whoosh",
+   "prompt": "thoda dramatic awaaz",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "shake",
+   "prompt": "dhamake wali feel",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "shape_highlight",
+   "prompt": "yahan dhyan jaye",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "sharpen",
+   "prompt": "thoda HD jaisa lage",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "slide",
+   "prompt": "story ki tarah badle",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "slow_motion",
+   "prompt": "dramatic sa dikhe",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "speed_ramp",
+   "prompt": "action jaisa speed",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "split_screen",
+   "prompt": "pehle aur baad me ka comparison",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": [
+    [
+     "reorder_clips",
+     {},
+     null
+    ]
+   ]
+  },
+  {
+   "skill": "srt_export",
+   "prompt": "youtube pe subtitles daalne hain",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": [
+    [
+     "auto_captions",
+     {},
+     null
+    ]
+   ]
+  },
+  {
+   "skill": "stabilize",
+   "prompt": "chalte hue shoot kiya tha",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "sticker_lottie",
+   "prompt": "thoda fun daalo",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "teal_orange",
+   "prompt": "marvel jaisa",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "text_pop_in",
+   "prompt": "text me energy chahiye",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "text_slide",
+   "prompt": "text thoda move karke aaye",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "thumbnail",
+   "prompt": "youtube ke liye cover",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": [
+    [
+     "aspect_16_9",
+     {},
+     null
+    ]
+   ]
+  },
+  {
+   "skill": "title_card",
+   "prompt": "video ka naam dikhao",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "vhs_retro",
+   "prompt": "nostalgia wala camera",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": [
+    [
+     "vintage_faded",
+     {},
+     null
+    ]
+   ]
+  },
+  {
+   "skill": "voice_clarity",
+   "prompt": "meri awaaz dabi dabi hai",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "volume",
+   "prompt": "sunai nahi de raha",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "warm",
+   "prompt": "dhoop wali feel do",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "watermark_logo",
+   "prompt": "koi chura na le video",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "whip_pan",
+   "prompt": "energetic travel cut",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "wipe",
+   "prompt": "ek line chal ke badle",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "zoom_in",
+   "prompt": "chehre ke paas jao",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "zoom_out",
+   "prompt": "poora scene dikhao",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "zoom_transition",
+   "prompt": "travel vlog jaisa transition",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  }
+ ]
+}

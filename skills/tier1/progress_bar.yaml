@@ -1,0 +1,105 @@
+# written by skills/tools/write_tier1_text.py — edit this file directly from now on
+id: progress_bar
+seed: 64
+category: text
+name: Progress bar
+name_hi: Loading bar
+description: A bar along the bottom (or top) that fills as the video plays.
+params:
+  position:
+    type: choice
+    choices:
+    - bottom
+    - top
+    default: bottom
+    extract: position
+    desc: edge
+  color:
+    type: color
+    default: '#FFD60A'
+    extract: color
+    desc: colour
+  thickness:
+    type: number
+    default: 1.0
+    min: 0.5
+    max: 3.0
+    extract: magnitude
+    desc: thickness
+time_modes:
+- whole
+- between_times
+builder: text.progress_bar
+graph: color source + overlay with x(t)
+media3:
+  status: custom_shader
+  how: a rectangle overlay whose width follows the time — NOT TESTED
+stage: overlay
+conflicts: []
+cost: cheap
+licence: own code; libass + HarfBuzz via FFmpeg (server process); fonts SIL OFL (Hind, Kalam, Poppins, Anton, Bebas)
+changes_duration: false
+needs: []
+variant_axes:
+  edge:
+  - bottom
+  - top
+  color:
+  - yellow
+  - white
+  - red
+synonyms:
+  en:
+  - progress bar
+  - loading bar
+  - timeline bar
+  - bar that fills
+  - progress line
+  - watch progress
+  - time bar
+  hinglish:
+  - progress bar lagao
+  - loading bar
+  - bar chale
+  - neeche line chale
+  - kitna bacha dikhe
+  - bar bhare
+  - line badhti jaye
+  hi:
+  - प्रोग्रेस बार
+  - लोडिंग बार
+  - बार चले
+  slang:
+  - shorts wala bar
+  typos:
+  - progres bar
+  - progress baar
+  - loding bar
+negations:
+- progress bar mat lagao
+examples:
+- prompt: add a progress bar
+  lang: en
+- prompt: red progress bar at the top
+  lang: en
+  params:
+    color: '#FF3B30'
+    position: top
+- prompt: प्रोग्रेस बार लगाओ
+  lang: hi
+- prompt: neeche line chale
+  lang: hinglish
+- prompt: loading bar lagao peela
+  lang: hinglish
+  params:
+    color: '#FFD60A'
+- prompt: progres bar
+  lang: typo
+- prompt: log aakhir tak dekhein
+  lang: vague
+- prompt: progress bar aur captions
+  lang: multi
+  also:
+  - auto_captions
+test:
+  check: bar_fills

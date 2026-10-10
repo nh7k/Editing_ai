@@ -1,0 +1,92 @@
+# written by skills/tools/write_tier1_color.py — edit this file directly from now on
+id: warm
+seed: 42
+category: color
+name: Warmer
+name_hi: Garam tone
+description: Warmer colour temperature (more orange).
+params:
+  amount:
+    type: number
+    default: 0.5
+    min: 0.05
+    max: 1.0
+    extract: magnitude
+    desc: how warm
+time_modes:
+- whole
+- segment
+- between_times
+- intermittent
+builder: color.warm
+graph: colortemperature
+media3:
+  status: custom_shader
+  how: white-balance matrix (RgbMatrix) — NOT TESTED
+stage: color
+conflicts:
+- cool
+cost: cheap
+licence: own code; generated LUTs (own maths); FFmpeg filters (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  amount:
+  - light
+  - normal
+  - strong
+synonyms:
+  en:
+  - warm
+  - warmer
+  - warm tone
+  - golden
+  - sunset look
+  - orange tint
+  - cosy colours
+  hinglish:
+  - garam tone
+  - warm karo
+  - golden kar do
+  - sunset jaisa
+  - thoda peela pan
+  - dhoop jaisa
+  - warm color
+  hi:
+  - गर्म रंग
+  - सुनहरा करो
+  - वार्म करो
+  slang:
+  - golden hour wala
+  typos:
+  - warmm
+  - worm tone
+  - wram
+negations:
+- warm mat karo
+examples:
+- prompt: make it warmer
+  lang: en
+- prompt: warm tone on the first shot
+  lang: en
+  time:
+    mode: segment
+    index: 0
+- prompt: गर्म रंग कर दो
+  lang: hi
+- prompt: warm color karo
+  lang: hinglish
+- prompt: bahut warm kar do
+  lang: hinglish
+  params:
+    amount: 0.8
+- prompt: warmm colours
+  lang: typo
+- prompt: dhoop wali feel do
+  lang: vague
+- prompt: warm karo aur vignette
+  lang: multi
+  also:
+  - vignette
+test:
+  check: warmer

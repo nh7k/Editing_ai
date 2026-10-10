@@ -1,0 +1,38 @@
+id: split
+seed: 2
+category: cutting
+name: Split at a time
+name_hi: Yahan se do hisse
+description: Cut the shot under a time point into two shots. Nothing visible changes; later edits can treat the halves separately.
+params:
+  at: {type: number, min: 0.2, max: 36000, unit: s, extract: time_point, required: true, desc: time to split at}
+time_modes: [whole]
+builder: cutting.split
+graph: two segments with in/out at the split point (no filter)
+media3: {status: mapped, how: "two EditedMediaItems with ClippingConfiguration either side of the point"}
+stage: structure
+conflicts: []
+cost: cheap
+licence: own code
+changes_duration: false
+needs: []
+variant_axes:
+  where: [at_time, at_playhead, at_scene_change]
+  pieces: [two, at_every_n_seconds]
+synonyms:
+  en: [split, split at, cut into two, break the clip, divide the clip, make a cut at, razor]
+  hinglish: [tod do, do hisse karo, do part karo, yahan se kaato, beech se todo, yahan cut lagao, alag karo]
+  hi: [बाँटो, दो हिस्से करो, यहाँ से काटो]
+  slang: [blade lagao]
+  typos: [splt, spilt, tod doo]
+negations: [split mat karo, mat todo]
+examples:
+  - {prompt: "split the clip at 4 seconds", lang: en, params: {at: 4}}
+  - {prompt: "make a cut at 6.5 sec", lang: en, params: {at: 6.5}}
+  - {prompt: "5 सेकंड पर दो हिस्से करो", lang: hi, params: {at: 5}}
+  - {prompt: "3 second pe tod do", lang: hinglish, params: {at: 3}}
+  - {prompt: "yahan se kaato 7 sec pe", lang: hinglish, params: {at: 7}}
+  - {prompt: "splt at 2 sec", lang: typo, params: {at: 2}}
+  - {prompt: "beech se do part karo 5 sec pe", lang: vague, params: {at: 5}}
+  - {prompt: "4 sec pe split karo aur crossfade lagao", lang: multi, params: {at: 4}, also: [crossfade]}
+test: {check: split_invisible, params: {at: 3.0}}

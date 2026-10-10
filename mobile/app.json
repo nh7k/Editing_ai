@@ -1,0 +1,63 @@
+{
+  "expo": {
+    "name": "CutMind",
+    "slug": "cutmind",
+    "scheme": "cutmind",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#0E0F13",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.cutmind.app"
+    },
+    "android": {
+      "package": "com.cutmind.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#0E0F13",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro",
+      "output": "single"
+    },
+    "plugins": [
+      "expo-font",
+      "expo-video",
+      "expo-sharing",
+      "expo-dev-client",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "CutMind needs access to your videos so you can import clips.",
+          "cameraPermission": false,
+          "microphonePermission": false
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "CutMind needs access to your library to save exported videos.",
+          "savePhotosPermission": "CutMind saves exported videos to your library.",
+          "granularPermissions": [
+            "video"
+          ]
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ]
+    ]
+  }
+}

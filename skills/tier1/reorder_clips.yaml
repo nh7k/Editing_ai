@@ -1,0 +1,39 @@
+id: reorder_clips
+seed: 5
+category: cutting
+name: Change shot order
+name_hi: Order badlo
+description: Put the shots in a new order (a list of shot numbers), move one shot, or reverse the order. Text inside a shot moves with it.
+params:
+  new_order: {type: list, extract: order_list, desc: the shot numbers in the new order}
+  move: {type: integer, min: 1, max: 500, extract: move_from, desc: shot to move}
+  to: {type: integer, min: 1, max: 500, default: 1, extract: move_to, desc: its new place}
+time_modes: [whole]
+builder: cutting.reorder_clips
+graph: concat in the new order
+media3: {status: mapped, how: "reorder the EditedMediaItems of the sequence"}
+stage: structure
+conflicts: []
+cost: cheap
+licence: own code
+changes_duration: false
+needs: [two_clips]
+variant_axes:
+  how: [explicit_list, move_one_to_start, move_one_to_end, reverse_order, swap_two]
+synonyms:
+  en: [reorder, change the order, swap clips, move clip, rearrange, put first, put at the end]
+  hinglish: [order badlo, aage peeche karo, pehle ye phir wo, ye wala pehle, clips ki jagah badlo, ulta order, last wala pehle]
+  hi: [क्रम बदलो, आगे पीछे करो, पहले ये फिर वो]
+  slang: [shuffle karo, shot pehle karo, order karo]
+  typos: [reoder, ordr badlo, aage piche]
+negations: [order mat badlo, jaisa hai waisa rakho]
+examples:
+  - {prompt: "put clip 3 first", lang: en, params: {move: 3, to: 1}}
+  - {prompt: "reorder to 2 1 3", lang: en, params: {new_order: [2, 1, 3]}}
+  - {prompt: "दूसरा शॉट पहले करो", lang: hi, params: {move: 2, to: 1}}
+  - {prompt: "pehle 2 phir 1 phir 3", lang: hinglish, params: {new_order: [2, 1, 3]}}
+  - {prompt: "last wala clip pehle laga do", lang: hinglish}
+  - {prompt: "reoder clips 3 2 1", lang: typo, params: {new_order: [3, 2, 1]}}
+  - {prompt: "clips aage peeche kar do", lang: vague}
+  - {prompt: "2 1 3 order karo aur fade lagao", lang: multi, params: {new_order: [2, 1, 3]}, also: [fade_black]}
+test: {check: order_swapped, params: {new_order: [2, 1]}}

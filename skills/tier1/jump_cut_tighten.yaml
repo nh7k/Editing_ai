@@ -1,0 +1,38 @@
+id: jump_cut_tighten
+seed: 8
+category: cutting
+name: Tighten pauses (jump cuts)
+name_hi: Tight karo
+description: Shorten every gap between spoken phrases to at most max_gap (jump cuts). Without a transcript it uses the measured pauses instead.
+same_engine_as: remove_silence
+params:
+  max_gap: {type: number, default: 0.3, min: 0.05, max: 1.5, unit: s, extract: seconds, desc: longest gap left}
+time_modes: [whole]
+builder: cutting.jump_cut_tighten
+graph: word gaps (or silencedetect) → segments with short gaps
+media3: {status: mapped, how: "server computes the cut list; the phone applies clippings", reason: "word times need speech-to-text"}
+stage: structure
+conflicts: []
+cost: medium
+licence: own code; FFmpeg silencedetect; Vosk / faster-whisper
+changes_duration: true
+needs: [speech]
+variant_axes:
+  tightness: [relaxed_0.5s, normal_0.3s, very_tight_0.1s]
+synonyms:
+  en: [tighten, jump cut, tighten the pauses, make it snappy, remove gaps between sentences, faster talking, tight edit]
+  hinglish: [tight karo, gap kam karo, jaldi jaldi kaato, pace tez karo, bolne ke beech gap kam, jump cut lagao, chust karo]
+  hi: [बीच का गैप कम करो, टाइट करो, जंप कट लगाओ]
+  slang: [ekdum tight bana do]
+  typos: [tigten, jumpcut, tite karo]
+negations: [tight mat karo, natural rehne do]
+examples:
+  - {prompt: "tighten the pauses", lang: en}
+  - {prompt: "jump cut it, max 0.2 second gaps", lang: en, params: {max_gap: 0.2}}
+  - {prompt: "बोलने के बीच का गैप कम करो", lang: hi}
+  - {prompt: "gap kam karo bolne me", lang: hinglish}
+  - {prompt: "jump cut lagao", lang: hinglish}
+  - {prompt: "tigten pls", lang: typo}
+  - {prompt: "thoda chust bana do baaton ko", lang: vague}
+  - {prompt: "tight karo aur captions lagao", lang: multi, also: [auto_captions]}
+test: {check: max_gap_respected, media: talk, params: {max_gap: 0.3}}

@@ -1,0 +1,124 @@
+# written by skills/tools/write_tier1_text.py — edit this file directly from now on
+id: auto_captions
+seed: 53
+category: text
+name: Auto captions
+name_hi: Jo bola wo likho
+description: Captions from the speech (Vosk for Hindi, faster-whisper for English), timed to the words on the current cut.
+params:
+  style:
+    type: choice
+    choices:
+    - classic
+    - hormozi
+    - bold_pop
+    - minimal
+    - desi
+    - news
+    default: classic
+    desc: look
+  position:
+    type: choice
+    choices:
+    - bottom
+    - center
+    - top
+    - top_right
+    - bottom_right
+    - bottom_left
+    - top_left
+    default: bottom
+    extract: position
+    desc: where
+  words_per_line:
+    type: integer
+    default: 4
+    min: 1
+    max: 10
+    extract: count
+    desc: words per caption
+  size:
+    type: integer
+    default: 50
+    min: 24
+    max: 120
+    desc: size
+time_modes:
+- whole
+builder: text.auto_captions
+graph: speech-to-text words → ASS events (libass + HarfBuzz)
+media3:
+  status: server_only
+  reason: speech-to-text runs on the server; the phone draws the timed captions with TextOverlay
+stage: text
+conflicts: []
+cost: medium
+licence: own code; libass + HarfBuzz via FFmpeg (server process); fonts SIL OFL (Hind, Kalam, Poppins, Anton, Bebas)
+changes_duration: false
+needs:
+- speech
+variant_axes:
+  style:
+  - classic
+  - hormozi
+  - bold_pop
+  - minimal
+  words:
+  - '1'
+  - '3'
+  - '6'
+synonyms:
+  en:
+  - captions
+  - subtitles
+  - auto captions
+  - add subtitles
+  - transcribe
+  - text of what i say
+  - closed captions
+  hinglish:
+  - captions lagao
+  - subtitle daal do
+  - jo bol raha hai wo likho
+  - neeche likh do jo bola
+  - caption daalo
+  - subtitles chahiye
+  - baat ko text me dikhao
+  hi:
+  - सबटाइटल
+  - कैप्शन लगाओ
+  - जो बोल रहा है वो लिखो
+  slang:
+  - text wali reel
+  typos:
+  - captons
+  - subtitels
+  - caption lgao
+negations:
+- captions mat lagao
+- captions hatao
+- bina captions
+examples:
+- prompt: add captions
+  lang: en
+- prompt: transcribe the talk as subtitles
+  lang: en
+- prompt: सबटाइटल लगाओ
+  lang: hi
+- prompt: jo bol raha hai wo neeche likho
+  lang: hinglish
+- prompt: captions lagao 2 words ek baar me
+  lang: hinglish
+  params:
+    words_per_line: 2
+- prompt: captons lagao
+  lang: typo
+- prompt: bina awaaz ke bhi samajh aaye
+  lang: vague
+- prompt: captions lagao aur silence hatao
+  lang: multi
+  also:
+  - remove_silence
+test:
+  check: captions_on_speech
+  media: talk

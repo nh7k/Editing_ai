@@ -1,0 +1,100 @@
+# written by skills/tools/write_tier1_motion.py — edit this file directly from now on
+id: slow_motion
+seed: 33
+category: motion
+name: Slow motion
+name_hi: Dheema karo
+description: Slower playback (factor < 1), picture and sound (pitch kept), for the whole video or a part.
+params:
+  factor:
+    type: number
+    default: 0.5
+    min: 0.25
+    max: 0.9
+    extract: multiplier
+    desc: speed (0.5 = half)
+time_modes:
+- whole
+- segment
+- between_times
+- intermittent
+builder: motion.slow_motion
+graph: setpts / atempo per segment
+media3:
+  status: mapped
+  how: SpeedChangeEffect(factor)
+stage: time
+conflicts:
+- speed_up
+cost: cheap
+licence: own code (engines/motion.py easings); FFmpeg filters (server process)
+changes_duration: true
+needs: []
+variant_axes:
+  factor:
+  - 0.75x
+  - 0.5x
+  - 0.25x
+synonyms:
+  en:
+  - slow motion
+  - slow mo
+  - slomo
+  - slow down
+  - half speed
+  - slower
+  - slow-mo
+  hinglish:
+  - dheema karo
+  - slow motion me chalao
+  - dheere chalao
+  - slow karo
+  - aahista chalao
+  - slow mo kar do
+  - dheere dheere chalao
+  hi:
+  - धीमा करो
+  - स्लो मोशन
+  - धीरे चलाओ
+  slang:
+  - matrix wala slow
+  - quarter speed
+  - aadhi speed
+  typos:
+  - slow motin
+  - slowmo
+  - slo mo
+negations:
+- slow mat karo
+- slow motion nahi
+examples:
+- prompt: slow motion at the end
+  lang: en
+  time:
+    mode: between_times
+- prompt: quarter speed
+  lang: en
+- prompt: स्लो मोशन कर दो
+  lang: hi
+- prompt: slow mo kar do
+  lang: hinglish
+- prompt: aadhi speed pe chalao
+  lang: hinglish
+  params:
+    factor: 0.5
+- prompt: slow motin
+  lang: typo
+- prompt: dramatic sa dikhe
+  lang: vague
+- prompt: slow motion aur black and white
+  lang: multi
+  also:
+  - grayscale
+test:
+  check: slower
+  params:
+    factor: 0.5
+  time:
+    mode: between_times
+    start: 1.0
+    end: 3.0

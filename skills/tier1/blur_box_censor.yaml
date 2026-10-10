@@ -1,0 +1,117 @@
+# written by skills/tools/write_tier1_stylize.py — edit this file directly from now on
+id: blur_box_censor
+seed: 72
+category: stylize
+name: Blur box (censor)
+name_hi: Chhupa do
+description: A blurred box over an area (or the face found there) for a time window.
+same_engine_as: pixelate_censor
+params:
+  region:
+    type: choice
+    choices:
+    - face
+    - center
+    - top
+    - bottom
+    - left
+    - right
+    - top_left
+    - top_right
+    - bottom_left
+    - bottom_right
+    default: center
+    extract: region
+    desc: where
+  strength:
+    type: number
+    default: 1.0
+    min: 0.5
+    max: 3.0
+    extract: magnitude
+    desc: how strong
+time_modes:
+- whole
+- between_times
+- segment
+builder: stylize.blur_box_censor
+graph: crop → boxblur → overlay
+media3:
+  status: mapped
+  how: Crop + GaussianBlur on a second layer — NOT TESTED
+stage: overlay
+conflicts: []
+cost: medium
+licence: 'own code; FFmpeg filters (server process); shapes drawn with Pillow (MIT-CMU); emoji font: Noto Color Emoji (OFL)
+  on the server'
+changes_duration: false
+needs:
+- faces
+variant_axes:
+  region:
+  - face
+  - center
+  - corner
+  blur:
+  - soft
+  - strong
+synonyms:
+  en:
+  - blur box
+  - blur the area
+  - blur out
+  - censor with blur
+  - hide with blur
+  - blur the logo
+  - blur this part
+  hinglish:
+  - chhupa do
+  - blur box lagao
+  - ye hissa blur karo
+  - logo blur karo
+  - dhundhla dabba
+  - naam chhupa do
+  - us jagah blur
+  hi:
+  - छुपा दो
+  - ब्लर बॉक्स
+  - यह हिस्सा धुंधला
+  slang:
+  - dhundh wala dabba
+  typos:
+  - blurbox
+  - blur boxx
+  - chupa do
+negations:
+- blur box mat lagao
+examples:
+- prompt: blur out the logo in the corner
+  lang: en
+- prompt: blur this part 2 to 4 seconds
+  lang: en
+  time:
+    start: 2
+    end: 4
+- prompt: यह हिस्सा धुंधला करो
+  lang: hi
+- prompt: naam chhupa do blur se
+  lang: hinglish
+- prompt: logo blur karo
+  lang: hinglish
+- prompt: blurbox
+  lang: typo
+- prompt: ye dikhna nahi chahiye
+  lang: vague
+- prompt: blur box aur captions
+  lang: multi
+  also:
+  - auto_captions
+test:
+  check: censored_blur
+  params:
+    region: bottom_right
+    strength: 1.5
+  time:
+    mode: between_times
+    start: 1.0
+    end: 3.0

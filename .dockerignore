@@ -1,0 +1,10 @@
+**/.venv
+**/__pycache__
+**/node_modules
+mobile/
+data/
+tests/
+docs/
+.scratch/
+.git
+*.mp4

@@ -1,0 +1,94 @@
+# written by skills/tools/write_tier1_transitions.py — edit this file directly from now on
+id: glitch_transition
+seed: 25
+category: transitions
+name: Glitch transition
+name_hi: Glitch wala cut
+description: The picture breaks into pixels and torn RGB, then rebuilds. Each overlap makes the video that much shorter.
+params:
+  duration:
+    type: number
+    default: 0.4
+    min: 0.15
+    max: 1.0
+    unit: s
+    extract: seconds
+    desc: length
+  cut:
+    type: integer
+    min: 1
+    max: 500
+    extract: cut_number
+    desc: which cut (default every cut)
+time_modes:
+- whole
+- between_times
+builder: transitions.glitch_transition
+graph: xfade=pixelize + rgbashift + noise over the overlap
+media3:
+  status: custom_shader
+  how: a GlEffect over the overlap of two sequences (Composition) — NOT TESTED
+stage: structure
+conflicts:
+- crossfade
+cost: cheap
+licence: own code; FFmpeg xfade / gblur / rgbashift (server process); whoosh generated
+changes_duration: true
+needs:
+- two_clips
+variant_axes:
+  duration:
+  - 0.25s
+  - 0.4s
+  - 0.8s
+synonyms:
+  en:
+  - glitch transition
+  - glitch cut
+  - digital transition
+  - pixel transition
+  - glitchy transition
+  - error transition
+  - data glitch
+  hinglish:
+  - glitch wala cut
+  - glitch transition do
+  - toot ke badle
+  - digital transition lagao
+  - pixel ho ke badle
+  - glitch karke badlo
+  - hang hoke badle
+  hi:
+  - ग्लिच ट्रांज़िशन
+  - टूट के बदले
+  slang:
+  - gaming wala cut
+  typos:
+  - glich transition
+  - glitch transtion
+  - gltch cut
+negations:
+- glitch transition mat lagao
+examples:
+- prompt: glitch transitions
+  lang: en
+- prompt: pixel transition
+  lang: en
+- prompt: ग्लिच ट्रांज़िशन लगाओ
+  lang: hi
+- prompt: glitch wala cut do
+  lang: hinglish
+- prompt: toot ke badle scene
+  lang: hinglish
+- prompt: glich transition
+  lang: typo
+- prompt: gaming video jaisa cut
+  lang: vague
+- prompt: glitch transition aur rgb split
+  lang: multi
+  also:
+  - rgb_split
+test:
+  check: torn_mid
+  params:
+    duration: 0.6

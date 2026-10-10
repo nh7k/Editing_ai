@@ -1,0 +1,89 @@
+# written by skills/tools/write_tier1_text.py — edit this file directly from now on
+id: karaoke_captions
+seed: 54
+category: text
+name: Karaoke captions
+name_hi: Bolte hi chamke
+description: 'Word-by-word highlight: each word lights up in `color` as it is said.'
+params:
+  color:
+    type: color
+    default: '#FFD60A'
+    extract: color
+    desc: highlight colour
+time_modes:
+- whole
+builder: text.karaoke_captions
+graph: ASS \k karaoke tags per word
+media3:
+  status: server_only
+  reason: speech-to-text runs on the server; the phone draws the timed captions with TextOverlay
+stage: text
+conflicts: []
+cost: medium
+licence: own code; libass + HarfBuzz via FFmpeg (server process); fonts SIL OFL (Hind, Kalam, Poppins, Anton, Bebas)
+changes_duration: false
+needs:
+- speech
+variant_axes:
+  color:
+  - yellow
+  - green
+  - pink
+synonyms:
+  en:
+  - karaoke captions
+  - word highlight
+  - highlight each word
+  - karaoke subtitles
+  - words light up
+  - word by word captions
+  - active word captions
+  hinglish:
+  - bolte hi chamke
+  - har word highlight
+  - karaoke wale captions
+  - jo bole wo word chamke
+  - word by word color
+  - bolte bolte highlight
+  - karaoke style
+  hi:
+  - कराओके कैप्शन
+  - हर शब्द चमके
+  - बोलते ही चमके
+  slang:
+  - tiktok wale captions
+  typos:
+  - karoke captions
+  - karaoke captons
+  - karaoki
+negations:
+- karaoke mat karo
+examples:
+- prompt: karaoke captions
+  lang: en
+- prompt: highlight each word in green
+  lang: en
+  params:
+    color: '#34C759'
+- prompt: हर शब्द चमके
+  lang: hi
+- prompt: bolte hi chamke wale captions
+  lang: hinglish
+- prompt: karaoke style peela
+  lang: hinglish
+  params:
+    color: '#FFD60A'
+- prompt: karoke captions
+  lang: typo
+- prompt: tiktok jaise words
+  lang: vague
+- prompt: karaoke captions aur music
+  lang: multi
+  also:
+  - add_music
+test:
+  check: karaoke_colors
+  media: talk
+  params:
+    color: '#FFD60A'

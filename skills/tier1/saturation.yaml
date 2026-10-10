@@ -1,0 +1,94 @@
+# written by skills/tools/write_tier1_color.py — edit this file directly from now on
+id: saturation
+seed: 41
+category: color
+name: Saturation
+name_hi: Rang gehre
+description: Richer (>1) or more faded (<1) colours.
+params:
+  amount:
+    type: number
+    default: 1.35
+    min: 0.0
+    max: 3.0
+    extract: level
+    desc: colour intensity
+time_modes:
+- whole
+- segment
+- between_times
+- intermittent
+builder: color.saturation
+graph: eq=saturation
+media3:
+  status: mapped
+  how: HslAdjustment(saturation)
+stage: color
+conflicts:
+- grayscale
+cost: cheap
+licence: own code; generated LUTs (own maths); FFmpeg filters (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  amount:
+  - '0.6'
+  - '1.3'
+  - '1.6'
+synonyms:
+  en:
+  - saturation
+  - more colourful
+  - vibrant
+  - richer colours
+  - faded colours
+  - desaturate
+  - vivid
+  hinglish:
+  - rang gehre karo
+  - colorful banao
+  - rang tez karo
+  - faded karo
+  - rang halke karo
+  - saturation badhao
+  - rang chatak
+  hi:
+  - रंग गहरे करो
+  - रंग तेज़ करो
+  - रंग हल्के करो
+  slang:
+  - ekdum rangeen
+  typos:
+  - saturaton
+  - colourfull
+  - satration
+negations:
+- saturation mat badlo
+examples:
+- prompt: make the colours more vibrant
+  lang: en
+- prompt: desaturate a bit
+  lang: en
+  params:
+    amount: 0.825
+- prompt: रंग गहरे करो
+  lang: hi
+- prompt: rang tez kar do
+  lang: hinglish
+- prompt: thoda faded karo
+  lang: hinglish
+  params:
+    amount: 0.825
+- prompt: colourfull banao
+  lang: typo
+- prompt: thoda zinda sa lage
+  lang: vague
+- prompt: saturation badhao aur contrast bhi
+  lang: multi
+  also:
+  - contrast
+test:
+  check: sat_up
+  media: soft
+  params:
+    amount: 1.5

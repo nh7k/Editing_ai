@@ -1,0 +1,141 @@
+# Content types. A video can be several at once (e.g. travel + vlog + reel); their skills are combined.
+#   prompt   : regex hints in the user's words (strong signal)
+#   footage  : what the analysis must look like for the type to be guessed WITHOUT the user saying it
+#              speech: none|low|high (words per second), motion: low|mid|high, min_clips, max_clip_seconds
+#   skills   : skill ids from skills.yaml
+#   structure: the arc a professional would aim for
+
+genres:
+  - id: fan_edit
+    name: Fan / velocity edit
+    prompt: ['make (a|an|me a)? ?[\w .''-]{2,40} edit\b', 'fan ?edit', 'velocity edit', 'phonk edit', 'sigma edit', '\bedit (bana|banao|bna)',
+             '[\w]+ (ka|ki) edit', 'nice animations?', 'cool edit', 'hype edit']
+    footage: {}
+    skills: [fan_edit_style, beat_cut, strong_hook, strong_ending, kinetic_words, colour_pass, velocity_moves, beat_punch, flash_accent, social_loudness]
+    structure: strongest shot on the drop → beat-cut montage with colour passes and word hits → biggest moment last
+  - id: party
+    name: Party / celebration
+    prompt: ['party', 'birthday', 'club', '\bdj\b', 'celebration', 'dance', 'naach', 'masti', 'sangeet']
+    footage: {speech: low, motion: high}
+    skills: [fast_paced_reel, beat_cut, strong_hook, strong_ending, warm_vibrant_natural, flash_accent, reaction_priority, natural_sound, social_loudness]
+    structure: hook (best crowd moment) → build → peak → memorable ending
+  - id: travel
+    name: Travel
+    prompt: ['travel', '\btrip\b', 'safar', 'ghum(ne|na)', 'vacation', 'holiday', 'tour', 'yatra']
+    footage: {speech: low, motion: mid, min_clips: 2}
+    skills: [story_arc, varied_rhythm, cinematic_grade, subtle_push_in, natural_sound, minimal_titles, hard_cuts_default, music_bed]
+    structure: establishing → exploration → peak moment → departure
+  - id: vlog
+    name: Vlog
+    prompt: ['vlog', 'day in (my|the) life', 'mera din', 'daily']
+    footage: {speech: high, min_clips: 2}
+    skills: [story_arc, jump_cut_talking, varied_rhythm, social_captions, natural_sound, music_ducking, music_bed]
+    structure: intro → moments in order → wrap-up
+  - id: talking_head
+    name: Talking head
+    prompt: ['talking head', 'explainer', 'monologue', 'camera (pe|ke saamne) bol', 'speech', 'motivational']
+    footage: {speech: high, motion: low}
+    skills: [jump_cut_talking, word_safe_cuts, emphasis_punch, social_captions, clean_voice, music_ducking, hard_cuts_default, no_grade_default]
+    structure: hook sentence → points → conclusion / CTA
+  - id: podcast
+    name: Podcast clip
+    prompt: ['podcast', 'interview', 'conversation', 'baatcheet']
+    footage: {speech: high, motion: low}
+    skills: [jump_cut_talking, word_safe_cuts, premium_captions, clean_voice, reaction_priority, hard_cuts_default]
+    structure: strongest line first → context → payoff
+  - id: wedding
+    name: Wedding
+    prompt: ['wedding', 'shaadi', 'vivah', 'mehendi', 'haldi', 'baraat', 'engagement']
+    footage: {speech: low}
+    skills: [slow_cinematic, dissolve_time, reaction_priority, warm_vibrant_natural, minimal_titles, strong_ending, natural_sound]
+    structure: preparation → ceremony → emotion → celebration
+  - id: documentary
+    name: Documentary
+    prompt: ['documentary', 'docu', 'kahani (sach|real)']
+    footage: {speech: high}
+    skills: [story_arc, word_safe_cuts, no_grade_default, minimal_titles, clean_voice, hard_cuts_default]
+    structure: thesis → evidence → counterpoint → conclusion
+  - id: cinematic
+    name: Cinematic
+    prompt: ['cinematic', 'filmy', 'movie (jaisa|like)']
+    footage: {}
+    skills: [slow_cinematic, cinematic_grade, subtle_push_in, hard_cuts_default, strong_ending]
+    structure: atmosphere → build → emotional peak → quiet end
+  - id: reel
+    name: Reel / short
+    prompt: ['\breels?\b', '\bshorts?\b', 'tiktok', '9:16', 'vertical']
+    footage: {}
+    skills: [strong_hook, varied_rhythm, social_captions, social_loudness]
+    structure: hook in 1.5 s → body → payoff
+  - id: youtube
+    name: YouTube video
+    prompt: ['youtube (video|ke liye)', 'long (video|version)', '16:9 video']
+    footage: {}
+    skills: [story_arc, varied_rhythm, music_ducking, social_loudness]
+    structure: hook → intro → chapters → recap / CTA
+  - id: music_video
+    name: Music video
+    prompt: ['music video', 'gaane (ka|wala) video', 'song video', 'lip.?sync']
+    footage: {}
+    skills: [beat_cut, fast_paced_reel, flash_accent, strong_ending]
+    structure: follow the song structure (verse → chorus → peak)
+  - id: product
+    name: Product video
+    prompt: ['product', 'unboxing', '\bad\b', 'advert', 'promo', 'brand']
+    footage: {}
+    skills: [strong_hook, hard_cuts_default, subtle_push_in, premium_captions, restraint, social_loudness]
+    structure: problem → product → features → proof → CTA
+  - id: sports
+    name: Sports
+    prompt: ['sports?', 'match', 'cricket', 'football', 'goal', 'gym', 'workout', 'kasrat']
+    footage: {speech: low, motion: high}
+    skills: [fast_paced_reel, beat_cut, speed_ramp_moment, strong_hook, strong_ending, flash_accent]
+    structure: hype → action → peak moment (slow-mo) → result
+  - id: gaming
+    name: Gaming
+    prompt: ['gaming', 'game ?play', 'bgmi', 'pubg', 'free ?fire', 'valorant', 'minecraft']
+    footage: {}
+    skills: [fast_paced_reel, strong_hook, social_captions, reaction_priority]
+    structure: best play first → build-up → clutch moment
+  - id: meme
+    name: Meme / comedy
+    prompt: ['meme', 'funny', 'comedy', 'mazedaar']
+    footage: {}
+    skills: [strong_hook, reaction_priority, social_captions]
+    structure: setup → punchline → reaction
+  - id: fashion
+    name: Fashion
+    prompt: ['fashion', 'outfit', 'ootd', 'lookbook', 'style video']
+    footage: {}
+    skills: [beat_cut, warm_vibrant_natural, hard_cuts_default, strong_ending]
+    structure: reveal → looks on the beat → best look last
+  - id: food
+    name: Food
+    prompt: ['food', 'recipe', 'khana', 'cooking', 'restaurant', 'street food']
+    footage: {}
+    skills: [warm_vibrant_natural, varied_rhythm, natural_sound, strong_hook, music_bed]
+    structure: final dish teaser → process → reveal → first bite
+  - id: drone
+    name: Drone / aerial
+    prompt: ['drone', 'aerial', 'birds?.?eye']
+    footage: {speech: none, motion: mid}
+    skills: [slow_cinematic, cinematic_grade, hard_cuts_default, strong_hook, music_bed]
+    structure: strongest aerial move first → reveals → wide closing shot
+  - id: montage
+    name: Montage
+    prompt: ['montage', 'highlights', 'recap', 'compilation']
+    footage: {speech: none, min_clips: 3}
+    skills: [beat_cut, fast_paced_reel, strong_hook, strong_ending, varied_rhythm]
+    structure: hook → rising energy → peak → ending shot
+  - id: tutorial
+    name: Tutorial
+    prompt: ['tutorial', 'how to', 'kaise kare', 'sikho', 'step by step']
+    footage: {speech: high}
+    skills: [jump_cut_talking, word_safe_cuts, social_captions, clean_voice, hard_cuts_default]
+    structure: result first → steps → recap
+  - id: event
+    name: Event
+    prompt: ['event', 'conference', 'launch', 'function', 'program']
+    footage: {}
+    skills: [story_arc, reaction_priority, natural_sound, strong_ending, music_bed]
+    structure: arrival → highlights → peak → goodbye

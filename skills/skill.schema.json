@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CutMind skill",
+  "description": "One editing skill family. Agents only choose and parameterize skills; the resolver turns a call into an Edit Plan patch.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "tier", "category", "name", "description", "synonyms", "params", "time_modes", "impl", "stage",
+               "cost", "media3", "licence", "preview", "examples", "status"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+    "tier": {"enum": [1, 2, 3]},
+    "category": {"enum": ["motion", "transition", "color", "text", "overlay", "structure", "audio", "enhance", "auto"]},
+    "name": {"type": "string"},
+    "description": {"type": "string"},
+    "synonyms": {
+      "type": "object", "additionalProperties": false, "required": ["en"],
+      "properties": {
+        "en": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "hi": {"type": "array", "items": {"type": "string"}},
+        "hinglish": {"type": "array", "items": {"type": "string"}},
+        "slang": {"type": "array", "items": {"type": "string"}},
+        "typos": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "params": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object", "required": ["type", "default"], "additionalProperties": false,
+        "properties": {
+          "type": {"enum": ["number", "integer", "string", "color", "boolean", "enum"]},
+          "default": {}, "min": {"type": "number"}, "max": {"type": "number"},
+          "choices": {"type": "array"}, "desc": {"type": "string"}
+        }
+      }
+    },
+    "time_modes": {"type": "array", "minItems": 1,
+                   "items": {"enum": ["whole", "segment", "between_times", "intermittent", "at_beats", "on_words",
+                                      "on_scene_change", "at_moment"]}},
+    "impl": {
+      "type": "object", "required": ["kind"], "additionalProperties": false,
+      "properties": {
+        "kind": {"enum": ["effect", "transition", "look", "color_adjust", "text_style", "text_anim", "intent", "moment", "planned",
+                          "blocked"]},
+        "ref": {"type": "string", "description": "effect / transition / look / preset id, or the rule phrase for kind=intent"},
+        "strength_param": {"type": "string"},
+        "fields": {"type": "array", "items": {"type": "string"},
+                   "description": "Intent fields that identify this skill (\"remove:transition\" = 'transition' in Intent.remove); default: all fields its phrase sets"},
+        "reason": {"type": "string"}
+      }
+    },
+    "stage": {"enum": ["structure", "time", "geometry", "color", "look", "effect", "overlay", "text", "audio", "transition"]},
+    "conflicts": {"type": "array", "items": {"type": "string"}},
+    "cost": {"enum": ["cheap", "medium", "heavy"]},
+    "media3": {"type": "string"},
+    "licence": {"type": "string"},
+    "preview": {"type": "string"},
+    "examples": {"type": "array", "items": {"type": "string"}, "minItems": 5},
+    "status": {"enum": ["tested", "untested", "planned", "blocked"]},
+    "test": {"type": "string", "description": "the test that proves it (path::name)"}
+  }
+}

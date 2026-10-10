@@ -1,0 +1,102 @@
+# written by skills/tools/write_tier1_color.py — edit this file directly from now on
+id: grayscale
+seed: 37
+category: color
+name: Black and white
+name_hi: Kala safed
+description: Black and white (intensity 1 = fully grey, 0.5 = half the colour), on the whole video or a part.
+params:
+  intensity:
+    type: number
+    default: 1.0
+    min: 0.1
+    max: 1.0
+    extract: percent
+    desc: how grey
+time_modes:
+- whole
+- segment
+- between_times
+- intermittent
+builder: color.grayscale
+graph: lut3d (luma LUT mixed with the original at the intensity)
+media3:
+  status: mapped
+  how: RgbFilter.createGrayscaleFilter() / HslAdjustment(saturation)
+stage: color
+conflicts:
+- color_pop
+cost: cheap
+licence: own code; generated LUTs (own maths); FFmpeg filters (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  intensity:
+  - half
+  - full
+  time:
+  - whole
+  - one_shot
+  - intermittent
+synonyms:
+  en:
+  - black and white
+  - b&w
+  - bw
+  - grayscale
+  - greyscale
+  - monochrome
+  - no colour
+  hinglish:
+  - kala safed
+  - black and white kar do
+  - rang hata do
+  - bina rang ka
+  - purani tv jaisa
+  - b&w kar do
+  - rangeen nahi chahiye
+  hi:
+  - श्वेत-श्याम
+  - ब्लैक एंड व्हाइट
+  - काला सफ़ेद
+  slang:
+  - dard bhari black white
+  typos:
+  - blak and white
+  - black n white
+  - grayscal
+negations:
+- black and white mat karo
+- rang rehne do
+examples:
+- prompt: make it black and white
+  lang: en
+- prompt: grayscale from 2 to 5 seconds
+  lang: en
+  time:
+    start: 2
+    end: 5
+- prompt: ब्लैक एंड व्हाइट कर दो
+  lang: hi
+- prompt: kala safed kar do
+  lang: hinglish
+- prompt: beech beech me black and white
+  lang: hinglish
+  time:
+    mode: intermittent
+- prompt: blak n white pls
+  lang: typo
+- prompt: purani yaadon jaisa feel
+  lang: vague
+- prompt: black and white karo aur slow motion
+  lang: multi
+  also:
+  - slow_motion
+test:
+  check: grey_in_window
+  params:
+    intensity: 1.0
+  time:
+    mode: between_times
+    start: 1.0
+    end: 3.0

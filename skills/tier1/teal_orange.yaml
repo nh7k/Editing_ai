@@ -1,0 +1,94 @@
+# written by skills/tools/write_tier1_color.py — edit this file directly from now on
+id: teal_orange
+seed: 45
+category: color
+name: Teal and orange
+name_hi: Hollywood look
+description: Teal shadows, orange skin tones (own LUT).
+same_engine_as: cinematic_look
+params:
+  strength:
+    type: number
+    default: 0.85
+    min: 0.1
+    max: 1.0
+    extract: percent
+    desc: how strong
+time_modes:
+- whole
+- segment
+- between_times
+- intermittent
+builder: color.teal_orange
+graph: lut3d (generated 'teal_orange' cube at the strength)
+media3:
+  status: mapped
+  how: SingleColorLut
+stage: color
+conflicts:
+- cinematic_look
+- vintage_faded
+cost: cheap
+licence: own code; generated LUTs (own maths); FFmpeg filters (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  strength:
+  - '0.5'
+  - '0.85'
+  - '1.0'
+synonyms:
+  en:
+  - teal and orange
+  - teal orange
+  - hollywood look
+  - blockbuster look
+  - orange and teal
+  - action movie colour
+  - teal tone
+  hinglish:
+  - teal orange karo
+  - hollywood jaisa
+  - action film jaisa
+  - neela narangi
+  - teal aur orange
+  - blockbuster look do
+  - english movie jaisa
+  hi:
+  - टील ऑरेंज
+  - हॉलीवुड जैसा
+  - नीला नारंगी
+  slang:
+  - marvel wala look
+  typos:
+  - teel orange
+  - teal orage
+  - holywood look
+negations:
+- teal orange mat karo
+examples:
+- prompt: teal and orange grade
+  lang: en
+- prompt: hollywood look at 60 percent
+  lang: en
+  params:
+    strength: 0.6
+- prompt: हॉलीवुड जैसा बनाओ
+  lang: hi
+- prompt: teal orange karo
+  lang: hinglish
+- prompt: action film jaisa color
+  lang: hinglish
+- prompt: teel orange
+  lang: typo
+- prompt: marvel jaisa
+  lang: vague
+- prompt: teal orange aur contrast
+  lang: multi
+  also:
+  - contrast
+test:
+  check: look_matches
+  media: soft
+  params:
+    strength: 1.0

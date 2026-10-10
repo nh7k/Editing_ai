@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CutMind style recipe",
+  "type": "object",
+  "required": ["id", "name", "genre", "shot_len", "hook", "cut_on", "transitions", "look", "captions", "zoom_per_min",
+               "speed_ramps", "bpm", "duck_db", "aspect", "duration", "lufs", "avoid"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+    "name": {"type": "string"},
+    "genre": {"type": "string"},
+    "shot_len": {"type": "array", "items": {"type": "number", "minimum": 0.2, "maximum": 30}, "minItems": 2, "maxItems": 2},
+    "hook": {"type": "string"},
+    "cut_on": {"enum": ["beat", "speech", "action", "mixed"]},
+    "transitions": {"type": "array", "items": {"enum": ["none", "fade", "crossfade", "zoom", "wipe"]}, "minItems": 1},
+    "look": {"enum": ["none", "warm", "cool", "cinematic", "vintage", "bw", "vivid", "sepia", "teal_orange", "golden_hour", "moody_blue", "cyberpunk", "forest", "faded_film", "pastel", "noir", "warm_film", "arctic"]},
+    "captions": {"enum": ["off", "social", "premium", "minimal"]},
+    "zoom_per_min": {"type": "number", "minimum": 0, "maximum": 30},
+    "speed_ramps": {"type": "integer", "minimum": 0, "maximum": 5},
+    "bpm": {"type": "array", "items": {"type": "number", "minimum": 40, "maximum": 200}, "minItems": 2, "maxItems": 2},
+    "duck_db": {"type": "number", "minimum": 0, "maximum": 30},
+    "aspect": {"enum": ["9:16", "16:9", "1:1"]},
+    "duration": {"type": "number", "minimum": 3, "maximum": 600},
+    "lufs": {"type": "number", "minimum": -30, "maximum": -8},
+    "avoid": {"type": "array", "items": {"type": "string"}}
+  }
+}

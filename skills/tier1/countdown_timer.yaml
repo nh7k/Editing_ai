@@ -1,0 +1,113 @@
+# written by skills/tools/write_tier1_stylize.py — edit this file directly from now on
+id: countdown_timer
+seed: 75
+category: stylize
+name: Countdown
+name_hi: Ulti ginti
+description: Big numbers counting down (N … 1), one per second, popping in.
+params:
+  from:
+    type: integer
+    default: 3
+    min: 2
+    max: 10
+    extract: count_from
+    desc: start number
+  at:
+    type: number
+    default: 0
+    min: 0
+    max: 36000
+    unit: s
+    extract: time_point
+    desc: when
+  size:
+    type: integer
+    default: 180
+    min: 60
+    max: 400
+    desc: size
+  color:
+    type: color
+    default: '#FFFFFF'
+    extract: color
+    desc: colour
+time_modes:
+- whole
+- between_times
+builder: stylize.countdown_timer
+graph: ASS text per second (pop)
+media3:
+  status: mapped
+  how: TextOverlay per number
+stage: overlay
+conflicts: []
+cost: cheap
+licence: 'own code; FFmpeg filters (server process); shapes drawn with Pillow (MIT-CMU); emoji font: Noto Color Emoji (OFL)
+  on the server'
+changes_duration: false
+needs: []
+variant_axes:
+  from:
+  - '3'
+  - '5'
+  - '10'
+synonyms:
+  en:
+  - countdown
+  - count down
+  - timer
+  - 3 2 1
+  - countdown timer
+  - count from 5
+  - countdown numbers
+  hinglish:
+  - ulti ginti
+  - countdown lagao
+  - timer lagao
+  - 3 2 1 karo
+  - ginti dikhao
+  - ulta ginna
+  - countdown chalao
+  hi:
+  - उलटी गिनती
+  - काउंटडाउन
+  - टाइमर लगाओ
+  slang:
+  - rocket launch wala
+  typos:
+  - countdwn
+  - count dwon
+  - timr
+negations:
+- countdown mat lagao
+examples:
+- prompt: add a countdown
+  lang: en
+- prompt: count down from 5
+  lang: en
+  params:
+    from: 5
+- prompt: उलटी गिनती दिखाओ
+  lang: hi
+- prompt: 3 2 1 karo
+  lang: hinglish
+  params:
+    from: 3
+- prompt: 10 se ulti ginti
+  lang: hinglish
+  params:
+    from: 10
+- prompt: countdwn
+  lang: typo
+- prompt: rocket launch jaisa
+  lang: vague
+- prompt: countdown aur flash
+  lang: multi
+  also:
+  - flash
+test:
+  check: countdown_shows
+  params:
+    from: 3
+    at: 1.0

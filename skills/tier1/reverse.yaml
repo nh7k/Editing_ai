@@ -1,0 +1,86 @@
+# written by skills/tools/write_tier1_motion.py — edit this file directly from now on
+id: reverse
+seed: 35
+category: motion
+name: Reverse
+name_hi: Ulta chalao
+description: 'Play backwards (picture and sound). Whole video: last shot first. A part: those shots backwards in place.'
+params: {}
+time_modes:
+- whole
+- segment
+- between_times
+builder: motion.reverse
+graph: reverse / areverse per segment (≤ 10 s pieces)
+media3:
+  status: server_only
+  reason: Media3 Transformer cannot decode backwards
+stage: time
+conflicts:
+- speed_ramp
+cost: medium
+licence: own code (engines/motion.py easings); FFmpeg filters (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  scope:
+  - whole
+  - one_shot
+  - boomerang
+synonyms:
+  en:
+  - reverse
+  - play backwards
+  - rewind effect
+  - backwards
+  - reverse the clip
+  - rewind
+  - play it in reverse
+  hinglish:
+  - ulta chalao
+  - ulta kar do video
+  - peeche ki taraf chalao
+  - rewind karo
+  - ulti video
+  - reverse karo
+  - ulta play
+  hi:
+  - उल्टा चलाओ
+  - रिवर्स करो
+  - पीछे की तरफ़
+  slang:
+  - time machine wala
+  typos:
+  - revers
+  - rivers karo
+  - reverce
+negations:
+- reverse mat karo
+- ulta mat chalao
+examples:
+- prompt: play it backwards
+  lang: en
+- prompt: reverse from 1 to 3 seconds
+  lang: en
+  time:
+    start: 1
+    end: 3
+- prompt: उल्टा चलाओ
+  lang: hi
+- prompt: ulta chalao video
+  lang: hinglish
+- prompt: pehla shot reverse karo
+  lang: hinglish
+- prompt: reverce
+  lang: typo
+- prompt: waqt ko peeche le jao
+  lang: vague
+- prompt: reverse karo aur slow motion
+  lang: multi
+  also:
+  - slow_motion
+test:
+  check: plays_backwards
+  time:
+    mode: segment
+    index: 0

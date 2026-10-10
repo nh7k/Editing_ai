@@ -1,0 +1,38 @@
+id: letterbox
+seed: 82
+category: layout
+name: Cinema bars (letterbox)
+name_hi: Kali patti
+description: Black bars top and bottom so the picture looks ratio:1 wide (2.39 = cinema scope). Works on the whole video or a part.
+params:
+  ratio: {type: number, default: 2.39, min: 1.85, max: 2.76, extract: ratio_number, desc: picture ratio (width / height)}
+time_modes: [whole, segment, between_times, intermittent]
+builder: layout.letterbox
+graph: drawbox (two black boxes)
+media3: {status: mapped, how: "OverlayEffect with two black BitmapOverlays (or Crop + Presentation pad)"}
+stage: overlay
+conflicts: []
+cost: cheap
+licence: own code; FFmpeg drawbox (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  ratio: [1.85, 2.0, 2.39, 2.76]
+  time: [whole, intro_only]
+synonyms:
+  en: [cinematic bars, black bars, letterbox, cinema bars, movie bars, widescreen bars, scope bars]
+  hinglish: [kali patti, upar neeche kali patti, cinema wali patti, black bars lagao, film jaisi patti, kaali line upar neeche, theatre wali patti]
+  hi: [काली पट्टी, ऊपर नीचे काली पट्टी, सिनेमा पट्टी]
+  slang: [movie wala look patti]
+  typos: [letter box, blak bars, cinematic bar]
+negations: [kali patti mat lagao, bars hatao]
+examples:
+  - {prompt: "add cinematic bars", lang: en}
+  - {prompt: "black bars for 2.39 scope", lang: en}
+  - {prompt: "ऊपर नीचे काली पट्टी लगाओ", lang: hi}
+  - {prompt: "kali patti lagao", lang: hinglish}
+  - {prompt: "shuru me cinema wali patti", lang: hinglish}
+  - {prompt: "blak bars", lang: typo}
+  - {prompt: "film jaisa feel do patti se", lang: vague}
+  - {prompt: "kali patti aur teal orange look", lang: multi, also: [teal_orange]}
+test: {check: bars_top_bottom, params: {ratio: 2.39}}

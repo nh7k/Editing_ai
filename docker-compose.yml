@@ -1,0 +1,68 @@
+# CutMind production stack (CPU only, 100 % free / open source, no external AI services).
+#   docker compose run --rm models            # once: download + checksum the planner GGUF (models.json)
+#   docker compose up -d --build              # API on http://<server>:8000 (docs at /docs), LLM on :8080 (internal)
+#
+# backend = API + job queue + FFmpeg render worker. llm = llama.cpp's llama-server; it only ever returns JSON
+# (the Edit Plan commands) and never touches video. If llm is down / slow / busy, the backend answers with the
+# deterministic rules (LLM_PROVIDER fallback) and says so.
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      PLANNER_MODE: mock             # the in-process ONNX planner is not used in this stack
+      LLM_PROVIDER: llamaserver      # llamaserver | llamacpp (in-process) | rules | mock
+      LLM_SERVER_URL: http://llm:8080
+      LLM_TIMEOUT: "20"              # s per request, then the rules answer
+      LLM_MAX_TOKENS: "160"
+      CUTMIND_API_KEY: ${CUTMIND_API_KEY:?set CUTMIND_API_KEY in .env}
+      CORS_ORIGINS: ${CORS_ORIGINS:-*}
+      MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-500}
+      RATE_LIMIT_PER_MIN: ${RATE_LIMIT_PER_MIN:-20}   # edit requests per client per minute
+    volumes:
+      - cutmind-data:/data           # projects, uploads, renders, SQLite
+    depends_on:
+      - llm
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "4"
+          memory: 4g
+
+  llm:
+    image: ghcr.io/ggml-org/llama.cpp:server
+    command: >
+      -m /models/${LLM_GGUF:-Qwen3-0.6B-Q4_K_M.gguf} --host 0.0.0.0 --port 8080
+      -c 8192 -np 2 --threads ${LLM_THREADS:-4} --cache-reuse 256 --metrics
+    volumes:
+      - cutmind-models:/models:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 5s
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: "${LLM_CPUS:-4}"
+          memory: ${LLM_MEMORY:-3g}
+
+  models:                            # one-shot: python scripts/download_models.py (checksum-verified)
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    profiles: ["setup"]
+    entrypoint: ["python", "scripts/download_models.py"]
+    environment:
+      CUTMIND_MODELS_DIR: /models
+    volumes:
+      - cutmind-models:/models
+
+volumes:
+  cutmind-data:
+  cutmind-models:

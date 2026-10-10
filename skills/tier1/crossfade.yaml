@@ -1,0 +1,105 @@
+# written by skills/tools/write_tier1_transitions.py — edit this file directly from now on
+id: crossfade
+seed: 17
+category: transitions
+name: Crossfade
+name_hi: Dheere se badlo
+description: Blend from one shot into the next. Each overlap makes the video that much shorter.
+params:
+  duration:
+    type: number
+    default: 0.6
+    min: 0.15
+    max: 2.0
+    unit: s
+    extract: seconds
+    desc: length
+  cut:
+    type: integer
+    min: 1
+    max: 500
+    extract: cut_number
+    desc: which cut (default every cut)
+time_modes:
+- whole
+- between_times
+builder: transitions.crossfade
+graph: xfade=fade + acrossfade (tri)
+media3:
+  status: mapped
+  how: two overlapping sequences + alpha ramp (VideoCompositorSettings) — NOT TESTED
+stage: structure
+conflicts:
+- fade_black
+- fade_white
+- wipe
+- slide
+- zoom_transition
+- whip_pan
+- iris_circle
+- glitch_transition
+cost: cheap
+licence: own code; FFmpeg xfade / gblur / rgbashift (server process); whoosh generated
+changes_duration: true
+needs:
+- two_clips
+variant_axes:
+  duration:
+  - 0.3s
+  - 0.6s
+  - 1.2s
+synonyms:
+  en:
+  - crossfade
+  - dissolve
+  - smooth transition
+  - blend the clips
+  - soft transition
+  - cross dissolve
+  - mix transition
+  hinglish:
+  - dheere se badlo
+  - smooth transition do
+  - mix hoke badle
+  - crossfade lagao
+  - dheere badle scene
+  - ghul ke badle
+  - aaram se badlo
+  hi:
+  - धीरे से बदलो
+  - क्रॉसफ़ेड
+  - घुल के बदले
+  slang:
+  - makkhan transition
+  typos:
+  - crosfade
+  - cross fad
+  - dissolv
+negations:
+- crossfade mat lagao
+- transition mat lagao
+examples:
+- prompt: add crossfades between the clips
+  lang: en
+- prompt: 1 second dissolve
+  lang: en
+  params:
+    duration: 1.0
+- prompt: धीरे से बदलो सीन
+  lang: hi
+- prompt: smooth transition do
+  lang: hinglish
+- prompt: crossfade lagao 2nd cut pe
+  lang: hinglish
+- prompt: crosfade
+  lang: typo
+- prompt: jhatke se na badle
+  lang: vague
+- prompt: crossfade aur music
+  lang: multi
+  also:
+  - add_music
+test:
+  check: blend_mid
+  params:
+    duration: 0.8

@@ -1,0 +1,182 @@
+skills:
+- id: crossfade
+  tier: 1
+  category: transition
+  name: Crossfade / dissolve
+  description: One shot melts into the next.
+  synonyms:
+    en: [crossfade, dissolve, smooth transition, blend]
+    hi: [धीरे से बदलो, स्मूथ ट्रांजिशन]
+    hinglish: [smooth karo, crossfade lagao, dheere se badle, mix ho ke badle]
+    slang: [soft cuts]
+    typos: [crosfade, cross fade, disolve]
+  params:
+    duration: {type: number, default: 0.5, min: 0.1, max: 2.0}
+  time_modes: [whole, segment]
+  impl: {kind: transition, ref: crossfade}
+  stage: transition
+  conflicts: [hard_cuts]
+  cost: cheap
+  media3: "no built-in transition: Composition with an alpha GlEffect on overlapping sequences — NOT TESTED"
+  licence: own code (FFmpeg xfade=fade)
+  preview: same at 360p
+  examples: [add crossfade transitions, thoda smooth karo, dissolve between clips, crosfade lagao, स्मूथ ट्रांजिशन]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: fade_black
+  tier: 1
+  category: transition
+  name: Fade in / out from black
+  description: Opens from black and ends to black.
+  synonyms:
+    en: [fade in, fade out, fade to black, fade transitions]
+    hi: [फेड करो]
+    hinglish: [fade lagao, shuru aur end me fade, kaale se shuru]
+    typos: [faed, fade inn]
+  params:
+    duration: {type: number, default: 0.5, min: 0.1, max: 2.0}
+  time_modes: [whole]
+  impl: {kind: transition, ref: fade}
+  stage: transition
+  conflicts: []
+  cost: cheap
+  media3: "Brightness keyframed to 0 at the ends (custom GlEffect) — NOT TESTED"
+  licence: own code (FFmpeg fade)
+  preview: same at 360p
+  examples: [add fade transitions, fade in and fade out, end me fade, फेड करो, faed lagao]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: whip
+  tier: 1
+  category: transition
+  name: Whip / slide
+  description: The next shot slides in fast (whip pan feel).
+  synonyms:
+    en: [whip, whip pan, slide transition, swipe]
+    hinglish: [whip transition, slide wala transition, swipe karke badle]
+    slang: [whoosh transition]
+    typos: [wip pan, swip]
+  params:
+    direction: {type: enum, default: left, choices: [left, right, up, down]}
+    duration: {type: number, default: 0.35, min: 0.15, max: 1.0}
+  time_modes: [whole, segment]
+  impl: {kind: transition, ref: "slide{direction}"}
+  stage: transition
+  conflicts: []
+  cost: cheap
+  media3: "custom GlEffect translate on the overlap — NOT TESTED"
+  licence: own code (FFmpeg xfade=slideleft …)
+  preview: same at 360p
+  examples: [whip pan transitions, slide transition, whoosh between shots, swipe karke badle, wip pan]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: zoom_transition
+  tier: 2
+  category: transition
+  name: Zoom transition
+  description: Zooms through into the next shot.
+  synonyms:
+    en: [zoom transition, zoom through]
+    hinglish: [zoom wala transition, andar ghus ke badle]
+    typos: [zom transition]
+  params:
+    duration: {type: number, default: 0.4, min: 0.15, max: 1.0}
+  time_modes: [whole, segment]
+  impl: {kind: transition, ref: zoom}
+  stage: transition
+  conflicts: []
+  cost: cheap
+  media3: "custom GlEffect scale on the overlap — NOT TESTED"
+  licence: own code (FFmpeg xfade=zoomin)
+  preview: same at 360p
+  examples: [zoom transitions, zoom wala transition, zoom through to the next clip, zom transition, travel reel with zoom transition]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: wipe
+  tier: 2
+  category: transition
+  name: Wipe
+  description: A clean edge wipes the next shot in.
+  synonyms:
+    en: [wipe, wipe transition]
+    hinglish: [wipe lagao, wipe transition]
+    typos: [wype]
+  params:
+    duration: {type: number, default: 0.5, min: 0.15, max: 1.5}
+  time_modes: [whole, segment]
+  impl: {kind: transition, ref: wipe}
+  stage: transition
+  conflicts: []
+  cost: cheap
+  media3: "custom GlEffect mask on the overlap — NOT TESTED"
+  licence: own code (FFmpeg xfade=wipeleft)
+  preview: same at 360p
+  examples: [wipe transitions, wipe lagao, clean wipes, wype transition, news style wipe]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: flash_transition
+  tier: 2
+  category: transition
+  name: Flash (white) transition
+  description: A white flash between shots.
+  synonyms:
+    en: [flash transition, white flash, flash cut]
+    hinglish: [flash wala transition, safed flash]
+    typos: [flsh]
+  params:
+    duration: {type: number, default: 0.3, min: 0.1, max: 1.0}
+  time_modes: [whole, segment]
+  impl: {kind: transition, ref: fadewhite}
+  stage: transition
+  conflicts: []
+  cost: cheap
+  media3: "custom GlEffect brightness spike — NOT TESTED"
+  licence: own code (FFmpeg xfade=fadewhite)
+  preview: same at 360p
+  examples: [white flash transitions, flash wala transition, flash between clips, flsh transition, wedding flash cut]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: glitch_transition
+  tier: 2
+  category: transition
+  name: Pixel / glitch transition
+  description: The picture breaks into pixels and rebuilds.
+  synonyms:
+    en: [glitch transition, pixel transition, pixelize]
+    hinglish: [glitch wala transition, toot ke badle]
+    slang: [digital transition]
+    typos: [glich transition]
+  params:
+    duration: {type: number, default: 0.4, min: 0.15, max: 1.0}
+  time_modes: [whole, segment]
+  impl: {kind: transition, ref: pixelize}
+  stage: transition
+  conflicts: []
+  cost: cheap
+  media3: "custom GlEffect pixelate on the overlap — NOT TESTED"
+  licence: own code (FFmpeg xfade=pixelize)
+  preview: same at 360p
+  examples: [glitch transitions, pixelize between clips, glitch wala transition, gaming edit with digital transitions, glich transition]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: hard_cuts
+  tier: 1
+  category: transition
+  name: Hard cuts (no transitions)
+  description: Straight cuts — removes all transitions.
+  synonyms:
+    en: [no transitions, hard cuts, remove transitions]
+    hinglish: [transitions hata do, seedhe cut, transition mat lagao]
+    typos: [no transitons]
+  params: {}
+  time_modes: [whole]
+  impl: {kind: intent, ref: transitions hata do, fields: ["remove:transition"]}
+  stage: transition
+  conflicts: [crossfade, whip, zoom_transition, wipe, flash_transition, glitch_transition]
+  cost: cheap
+  media3: "plain sequence — NOT TESTED"
+  licence: own code
+  preview: same
+  examples: [remove the transitions, transitions hata do, hard cuts only, no transitons, seedhe cut rakho]
+  status: tested
+  test: tests/integration/test_skill_renders.py

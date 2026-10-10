@@ -1,0 +1,113 @@
+# written by skills/tools/write_tier1_motion.py — edit this file directly from now on
+id: pan
+seed: 30
+category: motion
+name: Pan
+name_hi: Side me sarkao
+description: The frame slides left / right / up / down over time.
+params:
+  direction:
+    type: choice
+    choices:
+    - left
+    - right
+    - up
+    - down
+    default: right
+    extract: direction
+    desc: direction
+  speed:
+    type: number
+    default: 1.0
+    min: 0.3
+    max: 3.0
+    extract: magnitude
+    desc: how far
+time_modes:
+- whole
+- segment
+- between_times
+- intermittent
+builder: motion.pan
+graph: scale up + crop with x(t) / y(t)
+media3:
+  status: mapped
+  how: MatrixTransformation whose matrix is the same eased keyframes per frame
+  reason: NOT TESTED on a device
+stage: geometry
+conflicts: []
+cost: cheap
+licence: own code (engines/motion.py easings); FFmpeg filters (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  direction:
+  - left
+  - right
+  - up
+  - down
+  speed:
+  - slow
+  - normal
+  - fast
+synonyms:
+  en:
+  - pan
+  - pan left
+  - pan right
+  - slide the frame
+  - camera pan
+  - move sideways
+  - tilt up
+  hinglish:
+  - side me sarkao
+  - left right ghumao
+  - pan karo
+  - camera ghumao side
+  - daaye sarkao
+  - baaye le jao
+  - upar le jao camera
+  hi:
+  - पैन करो
+  - बगल में सरकाओ
+  - कैमरा घुमाओ
+  slang:
+  - camera chalao side
+  typos:
+  - pann
+  - pan rite
+  - paan karo
+negations:
+- pan mat karo
+examples:
+- prompt: pan right
+  lang: en
+  params:
+    direction: right
+- prompt: slow pan to the left
+  lang: en
+  params:
+    direction: left
+- prompt: कैमरा बाएँ पैन करो
+  lang: hi
+- prompt: left right ghumao
+  lang: hinglish
+- prompt: daaye sarkao
+  lang: hinglish
+  params:
+    direction: right
+- prompt: pann left
+  lang: typo
+  params:
+    direction: left
+- prompt: thoda camera chalao
+  lang: vague
+- prompt: pan karo aur zoom in
+  lang: multi
+  also:
+  - zoom_in
+test:
+  check: pans
+  params:
+    direction: right
+    speed: 1.5

@@ -1,0 +1,102 @@
+# written by skills/tools/write_tier1_motion.py — edit this file directly from now on
+id: speed_ramp
+seed: 34
+category: motion
+name: Speed ramp
+name_hi: Tez phir slow
+description: Each target shot plays its first half at normal speed and its second half faster (speed_up_later) or slower (slow_down_later).
+params:
+  curve:
+    type: choice
+    choices:
+    - speed_up_later
+    - slow_down_later
+    default: speed_up_later
+    desc: ramp shape
+  strength:
+    type: number
+    default: 2.0
+    min: 1.25
+    max: 3.0
+    extract: multiplier
+    desc: speed change
+time_modes:
+- whole
+- segment
+- between_times
+builder: motion.speed_ramp
+graph: split + two setpts/atempo halves + concat
+media3:
+  status: mapped
+  how: SpeedProvider with two speed regions
+stage: time
+conflicts:
+- reverse
+cost: medium
+licence: own code (engines/motion.py easings); FFmpeg filters (server process)
+changes_duration: true
+needs: []
+variant_axes:
+  curve:
+  - speed_up_later
+  - slow_down_later
+  strength:
+  - '1.5'
+  - '2'
+  - '3'
+synonyms:
+  en:
+  - speed ramp
+  - ramp
+  - fast then slow
+  - slow then fast
+  - velocity edit
+  - speed change
+  - ramp the speed
+  hinglish:
+  - tez phir slow
+  - slow phir tez
+  - speed ramp karo
+  - raftaar badlo
+  - velocity edit banao
+  - ramp lagao
+  - speed upar neeche
+  hi:
+  - तेज़ फिर धीमा
+  - स्पीड रैंप
+  - रफ़्तार बदलो
+  slang:
+  - velocity wala
+  typos:
+  - sped ramp
+  - speedramp
+  - speed rmp
+negations:
+- ramp mat karo
+examples:
+- prompt: add a speed ramp
+  lang: en
+- prompt: slow then fast
+  lang: en
+- prompt: स्पीड रैंप लगाओ
+  lang: hi
+- prompt: tez phir slow karo
+  lang: hinglish
+- prompt: velocity edit banao
+  lang: hinglish
+- prompt: speedramp
+  lang: typo
+- prompt: action jaisa speed
+  lang: vague
+- prompt: speed ramp aur beat sync
+  lang: multi
+  also:
+  - beat_sync
+test:
+  check: ramped
+  params:
+    curve: speed_up_later
+    strength: 2.0
+  time:
+    mode: segment
+    index: 1

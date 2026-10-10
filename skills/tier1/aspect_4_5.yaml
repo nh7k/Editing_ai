@@ -1,0 +1,38 @@
+id: aspect_4_5
+seed: 79
+category: layout
+name: Portrait 4:5 (feed)
+name_hi: Insta portrait
+description: Make the edit 4:5 portrait (the tallest Instagram feed format).
+same_engine_as: aspect_9_16
+params:
+  fit_mode: {type: choice, choices: [crop, blur, fit], default: crop, desc: how the picture fits}
+time_modes: [whole]
+builder: layout.aspect_4_5
+graph: scale + crop / blurred background / pad
+media3: {status: mapped, how: "Presentation.createForWidthAndHeight(4k, 5k, …)"}
+stage: geometry
+conflicts: [aspect_9_16, aspect_1_1, aspect_16_9]
+cost: cheap
+licence: own code; FFmpeg (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  fit: [crop, blur, fit]
+synonyms:
+  en: ["4:5", portrait post, insta portrait, 4 by 5, feed portrait, tall post, instagram portrait]
+  hinglish: [4:5 karo, insta portrait size, feed ke liye lamba, portrait post banao, thoda lamba post, 4 by 5 me, portrait wala size]
+  hi: [पोर्ट्रेट पोस्ट, चार बटा पाँच, इंस्टा पोर्ट्रेट]
+  slang: [feed wala lamba]
+  typos: ["4;5", potrait post, portait]
+negations: [4:5 mat karo]
+examples:
+  - {prompt: "make it 4:5", lang: en}
+  - {prompt: "instagram portrait with blur", lang: en, params: {fit_mode: blur}}
+  - {prompt: "पोर्ट्रेट पोस्ट बनाओ", lang: hi}
+  - {prompt: "insta portrait size me karo", lang: hinglish}
+  - {prompt: "4 by 5 me kar do", lang: hinglish}
+  - {prompt: "potrait post size", lang: typo}
+  - {prompt: "feed ke liye thoda lamba post", lang: vague}
+  - {prompt: "4:5 karo aur saturation badhao", lang: multi, also: [saturation]}
+test: {check: aspect_exact}

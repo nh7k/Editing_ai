@@ -1,0 +1,219 @@
+skills:
+- id: target_duration
+  tier: 1
+  category: structure
+  name: Make it N seconds
+  description: Cuts the edit to a length (best moments kept).
+  synonyms:
+    en: [seconds long, duration, make it 30 seconds, trim to]
+    hi: [सेकंड का बनाओ]
+    hinglish: [30 sec ka video, 15 second ki reel, das second ka]
+    typos: [secnd, secs]
+  params:
+    seconds: {type: number, default: 30, min: 3, max: 600}
+  time_modes: [whole]
+  impl: {kind: intent, ref: "{seconds} second ka video"}
+  stage: structure
+  conflicts: []
+  cost: cheap
+  media3: "server plans the cut — n/a"
+  licence: own code
+  preview: same
+  examples: [make it 15 seconds, 30 sec ka video, das second ki reel, वीडियो को 30 सेकंड का बना दो, trim to 20 secs]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: shorter
+  tier: 1
+  category: structure
+  name: Shorter / longer than now
+  description: Relative length change of the current edit.
+  synonyms:
+    en: [shorter, longer, cut it down]
+    hinglish: [thoda chhota karo, lamba karo, bahut lamba hai]
+    typos: [shoter]
+  params:
+    factor: {type: number, default: 0.7, min: 0.2, max: 4.0}
+  time_modes: [whole]
+  impl: {kind: intent, ref: thoda chhota karo}
+  stage: structure
+  conflicts: []
+  cost: cheap
+  media3: n/a
+  licence: own code
+  preview: same
+  examples: [thoda chhota karo, make it shorter, bahut lamba hai, lamba karo, shoter]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: remove_silence
+  tier: 1
+  category: structure
+  name: Remove silences (jump cuts)
+  description: Cuts the pauses where nobody talks, never mid-word.
+  synonyms:
+    en: [remove silence, cut pauses, jump cuts, dead air]
+    hi: [चुप वाले हिस्से हटाओ]
+    hinglish: [silence hata do, chup wale hisse hatao, khaali jagah kaato]
+    typos: [silense, remov silence]
+  params: {}
+  time_modes: [whole]
+  impl: {kind: intent, ref: remove silences}
+  stage: structure
+  conflicts: []
+  cost: cheap
+  media3: n/a
+  licence: own code (FFmpeg silencedetect + word times)
+  preview: same
+  examples: [remove silences, silence hata do, chup wale hisse hatao, remov silense, jump cut the pauses]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: remove_fillers
+  tier: 1
+  category: structure
+  name: Remove filler words
+  description: Cuts um / uh / "matlab" fillers.
+  synonyms:
+    en: [remove ums, filler words]
+    hinglish: [um aa hata do, faltu words kaato]
+    typos: [filer words]
+  params: {}
+  time_modes: [whole]
+  impl: {kind: intent, ref: remove filler words}
+  stage: structure
+  conflicts: []
+  cost: cheap
+  media3: n/a
+  licence: own code
+  preview: same
+  examples: [remove filler words, remove ums, um aa hata do, filer words kaato, clean up the umms]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: aspect
+  tier: 1
+  category: structure
+  name: Aspect ratio / reframe
+  description: 9:16, 1:1 or 16:9 with subject-aware crop.
+  synonyms:
+    en: [vertical, "9:16", square, landscape, reel format]
+    hi: [वर्टिकल]
+    hinglish: [reel size me, insta ke liye, youtube ke liye]
+    typos: ["9.16", vertcal]
+  params:
+    ratio: {type: enum, default: "9:16", choices: ["9:16", "1:1", "16:9"]}
+  time_modes: [whole]
+  impl: {kind: intent, ref: "{ratio}"}
+  stage: geometry
+  conflicts: []
+  cost: cheap
+  media3: "Presentation.createForAspectRatio + Crop — NOT TESTED"
+  licence: own code
+  preview: same
+  examples: [make it 9:16, insta reel ke liye, square video, landscape for youtube, vertcal]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: blur_fill
+  tier: 2
+  category: structure
+  name: Blurred background fill
+  description: Fits the whole picture and fills the bars with a blurred copy.
+  synonyms:
+    en: [blur background, blurred bars, fit with blur]
+    hinglish: [peeche blur, kaate bina fit karo]
+    typos: [blur backround]
+  params: {}
+  time_modes: [whole]
+  impl: {kind: intent, ref: blur background}
+  stage: geometry
+  conflicts: []
+  cost: medium
+  media3: "two-layer Composition with GaussianBlur — NOT TESTED"
+  licence: own code (FFmpeg boxblur + overlay)
+  preview: same at 360p
+  examples: [blur background, peeche blur karo, fit without cropping, blur backround, vertical with blurred bars]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: beat_cuts
+  tier: 1
+  category: structure
+  name: Cut on the beat
+  description: Shot changes land on the music's beats.
+  synonyms:
+    en: [beat sync, cut on the beat, beat cuts]
+    hinglish: [beat pe cut, gaane ke saath cut]
+    slang: [beat drop edit]
+    typos: [beet sync]
+  params: {}
+  time_modes: [whole]
+  impl: {kind: intent, ref: cut on the beat, fields: [beat_sync]}
+  stage: structure
+  conflicts: []
+  cost: cheap
+  media3: n/a
+  licence: own code (librosa ISC beat grid)
+  preview: same
+  examples: [cut on the beat, beat pe cut karo, beat sync, beet sync cuts, gaane ke saath cut]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: hook_first
+  tier: 1
+  category: structure
+  name: Best moment first (hook)
+  description: Opens on the strongest moment.
+  synonyms:
+    en: [hook, best part first, strong start]
+    hinglish: [best part pehle, shuruat dhamakedar, starting killer]
+    typos: [hok]
+  params: {}
+  time_modes: [whole]
+  impl: {kind: intent, ref: best part pehle}
+  stage: structure
+  conflicts: []
+  cost: cheap
+  media3: n/a
+  licence: own code
+  preview: same
+  examples: [best part pehle, strong hook, start with the best moment, shuruat dhamakedar, hok first]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: drop_clip
+  tier: 1
+  category: structure
+  name: Leave a clip out
+  description: Removes one uploaded clip from the edit.
+  synonyms:
+    en: [remove the first clip, drop the last video]
+    hinglish: [pehla clip hata do, last video nikal do]
+    typos: [clp hata]
+  params:
+    which: {type: enum, default: pehla, choices: [pehla, dusra, teesra, last]}
+  time_modes: [whole]
+  impl: {kind: intent, ref: "{which} clip hata do"}
+  stage: structure
+  conflicts: []
+  cost: cheap
+  media3: n/a
+  licence: own code
+  preview: same
+  examples: [pehla clip hata do, remove the last video, dusra clip mat dikhao, aakhri wala video nikal do, clp hata do pehla]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: remove_boring
+  tier: 1
+  category: structure
+  name: Remove boring parts
+  description: Cuts low-interest / frozen stretches.
+  synonyms:
+    en: [remove boring parts, cut the dull bits]
+    hinglish: [boring part hata do, faltu hissa kaato, bekaar part nikal do]
+    typos: [boaring]
+  params: {}
+  time_modes: [whole]
+  impl: {kind: intent, ref: boring part hata do}
+  stage: structure
+  conflicts: []
+  cost: cheap
+  media3: n/a
+  licence: own code
+  preview: same
+  examples: [boring part hata do, remove the boring parts, faltu hissa kaato, boaring parts, dead parts nikal do]
+  status: tested
+  test: tests/integration/test_skill_renders.py

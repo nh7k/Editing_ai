@@ -1,0 +1,140 @@
+# written by skills/tools/write_tier1_text.py — edit this file directly from now on
+id: text_overlay
+seed: 58
+category: text
+name: Text on screen
+name_hi: Yahan ye likho
+description: Static text on the screen at a position, for the whole video or a time window.
+params:
+  text:
+    type: text
+    extract: quoted_text
+    desc: the words (in quotes)
+    required: true
+  position:
+    type: choice
+    choices:
+    - bottom
+    - center
+    - top
+    - top_right
+    - bottom_right
+    - bottom_left
+    - top_left
+    default: center
+    extract: position
+    desc: where
+  size:
+    type: integer
+    default: 64
+    min: 20
+    max: 200
+    extract: text_size
+    desc: size
+  color:
+    type: color
+    extract: color
+    desc: colour
+  box:
+    type: bool
+    default: false
+    desc: dark box behind
+time_modes:
+- whole
+- between_times
+- segment
+- at_time
+builder: text.text_overlay
+graph: ASS text event
+media3:
+  status: mapped
+  how: TextOverlay (SpannableString) per item; animations as per-frame alpha / scale / position — NOT TESTED
+stage: text
+conflicts: []
+cost: cheap
+licence: own code; libass + HarfBuzz via FFmpeg (server process); fonts SIL OFL (Hind, Kalam, Poppins, Anton, Bebas)
+changes_duration: false
+needs: []
+variant_axes:
+  position:
+  - top
+  - center
+  - bottom
+  box:
+  - none
+  - box
+synonyms:
+  en:
+  - add text
+  - write
+  - put text
+  - text on screen
+  - caption saying
+  - write on the video
+  - show the words
+  hinglish:
+  - text likho
+  - yahan ye likho
+  - likh do
+  - upar likho
+  - screen pe likho
+  - beech me likho
+  - text daalo
+  hi:
+  - लिखो
+  - टेक्स्ट डालो
+  - स्क्रीन पर लिखो
+  slang:
+  - kuch likh do upar
+  typos:
+  - txt likho
+  - likhho
+  - text dalo
+negations:
+- text mat likho
+- text hatao
+examples:
+- prompt: write 'SALE 50%' at the top
+  lang: en
+  params:
+    text: SALE 50%
+    position: top
+- prompt: add text 'Hello' from 1 to 3 seconds
+  lang: en
+  params:
+    text: Hello
+- prompt: '''नमस्ते'' लिखो'
+  lang: hi
+  params:
+    text: नमस्ते
+- prompt: upar 'Goa' likho
+  lang: hinglish
+  params:
+    text: Goa
+    position: top
+- prompt: beech me 'Wow' likh do
+  lang: hinglish
+  params:
+    text: Wow
+    position: center
+- prompt: txt likho 'Hi'
+  lang: typo
+  params:
+    text: Hi
+- prompt: yahan kuch likh do
+  lang: vague
+- prompt: '''Day 2'' likho aur zoom karo'
+  lang: multi
+  also:
+  - zoom_in
+  params:
+    text: Day 2
+test:
+  check: text_in_window
+  params:
+    text: Hello World
+    position: center
+  time:
+    mode: between_times
+    start: 1.0
+    end: 4.0

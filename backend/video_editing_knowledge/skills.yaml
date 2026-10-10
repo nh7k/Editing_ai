@@ -1,0 +1,488 @@
+# CutMind editing skills. Written in our own words; the judgement rules were informed by the public sources listed
+# in docs/RESEARCHED_VIDEO_SKILLS.md (only ideas, no copied text).
+#
+# Fields
+#   concepts / triggers : when the retriever picks the skill (concept tags from language.yaml, or regex on the prompt)
+#   when_to_use / when_not_to_use / why / rules / avoid / qc : the judgement (shown in the edit spec and the docs)
+#   apply : what the skill CHANGES in the edit, only for things the user did not decide. Keys:
+#     fast_cuts, beat_sync, cut_length (s), remove_silence, remove_fillers, remove_idle, music, music_mood,
+#     color_preset, transition ('none' = hard cuts), max_transitions, effects_add, emphasis_punch, jumpcut_cover,
+#     flash_accents (count), ending_peak, hook_first, captions, text_animation, text_style, target_lufs,
+#     slow_motion, voice_cleanup, caption_words
+#   limits : restraint rules the plan must respect (checked by the Reviewer)
+
+skills:
+  # ---------------------------------------------------------------- pacing
+  - id: fast_paced_reel
+    name: Fast-paced reel
+    category: pacing
+    concepts: [high_energy, engaging]
+    triggers: ['\bfast\b', 'energetic', 'mast reel', 'hype']
+    when_to_use: Energetic footage without much talking — party, sports, travel montage, product hype.
+    when_not_to_use: Talking heads, interviews, emotional scenes — chopping speech destroys meaning.
+    why: Short, varied shots keep the eye busy and match up-tempo music.
+    rules: [remove dead time first, prioritise high-movement shots, vary shot length instead of one fixed rhythm, cut on beats where music exists]
+    avoid: [random transitions, constant zoom, the same duration for every shot]
+    apply: {fast_cuts: true, beat_sync: true, cut_length: 1.0, remove_idle: true, music: true, music_mood: upbeat, transition: none}
+    limits: {max_transitions: 0}
+    qc: [average shot length under 2 s, no frozen frames kept]
+  - id: slow_cinematic
+    name: Slow cinematic pacing
+    category: pacing
+    concepts: [cinematic, calm, emotional]
+    triggers: ['slow (pace|pacing|edit)', 'cinematic pacing']
+    when_to_use: Landscapes, drone, weddings, emotional or premium pieces.
+    when_not_to_use: Hype reels or anything that must hold attention in a 3-second scroll.
+    why: Longer holds let the viewer feel a place or a moment; restraint reads as expensive.
+    rules: [let beautiful shots breathe 4–8 s, cut on movement or at the end of a gesture, use dissolves only for time passing]
+    avoid: [fast cuts, flashy transitions, heavy effects]
+    apply: {fast_cuts: false, cut_length: 4.0, music: true, music_mood: calm}
+    limits: {max_transitions: 6}
+    qc: [average shot length 3–8 s]
+  - id: varied_rhythm
+    name: Varied shot rhythm
+    category: pacing
+    concepts: [professional, engaging, story]
+    when_to_use: Almost always — vary around the average shot length.
+    when_not_to_use: Strict beat-locked music videos where every cut sits on the grid.
+    why: Identical durations feel like a slideshow template; variation feels edited by a person.
+    rules: [shorter shots during action, longer shots for emotion or scenery]
+    avoid: [every clip the same length]
+    apply: {}
+    qc: [shot lengths are not all equal]
+  - id: strong_hook
+    name: Strong hook (first 1.5–3 s)
+    category: story
+    concepts: [strong_hook, engaging]
+    triggers: ['\bhook\b']
+    when_to_use: Every short-form video; long videos that compete on the feed.
+    when_not_to_use: Slow-burn cinematic pieces where a quiet opening is the point.
+    why: Viewers decide in the first seconds; the most eye-catching moment (or the payoff) should come first.
+    rules: [open on the most eye-catching moment nobody is talking over, or a preview of the payoff, something must move within 0.5 s]
+    avoid: [opening on a static or empty shot, logos first]
+    apply: {hook_first: true}
+    qc: [first 2 s contain movement]
+  - id: strong_ending
+    name: Build to the peak, end memorably
+    category: story
+    concepts: [strong_ending, story]
+    when_to_use: Montages, party and event reels, travel pieces.
+    when_not_to_use: Tutorials (end on the result/recap), talking heads (end on the last sentence).
+    why: A video that just stops feels unfinished; ending on the strongest moment makes people rewatch.
+    rules: [save one of the strongest moments for the end, fade the music out with the picture]
+    avoid: [random stop mid-action, ending on a weak or shaky shot]
+    apply: {ending_peak: true}
+    qc: [last shot is one of the most energetic shots]
+  - id: story_arc
+    name: Beginning → exploration → peak → ending
+    category: story
+    concepts: [story]
+    when_to_use: Vlogs, travel, events — anything with a sense of time.
+    when_not_to_use: Single-topic talking heads.
+    why: A simple arc turns clips into an experience.
+    rules: [keep filming order unless the user asks otherwise, establish the place early, peak near the end]
+    avoid: [jumping back and forth in time without reason]
+    apply: {hook_first: false}
+    qc: [clips are in filming order]
+
+  - id: fan_edit_style
+    name: Fan / velocity edit pacing
+    category: pacing
+    concepts: [high_energy]
+    triggers: ['\bedit\b.{0,30}(cool|nice|mast|hype|fire)', 'velocity', 'phonk']
+    when_to_use: Sports stars, athletes, cars, travel highlights — "make a <subject> edit".
+    when_not_to_use: Talking heads, tutorials, anything where the words matter.
+    why: The genre lives on rhythm — every cut, punch and colour change lands on the music.
+    rules: [cut every 1–2 beats, hit the drop with the strongest shot, keep 1–2 slower moments so the fast parts feel fast]
+    avoid: [cutting off the beat, transitions between every shot]
+    apply: {fast_cuts: true, beat_sync: true, cut_length: 0.8, music: true, music_mood: upbeat, transition: none, remove_idle: true}
+    limits: {max_transitions: 0}
+    qc: [cuts on beats, average shot under 1.5 s]
+  - id: velocity_moves
+    name: Velocity moves (stutter, speed ramp, impact hits)
+    category: motion
+    concepts: []
+    triggers: ['stutter', 'speed ?ramp', 'velocity', 'zoom.?blur', 'impact hits?', 'triple (hit|repeat)']
+    when_to_use: Fan / velocity edits of sports, cars, action — the moves that make them feel "premium".
+    when_not_to_use: Talking heads, weddings, calm pieces — repeats and ramps break speech and mood.
+    why: One moment repeated three times, a half-speed takeoff that snaps back to fast, and a zoom-blur hit on the
+      strongest cuts give the edit shape; used once or twice they read as intent, not noise.
+    rules: [one stutter (3 quick repeats) on a high-motion shot, one half-speed takeoff ramp, impact hits on at most one cut in four, every move keeps its beat length]
+    avoid: [stutter on the hook or the final shot, a hit on every cut, ramps on speech]
+    apply: {speed_moves: true, impact_hits: true}
+    qc: [stutter and ramp keep the beat grid, hits sparse]
+  - id: colour_pass
+    name: Colour pass (colour ↔ black & white)
+    category: color
+    concepts: []
+    triggers: ['colou?r pass', 'black (and|&) white (and|&) colou?r', 'b&w (shots|flashes)']
+    when_to_use: Fan edits, music edits, dramatic sports edits.
+    when_not_to_use: Weddings, food, documentaries — colour carries the content there.
+    why: Switching some shots to high-contrast black & white gives rhythm and drama without extra footage.
+    rules: [about one shot in three goes black & white, never two in a row, one silhouette-style shot at most]
+    avoid: [black & white on the hook or the final shot]
+    apply: {color_pass: true}
+    qc: [some but not all segments are black & white]
+  - id: kinetic_words
+    name: Kinetic words on the beat
+    category: captions
+    concepts: [animations]
+    triggers: ['nice animations?', 'kinetic', 'text animations?', 'big (text|words)', 'words? on (the )?beats?']
+    when_to_use: Fan edits and music edits — one big word per beat (a name, a lyric, a feeling).
+    when_not_to_use: Talking heads (use captions), calm or premium pieces.
+    why: Big words landing on the beat make the edit feel designed; one word at a time stays readable.
+    rules: [one word at a time, centred, 1–2 beats each, bold glassy style, stop before the ending shot]
+    avoid: [sentences on screen, small text, text over the hook frame]
+    apply: {kinetic_text: true, text_style: glass, text_behind: true}
+    qc: [word items present and timed on beats]
+  - id: beat_punch
+    name: Punch on the beat
+    category: motion
+    concepts: [high_energy]
+    triggers: ['punch (on|with) (the )?beats?', 'beat zoom', 'shake on (the )?beats?']
+    when_to_use: Music-led edits with a clear beat.
+    when_not_to_use: Speech.
+    why: A small zoom punch on every beat makes the picture "hit" with the music.
+    rules: [5–7 % zoom, ease back within 0.2 s]
+    avoid: [big zooms, punches without music]
+    apply: {effects_add: [pulse]}
+    qc: []
+
+  # ---------------------------------------------------------------- cuts
+  - id: word_safe_cuts
+    name: Never cut inside a word
+    category: cuts
+    concepts: [professional]
+    when_to_use: Whenever someone speaks.
+    when_not_to_use: Never skip this.
+    why: A clipped syllable is the most obvious sign of a bad edit.
+    rules: [snap cut points to word boundaries, prefer gaps of 0.4 s or more, pad 50–100 ms around speech]
+    avoid: [cuts inside words, cutting off laughs or punchlines]
+    apply: {}
+    qc: [no cut inside a transcribed word]
+  - id: jump_cut_talking
+    name: Jump cuts for talking heads
+    category: cuts
+    concepts: [remove_low_value]
+    triggers: ['jump cut', 'talking head', 'silence', 'pause']
+    when_to_use: Talking heads, podcasts, explainers with pauses and filler words.
+    when_not_to_use: Emotional pauses that carry meaning; music videos.
+    why: Removing dead air and ums makes speakers sound confident and keeps retention.
+    rules: [cut pauses longer than about 0.8 s, keep a little air so speech breathes, remove um/uh]
+    avoid: [cutting every breath, robotic rhythm]
+    apply: {remove_silence: true, remove_fillers: true, jumpcut_cover: true}
+    qc: [no pause longer than 1 s left, no word cut]
+  - id: jump_cut_cover
+    name: Cover jump cuts with a punch-in
+    category: cuts
+    concepts: [professional]
+    when_to_use: After silence removal on one continuous camera angle.
+    when_not_to_use: When b-roll or a second angle already hides the cut.
+    why: Two near-identical frames back to back look like a glitch; a 6–8% punch-in on alternate segments hides it.
+    rules: [alternate normal and slightly zoomed framing, keep the zoom subtle (≤ 8%)]
+    avoid: [big zooms, zooming every segment]
+    apply: {jumpcut_cover: true}
+    qc: [alternating segments differ in framing]
+  - id: beat_cut
+    name: Cut on the beat
+    category: cuts
+    concepts: [beat_cut, high_energy]
+    triggers: ['beat (sync|pe|par)', 'on the beat', 'rhythm']
+    when_to_use: Montages, party, sports, music-led reels.
+    when_not_to_use: Dialogue — speech rhythm wins over music rhythm.
+    why: Cuts that land on the beat feel intentional; off-beat cuts feel like mistakes.
+    rules: [cut every 1–2 beats in peaks, every 4 in calmer parts]
+    avoid: [cutting on every single beat for a whole video]
+    apply: {beat_sync: true, fast_cuts: true, music: true}
+    qc: [cut points within 0.1 s of a beat]
+  - id: reaction_priority
+    name: Keep reactions
+    category: cuts
+    concepts: [comedy, emotional]
+    when_to_use: Parties, weddings, podcasts, comedy.
+    when_not_to_use: Product shots.
+    why: Faces reacting carry emotion better than anything else.
+    rules: [extend past laughs and punchlines, keep candid smiles]
+    avoid: [trimming the payoff]
+    apply: {}
+    qc: []
+
+  # ---------------------------------------------------------------- transitions
+  - id: hard_cuts_default
+    name: Hard cuts by default
+    category: transitions
+    concepts: [professional, restraint, premium, high_energy]
+    when_to_use: Most edits — about nine cuts in ten are plain cuts.
+    when_not_to_use: When a transition carries meaning (time passing, a dream, a chapter end).
+    why: Template transitions on every cut are the clearest sign of an amateur edit.
+    rules: [use a transition only when it means something, keep transitions under 0.5 s]
+    avoid: [a different transition on every cut, spinning cube transitions]
+    apply: {transition: none}
+    limits: {max_transitions: 0}
+    qc: [transitions only where asked or motivated]
+  - id: dissolve_time
+    name: Dissolve for time passing
+    category: transitions
+    concepts: [calm, emotional]
+    triggers: ['time pass', 'memories', 'yaadein', 'dissolve']
+    when_to_use: Calm, emotional or wedding pieces between scenes.
+    when_not_to_use: Fast reels.
+    why: A soft dissolve tells the viewer time has passed.
+    rules: [0.3–0.8 s, only between different scenes]
+    avoid: [dissolving between shots of the same scene]
+    apply: {transition: crossfade}
+    limits: {max_transitions: 8}
+    qc: []
+  - id: flash_accent
+    name: Occasional flash accent
+    category: transitions
+    concepts: [high_energy]
+    triggers: ['flash']
+    when_to_use: Party, sports, music peaks — one or two times.
+    when_not_to_use: Calm or premium edits.
+    why: A white flash on a big moment adds punch; on every cut it becomes noise.
+    rules: [at most 2 flashes, only on the strongest moments]
+    avoid: [flash on every cut]
+    apply: {flash_accents: 2}
+    qc: [no more than 2 flashes]
+
+  # ---------------------------------------------------------------- color
+  - id: no_grade_default
+    name: Leave colour alone unless asked
+    category: color
+    concepts: [restraint]
+    when_to_use: The user didn't ask for a look and the footage is well exposed.
+    when_not_to_use: Dark or flat footage (a gentle correction helps).
+    why: A strong look nobody asked for is a mistake; consistent natural colour is professional.
+    rules: [match exposure across clips, small corrections only]
+    avoid: [heavy looks by default]
+    apply: {}
+    qc: [skin tones not shifted]
+  - id: warm_vibrant_natural
+    name: Warm, vibrant, natural skin
+    category: color
+    concepts: [high_energy, make_it_good]
+    triggers: ['vibrant', 'warm (and|&) vibrant']
+    when_to_use: Party, food, travel, celebrations.
+    when_not_to_use: Moody, horror, corporate.
+    why: Warmth and a bit of saturation read as happy; skin must stay believable.
+    rules: [warm slightly, saturation +10–15% at most]
+    avoid: [orange skin, neon saturation]
+    apply: {color_preset: warm}
+    qc: [skin hue within natural range]
+  - id: cinematic_grade
+    name: Restrained cinematic grade
+    category: color
+    concepts: [cinematic]
+    when_to_use: Travel, drone, weddings, cinematic requests.
+    when_not_to_use: Talking heads that need neutral skin; documentaries.
+    why: Controlled contrast and slightly cooler shadows feel filmic without screaming "filter".
+    rules: [protect highlights, keep skin natural, no heavy teal/orange]
+    avoid: [crushed blacks, over-saturated teal and orange]
+    apply: {color_preset: cinematic}
+    qc: [no clipped highlights added]
+  - id: moody_grade
+    name: Moody grade
+    category: color
+    concepts: [emotional]
+    triggers: ['moody', 'sad', 'dark (vibe|feel)', 'udaas']
+    when_to_use: Emotional, nostalgic, rainy, night.
+    when_not_to_use: Party, food, product.
+    why: Cooler, lower-saturation images feel reflective.
+    rules: [lower saturation, cooler mids]
+    avoid: [making faces grey]
+    apply: {color_preset: moody_blue}
+    qc: []
+
+  # ---------------------------------------------------------------- audio
+  - id: social_loudness
+    name: Social loudness (-14 LUFS)
+    category: audio
+    concepts: []
+    when_to_use: Reels, TikTok, Shorts, YouTube.
+    when_not_to_use: Broadcast (-23/-24 LUFS).
+    why: Platforms normalise to about -14 LUFS; quieter videos sound weak next to others.
+    rules: [normalise after all cuts, true peak under -1 dB]
+    avoid: [clipping]
+    apply: {target_lufs: -14}
+    qc: [integrated loudness within 1 LU of target]
+  - id: music_ducking
+    name: Duck music under speech
+    category: audio
+    concepts: [professional]
+    when_to_use: Music plus anyone talking.
+    when_not_to_use: Music videos.
+    why: Words must always win over music.
+    rules: [music 12–18 dB under voice, fade music in 0.5–2 s and out 1–3 s]
+    avoid: [music starting or stopping abruptly]
+    apply: {}
+    qc: [speech clearly louder than music]
+  - id: clean_voice
+    name: Clean voice
+    category: audio
+    concepts: [professional, premium]
+    triggers: ['clear (voice|awaaz)', 'noise', 'podcast']
+    when_to_use: Talking heads, podcasts, interviews.
+    when_not_to_use: Music performances (denoise eats instruments).
+    why: Bad audio makes people leave faster than bad picture.
+    rules: [high-pass around 80 Hz, light denoise]
+    avoid: [aggressive denoise that sounds robotic]
+    apply: {voice_cleanup: true}
+    qc: []
+  - id: music_bed
+    name: Music bed
+    category: audio
+    concepts: [make_it_good, story]
+    when_to_use: Travel, vlogs, food, events, drone — footage that feels empty without a score.
+    when_not_to_use: The user said no music; interviews where music would distract.
+    why: Music carries mood and smooths over cuts; ambience alone often sounds like a home video.
+    rules: [pick the mood from the content (calm for scenic, upbeat for lively), keep it under any speech]
+    avoid: [music louder than voices, a track that fights the pace]
+    apply: {music: true, music_mood: calm}
+    qc: [music present and ducked under speech]
+  - id: natural_sound
+    name: Keep natural sound
+    category: audio
+    concepts: [natural_sound]
+    when_to_use: Travel, events, parties — ambience makes it real.
+    when_not_to_use: When the original sound is wind noise or unusable.
+    why: Ambience under music makes the place feel real.
+    rules: [keep original audio under the music]
+    avoid: [muting everything]
+    apply: {}
+    qc: []
+
+  # ---------------------------------------------------------------- captions / text
+  - id: social_captions
+    name: Social captions (2–3 words, bold)
+    category: captions
+    concepts: [engaging]
+    triggers: ['captions?', 'subtitles?']
+    when_to_use: Short-form with speech — most people watch muted.
+    when_not_to_use: Footage without speech; cinematic pieces.
+    why: Short bold chunks are readable on a phone in a scroll.
+    rules: [2–3 words per chunk, never shorter than 0.35 s on screen, keep above the platform UI]
+    avoid: [two-line paragraphs, covering faces]
+    apply: {caption_words: 3, text_animation: pop}
+    qc: [captions visible, not in the bottom safe zone]
+  - id: premium_captions
+    name: Premium captions
+    category: captions
+    concepts: [premium_captions, premium]
+    when_to_use: Brand, podcast and talking-head content that should feel high-end.
+    when_not_to_use: Meme or gaming edits.
+    why: Big words, one highlighted, clean sans font — the "Hormozi" look reads as premium on phones.
+    rules: [heavy sans, outline instead of boxes, highlight the spoken word]
+    avoid: [rainbow colours, many fonts]
+    apply: {text_style: hormozi}
+    qc: []
+  - id: minimal_titles
+    name: Minimal location titles
+    category: captions
+    concepts: [cinematic, premium]
+    when_to_use: Travel, documentary, wedding.
+    when_not_to_use: Hype reels.
+    why: Small clean titles inform without shouting.
+    rules: [one clean font, subtle fade]
+    avoid: [kinetic text everywhere]
+    apply: {text_style: minimal}
+    qc: []
+
+  # ---------------------------------------------------------------- motion / effects
+  - id: emphasis_punch
+    name: Punch-in on important words
+    category: motion
+    concepts: [emphasis_punch, engaging]
+    triggers: ['emphasis', 'important (words?|baat)']
+    when_to_use: Talking heads — on numbers, names, "but / actually / lekin" and after a pause.
+    when_not_to_use: No speech; music videos.
+    why: A small push on the key word adds energy and hides cuts; random zooms just look shaky.
+    rules: [about one punch every 6–7 s, at least 3.5 s apart, 6–8% scale, ease back quickly]
+    avoid: [zoom on every sentence, zooms above 15%]
+    apply: {emphasis_punch: true}
+    qc: [punches spaced at least 3.5 s apart]
+  - id: subtle_push_in
+    name: Subtle push-in
+    category: motion
+    concepts: [cinematic, calm]
+    triggers: ['push.?in', 'slow zoom']
+    when_to_use: Static or slow shots that need a little life.
+    when_not_to_use: Already moving handheld shots, fast montages.
+    why: A slow 5–8% push over the whole shot adds intention; ending the zoom early looks frozen.
+    rules: [spread the zoom over the full shot, 5–12% total]
+    avoid: [zooming every shot, big zooms]
+    apply: {effects_add: [zoom]}
+    qc: []
+  - id: speed_ramp_moment
+    name: Speed ramp on a peak
+    category: motion
+    concepts: [high_energy]
+    triggers: ['speed ramp', 'ramp']
+    when_to_use: Sports and party peaks, a jump, a throw, a spin.
+    when_not_to_use: Speech.
+    why: Changing speed around the peak makes it feel bigger.
+    rules: [one or two ramps per video, never over speech]
+    avoid: [ramping everything]
+    apply: {effects_add: [speed_ramp]}
+    qc: []
+  - id: subject_reframe
+    name: Subject-aware 9:16 reframe
+    category: motion
+    concepts: []
+    triggers: ['(9:16|vertical|reel|short).{0,40}(person|face|subject|banda)', 'auto.?reframe']
+    when_to_use: Converting horizontal footage with a person to vertical.
+    when_not_to_use: Landscapes without a subject (centre crop or blurred background).
+    why: A centre crop cuts people in half; following them keeps the edit watchable.
+    rules: [smooth the path, limit how fast the frame moves]
+    avoid: [jittery tracking]
+    apply: {effects_add: [follow]}
+    qc: [subject inside frame]
+
+  # ---------------------------------------------------------------- quality
+  - id: restraint
+    name: Restraint
+    category: quality
+    concepts: [restraint, premium, professional]
+    when_to_use: Always; especially when the user says "over mat kar", "simple", "professional".
+    when_not_to_use: Meme edits that are meant to be loud.
+    why: Professional editing is often about what you don't do.
+    rules: [every effect needs a reason, at most one look, no stacked effects]
+    avoid: [effects because they are available]
+    apply: {transition: none, flash_accents: 0}
+    limits: {max_effects: 2, max_transitions: 0}
+    qc: [effect count within limits]
+
+  # ---------------------------------------------------------------- vlog stickers / timeline comments
+  - id: word_stickers
+    name: Word stickers (said → pop-up)
+    category: graphics
+    concepts: [engaging]
+    triggers: ['\bstickers?\b', '\bemojis?\b', 'jo (bhi )?(bol|baat)\w*.{0,40}animation']
+    when_to_use: Vlogs and talking videos where the speaker names things (a rose, a tree, chai, the beach) — a small sticker of the thing pops up as it is said.
+    when_not_to_use: Serious interviews, sad or formal pieces; footage where nobody speaks (there is nothing said to show).
+    why: The picture echoes the words for a moment, which keeps a phone viewer watching without hiding the speaker.
+    rules: [only things that are actually said, each thing once, at least 1.2 s apart, alternate corners, 1.8 s on screen with a pop-in]
+    avoid: [a sticker storm, covering the face, stickers on every word]
+    qc: [every sticker starts within 0.1 s of its word, none outside the video]
+  - id: timeline_comments
+    name: Comment on a moment
+    category: workflow
+    concepts: [engaging]
+    triggers: []
+    when_to_use: The user stops the video, clicks / long-presses the timeline and writes what they want there ("zoom", "WOW likh do", "rose", "ye part hata do").
+    when_not_to_use: Asks about the whole video — those go through the chat as usual.
+    why: Pointing at the exact second is how a noob tells an editor "here" without knowing timecodes.
+    rules: [change only that moment (2.5 s), keep every earlier comment and edit, a short note that is no edit is written on screen as it is, cut out the whole shot at that second]
+    avoid: [re-cutting the whole video, effects that leak into other moments]
+    qc: [the effect / text / sticker starts at the commented second, the rest of the edit unchanged]
+  - id: lyric_poster
+    name: Lyric poster words
+    category: graphics
+    concepts: [engaging, emotional]
+    triggers: ['lyric poster', 'poster (style|text)', '(bade|big) bold (words|shabd)']
+    when_to_use: Song / love reels where the sung words carry the feeling — one huge word at a time, in time with the singing.
+    when_not_to_use: Talking videos (use captions), calm cinematic pieces, songs whose words can't be read.
+    why: A single word filling the screen on the beat makes the viewer read along with the song.
+    rules: [one sung word at a time while it is sung, condensed capitals filling ~85 % of the width, alternate red / black / yellow, behind the person only where the person leaves room, a heart when love is sung, the video ends with the song]
+    avoid: [words hidden behind a close-up face, the song looping under extra footage, long lines of lyrics at once]
+    qc: [every word readable (not covered), length equals the song, no word outside the video]

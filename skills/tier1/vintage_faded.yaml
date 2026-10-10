@@ -1,0 +1,92 @@
+# written by skills/tools/write_tier1_color.py — edit this file directly from now on
+id: vintage_faded
+seed: 46
+category: color
+name: Vintage faded
+name_hi: Retro matte
+description: Matte, faded, warm retro look (lifted blacks, muted colour; own LUT).
+same_engine_as: cinematic_look
+params:
+  strength:
+    type: number
+    default: 0.85
+    min: 0.1
+    max: 1.0
+    extract: percent
+    desc: how strong
+time_modes:
+- whole
+- segment
+- between_times
+- intermittent
+builder: color.vintage_faded
+graph: lut3d (generated 'vintage' cube at the strength)
+media3:
+  status: mapped
+  how: SingleColorLut
+stage: color
+conflicts:
+- cinematic_look
+- teal_orange
+cost: cheap
+licence: own code; generated LUTs (own maths); FFmpeg filters (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  strength:
+  - '0.5'
+  - '0.85'
+  - '1.0'
+synonyms:
+  en:
+  - vintage
+  - retro
+  - matte look
+  - faded film
+  - old school look
+  - vintage filter
+  - film fade
+  hinglish:
+  - purana zamana
+  - retro look do
+  - vintage karo
+  - matte karo
+  - purani film jaisa
+  - purane zamane wala look
+  - halka faded
+  hi:
+  - विंटेज
+  - रेट्रो
+  - पुराना ज़माना
+  slang:
+  - nostalgia wala
+  typos:
+  - vintge
+  - retro luk
+  - vintaj
+negations:
+- vintage mat karo
+examples:
+- prompt: make it look vintage
+  lang: en
+- prompt: retro matte look
+  lang: en
+- prompt: पुराना ज़माना वाला लुक
+  lang: hi
+- prompt: vintage karo
+  lang: hinglish
+- prompt: retro look do
+  lang: hinglish
+- prompt: vintge filter
+  lang: typo
+- prompt: nostalgia wali feel
+  lang: vague
+- prompt: vintage aur grain daalo
+  lang: multi
+  also:
+  - film_grain
+test:
+  check: look_matches
+  media: soft
+  params:
+    strength: 1.0

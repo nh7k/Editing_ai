@@ -1,0 +1,2466 @@
+{
+ "add_music.mood=calm": {
+  "assumed": [
+   "start = 0.0s (default)",
+   "duck = auto (default)"
+  ],
+  "params": {
+   "mood": "calm"
+  },
+  "status": "ready",
+  "why": "vs plain: sound differs by 27.3 dB"
+ },
+ "add_music.mood=upbeat": {
+  "assumed": [
+   "start = 0.0s (default)",
+   "duck = auto (default)"
+  ],
+  "params": {
+   "mood": "upbeat"
+  },
+  "status": "ready",
+  "why": "vs plain: sound differs by 27.5 dB"
+ },
+ "audio_fade.where=both": {
+  "assumed": [],
+  "params": {
+   "fade_in": 1.0,
+   "fade_out": 1.5,
+   "where": "both"
+  },
+  "status": "ready",
+  "why": "vs plain: sound differs by 19.7 dB"
+ },
+ "audio_fade.where=in": {
+  "assumed": [],
+  "params": {
+   "fade_in": 1.0,
+   "fade_out": 1.5,
+   "where": "in"
+  },
+  "status": "ready",
+  "why": "vs plain: sound differs by 16.6 dB"
+ },
+ "audio_fade.where=out": {
+  "assumed": [],
+  "params": {
+   "fade_in": 1.0,
+   "fade_out": 1.5,
+   "where": "out"
+  },
+  "status": "ready",
+  "why": "vs plain: sound differs by 19.7 dB"
+ },
+ "auto_captions.style=bold_pop": {
+  "assumed": [
+   "position = bottom (default)",
+   "words_per_line = 4 (default)",
+   "size = 50 (default)"
+  ],
+  "params": {
+   "style": "bold_pop"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 64.3"
+ },
+ "auto_captions.style=classic": {
+  "assumed": [
+   "position = bottom (default)",
+   "words_per_line = 4 (default)",
+   "size = 50 (default)"
+  ],
+  "params": {
+   "style": "classic"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 124.5"
+ },
+ "auto_captions.style=hormozi": {
+  "assumed": [
+   "position = bottom (default)",
+   "words_per_line = 4 (default)",
+   "size = 50 (default)"
+  ],
+  "params": {
+   "style": "hormozi"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 55.8"
+ },
+ "auto_captions.style=minimal": {
+  "assumed": [
+   "position = bottom (default)",
+   "words_per_line = 4 (default)",
+   "size = 50 (default)"
+  ],
+  "params": {
+   "style": "minimal"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 66.6"
+ },
+ "auto_enhance.strength=light": {
+  "assumed": [],
+  "params": {
+   "strength": 0.65
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 12.7"
+ },
+ "auto_enhance.strength=normal": {
+  "assumed": [],
+  "params": {
+   "strength": 1.0
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 19.8"
+ },
+ "auto_enhance.strength=strong": {
+  "assumed": [],
+  "params": {
+   "strength": 1.8
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 36.3"
+ },
+ "auto_reframe.target=face": {
+  "duplicate_of": "auto_reframe.target=person",
+  "params": {
+   "target": "face"
+  },
+  "status": "rejected-duplicate",
+  "why": "picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 0.0 dB (< 1.5), same length"
+ },
+ "auto_reframe.target=person": {
+  "assumed": [],
+  "params": {
+   "target": "person"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 17.4"
+ },
+ "beat_sync.every=1": {
+  "assumed": [
+   "max_shift = 0.4s (default)"
+  ],
+  "params": {
+   "every": 1
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.77s vs 12.00s"
+ },
+ "beat_sync.every=2": {
+  "duplicate_of": "beat_sync.every=1",
+  "params": {
+   "every": 2
+  },
+  "status": "rejected-duplicate",
+  "why": "picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 0.0 dB (< 1.5), same length"
+ },
+ "beat_sync.every=4": {
+  "params": {
+   "every": 4
+  },
+  "reason": "the only cut is further than max_shift from every 4th beat; explain says '0 of 1 cuts moved'",
+  "status": "rejected-no-effect",
+  "why": "same as the plain video: picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 0.0 dB (< 1.5), same length"
+ },
+ "blur.radius=12": {
+  "assumed": [],
+  "params": {
+   "radius": 12.0
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 24.3"
+ },
+ "blur.radius=2": {
+  "assumed": [],
+  "params": {
+   "radius": 2.0
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 4.9"
+ },
+ "blur.radius=6": {
+  "assumed": [],
+  "params": {
+   "radius": 6.0
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 14.3"
+ },
+ "blur_box_censor.region=center": {
+  "assumed": [],
+  "params": {
+   "region": "center",
+   "strength": 1.5
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 6.2"
+ },
+ "blur_box_censor.region=corner": {
+  "status": "planned",
+  "why": "'corner' is not one of the parameter's choices yet"
+ },
+ "blur_box_censor.region=face": {
+  "params": {
+   "region": "face",
+   "strength": 1.5
+  },
+  "status": "planned",
+  "why": "not testable on the test media — the skill says: no face found there — give the area instead (e.g. 'top right')"
+ },
+ "brightness.amount=+0.1": {
+  "assumed": [],
+  "params": {
+   "amount": 0.1
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 16.1"
+ },
+ "brightness.amount=+0.2": {
+  "assumed": [],
+  "params": {
+   "amount": 0.2
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 31.7"
+ },
+ "brightness.amount=-0.1": {
+  "assumed": [],
+  "params": {
+   "amount": -0.1
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 18.4"
+ },
+ "brightness.amount=-0.2": {
+  "assumed": [],
+  "params": {
+   "amount": -0.2
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 33.7"
+ },
+ "caption_style.color=white": {
+  "params": {
+   "color": "#FFFFFF"
+  },
+  "reason": "the test captions are already white",
+  "status": "rejected-no-effect",
+  "why": "same as the plain video: picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 0.0 dB (< 1.5), same length"
+ },
+ "caption_style.color=yellow": {
+  "assumed": [],
+  "params": {
+   "color": "#FFD60A"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 15.7"
+ },
+ "caption_style.preset=bold_pop": {
+  "duplicate_of": "caption_style.preset=hormozi",
+  "params": {
+   "color": "#FFD60A",
+   "preset": "bold_pop"
+  },
+  "status": "rejected-duplicate",
+  "why": "picture 0.8 (< 3.0), part 7.3 (< 10.0), sound 0.1 dB (< 1.5), same length"
+ },
+ "caption_style.preset=desi": {
+  "assumed": [],
+  "params": {
+   "color": "#FFD60A",
+   "preset": "desi"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 104.7"
+ },
+ "caption_style.preset=hormozi": {
+  "assumed": [],
+  "params": {
+   "color": "#FFD60A",
+   "preset": "hormozi"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 111.9"
+ },
+ "caption_style.preset=minimal": {
+  "assumed": [],
+  "params": {
+   "color": "#FFD60A",
+   "preset": "minimal"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 106.7"
+ },
+ "caption_style.preset=neon": {
+  "assumed": [],
+  "params": {
+   "color": "#FFD60A",
+   "preset": "neon"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 84.6"
+ },
+ "cinematic_look.strength=0.5": {
+  "assumed": [],
+  "params": {
+   "strength": 0.5
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 5.0"
+ },
+ "cinematic_look.strength=0.85": {
+  "assumed": [],
+  "params": {
+   "strength": 0.85
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 8.1"
+ },
+ "cinematic_look.strength=1.0": {
+  "duplicate_of": "cinematic_look.strength=0.85",
+  "params": {
+   "strength": 1.0
+  },
+  "status": "rejected-duplicate",
+  "why": "picture 2.2 (< 3.0), part 7.5 (< 10.0), sound 0.0 dB (< 1.5), same length"
+ },
+ "color_pop.color=blue": {
+  "assumed": [],
+  "params": {
+   "color": "#0A84FF"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 71.1"
+ },
+ "color_pop.color=green": {
+  "assumed": [],
+  "params": {
+   "color": "#30D158"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 88.9"
+ },
+ "color_pop.color=red": {
+  "assumed": [],
+  "params": {
+   "color": "#FF3B30"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 90.3"
+ },
+ "color_pop.color=yellow": {
+  "assumed": [],
+  "params": {
+   "color": "#FFD60A"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 88.9"
+ },
+ "contrast.amount=0.8": {
+  "assumed": [],
+  "params": {
+   "amount": 0.8
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 8.5"
+ },
+ "contrast.amount=1.2": {
+  "assumed": [],
+  "params": {
+   "amount": 1.2
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 8.6"
+ },
+ "contrast.amount=1.5": {
+  "assumed": [],
+  "params": {
+   "amount": 1.5
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 20.9"
+ },
+ "cool.amount=light": {
+  "assumed": [],
+  "params": {
+   "amount": 0.275
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 7.6"
+ },
+ "cool.amount=normal": {
+  "assumed": [],
+  "params": {
+   "amount": 0.5
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 11.1"
+ },
+ "cool.amount=strong": {
+  "assumed": [],
+  "params": {
+   "amount": 0.9
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 14.5"
+ },
+ "countdown_timer.from=10": {
+  "assumed": [
+   "size = 180 (default)",
+   "color = #FFFFFF (default)"
+  ],
+  "params": {
+   "at": 1.0,
+   "from": 10
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 73.4"
+ },
+ "countdown_timer.from=3": {
+  "assumed": [
+   "size = 180 (default)",
+   "color = #FFFFFF (default)"
+  ],
+  "params": {
+   "at": 1.0,
+   "from": 3
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 38.8"
+ },
+ "countdown_timer.from=5": {
+  "assumed": [
+   "size = 180 (default)",
+   "color = #FFFFFF (default)"
+  ],
+  "params": {
+   "at": 1.0,
+   "from": 5
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 42.9"
+ },
+ "crossfade.duration=0.3s": {
+  "assumed": [],
+  "params": {
+   "duration": 0.3
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.70s vs 12.00s"
+ },
+ "crossfade.duration=0.6s": {
+  "assumed": [],
+  "params": {
+   "duration": 0.6
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.40s vs 12.00s"
+ },
+ "crossfade.duration=1.2s": {
+  "assumed": [],
+  "params": {
+   "duration": 1.2
+  },
+  "status": "ready",
+  "why": "vs plain: length 10.80s vs 12.00s"
+ },
+ "denoise.amount=light": {
+  "assumed": [],
+  "params": {
+   "amount": "light"
+  },
+  "status": "ready",
+  "why": "vs plain: sound differs by 21.8 dB"
+ },
+ "denoise.amount=strong": {
+  "duplicate_of": "denoise.amount=light",
+  "params": {
+   "amount": "strong"
+  },
+  "status": "rejected-duplicate",
+  "why": "picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 0.0 dB (< 1.5), same length"
+ },
+ "duck_music.amount=12 dB": {
+  "assumed": [],
+  "params": {
+   "amount": 12.0
+  },
+  "status": "ready",
+  "why": "vs plain: sound differs by 7.2 dB"
+ },
+ "duck_music.amount=20 dB": {
+  "assumed": [],
+  "params": {
+   "amount": 20.0
+  },
+  "status": "ready",
+  "why": "vs plain: sound differs by 12.1 dB"
+ },
+ "duck_music.amount=6 dB": {
+  "assumed": [],
+  "params": {
+   "amount": 6.0
+  },
+  "status": "ready",
+  "why": "vs plain: sound differs by 2.9 dB"
+ },
+ "echo_reverb.amount=cave": {
+  "assumed": [],
+  "params": {
+   "amount": 0.9
+  },
+  "status": "ready",
+  "why": "vs plain: sound differs by 7.3 dB"
+ },
+ "echo_reverb.amount=hall": {
+  "assumed": [],
+  "params": {
+   "amount": 0.5
+  },
+  "status": "ready",
+  "why": "vs plain: sound differs by 3.3 dB"
+ },
+ "echo_reverb.amount=room": {
+  "params": {
+   "amount": 0.3
+  },
+  "reason": "a small room is subtle: 1.4 dB, just under the 1.5 dB audible limit",
+  "status": "rejected-no-effect",
+  "why": "same as the plain video: picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 1.4 dB (< 1.5), same length"
+ },
+ "export_preset.platform=instagram_reels": {
+  "assumed": [],
+  "params": {
+   "platform": "instagram_reels",
+   "quality": "light"
+  },
+  "status": "ready",
+  "why": "vs plain: frame size (720, 1280) vs (640, 360)"
+ },
+ "export_preset.platform=linkedin": {
+  "assumed": [],
+  "params": {
+   "platform": "linkedin",
+   "quality": "light"
+  },
+  "status": "ready",
+  "why": "vs plain: frame size (720, 720) vs (640, 360)"
+ },
+ "export_preset.platform=whatsapp_status": {
+  "assumed": [],
+  "params": {
+   "platform": "whatsapp_status",
+   "quality": "light"
+  },
+  "status": "ready",
+  "why": "vs plain: frame size (720, 1280) vs (640, 360)"
+ },
+ "export_preset.platform=youtube": {
+  "assumed": [],
+  "params": {
+   "platform": "youtube",
+   "quality": "light"
+  },
+  "status": "ready",
+  "why": "vs plain: frame size (1280, 720) vs (640, 360)"
+ },
+ "export_preset.platform=youtube_shorts": {
+  "duplicate_of": "export_preset.platform=instagram_reels",
+  "params": {
+   "platform": "youtube_shorts",
+   "quality": "light"
+  },
+  "status": "rejected-duplicate",
+  "why": "picture 0.2 (< 3.0), part 2.9 (< 10.0), sound 0.1 dB (< 1.5), same length"
+ },
+ "export_preset.quality=high": {
+  "assumed": [],
+  "params": {
+   "platform": "instagram_reels",
+   "quality": "high"
+  },
+  "status": "ready",
+  "why": "vs plain: frame size (1080, 1920) vs (640, 360)"
+ },
+ "export_preset.quality=light": {
+  "assumed": [],
+  "params": {
+   "platform": "instagram_reels",
+   "quality": "light"
+  },
+  "status": "ready",
+  "why": "vs plain: frame size (720, 1280) vs (640, 360)"
+ },
+ "extract_audio.format=m4a": {
+  "assumed": [],
+  "params": {
+   "format": "m4a"
+  },
+  "status": "ready",
+  "why": "vs plain: extra files ['.m4a'] vs []"
+ },
+ "extract_audio.format=mp3": {
+  "assumed": [],
+  "params": {
+   "format": "mp3"
+  },
+  "status": "ready",
+  "why": "vs plain: extra files ['.mp3'] vs []"
+ },
+ "extract_audio.format=wav": {
+  "assumed": [],
+  "params": {
+   "format": "wav"
+  },
+  "status": "ready",
+  "why": "vs plain: extra files ['.wav'] vs []"
+ },
+ "extract_highlights.count=1": {
+  "assumed": [],
+  "params": {
+   "count": 1,
+   "length": 2
+  },
+  "status": "ready",
+  "why": "vs plain: length 2.00s vs 12.00s"
+ },
+ "extract_highlights.count=3": {
+  "assumed": [],
+  "params": {
+   "count": 3,
+   "length": 2
+  },
+  "status": "ready",
+  "why": "vs plain: length 6.00s vs 12.00s"
+ },
+ "extract_highlights.count=5": {
+  "assumed": [],
+  "params": {
+   "count": 5,
+   "length": 2
+  },
+  "status": "ready",
+  "why": "vs plain: length 10.00s vs 12.00s"
+ },
+ "extract_highlights.length=2s": {
+  "assumed": [],
+  "params": {
+   "count": 2,
+   "length": 2.0
+  },
+  "status": "ready",
+  "why": "vs plain: length 4.00s vs 12.00s"
+ },
+ "extract_highlights.length=4s": {
+  "assumed": [],
+  "params": {
+   "count": 2,
+   "length": 4.0
+  },
+  "status": "ready",
+  "why": "vs plain: length 8.00s vs 12.00s"
+ },
+ "extract_highlights.length=8s": {
+  "params": {
+   "count": 2,
+   "length": 8.0
+  },
+  "reason": "2 x 8 s is longer than the 12 s video, so the whole video is kept",
+  "status": "rejected-no-effect",
+  "why": "same as the plain video: picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 0.1 dB (< 1.5), same length"
+ },
+ "fade_black.duration=0.4s": {
+  "assumed": [
+   "where = cuts (default)"
+  ],
+  "params": {
+   "duration": 0.4
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.60s vs 12.00s"
+ },
+ "fade_black.duration=0.8s": {
+  "assumed": [
+   "where = cuts (default)"
+  ],
+  "params": {
+   "duration": 0.8
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.20s vs 12.00s"
+ },
+ "fade_black.where=cuts": {
+  "assumed": [],
+  "params": {
+   "duration": 0.8,
+   "where": "cuts"
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.20s vs 12.00s"
+ },
+ "fade_black.where=end": {
+  "assumed": [],
+  "params": {
+   "duration": 0.8,
+   "where": "end"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 90.6"
+ },
+ "fade_black.where=start": {
+  "assumed": [],
+  "params": {
+   "duration": 0.8,
+   "where": "start"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 115.9"
+ },
+ "fade_black.where=start_end": {
+  "assumed": [],
+  "params": {
+   "duration": 0.8,
+   "where": "start_end"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 115.9"
+ },
+ "fade_white.duration=0.3s": {
+  "assumed": [],
+  "params": {
+   "duration": 0.3
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.70s vs 12.00s"
+ },
+ "fade_white.duration=0.6s": {
+  "assumed": [],
+  "params": {
+   "duration": 0.6
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.40s vs 12.00s"
+ },
+ "film_grain.amount=heavy": {
+  "assumed": [],
+  "params": {
+   "amount": 2.6
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 10.1"
+ },
+ "film_grain.amount=light": {
+  "assumed": [],
+  "params": {
+   "amount": 0.65
+  },
+  "status": "ready",
+  "why": "vs plain: file 6.13x bigger per second"
+ },
+ "film_grain.amount=normal": {
+  "assumed": [],
+  "params": {
+   "amount": 1.0
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 4.1"
+ },
+ "freeze_frame.duration=0.5s": {
+  "assumed": [],
+  "params": {
+   "at": 2.0,
+   "duration": 0.5
+  },
+  "status": "ready",
+  "why": "vs plain: length 12.50s vs 12.00s"
+ },
+ "freeze_frame.duration=1.5s": {
+  "assumed": [],
+  "params": {
+   "at": 2.0,
+   "duration": 1.5
+  },
+  "status": "ready",
+  "why": "vs plain: length 13.50s vs 12.00s"
+ },
+ "freeze_frame.duration=3s": {
+  "assumed": [],
+  "params": {
+   "at": 2.0,
+   "duration": 3.0
+  },
+  "status": "ready",
+  "why": "vs plain: length 15.00s vs 12.00s"
+ },
+ "glitch.intensity=heavy": {
+  "assumed": [],
+  "params": {
+   "intensity": 2.6
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 25.2"
+ },
+ "glitch.intensity=light": {
+  "assumed": [],
+  "params": {
+   "intensity": 0.65
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 11.0"
+ },
+ "glitch.intensity=normal": {
+  "assumed": [],
+  "params": {
+   "intensity": 1.0
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 13.9"
+ },
+ "glitch_transition.duration=0.25s": {
+  "assumed": [],
+  "params": {
+   "duration": 0.25
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.77s vs 12.00s"
+ },
+ "glitch_transition.duration=0.4s": {
+  "assumed": [],
+  "params": {
+   "duration": 0.4
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.60s vs 12.00s"
+ },
+ "glitch_transition.duration=0.8s": {
+  "assumed": [],
+  "params": {
+   "duration": 0.8
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.20s vs 12.00s"
+ },
+ "grayscale.intensity=full": {
+  "assumed": [],
+  "params": {
+   "intensity": 1.0
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 106.7"
+ },
+ "grayscale.intensity=half": {
+  "assumed": [],
+  "params": {
+   "intensity": 0.55
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 58.5"
+ },
+ "hook_first.mode=move": {
+  "assumed": [],
+  "params": {
+   "hook_len": 1.5,
+   "mode": "move"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 25.3"
+ },
+ "hook_first.mode=teaser": {
+  "assumed": [],
+  "params": {
+   "hook_len": 1.5,
+   "mode": "teaser"
+  },
+  "status": "ready",
+  "why": "vs plain: length 13.50s vs 12.00s"
+ },
+ "intro_outro.background=black": {
+  "assumed": [
+   "outro_text = Thanks for watching (default)"
+  ],
+  "params": {
+   "background": "black",
+   "duration": 1.5,
+   "text": "नमस्ते Goa",
+   "which": "intro"
+  },
+  "status": "ready",
+  "why": "vs plain: length 13.50s vs 12.00s"
+ },
+ "intro_outro.background=brand": {
+  "assumed": [
+   "outro_text = Thanks for watching (default)"
+  ],
+  "params": {
+   "background": "brand",
+   "duration": 1.5,
+   "text": "नमस्ते Goa",
+   "which": "intro"
+  },
+  "status": "ready",
+  "why": "vs plain: length 13.50s vs 12.00s"
+ },
+ "intro_outro.background=gradient": {
+  "assumed": [
+   "outro_text = Thanks for watching (default)"
+  ],
+  "params": {
+   "background": "gradient",
+   "duration": 1.5,
+   "text": "नमस्ते Goa",
+   "which": "intro"
+  },
+  "status": "ready",
+  "why": "vs plain: length 13.50s vs 12.00s"
+ },
+ "intro_outro.background=warm": {
+  "assumed": [
+   "outro_text = Thanks for watching (default)"
+  ],
+  "params": {
+   "background": "warm",
+   "duration": 1.5,
+   "text": "नमस्ते Goa",
+   "which": "intro"
+  },
+  "status": "ready",
+  "why": "vs plain: length 13.50s vs 12.00s"
+ },
+ "intro_outro.background=white": {
+  "assumed": [
+   "outro_text = Thanks for watching (default)"
+  ],
+  "params": {
+   "background": "white",
+   "duration": 1.5,
+   "text": "नमस्ते Goa",
+   "which": "intro"
+  },
+  "status": "ready",
+  "why": "vs plain: length 13.50s vs 12.00s"
+ },
+ "intro_outro.which=both": {
+  "assumed": [
+   "outro_text = Thanks for watching (default)",
+   "background = gradient (default)"
+  ],
+  "params": {
+   "duration": 1.5,
+   "text": "नमस्ते Goa",
+   "which": "both"
+  },
+  "status": "ready",
+  "why": "vs plain: length 15.00s vs 12.00s"
+ },
+ "intro_outro.which=intro": {
+  "assumed": [
+   "outro_text = Thanks for watching (default)",
+   "background = gradient (default)"
+  ],
+  "params": {
+   "duration": 1.5,
+   "text": "नमस्ते Goa",
+   "which": "intro"
+  },
+  "status": "ready",
+  "why": "vs plain: length 13.50s vs 12.00s"
+ },
+ "intro_outro.which=outro": {
+  "assumed": [
+   "outro_text = Thanks for watching (default)",
+   "background = gradient (default)"
+  ],
+  "params": {
+   "duration": 1.5,
+   "text": "नमस्ते Goa",
+   "which": "outro"
+  },
+  "status": "ready",
+  "why": "vs plain: length 13.50s vs 12.00s"
+ },
+ "iris_circle.mode=close": {
+  "assumed": [],
+  "params": {
+   "duration": 0.8,
+   "mode": "close"
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.20s vs 12.00s"
+ },
+ "iris_circle.mode=open": {
+  "assumed": [],
+  "params": {
+   "duration": 0.8,
+   "mode": "open"
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.20s vs 12.00s"
+ },
+ "karaoke_captions.color=green": {
+  "assumed": [],
+  "params": {
+   "color": "#30D158"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 47.5"
+ },
+ "karaoke_captions.color=pink": {
+  "assumed": [],
+  "params": {
+   "color": "#FF2D92"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 48.3"
+ },
+ "karaoke_captions.color=yellow": {
+  "assumed": [],
+  "params": {
+   "color": "#FFD60A"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 48.4"
+ },
+ "ken_burns.amount=0.1": {
+  "assumed": [],
+  "params": {
+   "amount": 0.1,
+   "direction": "in"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 22.3"
+ },
+ "ken_burns.amount=0.2": {
+  "assumed": [],
+  "params": {
+   "amount": 0.2,
+   "direction": "in"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 39.4"
+ },
+ "ken_burns.amount=0.35": {
+  "assumed": [],
+  "params": {
+   "amount": 0.35,
+   "direction": "in"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 59.5"
+ },
+ "ken_burns.direction=in": {
+  "assumed": [],
+  "params": {
+   "amount": 0.3,
+   "direction": "in"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 53.7"
+ },
+ "ken_burns.direction=left": {
+  "assumed": [],
+  "params": {
+   "amount": 0.3,
+   "direction": "left"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 88.7"
+ },
+ "ken_burns.direction=out": {
+  "assumed": [],
+  "params": {
+   "amount": 0.3,
+   "direction": "out"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 48.2"
+ },
+ "ken_burns.direction=right": {
+  "assumed": [],
+  "params": {
+   "amount": 0.3,
+   "direction": "right"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 87.5"
+ },
+ "letterbox.ratio=1.85": {
+  "assumed": [],
+  "params": {
+   "ratio": 1.85
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 6.2"
+ },
+ "letterbox.ratio=2.0": {
+  "assumed": [],
+  "params": {
+   "ratio": 2.0
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 14.9"
+ },
+ "letterbox.ratio=2.39": {
+  "assumed": [],
+  "params": {
+   "ratio": 2.39
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 32.9"
+ },
+ "letterbox.ratio=2.76": {
+  "assumed": [],
+  "params": {
+   "ratio": 2.76
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 46.0"
+ },
+ "light_leak.color=gold": {
+  "duplicate_of": "light_leak.color=orange",
+  "params": {
+   "color": "#F5B700"
+  },
+  "status": "rejected-duplicate",
+  "why": "picture 1.5 (< 3.0), part 6.8 (< 10.0), sound 0.0 dB (< 1.5), same length"
+ },
+ "light_leak.color=orange": {
+  "assumed": [
+   "strength = 1.0 (default)",
+   "duration = 2.0s (default)"
+  ],
+  "params": {
+   "color": "#FF7A18"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 29.7"
+ },
+ "light_leak.color=pink": {
+  "assumed": [
+   "strength = 1.0 (default)",
+   "duration = 2.0s (default)"
+  ],
+  "params": {
+   "color": "#FF2D92"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 30.3"
+ },
+ "loop_boomerang.times=1": {
+  "assumed": [],
+  "params": {
+   "times": 1
+  },
+  "status": "ready",
+  "why": "vs plain: length 6.00s vs 3.00s"
+ },
+ "loop_boomerang.times=2": {
+  "assumed": [],
+  "params": {
+   "times": 2
+  },
+  "status": "ready",
+  "why": "vs plain: length 12.00s vs 3.00s"
+ },
+ "loop_boomerang.times=3": {
+  "assumed": [],
+  "params": {
+   "times": 3
+  },
+  "status": "ready",
+  "why": "vs plain: length 18.00s vs 3.00s"
+ },
+ "merge_clips.order=filming_time": {
+  "status": "planned",
+  "why": "'filming_time' is not one of the parameter's choices yet"
+ },
+ "merge_clips.order=upload": {
+  "params": {
+   "order": "upload"
+  },
+  "status": "rejected-no-effect",
+  "why": "same as the plain video: picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 0.1 dB (< 1.5), same length"
+ },
+ "mirror_effect.axis=both": {
+  "assumed": [],
+  "params": {
+   "axis": "both"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 124.4"
+ },
+ "mirror_effect.axis=h": {
+  "assumed": [],
+  "params": {
+   "axis": "h"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 117.0"
+ },
+ "mirror_effect.axis=v": {
+  "assumed": [],
+  "params": {
+   "axis": "v"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 11.4"
+ },
+ "montage_builder.total=10s": {
+  "assumed": [],
+  "params": {
+   "shot_len": 1.0,
+   "total": 10.0
+  },
+  "status": "ready",
+  "why": "vs plain: length 10.00s vs 12.00s"
+ },
+ "montage_builder.total=15s": {
+  "assumed": [],
+  "params": {
+   "shot_len": 1.0,
+   "total": 15.0
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 119.8"
+ },
+ "montage_builder.total=30s": {
+  "duplicate_of": "montage_builder.total=15s",
+  "params": {
+   "shot_len": 1.0,
+   "total": 30.0
+  },
+  "status": "rejected-duplicate",
+  "why": "picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 0.0 dB (< 1.5), same length"
+ },
+ "pan.direction=down": {
+  "assumed": [],
+  "params": {
+   "direction": "down",
+   "speed": 1.5
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 54.4"
+ },
+ "pan.direction=left": {
+  "assumed": [],
+  "params": {
+   "direction": "left",
+   "speed": 1.5
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 75.4"
+ },
+ "pan.direction=right": {
+  "assumed": [],
+  "params": {
+   "direction": "right",
+   "speed": 1.5
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 70.3"
+ },
+ "pan.direction=up": {
+  "assumed": [],
+  "params": {
+   "direction": "up",
+   "speed": 1.5
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 54.4"
+ },
+ "pan.speed=fast": {
+  "assumed": [],
+  "params": {
+   "direction": "right",
+   "speed": 2.6
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 94.9"
+ },
+ "pan.speed=normal": {
+  "assumed": [],
+  "params": {
+   "direction": "right",
+   "speed": 1.0
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 50.7"
+ },
+ "pan.speed=slow": {
+  "assumed": [],
+  "params": {
+   "direction": "right",
+   "speed": 0.65
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 37.0"
+ },
+ "picture_in_picture.size=large": {
+  "assumed": [
+   "src_in = 0s (default)"
+  ],
+  "params": {
+   "position": "top_right",
+   "size": 0.544
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 41.8"
+ },
+ "picture_in_picture.size=medium": {
+  "assumed": [
+   "src_in = 0s (default)"
+  ],
+  "params": {
+   "position": "top_right",
+   "size": 0.32
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 15.9"
+ },
+ "picture_in_picture.size=small": {
+  "assumed": [
+   "src_in = 0s (default)"
+  ],
+  "params": {
+   "position": "top_right",
+   "size": 0.235
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 8.9"
+ },
+ "pixelate_censor.region=center": {
+  "assumed": [],
+  "params": {
+   "region": "center",
+   "strength": 1.5
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 97.6"
+ },
+ "pixelate_censor.region=corner": {
+  "status": "planned",
+  "why": "'corner' is not one of the parameter's choices yet"
+ },
+ "pixelate_censor.region=face": {
+  "params": {
+   "region": "face",
+   "strength": 1.5
+  },
+  "status": "planned",
+  "why": "not testable on the test media — the skill says: no face found there — give the area instead (e.g. 'top right')"
+ },
+ "progress_bar.color=red": {
+  "assumed": [
+   "position = bottom (default)",
+   "thickness = 1.0 (default)"
+  ],
+  "params": {
+   "color": "#FF3B30"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 31.9"
+ },
+ "progress_bar.color=white": {
+  "assumed": [
+   "position = bottom (default)",
+   "thickness = 1.0 (default)"
+  ],
+  "params": {
+   "color": "#FFFFFF"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 45.0"
+ },
+ "progress_bar.color=yellow": {
+  "assumed": [
+   "position = bottom (default)",
+   "thickness = 1.0 (default)"
+  ],
+  "params": {
+   "color": "#FFD60A"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 28.4"
+ },
+ "punch_in.scale=1.1": {
+  "assumed": [],
+  "params": {
+   "scale": 1.1
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 42.9"
+ },
+ "punch_in.scale=1.2": {
+  "assumed": [],
+  "params": {
+   "scale": 1.2
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 69.9"
+ },
+ "punch_in.scale=1.28": {
+  "assumed": [],
+  "params": {
+   "scale": 1.28
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 87.9"
+ },
+ "replace_audio.mood=calm": {
+  "assumed": [
+   "start = 0.0s (default)"
+  ],
+  "params": {
+   "mood": "calm"
+  },
+  "status": "ready",
+  "why": "vs plain: sound differs by 16.4 dB"
+ },
+ "replace_audio.mood=upbeat": {
+  "assumed": [
+   "start = 0.0s (default)"
+  ],
+  "params": {
+   "mood": "upbeat"
+  },
+  "status": "ready",
+  "why": "vs plain: sound differs by 18.7 dB"
+ },
+ "rgb_split.amount=heavy": {
+  "assumed": [],
+  "params": {
+   "amount": 2.6
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 22.5"
+ },
+ "rgb_split.amount=light": {
+  "assumed": [],
+  "params": {
+   "amount": 0.65
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 7.6"
+ },
+ "rgb_split.amount=normal": {
+  "assumed": [],
+  "params": {
+   "amount": 1.0
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 10.9"
+ },
+ "rotate_flip.angle=180": {
+  "assumed": [
+   "axis = none (default)"
+  ],
+  "params": {
+   "angle": 180
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 235.3"
+ },
+ "rotate_flip.angle=270": {
+  "assumed": [
+   "axis = none (default)"
+  ],
+  "params": {
+   "angle": 270
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 131.9"
+ },
+ "rotate_flip.angle=90": {
+  "assumed": [
+   "axis = none (default)"
+  ],
+  "params": {
+   "angle": 90
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 131.7"
+ },
+ "saturation.amount=0.6": {
+  "assumed": [],
+  "params": {
+   "amount": 0.6
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 19.1"
+ },
+ "saturation.amount=1.3": {
+  "assumed": [],
+  "params": {
+   "amount": 1.3
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 14.3"
+ },
+ "saturation.amount=1.6": {
+  "assumed": [],
+  "params": {
+   "amount": 1.6
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 28.6"
+ },
+ "sepia.strength=full": {
+  "assumed": [],
+  "params": {
+   "strength": 0.97
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 50.8"
+ },
+ "sepia.strength=light": {
+  "assumed": [],
+  "params": {
+   "strength": 0.475
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 24.4"
+ },
+ "sfx_whoosh.volume=loud": {
+  "duplicate_of": "sfx_whoosh.volume=normal",
+  "params": {
+   "volume": 1.32
+  },
+  "status": "rejected-duplicate",
+  "why": "picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 1.5 dB (< 1.5), same length"
+ },
+ "sfx_whoosh.volume=normal": {
+  "assumed": [],
+  "params": {
+   "volume": 0.6
+  },
+  "status": "ready",
+  "why": "vs plain: sound differs by 4.2 dB"
+ },
+ "sfx_whoosh.volume=soft": {
+  "assumed": [],
+  "params": {
+   "volume": 0.35
+  },
+  "status": "ready",
+  "why": "vs plain: sound differs by 1.8 dB"
+ },
+ "shake.intensity=light": {
+  "assumed": [],
+  "params": {
+   "intensity": 0.65
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 9.3"
+ },
+ "shake.intensity=normal": {
+  "assumed": [],
+  "params": {
+   "intensity": 1.0
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 11.9"
+ },
+ "shake.intensity=strong": {
+  "assumed": [],
+  "params": {
+   "intensity": 2.6
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 25.4"
+ },
+ "shape_highlight.color=red": {
+  "assumed": [
+   "angle = 0 (default)"
+  ],
+  "params": {
+   "color": "#FF3B30",
+   "region": "center",
+   "shape": "ring"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 3.3"
+ },
+ "shape_highlight.color=yellow": {
+  "assumed": [
+   "angle = 0 (default)"
+  ],
+  "params": {
+   "color": "#FFD60A",
+   "region": "center",
+   "shape": "ring"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 3.3"
+ },
+ "shape_highlight.shape=arrow": {
+  "assumed": [
+   "color = #FFD60A (default)",
+   "angle = 0 (default)"
+  ],
+  "params": {
+   "region": "center",
+   "shape": "arrow"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 5.4"
+ },
+ "shape_highlight.shape=box": {
+  "assumed": [
+   "color = #FFD60A (default)",
+   "angle = 0 (default)"
+  ],
+  "params": {
+   "region": "center",
+   "shape": "box"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 41.4"
+ },
+ "shape_highlight.shape=ring": {
+  "assumed": [
+   "color = #FFD60A (default)",
+   "angle = 0 (default)"
+  ],
+  "params": {
+   "region": "center",
+   "shape": "ring"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 3.3"
+ },
+ "sharpen.amount=light": {
+  "params": {
+   "amount": 0.75
+  },
+  "reason": "on soft footage a light sharpen only shows at full size; this test looks at 256 px",
+  "status": "rejected-no-effect",
+  "why": "same as the plain video: picture 1.0 (< 3.0), part 9.1 (< 10.0), sound 0.1 dB (< 1.5), same length"
+ },
+ "sharpen.amount=normal": {
+  "assumed": [],
+  "params": {
+   "amount": 1.2
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 10.9"
+ },
+ "sharpen.amount=strong": {
+  "assumed": [],
+  "params": {
+   "amount": 2.64
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 18.8"
+ },
+ "slide.direction=down": {
+  "assumed": [],
+  "params": {
+   "direction": "down",
+   "duration": 0.8
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.20s vs 12.00s"
+ },
+ "slide.direction=left": {
+  "assumed": [],
+  "params": {
+   "direction": "left",
+   "duration": 0.8
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.20s vs 12.00s"
+ },
+ "slide.direction=right": {
+  "assumed": [],
+  "params": {
+   "direction": "right",
+   "duration": 0.8
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.20s vs 12.00s"
+ },
+ "slide.direction=up": {
+  "assumed": [],
+  "params": {
+   "direction": "up",
+   "duration": 0.8
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.20s vs 12.00s"
+ },
+ "slow_motion.factor=0.25x": {
+  "assumed": [],
+  "params": {
+   "factor": 0.25
+  },
+  "status": "ready",
+  "why": "vs plain: length 18.00s vs 12.00s"
+ },
+ "slow_motion.factor=0.5x": {
+  "assumed": [],
+  "params": {
+   "factor": 0.5
+  },
+  "status": "ready",
+  "why": "vs plain: length 14.00s vs 12.00s"
+ },
+ "slow_motion.factor=0.75x": {
+  "assumed": [],
+  "params": {
+   "factor": 0.75
+  },
+  "status": "ready",
+  "why": "vs plain: length 12.67s vs 12.00s"
+ },
+ "speed_ramp.curve=slow_down_later": {
+  "assumed": [],
+  "params": {
+   "curve": "slow_down_later",
+   "strength": 2.0
+  },
+  "status": "ready",
+  "why": "vs plain: length 15.00s vs 12.00s"
+ },
+ "speed_ramp.curve=speed_up_later": {
+  "assumed": [],
+  "params": {
+   "curve": "speed_up_later",
+   "strength": 2.0
+  },
+  "status": "ready",
+  "why": "vs plain: length 10.50s vs 12.00s"
+ },
+ "speed_ramp.strength=1.5": {
+  "assumed": [],
+  "params": {
+   "curve": "speed_up_later",
+   "strength": 1.5
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.00s vs 12.00s"
+ },
+ "speed_ramp.strength=2": {
+  "assumed": [],
+  "params": {
+   "curve": "speed_up_later",
+   "strength": 2.0
+  },
+  "status": "ready",
+  "why": "vs plain: length 10.50s vs 12.00s"
+ },
+ "speed_ramp.strength=3": {
+  "assumed": [],
+  "params": {
+   "curve": "speed_up_later",
+   "strength": 3.0
+  },
+  "status": "ready",
+  "why": "vs plain: length 10.00s vs 12.00s"
+ },
+ "speed_up.factor=1.5x": {
+  "assumed": [],
+  "params": {
+   "factor": 1.5
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.33s vs 12.00s"
+ },
+ "speed_up.factor=2x": {
+  "assumed": [],
+  "params": {
+   "factor": 2.0
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.00s vs 12.00s"
+ },
+ "speed_up.factor=3x": {
+  "assumed": [],
+  "params": {
+   "factor": 3.0
+  },
+  "status": "ready",
+  "why": "vs plain: length 10.67s vs 12.00s"
+ },
+ "split_screen.layout=left_right": {
+  "assumed": [],
+  "params": {
+   "layout": "left_right"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 155.1"
+ },
+ "split_screen.layout=top_bottom": {
+  "assumed": [],
+  "params": {
+   "layout": "top_bottom"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 74.6"
+ },
+ "srt_export.format=srt": {
+  "assumed": [],
+  "params": {
+   "format": "srt"
+  },
+  "status": "ready",
+  "why": "vs plain: extra files ['.srt'] vs []"
+ },
+ "stabilize.strength=light": {
+  "assumed": [],
+  "params": {
+   "strength": 0.75
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 51.5"
+ },
+ "stabilize.strength=normal": {
+  "assumed": [],
+  "params": {
+   "strength": 1.0
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 51.9"
+ },
+ "stabilize.strength=strong": {
+  "assumed": [],
+  "params": {
+   "strength": 2.6
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 67.4"
+ },
+ "sticker_lottie.emoji=❤️": {
+  "assumed": [
+   "size = 0.22 (default)"
+  ],
+  "params": {
+   "emoji": "❤️",
+   "position": "top_right"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 4.1"
+ },
+ "sticker_lottie.emoji=🌹": {
+  "assumed": [
+   "size = 0.22 (default)"
+  ],
+  "params": {
+   "emoji": "🌹",
+   "position": "top_right"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 5.4"
+ },
+ "sticker_lottie.emoji=🔥": {
+  "assumed": [
+   "size = 0.22 (default)"
+  ],
+  "params": {
+   "emoji": "🔥",
+   "position": "top_right"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 5.0"
+ },
+ "sticker_lottie.emoji=😂": {
+  "assumed": [
+   "size = 0.22 (default)"
+  ],
+  "params": {
+   "emoji": "😂",
+   "position": "top_right"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 3.8"
+ },
+ "teal_orange.strength=0.5": {
+  "assumed": [],
+  "params": {
+   "strength": 0.5
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 8.2"
+ },
+ "teal_orange.strength=0.85": {
+  "assumed": [],
+  "params": {
+   "strength": 0.85
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 13.9"
+ },
+ "teal_orange.strength=1.0": {
+  "assumed": [],
+  "params": {
+   "strength": 1.0
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 16.5"
+ },
+ "text_glow_neon.color=blue": {
+  "assumed": [
+   "position = center (default)",
+   "size = 110 (default)"
+  ],
+  "params": {
+   "color": "#0A84FF",
+   "text": "NEON"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 62.0"
+ },
+ "text_glow_neon.color=green": {
+  "assumed": [
+   "position = center (default)",
+   "size = 110 (default)"
+  ],
+  "params": {
+   "color": "#30D158",
+   "text": "NEON"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 57.1"
+ },
+ "text_glow_neon.color=pink": {
+  "assumed": [
+   "position = center (default)",
+   "size = 110 (default)"
+  ],
+  "params": {
+   "color": "#FF2D92",
+   "text": "NEON"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 55.0"
+ },
+ "text_overlay.box=box": {
+  "assumed": [
+   "size = 64 (default)"
+  ],
+  "params": {
+   "box": true,
+   "position": "center",
+   "text": "Hello World"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 113.3"
+ },
+ "text_overlay.box=none": {
+  "assumed": [
+   "size = 64 (default)"
+  ],
+  "params": {
+   "box": false,
+   "position": "center",
+   "text": "Hello World"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 44.9"
+ },
+ "text_overlay.position=bottom": {
+  "assumed": [
+   "size = 64 (default)",
+   "box = False (default)"
+  ],
+  "params": {
+   "position": "bottom",
+   "text": "Hello World"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 58.3"
+ },
+ "text_overlay.position=center": {
+  "assumed": [
+   "size = 64 (default)",
+   "box = False (default)"
+  ],
+  "params": {
+   "position": "center",
+   "text": "Hello World"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 44.9"
+ },
+ "text_overlay.position=top": {
+  "assumed": [
+   "size = 64 (default)",
+   "box = False (default)"
+  ],
+  "params": {
+   "position": "top",
+   "text": "Hello World"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 54.6"
+ },
+ "text_slide.direction=down": {
+  "assumed": [
+   "position = center (default)",
+   "size = 64 (default)"
+  ],
+  "params": {
+   "direction": "down",
+   "text": "SLIDE"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 64.4"
+ },
+ "text_slide.direction=left": {
+  "assumed": [
+   "position = center (default)",
+   "size = 64 (default)"
+  ],
+  "params": {
+   "direction": "left",
+   "text": "SLIDE"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 42.7"
+ },
+ "text_slide.direction=right": {
+  "assumed": [
+   "position = center (default)",
+   "size = 64 (default)"
+  ],
+  "params": {
+   "direction": "right",
+   "text": "SLIDE"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 46.5"
+ },
+ "text_slide.direction=up": {
+  "assumed": [
+   "position = center (default)",
+   "size = 64 (default)"
+  ],
+  "params": {
+   "direction": "up",
+   "text": "SLIDE"
+  },
+  "status": "ready",
+  "why": "vs plain: one part of the picture differs by 34.3"
+ },
+ "title_card.at=middle": {
+  "status": "planned",
+  "why": "'middle' is a word, not a number for this parameter"
+ },
+ "title_card.at=start": {
+  "status": "planned",
+  "why": "'start' is a word, not a number for this parameter"
+ },
+ "title_card.background=black": {
+  "assumed": [
+   "at = 0s (default)"
+  ],
+  "params": {
+   "background": "black",
+   "duration": 1.5,
+   "text": "दिवाली मुबारक"
+  },
+  "status": "ready",
+  "why": "vs plain: length 13.50s vs 12.00s"
+ },
+ "title_card.background=gradient": {
+  "assumed": [
+   "at = 0s (default)"
+  ],
+  "params": {
+   "background": "gradient",
+   "duration": 1.5,
+   "text": "दिवाली मुबारक"
+  },
+  "status": "ready",
+  "why": "vs plain: length 13.50s vs 12.00s"
+ },
+ "title_card.background=warm": {
+  "assumed": [
+   "at = 0s (default)"
+  ],
+  "params": {
+   "background": "warm",
+   "duration": 1.5,
+   "text": "दिवाली मुबारक"
+  },
+  "status": "ready",
+  "why": "vs plain: length 13.50s vs 12.00s"
+ },
+ "vhs_retro.intensity=light": {
+  "assumed": [],
+  "params": {
+   "intensity": 0.65
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 39.0"
+ },
+ "vhs_retro.intensity=normal": {
+  "duplicate_of": "vhs_retro.intensity=light",
+  "params": {
+   "intensity": 1.0
+  },
+  "status": "rejected-duplicate",
+  "why": "picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 0.0 dB (< 1.5), same length"
+ },
+ "vignette.amount=light": {
+  "assumed": [],
+  "params": {
+   "amount": 0.65
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 7.7"
+ },
+ "vignette.amount=normal": {
+  "assumed": [],
+  "params": {
+   "amount": 1.0
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 17.2"
+ },
+ "vignette.amount=strong": {
+  "assumed": [],
+  "params": {
+   "amount": 1.8
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 47.1"
+ },
+ "vintage_faded.strength=0.5": {
+  "assumed": [],
+  "params": {
+   "strength": 0.5
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 12.5"
+ },
+ "vintage_faded.strength=0.85": {
+  "assumed": [],
+  "params": {
+   "strength": 0.85
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 21.2"
+ },
+ "vintage_faded.strength=1.0": {
+  "assumed": [],
+  "params": {
+   "strength": 1.0
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 24.9"
+ },
+ "volume.what=mix": {
+  "assumed": [],
+  "params": {
+   "gain_db": 6,
+   "what": "mix"
+  },
+  "status": "ready",
+  "why": "vs plain: sound differs by 5.3 dB"
+ },
+ "volume.what=music": {
+  "params": {
+   "gain_db": 6,
+   "what": "music"
+  },
+  "status": "planned",
+  "why": "not testable on the test media — the skill says: there is no music — add music first"
+ },
+ "volume.what=voice": {
+  "params": {
+   "gain_db": 6,
+   "what": "voice"
+  },
+  "reason": "the test media is tones, no voice — nothing to make louder",
+  "status": "rejected-no-effect",
+  "why": "same as the plain video: picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 0.1 dB (< 1.5), same length"
+ },
+ "warm.amount=light": {
+  "assumed": [],
+  "params": {
+   "amount": 0.275
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 8.5"
+ },
+ "warm.amount=normal": {
+  "assumed": [],
+  "params": {
+   "amount": 0.5
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 14.2"
+ },
+ "warm.amount=strong": {
+  "assumed": [],
+  "params": {
+   "amount": 0.9
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 27.7"
+ },
+ "watermark_logo.opacity=0.4": {
+  "assumed": [
+   "size = 0.15 (default)"
+  ],
+  "params": {
+   "opacity": 0.4,
+   "position": "top_right"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 3.2"
+ },
+ "watermark_logo.opacity=0.7": {
+  "assumed": [
+   "size = 0.15 (default)"
+  ],
+  "params": {
+   "opacity": 0.7,
+   "position": "top_right"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 4.8"
+ },
+ "watermark_logo.opacity=1.0": {
+  "assumed": [
+   "size = 0.15 (default)"
+  ],
+  "params": {
+   "opacity": 1.0,
+   "position": "top_right"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 6.4"
+ },
+ "whip_pan.direction=left": {
+  "assumed": [
+   "whoosh = True (default)"
+  ],
+  "params": {
+   "direction": "left",
+   "duration": 0.5
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.50s vs 12.00s"
+ },
+ "whip_pan.direction=right": {
+  "assumed": [
+   "whoosh = True (default)"
+  ],
+  "params": {
+   "direction": "right",
+   "duration": 0.5
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.50s vs 12.00s"
+ },
+ "whip_pan.whoosh=off": {
+  "assumed": [],
+  "params": {
+   "direction": "left",
+   "duration": 0.5,
+   "whoosh": false
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.50s vs 12.00s"
+ },
+ "whip_pan.whoosh=on": {
+  "assumed": [],
+  "params": {
+   "direction": "left",
+   "duration": 0.5,
+   "whoosh": true
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.50s vs 12.00s"
+ },
+ "wipe.direction=down": {
+  "assumed": [],
+  "params": {
+   "direction": "down",
+   "duration": 0.8
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.20s vs 12.00s"
+ },
+ "wipe.direction=left": {
+  "assumed": [],
+  "params": {
+   "direction": "left",
+   "duration": 0.8
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.20s vs 12.00s"
+ },
+ "wipe.direction=right": {
+  "assumed": [],
+  "params": {
+   "direction": "right",
+   "duration": 0.8
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.20s vs 12.00s"
+ },
+ "wipe.direction=up": {
+  "assumed": [],
+  "params": {
+   "direction": "up",
+   "duration": 0.8
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.20s vs 12.00s"
+ },
+ "wipe.duration=0.4s": {
+  "assumed": [],
+  "params": {
+   "direction": "left",
+   "duration": 0.4
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.60s vs 12.00s"
+ },
+ "wipe.duration=0.8s": {
+  "assumed": [],
+  "params": {
+   "direction": "left",
+   "duration": 0.8
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.20s vs 12.00s"
+ },
+ "zoom_in.amount=0.08": {
+  "assumed": [],
+  "params": {
+   "amount": 0.08,
+   "easing": "linear"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 18.8"
+ },
+ "zoom_in.amount=0.15": {
+  "assumed": [],
+  "params": {
+   "amount": 0.15,
+   "easing": "linear"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 30.9"
+ },
+ "zoom_in.amount=0.3": {
+  "assumed": [],
+  "params": {
+   "amount": 0.3,
+   "easing": "linear"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 53.7"
+ },
+ "zoom_in.easing=bounce": {
+  "assumed": [],
+  "params": {
+   "amount": 0.3,
+   "easing": "bounce"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 55.2"
+ },
+ "zoom_in.easing=ease_in_out": {
+  "assumed": [],
+  "params": {
+   "amount": 0.3,
+   "easing": "ease_in_out"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 55.8"
+ },
+ "zoom_in.easing=linear": {
+  "assumed": [],
+  "params": {
+   "amount": 0.3,
+   "easing": "linear"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 53.7"
+ },
+ "zoom_in.easing=spring": {
+  "assumed": [],
+  "params": {
+   "amount": 0.3,
+   "easing": "spring"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 58.3"
+ },
+ "zoom_out.amount=0.08": {
+  "assumed": [],
+  "params": {
+   "amount": 0.08,
+   "easing": "linear"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 20.8"
+ },
+ "zoom_out.amount=0.15": {
+  "assumed": [],
+  "params": {
+   "amount": 0.15,
+   "easing": "linear"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 30.7"
+ },
+ "zoom_out.amount=0.3": {
+  "assumed": [],
+  "params": {
+   "amount": 0.3,
+   "easing": "linear"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 48.2"
+ },
+ "zoom_out.easing=bounce": {
+  "assumed": [],
+  "params": {
+   "amount": 0.3,
+   "easing": "bounce"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 49.0"
+ },
+ "zoom_out.easing=ease_in_out": {
+  "assumed": [],
+  "params": {
+   "amount": 0.3,
+   "easing": "ease_in_out"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 50.4"
+ },
+ "zoom_out.easing=linear": {
+  "assumed": [],
+  "params": {
+   "amount": 0.3,
+   "easing": "linear"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 48.2"
+ },
+ "zoom_transition.duration=0.4s": {
+  "assumed": [],
+  "params": {
+   "duration": 0.4
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.60s vs 12.00s"
+ },
+ "zoom_transition.duration=0.8s": {
+  "assumed": [],
+  "params": {
+   "duration": 0.8
+  },
+  "status": "ready",
+  "why": "vs plain: length 11.20s vs 12.00s"
+ }
+}

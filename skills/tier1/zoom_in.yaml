@@ -1,0 +1,121 @@
+# written by skills/tools/write_tier1_motion.py — edit this file directly from now on
+id: zoom_in
+seed: 26
+category: motion
+name: Zoom in
+name_hi: Paas lao
+description: A gradual zoom in (1 → 1+amount) over the whole video or a part, with an easing.
+params:
+  amount:
+    type: number
+    default: 0.15
+    min: 0.03
+    max: 0.6
+    extract: magnitude
+    desc: how far
+  easing:
+    type: choice
+    choices:
+    - linear
+    - ease_in_out
+    - ease_out
+    - back
+    - spring
+    - bounce
+    default: ease_in_out
+    desc: how the move eases
+time_modes:
+- whole
+- segment
+- between_times
+- intermittent
+builder: motion.zoom_in
+graph: zoompan-free keyframed scale+crop (camera_move.replay_filters with easing)
+media3:
+  status: mapped
+  how: MatrixTransformation whose matrix is the same eased keyframes per frame
+  reason: NOT TESTED on a device
+stage: geometry
+conflicts:
+- zoom_out
+cost: cheap
+licence: own code (engines/motion.py easings); FFmpeg filters (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  amount:
+  - '0.08'
+  - '0.15'
+  - '0.3'
+  easing:
+  - linear
+  - ease_in_out
+  - spring
+  - bounce
+synonyms:
+  en:
+  - zoom in
+  - push in
+  - slow zoom
+  - zoom into
+  - get closer
+  - dolly in
+  - zoom effect
+  hinglish:
+  - paas lao
+  - dheere zoom
+  - zoom karo
+  - andar le jao
+  - zoom in karo
+  - kareeb lao
+  - zoom daalo
+  hi:
+  - ज़ूम इन
+  - पास लाओ
+  - ज़ूम करो
+  slang:
+  - camera andar ghusao
+  - zoom
+  typos:
+  - zoomin
+  - zom in
+  - zoom inn
+negations:
+- zoom mat lagao
+- zoom mat karo
+- bina zoom
+examples:
+- prompt: zoom in slowly
+  lang: en
+- prompt: zoom in from 2 to 5 seconds
+  lang: en
+  time:
+    start: 2
+    end: 5
+- prompt: ज़ूम इन करो
+  lang: hi
+- prompt: thoda zoom karo
+  lang: hinglish
+  params:
+    amount: 0.075
+- prompt: bahut zoom karo end me
+  lang: hinglish
+  params:
+    amount: 0.24
+- prompt: zom in pls
+  lang: typo
+- prompt: chehre ke paas jao
+  lang: vague
+- prompt: zoom in karo aur warm color
+  lang: multi
+  also:
+  - warm
+test:
+  check: scale_increases
+  params:
+    amount: 0.3
+    easing: linear
+  time:
+    mode: between_times
+    start: 1.0
+    end: 3.0

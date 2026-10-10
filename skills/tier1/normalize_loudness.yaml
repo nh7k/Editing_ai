@@ -1,0 +1,89 @@
+# written by skills/tools/write_tier1_audio.py — edit this file directly from now on
+id: normalize_loudness
+seed: 91
+category: audio
+name: Loudness (LUFS)
+name_hi: Awaaz barabar karo
+description: 'Even, platform-ready loudness: the finished mix is measured and corrected to target_lufs (default -14, YouTube
+  / Instagram).'
+params:
+  target_lufs:
+    type: number
+    default: -14
+    min: -24
+    max: -9
+    unit: ' LUFS'
+    extract: lufs
+    desc: target
+time_modes:
+- whole
+builder: audio.normalize_loudness
+graph: loudnorm + measured static correction + limiter (2-pass)
+media3:
+  status: server_only
+  reason: 'FFmpeg audio filters; Media3 has no equivalent audio processor (design: AudioProcessor ports, NOT TESTED)'
+stage: audio
+conflicts: []
+cost: medium
+licence: own code; FFmpeg audio filters (server process); generated sounds; librosa (ISC) for beats
+changes_duration: false
+needs: []
+variant_axes:
+  target:
+  - '-16'
+  - '-14'
+  - '-11'
+synonyms:
+  en:
+  - normalize loudness
+  - even out the volume
+  - loudness
+  - lufs
+  - consistent volume
+  - normalize audio
+  - level the audio
+  hinglish:
+  - volume barabar karo
+  - awaaz barabar karo
+  - loudness theek karo
+  - sab clips ki awaaz same
+  - awaaz ek jaisi
+  - normalize karo
+  - level barabar
+  hi:
+  - आवाज़ बराबर करो
+  - लाउडनेस ठीक करो
+  - सब की आवाज़ एक जैसी
+  slang:
+  - youtube level
+  typos:
+  - normalise
+  - lufs -14
+  - lowdness
+negations:
+- normalize mat karo
+examples:
+- prompt: normalize the loudness
+  lang: en
+- prompt: make it -16 LUFS
+  lang: en
+  params:
+    target_lufs: -16
+- prompt: आवाज़ बराबर करो
+  lang: hi
+- prompt: sab clips ki awaaz same karo
+  lang: hinglish
+- prompt: loudness theek karo youtube ke liye
+  lang: hinglish
+- prompt: normalise audio
+  lang: typo
+- prompt: kabhi tez kabhi dheemi awaaz
+  lang: vague
+- prompt: awaaz barabar karo aur noise hatao
+  lang: multi
+  also:
+  - denoise
+test:
+  check: lufs_on_target
+  params:
+    target_lufs: -14

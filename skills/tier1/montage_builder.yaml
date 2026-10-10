@@ -1,0 +1,40 @@
+id: montage_builder
+seed: 12
+category: cutting
+name: Montage
+name_hi: Quick cuts ka mix
+description: Many short shots (shot_len s) from the best parts of every clip, mixed round-robin across clips, up to `total` s.
+same_engine_as: extract_highlights
+params:
+  shot_len: {type: number, default: 1.0, min: 0.5, max: 5, unit: s, extract: seconds, desc: length of each shot}
+  total: {type: number, min: 2, max: 600, unit: s, extract: duration, desc: total length (default all the material)}
+time_modes: [whole]
+builder: cutting.montage_builder
+graph: analysis → many short segments
+media3: {status: mapped, how: "server picks the pieces; the phone applies the clippings"}
+stage: structure
+conflicts: []
+cost: medium
+licence: own code
+changes_duration: true
+needs: [analysis]
+variant_axes:
+  pace: [0.5s, 1s, 2s]
+  total: [10s, 15s, 30s]
+synonyms:
+  en: [montage, quick cuts, fast montage, rapid cuts, mix of all clips, sizzle reel, short shots]
+  hinglish: [montage banao, sab clips ka mix, reel jaisa mix, jaldi jaldi shots, fatafat cuts, chhote chhote shots, sab mila ke quick edit]
+  hi: [मोंटाज बनाओ, जल्दी जल्दी शॉट, सब क्लिप का मिक्स]
+  slang: [ek dum fast mix]
+  typos: [montaj, montage banoa, quik cuts]
+negations: [montage mat banao, lambe shots rakho]
+examples:
+  - {prompt: "make a quick montage", lang: en}
+  - {prompt: "montage with half second shots", lang: en, params: {shot_len: 0.5}}
+  - {prompt: "सब क्लिप का मोंटाज बनाओ", lang: hi}
+  - {prompt: "sab clips ka mix banao jaldi jaldi", lang: hinglish}
+  - {prompt: "2 second ke shots ka montage, 10 sec ka", lang: hinglish, params: {shot_len: 2, total: 10}}
+  - {prompt: "montaj banao", lang: typo}
+  - {prompt: "reel jaisa fast kuch bana do", lang: vague}
+  - {prompt: "montage banao aur beat par cut karo", lang: multi, also: [beat_sync]}
+test: {check: many_short_shots, params: {shot_len: 1.0, total: 6}}

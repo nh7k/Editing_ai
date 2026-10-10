@@ -1,0 +1,19 @@
+[project]
+name = "cutmind-backend"
+version = "0.1.0"
+requires-python = ">=3.11"
+
+[tool.ruff]
+line-length = 150
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B"]
+ignore = ["B008"]  # FastAPI's File(...) defaults are idiomatic
+
+[tool.pytest.ini_options]
+testpaths = ["../tests"]
+markers = [
+    "integration: end-to-end tests that run FFmpeg for real",
+    "local_llm: tests that run the in-process Hugging Face model",
+]

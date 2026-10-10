@@ -1,0 +1,118 @@
+# written by skills/tools/write_tier1_text.py — edit this file directly from now on
+id: watermark_logo
+seed: 63
+category: text
+name: Logo watermark
+name_hi: Logo lagao
+description: Your logo (PNG in the project) in a corner at an opacity; or a text watermark from the words in quotes.
+params:
+  position:
+    type: choice
+    choices:
+    - top_left
+    - top_right
+    - bottom_left
+    - bottom_right
+    default: top_right
+    extract: position
+    desc: corner
+  opacity:
+    type: number
+    default: 0.7
+    min: 0.1
+    max: 1.0
+    extract: percent
+    desc: opacity
+  size:
+    type: number
+    default: 0.15
+    min: 0.05
+    max: 0.4
+    desc: width (share of the frame)
+  text:
+    type: text
+    extract: quoted_text
+    desc: the words (in quotes)
+time_modes:
+- whole
+builder: text.watermark_logo
+graph: overlay of the logo PNG (colorchannelmixer alpha) / ASS text
+media3:
+  status: mapped
+  how: BitmapOverlay with alpha
+stage: overlay
+conflicts: []
+cost: cheap
+licence: own code; libass + HarfBuzz via FFmpeg (server process); fonts SIL OFL (Hind, Kalam, Poppins, Anton, Bebas)
+changes_duration: false
+needs:
+- logo
+variant_axes:
+  corner:
+  - top_left
+  - top_right
+  - bottom_left
+  - bottom_right
+  opacity:
+  - '0.4'
+  - '0.7'
+  - '1.0'
+synonyms:
+  en:
+  - logo
+  - watermark
+  - brand logo
+  - add my logo
+  - put the logo
+  - channel logo
+  - logo in the corner
+  hinglish:
+  - logo lagao
+  - watermark lagao
+  - mera logo daalo
+  - kone me logo
+  - brand ka logo
+  - channel ka naam kone me
+  - logo chipkao
+  hi:
+  - लोगो लगाओ
+  - वॉटरमार्क
+  - कोने में लोगो
+  slang:
+  - apna thappa lagao
+  typos:
+  - lgo lagao
+  - watermak
+  - logoo
+negations:
+- logo mat lagao
+- watermark hatao
+examples:
+- prompt: add my logo
+  lang: en
+- prompt: logo at the bottom right, 50% opacity
+  lang: en
+  params:
+    position: bottom_right
+    opacity: 0.5
+- prompt: लोगो लगाओ
+  lang: hi
+- prompt: kone me logo lagao
+  lang: hinglish
+- prompt: watermark lagao 'AnmolEdits'
+  lang: hinglish
+  params:
+    text: AnmolEdits
+- prompt: watermak
+  lang: typo
+- prompt: koi chura na le video
+  lang: vague
+- prompt: logo lagao aur outro
+  lang: multi
+  also:
+  - intro_outro
+test:
+  check: logo_corner
+  params:
+    position: top_right
+    opacity: 0.8

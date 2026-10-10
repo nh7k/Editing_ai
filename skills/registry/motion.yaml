@@ -1,0 +1,257 @@
+skills:
+- id: zoom_in
+  tier: 1
+  category: motion
+  name: Slow zoom in (Ken Burns)
+  description: A smooth push-in on the picture over the chosen time.
+  synonyms:
+    en: [zoom in, slow zoom, push in, ken burns, zoom effect]
+    hi: [ज़ूम करो, ज़ूम इन, पास से दिखाओ]
+    hinglish: [zoom karo, zoom laga do, zoom in karo, paas se dikhao, dheere dheere zoom]
+    slang: [cinematic zoom, smooth zoom]
+    typos: [zom in, zoomin, zoon]
+  params:
+    strength: {type: number, default: 1.0, min: 0.3, max: 3.0, desc: "how far it pushes in"}
+  time_modes: [whole, segment, between_times, intermittent, at_moment, on_words]
+  impl: {kind: effect, ref: zoom, strength_param: strength}
+  stage: geometry
+  conflicts: [zoom_out]
+  cost: cheap
+  media3: "MatrixTransformation (per-frame scale from the same easing curve) — NOT TESTED"
+  licence: own code (FFmpeg zoompan/scale/crop filters)
+  preview: same filter at 360p
+  examples: [add a slow zoom, zoom karo, starting ke 3 sec zoom, ज़ूम करो, ken burns effect on the photos, zom in plz]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: punch_in
+  tier: 1
+  category: motion
+  name: Punch-in zoom
+  description: A quick zoom hit on a moment (beat, word, or a timeline comment).
+  synonyms:
+    en: [punch in, punch zoom, zoom hit, quick zoom]
+    hi: [झटके से ज़ूम]
+    hinglish: [punch in karo, jhatke se zoom, zoom punch, beat pe zoom]
+    slang: [hormozi zoom, zoom on the beat]
+    typos: [panch in, punchin]
+  params:
+    strength: {type: number, default: 1.6, min: 0.5, max: 3.0}
+  time_modes: [at_beats, at_moment, on_words, intermittent]
+  impl: {kind: effect, ref: punch, strength_param: strength}
+  stage: geometry
+  conflicts: []
+  cost: cheap
+  media3: "MatrixTransformation keyframed scale spike — NOT TESTED"
+  licence: own code (FFmpeg)
+  preview: same at 360p
+  examples: [punch in on every beat, beat pe zoom karo, zoom hit at 4s, important words pe zoom, jhatke se zoom karo]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: zoom_out
+  tier: 2
+  category: motion
+  name: Slow zoom out
+  description: A smooth pull-out from a close view.
+  synonyms:
+    en: [zoom out, pull out, pull back]
+    hi: [ज़ूम आउट]
+    hinglish: [zoom out karo, peeche le jao, door se dikhao]
+    typos: [zom out, zoomout]
+  params:
+    strength: {type: number, default: 1.0, min: 0.3, max: 3.0}
+  time_modes: [whole, segment, between_times, at_moment]
+  impl: {kind: effect, ref: zoom_out, strength_param: strength}
+  stage: geometry
+  conflicts: [zoom_in]
+  cost: cheap
+  media3: "MatrixTransformation — NOT TESTED"
+  licence: own code (FFmpeg)
+  preview: same at 360p
+  examples: [zoom out at the end, last me zoom out karo, pull out slowly, ज़ूम आउट करो, zoomout plz]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: shake
+  tier: 1
+  category: motion
+  name: Camera shake
+  description: A handheld / impact shake.
+  synonyms:
+    en: [shake, camera shake, earthquake, handheld]
+    hi: [हिलाओ, झटका]
+    hinglish: [shake karo, hila do, jhatka effect, kaanpne wala effect]
+    slang: [earthquake effect, bass shake]
+    typos: [shak, sheke]
+  params:
+    strength: {type: number, default: 1.0, min: 0.3, max: 3.0}
+  time_modes: [whole, segment, between_times, at_beats, at_moment, intermittent]
+  impl: {kind: effect, ref: shake, strength_param: strength}
+  stage: geometry
+  conflicts: []
+  cost: cheap
+  media3: "MatrixTransformation with noise offsets — NOT TESTED"
+  licence: own code (FFmpeg crop with noise expressions)
+  preview: same at 360p
+  examples: [add camera shake, shake effect on the drop, hila do thoda, beat pe shake, earthquake effect]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: pan
+  tier: 2
+  category: motion
+  name: Pan (left / right / up / down)
+  description: A slow camera move across the picture.
+  synonyms:
+    en: [pan left, pan right, pan up, pan down, slide the picture]
+    hi: [बाएं घुमाओ, दाएं घुमाओ]
+    hinglish: [left pan karo, right pan karo, camera ghumao]
+    typos: [pann]
+  params:
+    direction: {type: enum, default: left, choices: [left, right, up, down]}
+  time_modes: [whole, segment, between_times]
+  impl: {kind: effect, ref: pan_left}
+  stage: geometry
+  conflicts: []
+  cost: cheap
+  media3: "MatrixTransformation translate — NOT TESTED"
+  licence: own code (FFmpeg)
+  preview: same at 360p
+  examples: [pan right slowly, left pan karo, camera ghumao, pan across the landscape, pan up on the building]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: slow_motion
+  tier: 1
+  category: motion
+  name: Slow motion
+  description: Plays the footage slower (whole edit, a part, or only the end).
+  synonyms:
+    en: [slow motion, slowmo, slow mo]
+    hi: [स्लो मोशन, धीमा करो]
+    hinglish: [slow motion karo, slowmo daal do, dheere dheere chalao, end me slow motion]
+    slang: [cinematic slowmo]
+    typos: [slow moshan, slomo, slow motin]
+  params:
+    speed: {type: number, default: 0.5, min: 0.25, max: 0.9}
+  time_modes: [whole, between_times, at_moment]
+  impl: {kind: intent, ref: slow motion}
+  stage: time
+  conflicts: [speed_up]
+  cost: cheap
+  media3: "EditedMediaItem.setSpeed / SpeedProvider — NOT TESTED"
+  licence: own code (FFmpeg setpts + atempo)
+  preview: same at 360p
+  examples: [slow motion please, slow moshan daal do, end me slow motion, स्लो मोशन, last shot slowmo]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: speed_ramp
+  tier: 2
+  category: motion
+  name: Speed ramp
+  description: Fast → slow → fast inside one shot (velocity edit).
+  synonyms:
+    en: [speed ramp, velocity, ramp]
+    hinglish: [speed ramp karo, velocity edit, tez phir dheere]
+    slang: [velocity edit, smooth ramp]
+    typos: [sped ramp]
+  params:
+    strength: {type: number, default: 2.0, min: 1.25, max: 3.0}
+  time_modes: [segment, between_times, at_moment]
+  impl: {kind: effect, ref: speed_ramp, strength_param: strength}
+  stage: time
+  conflicts: [reverse]
+  cost: medium
+  media3: "SpeedProvider with a curve — NOT TESTED"
+  licence: own code (FFmpeg setpts expression)
+  preview: same at 360p
+  examples: [add a speed ramp, velocity edit bana do, speed ramp on the jump, tez phir dheere karo, ramp at 5s]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: speed_up
+  tier: 1
+  category: motion
+  name: Speed up / faster pace
+  description: Faster cuts (shorter shots); with "2x" the footage itself plays faster.
+  synonyms:
+    en: [faster, speed up, quicker, more pace]
+    hi: [तेज़ करो, जल्दी]
+    hinglish: [thoda fast karo, tez karo, jaldi jaldi, speed badhao]
+    slang: [fast paced, hype pace]
+    typos: [fastr, fasst]
+  params:
+    amount: {type: number, default: 0.67, min: 0.25, max: 0.95, desc: "shot length multiplier"}
+  time_modes: [whole]
+  impl: {kind: intent, ref: thoda fast karo}
+  stage: structure
+  conflicts: [slow_motion]
+  cost: cheap
+  media3: "server plans the cut; the phone only plays segments — n/a"
+  licence: own code
+  preview: same
+  examples: [thoda fast karo, make it faster, tez karo, speed badhao, bahut slow hai fast karo]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: reverse
+  tier: 2
+  category: motion
+  name: Reverse
+  description: Plays the footage backwards.
+  synonyms:
+    en: [reverse, backwards, rewind]
+    hi: [उल्टा चलाओ]
+    hinglish: [ulta chalao, reverse karo, peeche ki taraf]
+    typos: [revers, reverce]
+  params: {}
+  time_modes: [whole]
+  impl: {kind: intent, ref: reverse the video}
+  stage: time
+  conflicts: [speed_ramp]
+  cost: medium
+  media3: "not supported by Transformer (needs decode-all) — server-only"
+  licence: own code (FFmpeg reverse/areverse)
+  preview: same at 360p
+  examples: [reverse the video, ulta chalao, play it backwards, उल्टा चलाओ, rewind effect]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: drift
+  tier: 2
+  category: motion
+  name: Gentle drift
+  description: A barely noticeable float — keeps still shots alive.
+  synonyms:
+    en: [drift, gentle motion, subtle move]
+    hinglish: [halka sa move, thoda sa hilta hua, zoom kam karo]
+    typos: [drif]
+  params: {}
+  time_modes: [whole, segment]
+  impl: {kind: effect, ref: drift}
+  stage: geometry
+  conflicts: [zoom_in, zoom_out]
+  cost: cheap
+  media3: "MatrixTransformation — NOT TESTED"
+  licence: own code (FFmpeg)
+  preview: same at 360p
+  examples: [gentle drift on photos, zoom thoda kam karo, subtle movement, halka sa move, keep it alive]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: motion_preset
+  tier: 2
+  category: motion
+  name: Motion preset (keyframes + easing)
+  description: Pop-in, bounce, spring, slide, tilt or Ken Burns on a shot, with an easing curve (motion engine).
+  synonyms:
+    en: [pop in, bounce zoom, spring zoom, slide in, tilt in, ease in out]
+    hinglish: [uchhal ke aaye, bounce wala zoom, spring jaisa]
+    typos: [bounse zoom]
+  params:
+    preset: {type: enum, default: pop_in, choices: [pop_in, zoom_bounce, spring_zoom, slide_in_left, tilt_in, ken_burns]}
+    easing: {type: enum, default: back, choices: [linear, ease_in, ease_out, ease_in_out, back, elastic, spring, bounce]}
+    strength: {type: number, default: 1.0, min: 0.3, max: 2.0}
+  time_modes: [between_times, at_moment, intermittent, segment]
+  impl: {kind: effect, ref: keyframes, strength_param: strength}
+  stage: geometry
+  conflicts: []
+  cost: cheap
+  media3: "GlMatrixTransformation evaluating the same keyframes and easing per frame — NOT TESTED"
+  licence: own code (engines/motion.py; FFmpeg zoompan/rotate expressions)
+  preview: same at 360p
+  examples: [pop in at 3s, bounce zoom on the drop, spring zoom here, slide in from the left at the start, uchhal ke aaye]
+  status: tested
+  test: tests/integration/test_skill_renders.py

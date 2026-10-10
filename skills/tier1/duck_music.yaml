@@ -1,0 +1,95 @@
+# written by skills/tools/write_tier1_audio.py — edit this file directly from now on
+id: duck_music
+seed: 87
+category: audio
+name: Duck music under speech
+name_hi: Bolte waqt music kam
+description: The music drops by `amount` dB whenever someone speaks (sidechain compression), then comes back.
+params:
+  amount:
+    type: number
+    default: 12
+    min: 3
+    max: 30
+    unit: ' dB'
+    extract: db
+    desc: how much quieter
+time_modes:
+- whole
+builder: audio.duck_music
+graph: sidechaincompress (voice → music)
+media3:
+  status: server_only
+  reason: 'FFmpeg audio filters; Media3 has no equivalent audio processor (design: AudioProcessor ports, NOT TESTED)'
+stage: audio
+conflicts: []
+cost: cheap
+licence: own code; FFmpeg audio filters (server process); generated sounds; librosa (ISC) for beats
+changes_duration: false
+needs:
+- speech
+- music
+variant_axes:
+  amount:
+  - 6 dB
+  - 12 dB
+  - 20 dB
+synonyms:
+  en:
+  - ducking
+  - duck the music
+  - music under the voice
+  - lower music when talking
+  - keep the voice clear
+  - auto duck
+  - sidechain
+  hinglish:
+  - awaaz ke neeche music kam
+  - bolte waqt music kam
+  - voice clear rakho
+  - baat ke time gaana dheema
+  - music ducking karo
+  - bolne pe music kam
+  - awaaz upar music neeche
+  hi:
+  - बोलते वक़्त गाना धीमा
+  - आवाज़ के नीचे म्यूज़िक
+  - डकिंग
+  slang:
+  - music side me
+  - duck
+  typos:
+  - duking
+  - duck musik
+  - dukking
+negations:
+- ducking mat karo
+examples:
+- prompt: duck the music under the voice
+  lang: en
+- prompt: duck by 20 dB
+  lang: en
+  params:
+    amount: 20
+- prompt: बोलते वक़्त गाना धीमा करो
+  lang: hi
+- prompt: bolte waqt music kam karo
+  lang: hinglish
+- prompt: voice clear rakho music ke upar
+  lang: hinglish
+- prompt: duking please
+  lang: typo
+- prompt: music me meri awaaz dab rahi hai
+  lang: vague
+- prompt: music lagao aur ducking
+  lang: multi
+  also:
+  - add_music
+test:
+  check: music_ducked
+  media: talk
+  setup:
+  - id: add_music
+    params:
+      volume: 0.6
+      duck: 'off'

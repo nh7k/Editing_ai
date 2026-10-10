@@ -1,0 +1,125 @@
+"""Builds the skill catalog from what was actually built and tested — the number is an OUTPUT, not a target
+(docs/CATALOG_REVIEW.md).
+
+Inputs: skills/tier1/*.yaml (bases + variant axes), skills/tier1_results.json (each base rendered and measured),
+catalog/variant_results.json (tests/integration/test_catalog_variants.py: each variant rendered and compared with
+its siblings), skills/tools/ffmpeg_coverage.py PLANNED (later-tier bases).
+
+Outputs: catalog/catalog.jsonl, catalog/catalog.csv, docs/SKILL_CATALOG.md. Stable ids: `<skill>` for a base,
+`<skill>.<axis>=<value>` for a variant.
+
+Status of a row:
+- ready               base: its Tier 1 render test passed. variant: rendered, changes the video, distinct.
+- failed              rendered but broken (or the base test failed) — must be fixed before it is offered.
+- rejected-duplicate  looks / sounds like a sibling (named in `duplicate_of`); never offered as its own variant.
+- rejected-no-effect  identical to the plain video with this value.
+- planned             not built or not testable yet; the reason is in `why`. Searchable, answers "not available yet".
+
+    backend/.venv/Scripts/python.exe catalog/build_catalog.py
+"""
+
+from __future__ import annotations
+
+import csv
+import json
+import sys
+from collections import Counter
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "backend"))
+sys.path.insert(0, str(ROOT / "skills" / "tools"))
+from cutmind.tools import spec  # noqa: E402
+from ffmpeg_coverage import PLANNED  # noqa: E402
+
+OUT = ROOT / "catalog"
+NOT_A_BASE = ("used", "GPL", "never", "keying")  # already a Tier 1 engine, licence-blocked, or folded into another
+
+
+def rows() -> list[dict]:
+    specs = spec.load()
+    base_res = _json(ROOT / "skills" / "tier1_results.json")
+    var_res = _json(OUT / "variant_results.json")
+    out: list[dict] = []
+    for sid, s in sorted(specs.items(), key=lambda kv: (kv[1]["category"], kv[0])):
+        common = {"base": sid, "category": s["category"], "name": s["name"], "name_hi": s.get("name_hi", ""),
+                  "licence": s["licence"], "media3": s["media3"]["status"], "cost": s["cost"],
+                  "synonyms": [w for v in s["synonyms"].values() for w in v][:6]}
+        b = base_res.get(sid)
+        out.append({"id": sid, **common, "axis": "", "value": "", "params": {},
+                    "status": "ready" if b and b.get("ok") else ("failed" if b else "planned"),
+                    "why": (b or {}).get("detail", "base render test not run")})
+        for axis, vals in (s.get("variant_axes") or {}).items():
+            for v in vals:
+                vid = f"{sid}.{axis}={v}"
+                r = var_res.get(vid)
+                if axis not in s.get("params", {}):
+                    row = {"status": "planned", "why": f"'{axis}' is a design axis, not a parameter yet — it needs "
+                                                      "a parameter before it can be picked and tested"}
+                elif r is None:
+                    row = {"status": "planned", "why": "variant not rendered yet (test_catalog_variants.py)"}
+                else:
+                    row = {k: r[k] for k in ("status", "why", "duplicate_of") if k in r}
+                out.append({"id": vid, **common, "axis": axis, "value": str(v), "params": (r or {}).get("params", {}),
+                            **row})
+    for f, why in sorted(PLANNED.items()):
+        if any(w in why for w in NOT_A_BASE):
+            continue
+        out.append({"id": f"ffmpeg_{f}", "base": f"ffmpeg_{f}", "category": "planned (FFmpeg filter)", "name": why,
+                    "name_hi": "", "licence": "FFmpeg filter (LGPL build) — check before use", "media3": "unknown",
+                    "cost": "unknown", "synonyms": [], "axis": "", "value": "", "params": {}, "status": "planned",
+                    "why": f"FFmpeg `{f}`: {why} — a later tier, no spec / synonyms / test yet"})
+    return out
+
+
+def _json(p: Path) -> dict:
+    return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+
+
+def main() -> None:
+    sys.stdout.reconfigure(encoding="utf-8")
+    rs = rows()
+    OUT.mkdir(exist_ok=True)
+    with (OUT / "catalog.jsonl").open("w", encoding="utf-8") as f:
+        for r in rs:
+            f.write(json.dumps(r, ensure_ascii=False) + "\n")
+    cols = ["id", "base", "category", "axis", "value", "status", "duplicate_of", "media3", "cost", "name", "why"]
+    with (OUT / "catalog.csv").open("w", encoding="utf-8", newline="") as f:
+        w = csv.DictWriter(f, cols, extrasaction="ignore")
+        w.writeheader()
+        w.writerows(rs)
+    bases = [r for r in rs if not r["axis"]]
+    variants = [r for r in rs if r["axis"]]
+    sb, sv = Counter(r["status"] for r in bases), Counter(r["status"] for r in variants)
+    ready_v = sv["ready"]
+    # a "distinct variant" is a ready base (its default) or a ready variant that is not that default
+    lines = [
+        "# Skill catalog", "",
+        "Generated by `catalog/build_catalog.py` — do not edit by hand. Full list: `catalog/catalog.jsonl` / `.csv`.",
+        "The number below is what the difference test allowed, not a target (see docs/CATALOG_REVIEW.md).", "",
+        f"- **Bases:** {len(bases)} — " + ", ".join(f"{k} {v}" for k, v in sb.most_common()),
+        f"- **Variants:** {len(variants)} candidates — " + ", ".join(f"{k} {v}" for k, v in sv.most_common()),
+        f"- **Ready, distinct and tested:** {sb['ready']} bases + {ready_v} variants. Only `ready` rows reach the "
+        "planner; the rest are searchable and answer \"not available yet\".",
+        "- Brief's target was 16,000 variants. Honest count today: see the line above. Time modes are NOT counted "
+        "as variants (where an effect applies is not a different look).", "",
+        "## By category", "", "| category | bases | variants ready | duplicate | no effect | planned | failed |",
+        "|---|---|---|---|---|---|---|",
+    ]
+    for cat in sorted({r["category"] for r in rs}):
+        b = [r for r in bases if r["category"] == cat]
+        v = Counter(r["status"] for r in variants if r["category"] == cat)
+        lines.append(f"| {cat} | {len(b)} | {v['ready']} | {v['rejected-duplicate']} | {v['rejected-no-effect']} | "
+                     f"{v['planned']} | {v['failed']} |")
+    lines += ["", "## Rejected by the difference test", "", "| variant | status | why |", "|---|---|---|"]
+    lines += [f"| `{r['id']}` | {r['status']}" + (f" of `{r['duplicate_of']}`" if r.get("duplicate_of") else "") +
+              f" | {r['why']} |" for r in variants if r["status"].startswith("rejected")]
+    fails = [r for r in rs if r["status"] == "failed"]
+    if fails:
+        lines += ["", "## Failed", "", *[f"- `{r['id']}`: {r['why']}" for r in fails]]
+    (ROOT / "docs" / "SKILL_CATALOG.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    print(f"bases {dict(sb)} | variants {dict(sv)} | rows {len(rs)}")
+
+
+if __name__ == "__main__":
+    main()

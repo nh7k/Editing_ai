@@ -1,0 +1,89 @@
+# written by skills/tools/write_tier1_color.py — edit this file directly from now on
+id: auto_enhance
+seed: 51
+category: color
+name: Auto enhance
+name_hi: Quality sudharo
+description: Measured exposure fix per clip (towards a mid level) + a little contrast and colour.
+params:
+  strength:
+    type: number
+    default: 1.0
+    min: 0.3
+    max: 2.0
+    extract: magnitude
+    desc: how much
+time_modes:
+- whole
+- segment
+- between_times
+- intermittent
+builder: color.auto_enhance
+graph: eq per clip (brightness from the measured mean luma)
+media3:
+  status: mapped
+  how: server measures; Brightness/Contrast/HslAdjustment per clip on the phone
+stage: color
+conflicts: []
+cost: medium
+licence: own code; generated LUTs (own maths); FFmpeg filters (server process)
+changes_duration: false
+needs:
+- analysis
+variant_axes:
+  strength:
+  - light
+  - normal
+  - strong
+synonyms:
+  en:
+  - enhance
+  - auto enhance
+  - auto correct
+  - fix the colours
+  - improve quality
+  - make it look better
+  - auto colour
+  hinglish:
+  - quality sudharo
+  - better banao
+  - auto correct karo
+  - theek kar do colours
+  - video achha karo
+  - enhance karo
+  - nikhaar do
+  hi:
+  - क्वालिटी सुधारो
+  - बेहतर बनाओ
+  - एन्हांस करो
+  slang:
+  - ekdum mast kar do picture
+  - fix the exposure
+  typos:
+  - enhanse
+  - auto enhace
+  - inhance
+negations:
+- enhance mat karo
+examples:
+- prompt: auto enhance
+  lang: en
+- prompt: fix the exposure automatically
+  lang: en
+- prompt: क्वालिटी सुधारो
+  lang: hi
+- prompt: quality sudharo
+  lang: hinglish
+- prompt: video thoda better banao
+  lang: hinglish
+- prompt: enhanse
+  lang: typo
+- prompt: ye theek nahi dikh raha
+  lang: vague
+- prompt: enhance karo aur sharp karo
+  lang: multi
+  also:
+  - sharpen
+test:
+  check: exposure_towards_mid
+  media: dark

@@ -1,0 +1,84 @@
+# written by skills/tools/write_tier1_audio.py — edit this file directly from now on
+id: voice_clarity
+seed: 93
+category: audio
+name: Voice clarity
+name_hi: Awaaz saaf karo
+description: 'Speech EQ: cut rumble below 90 Hz, less mud at 280 Hz, +4 dB presence at 3.2 kHz, de-ess.'
+params:
+  amount:
+    type: choice
+    choices:
+    - normal
+    default: normal
+    desc: preset
+time_modes:
+- whole
+builder: audio.voice_clarity
+graph: highpass + equalizer x2 + deesser
+media3:
+  status: server_only
+  reason: 'FFmpeg audio filters; Media3 has no equivalent audio processor (design: AudioProcessor ports, NOT TESTED)'
+stage: audio
+conflicts: []
+cost: cheap
+licence: own code; FFmpeg audio filters (server process); generated sounds; librosa (ISC) for beats
+changes_duration: false
+needs: []
+variant_axes:
+  preset:
+  - podcast
+  - vlog
+  - phone_mic
+synonyms:
+  en:
+  - voice clarity
+  - clear voice
+  - voice better
+  - make the voice crisp
+  - speech eq
+  - podcast voice
+  - clearer speech
+  hinglish:
+  - voice better karo
+  - awaaz clear karo
+  - bolne ki awaaz saaf
+  - awaaz mein dum daalo
+  - voice crisp karo
+  - podcast jaisi awaaz
+  hi:
+  - आवाज़ क्लियर करो
+  - आवाज़ बेहतर करो
+  - बोलने की आवाज़ साफ़
+  slang:
+  - radio wali awaaz
+  - voice clearer
+  - voice clear
+  typos:
+  - voice clarty
+  - awaz saaf
+  - voise clear
+negations:
+- voice eq mat karo
+examples:
+- prompt: make my voice clearer
+  lang: en
+- prompt: podcast voice eq
+  lang: en
+- prompt: बोलने की आवाज़ साफ़ करो
+  lang: hi
+- prompt: awaaz clear karo
+  lang: hinglish
+- prompt: voice better karo
+  lang: hinglish
+- prompt: voise clear
+  lang: typo
+- prompt: meri awaaz dabi dabi hai
+  lang: vague
+- prompt: awaaz clear karo aur captions
+  lang: multi
+  also:
+  - auto_captions
+test:
+  check: presence_up
+  media: talk

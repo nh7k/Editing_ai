@@ -1,0 +1,98 @@
+# written by skills/tools/write_tier1_audio.py — edit this file directly from now on
+id: replace_audio
+seed: 97
+category: audio
+name: Replace the audio
+name_hi: Awaaz badlo
+description: The video's own sound off, a song at full level instead.
+params:
+  track:
+    type: string
+    extract: quoted_text
+    desc: 'song name (default: the library song for the mood)'
+  mood:
+    type: choice
+    choices:
+    - upbeat
+    - calm
+    default: upbeat
+    desc: mood when no song is named
+  start:
+    type: number
+    default: 0.0
+    min: 0
+    max: 3600
+    unit: s
+    desc: where in the song to start
+time_modes:
+- whole
+builder: audio.replace_audio
+graph: mute + music at full level
+media3:
+  status: mapped
+  how: the sequence muted + a second audio sequence
+stage: audio
+conflicts:
+- add_music
+- mute
+cost: cheap
+licence: own code; FFmpeg audio filters (server process); generated sounds; librosa (ISC) for beats
+changes_duration: false
+needs: []
+variant_axes:
+  mood:
+  - upbeat
+  - calm
+synonyms:
+  en:
+  - replace the audio
+  - swap the audio
+  - use only music
+  - replace sound with music
+  - new audio track
+  - remove original sound and add music
+  - dub
+  hinglish:
+  - awaaz badlo
+  - audio replace karo
+  - dusra audio lagao
+  - sirf gaana chale
+  - original awaaz hata ke gaana
+  - apni awaaz hatao gaana lagao
+  - sirf music
+  hi:
+  - आवाज़ बदलो
+  - दूसरा ऑडियो लगाओ
+  - सिर्फ़ गाना चले
+  slang:
+  - full gaana mode
+  - audio badlo
+  typos:
+  - replase audio
+  - audio replce
+  - awaz badlo
+negations:
+- audio mat badlo
+examples:
+- prompt: replace the audio with music
+  lang: en
+- prompt: use only calm music
+  lang: en
+  params:
+    mood: calm
+- prompt: सिर्फ़ गाना चले
+  lang: hi
+- prompt: audio replace karo
+  lang: hinglish
+- prompt: apni awaaz hatao gaana lagao
+  lang: hinglish
+- prompt: replase audio
+  lang: typo
+- prompt: sirf gaane wali reel
+  lang: vague
+- prompt: audio badlo aur beat sync
+  lang: multi
+  also:
+  - beat_sync
+test:
+  check: only_music

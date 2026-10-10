@@ -1,0 +1,87 @@
+skills:
+- id: word_stickers
+  tier: 1
+  category: overlay
+  name: Stickers of things that are said
+  description: A colour emoji sticker pops up when a thing is named (gulab → 🌹, pyar → ❤️).
+  synonyms:
+    en: [stickers, emoji stickers, emojis]
+    hi: [स्टिकर]
+    hinglish: [jo bol raha hu uske stickers, emoji daal do, animation daal do jo bolu]
+    typos: [stikers, emojis daalo]
+  params: {}
+  time_modes: [on_words]
+  impl: {kind: intent, ref: jo bol raha hu uske stickers daal do}
+  stage: overlay
+  conflicts: []
+  cost: cheap
+  media3: "BitmapOverlay per sticker — NOT TESTED"
+  licence: emoji drawn from the OS colour emoji font at render time (Segoe UI Emoji / Noto Color Emoji OFL)
+  preview: same at 360p
+  examples: [jo bol raha hu uske stickers daal do, add emoji stickers, emoji daal do, स्टिकर लगाओ, stikers for the words]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: moment_sticker
+  tier: 1
+  category: overlay
+  name: Sticker at a moment
+  description: One sticker at a commented second ("rose" at 4.2 s).
+  synonyms:
+    en: [add rose, sticker here]
+    hinglish: [yaha gulab lagao, rose daal do yaha]
+    typos: [stiker]
+  params:
+    emoji: {type: string, default: rose}
+  time_modes: [at_moment]
+  impl: {kind: moment, ref: "add {emoji} here"}
+  stage: overlay
+  conflicts: []
+  cost: cheap
+  media3: "BitmapOverlay — NOT TESTED"
+  licence: OS emoji font
+  preview: same
+  examples: [add rose in this video, yaha gulab lagao, tree dikhao, heart sticker here, stiker rose]
+  status: untested
+- id: watermark
+  tier: 2
+  category: overlay
+  name: Watermark / handle
+  description: Small text in a corner for the whole video.
+  synonyms:
+    en: [watermark, logo text, my handle]
+    hinglish: [watermark lagao, kone me naam]
+    typos: [watermak]
+  params:
+    text: {type: string, default: "@me"}
+  time_modes: [whole]
+  impl: {kind: intent, ref: "watermark {text}"}
+  stage: overlay
+  conflicts: []
+  cost: cheap
+  media3: "TextOverlay (top right) — NOT TESTED"
+  licence: own code
+  preview: same
+  examples: [watermark @riya, kone me naam likho, add my handle, watermak, logo text at the corner]
+  status: tested
+  test: tests/integration/test_skill_renders.py
+- id: gradient_overlay
+  tier: 2
+  category: overlay
+  name: Animated gradient frame / wash
+  description: A rotating gradient glow frame, a colour wash or a lower bar.
+  synonyms:
+    en: [gradient, glow frame, neon border, gradient overlay]
+    hinglish: [gradient lagao, chamakta border]
+    typos: [gradiant]
+  params: {}
+  time_modes: [whole]
+  impl: {kind: intent, ref: gradient glow frame}
+  stage: overlay
+  conflicts: []
+  cost: medium
+  media3: "custom GlEffect gradient shader — NOT TESTED"
+  licence: own code (FFmpeg gradients)
+  preview: same at 360p
+  examples: [gradient glow frame, neon border, gradient lagao, gradiant overlay, purple gradient wash]
+  status: tested
+  test: tests/integration/test_skill_renders.py

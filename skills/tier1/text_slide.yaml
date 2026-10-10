@@ -1,0 +1,138 @@
+# written by skills/tools/write_tier1_text.py — edit this file directly from now on
+id: text_slide
+seed: 62
+category: text
+name: Sliding text
+name_hi: Text side se aaye
+description: Text that slides in from a side.
+params:
+  text:
+    type: text
+    extract: quoted_text
+    desc: the words (in quotes)
+  position:
+    type: choice
+    choices:
+    - bottom
+    - center
+    - top
+    - top_right
+    - bottom_right
+    - bottom_left
+    - top_left
+    default: center
+    extract: position
+    desc: where
+  direction:
+    type: choice
+    choices:
+    - left
+    - right
+    - up
+    - down
+    default: left
+    extract: direction
+    desc: from where
+  size:
+    type: integer
+    default: 64
+    min: 20
+    max: 160
+    desc: size
+time_modes:
+- whole
+- between_times
+- segment
+- at_time
+builder: text.text_slide
+graph: ASS \move
+media3:
+  status: mapped
+  how: TextOverlay (SpannableString) per item; animations as per-frame alpha / scale / position — NOT TESTED
+stage: text
+conflicts: []
+cost: cheap
+licence: own code; libass + HarfBuzz via FFmpeg (server process); fonts SIL OFL (Hind, Kalam, Poppins, Anton, Bebas)
+changes_duration: false
+needs: []
+variant_axes:
+  direction:
+  - left
+  - right
+  - up
+  - down
+synonyms:
+  en:
+  - text slide
+  - slide in text
+  - text from the left
+  - sliding title
+  - text flies in
+  - text moves in
+  - slide text
+  hinglish:
+  - text side se aaye
+  - text sarak ke aaye
+  - slide wala text
+  - left se text aaye
+  - text udte hue aaye
+  - text khisak ke aaye
+  - side se likha aaye
+  hi:
+  - टेक्स्ट साइड से आए
+  - सरकता टेक्स्ट
+  - स्लाइड टेक्स्ट
+  slang:
+  - news ticker jaisa
+  - text from the right
+  - text from the left
+  typos:
+  - txt slide
+  - text slid
+  - slyde text
+negations:
+- slide mat karo
+examples:
+- prompt: slide in text 'Sale'
+  lang: en
+  params:
+    text: Sale
+- prompt: text 'Next' from the right
+  lang: en
+  params:
+    text: Next
+    direction: right
+- prompt: '''आगे'' टेक्स्ट साइड से आए'
+  lang: hi
+  params:
+    text: आगे
+- prompt: '''Goa'' left se text aaye'
+  lang: hinglish
+  params:
+    text: Goa
+    direction: left
+- prompt: text sarak ke aaye 'Hi'
+  lang: hinglish
+  params:
+    text: Hi
+- prompt: txt slide 'Yo'
+  lang: typo
+  params:
+    text: Yo
+- prompt: text thoda move karke aaye
+  lang: vague
+- prompt: '''Day 4'' slide aur warm'
+  lang: multi
+  also:
+  - warm
+  params:
+    text: Day 4
+test:
+  check: text_moves_in
+  params:
+    text: SLIDE
+    direction: left
+  time:
+    mode: between_times
+    start: 1.0
+    end: 4.0
