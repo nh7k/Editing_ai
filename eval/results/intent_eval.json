@@ -8,8 +8,8 @@
   "asked": 52,
   "silent_wrong": 26,
   "silent_wrong_rate": 0.078,
-  "latency_ms_p50": 6.8,
-  "latency_ms_p95": 209.3,
+  "latency_ms_p50": 9.4,
+  "latency_ms_p95": 131.6,
   "per_skill": {
    "add_music": {
     "n": 8,
@@ -600,12 +600,12 @@
   "n": 335,
   "top1": 0.913,
   "top3": 0.964,
-  "applied": 264,
-  "asked": 71,
+  "applied": 263,
+  "asked": 72,
   "silent_wrong": 7,
   "silent_wrong_rate": 0.021,
-  "latency_ms_p50": 64.3,
-  "latency_ms_p95": 531.0,
+  "latency_ms_p50": 36.8,
+  "latency_ms_p95": 125.5,
   "per_skill": {
    "add_music": {
     "n": 8,

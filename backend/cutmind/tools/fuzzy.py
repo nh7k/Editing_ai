@@ -134,6 +134,12 @@ def canonical_words(text: str) -> list[str]:
             continue
         w = words[i]
         w = VARIANTS.get(w, VARIANTS.get(re.sub(r"(.)\1+", r"\1", w), w))
+        if w == words[i] and len(w) >= 4 and w.isalpha():  # not a known variant: a generated misspelling?
+            from .variants import variant_map
+
+            g = variant_map().get(w)
+            if g:
+                w = VARIANTS.get(g, g)
         out += w.split()
         i += 1
     return out
@@ -175,7 +181,8 @@ def sim(a: str, b: str) -> float:
     d = _edit(a, b)
     key = phonetic(a)
     # a 2-letter key is too loose on its own ("white" / "wait" are both "wt"): then the spelling must be close too
-    if key == phonetic(b) and (len(key) >= 3 or d <= 1):
+    # the same key is not enough when the spellings are far apart ("fillers" / "flash" are both "fls")
+    if key == phonetic(b) and (len(key) >= 3 or d <= 1) and d <= max(2, max(len(a), len(b)) // 3):
         return 0.9
     r = 1.0 - d / max(len(a), len(b))
     return r if r >= 0.8 and d <= 2 else 0.0

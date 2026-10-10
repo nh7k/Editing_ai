@@ -365,6 +365,13 @@ export interface EditResponse {
   status: JobStatus;
   /** The resolver applied its reading directly: what it did, in plain words ("4.3s par white flash"). */
   did?: string;
+  /** apply | act (best guess applied, alternatives shown) | partial (the rest is in `unclear`) | undo. */
+  decision?: string;
+  /** Other readings of the same words: tapping one replaces the best guess (undo + apply). */
+  alternatives?: IntentChoice[];
+  /** Parts of the message that were not done, each with choices that ADD to the edit. */
+  unclear?: { text: string; supported: boolean; choices: IntentChoice[] }[];
+  request_id?: string | null;
 }
 
 /** A Tier 1 tool call (POST /projects/{id}/tools). */

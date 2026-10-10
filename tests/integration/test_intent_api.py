@@ -45,22 +45,20 @@ def plan_of(c, pid) -> EditPlan:  # noqa: ANN001
     return EditPlan.model_validate(c.get(f"/projects/{pid}/plan").json())
 
 
-def test_the_comment_gets_choices_not_a_dead_end_and_the_restore_choice_restores(env, tmp_path):
+def test_the_comment_restores_with_alternatives_shown_and_undo_brings_it_back(env, tmp_path):
+    """Act, show, undo: the likeliest reading (restore — a black and white is on screen there) runs at once; the white
+    flash stays one tap away; undo gives the exact previous version."""
     c, pid = env
     before = plan_of(c, pid)
     r = c.post(f"/projects/{pid}/edit", json={"prompt": BUG, "at": 4.3})
-    assert r.status_code == 422, r.text
-    err = r.json()["error"]
-    assert err["code"] == "choose" and err["request_id"]
-    ids = [x["id"] for x in err["choices"]]
-    assert ids[0] == "restore_normal" and "flash" in ids, ids
-    assert "rose ka sticker" not in err["message"]  # the old fixed list is gone
-    # the user taps the first chip: a new version, the black and white is gone at 4.3 s, the rest stays
-    run = c.post(f"/projects/{pid}/tools", json={"calls": err["choices"][0]["calls"], "prompt": BUG})
-    assert run.status_code == 202, run.text
-    job = wait_job(c, run.json()["job_id"])
+    assert r.status_code == 202, r.text
+    body = r.json()
+    assert body["decision"] == "act" and "normal" in body["did"]
+    alt = [x["id"] for x in body["alternatives"]]
+    assert "flash" in alt and body["request_id"], body
+    assert "rose ka sticker" not in body["did"]  # the old fixed list is gone
+    job = wait_job(c, body["job_id"])
     assert job["status"] == "done", job.get("error")
-    assert c.post("/tools/resolve/pick", json={"request_id": err["request_id"], "choice_id": ids[0]}).json()["ok"]
     out = c.get(f"/projects/{pid}/output")
     assert out.status_code == 200
     video = tmp_path / "restored.mp4"
@@ -75,7 +73,46 @@ def test_the_comment_gets_choices_not_a_dead_end_and_the_restore_choice_restores
     # undo gives the exact previous version back
     assert c.post(f"/projects/{pid}/undo").status_code == 200
     assert plan_of(c, pid).to_json() == before.to_json()
-    c.post(f"/projects/{pid}/redo")
+    # the alternative chip instead: white flash at 4.3 s
+    flash = next(x for x in body["alternatives"] if x["id"] == "flash")
+    run = c.post(f"/projects/{pid}/tools", json={"calls": flash["calls"], "prompt": BUG})
+    assert wait_job(c, run.json()["job_id"])["status"] == "done"
+    assert c.post("/tools/resolve/pick", json={"request_id": body["request_id"], "choice_id": "flash"}).json()["ok"]
+    assert any(e.type == "flash" for e in plan_of(c, pid).effects)
+    assert c.post(f"/projects/{pid}/undo").status_code == 200
+
+
+def test_relative_words_change_the_last_edit(env):
+    c, pid = env
+    r = c.post(f"/projects/{pid}/tools", json={"calls": [{"id": "zoom_in", "params": {"amount": 0.15}}]})
+    assert wait_job(c, r.json()["job_id"])["status"] == "done"
+    more = c.post(f"/projects/{pid}/edit", json={"prompt": "aur thoda"})
+    assert more.status_code == 202, more.text
+    job = wait_job(c, more.json()["job_id"])
+    assert job["status"] == "done", job.get("error")
+    amount = job["explain"]["tools"][0]["params"]["amount"]
+    assert job["explain"]["tools"][0]["skill"] == "zoom_in" and amount > 0.15, job["explain"]
+    back = c.post(f"/projects/{pid}/edit", json={"prompt": "isko hata do"})
+    assert back.status_code == 202 and back.json()["decision"] == "undo", back.text
+
+
+def test_a_greeting_never_edits(env):
+    c, pid = env
+    before = len(c.get(f"/projects/{pid}/versions").json()["versions"])
+    r = c.post(f"/projects/{pid}/edit", json={"prompt": "hello bhai"})
+    assert r.status_code == 422 and r.json()["error"]["code"] == "non_edit"
+    assert len(c.get(f"/projects/{pid}/versions").json()["versions"]) == before
+
+
+def test_partial_prompt_applies_what_it_understood(env):
+    c, pid = env
+    r = c.post(f"/projects/{pid}/edit", json={"prompt": "warm karo, vignette lagao aur mere chehre ko jawan dikhao", "at": 1.0})
+    assert r.status_code == 202, r.text
+    body = r.json()
+    assert body["decision"] == "partial" and body["unclear"] and not body["unclear"][0]["supported"], body
+    assert wait_job(c, body["job_id"])["status"] == "done"
+    fx = {e.type for e in plan_of(c, pid).effects}
+    assert "vignette" in fx and ("grade" in fx), fx
 
 
 def test_the_same_words_in_the_chat_do_not_start_an_automatic_re_edit(env):
@@ -103,7 +140,7 @@ def test_resolve_endpoint_reads_what_is_on_screen_from_the_project(env):
     grey = next((e for e in plan.effects if e.type == "grade"), None)
     t = next(x for x in plan.timeline() if grey and x.index == grey.target).start + 0.2 if grey else 4.3
     r = c.post("/tools/resolve", json={"prompt": BUG, "project_id": pid, "context": {"marker_time": t}}).json()
-    assert r["choices"] and r["decision"] in ("choose", "apply")
+    assert r["choices"] and r["decision"] in ("choose", "apply", "act")
 
 
 def test_yaha_in_the_chat_means_the_playhead(env):

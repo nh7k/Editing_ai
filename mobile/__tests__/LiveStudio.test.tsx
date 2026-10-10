@@ -210,3 +210,24 @@ describe('ChatPanel: an unclear request is never a dead end', () => {
     expect(screen.getByText(/Kiya: 1.0s par white flash/)).toBeTruthy();
   });
 });
+
+describe('ChatPanel: act, show, undo', () => {
+  const alts = [{ id: 'flash', label: '4.3s par white flash (0.3 sec)', calls: [{ id: 'flash' }] }];
+  it('shows what was done and the other readings as one-tap chips', async () => {
+    const props = { ...chatProps([{ key: 't1', prompt: 'yaha screen white kar do nomal jasia tha', job: null, did: 'Maine ye kiya: Yaha ka effect hata ke normal karo', choices: alts, choiceMode: 'replace' as const }], false), onPickChoice: jest.fn() };
+    await render(<ChatPanel {...props} />);
+    expect(screen.getByText(/Maine ye kiya: Yaha ka effect hata ke normal karo/)).toBeTruthy();
+    expect(screen.getByText('Ya ye chahiye tha?')).toBeTruthy();
+    await fireEvent.press(screen.getByTestId('agent-alt-0'));
+    expect(props.onPickChoice).toHaveBeenCalledWith('t1', alts[0]);
+  });
+  it('lists the parts not done as chips that add to the edit', async () => {
+    await render(<ChatPanel {...chatProps([{ key: 't1', prompt: 'warm, vignette aur chehra jawan', job: null, did: 'Kiya: warm + vignette', choices: alts, choiceMode: 'add' as const }], false)} />);
+    expect(screen.getByText('Ye nahi hua — chahiye to tap karo:')).toBeTruthy();
+  });
+  it('answers a greeting as a message, not an error', async () => {
+    await render(<ChatPanel {...chatProps([{ key: 't1', prompt: 'hello bhai', job: null, reply: '🙏 Main aapki video edit karta hoon' }], false)} />);
+    expect(screen.getByTestId('agent-reply')).toBeTruthy();
+    expect(screen.queryByTestId('agent-error')).toBeNull();
+  });
+});

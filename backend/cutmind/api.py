@@ -1062,7 +1062,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             if not job or not job["plan"]:
                 raise ApiError(400, "no_plan", "Pehle ek edit banao — comment us edit ke kisi moment pe lagta hai.")
             plan = EditPlan.model_validate(json.loads(job["plan"]))
-            if not read_comment(prompt)["understood"]:
+            from .tools.resolve import resolve as quick_resolve
+
+            if not read_comment(prompt)["understood"] or quick_resolve(prompt, {"marker_time": body.at}).decision == "partial":
                 # the comment reader knows a few kinds of edit; everything else goes to the skill resolver (never a
                 # dead end: apply when sure, else tap-able choices — docs/INTENT_FAILURE_REVIEW.md)
                 return _resolve_or_ask(pid, prompt, plan, body.at)
@@ -1071,6 +1073,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             except ValueError as exc:
                 raise ApiError(422, "not_understood", str(exc)) from exc
         else:
+            from .tools.resolve import resolve as quick_resolve
+
+            quick = quick_resolve(prompt, {"comment": False, "recent_edits": _recent_edits(pid)})
+            if quick.decision in ("non_edit", "undo") or str(quick.trace.get("turn", "")).startswith("relative"):
+                # a greeting / question, or "aur thoda" / "kam karo" / "isko hata do" about the last edit
+                last = db.last_job(pid, "done")
+                plan = EditPlan.model_validate(json.loads(last["plan"])) if last and last["plan"] else None
+                return _resolve_or_ask(pid, prompt, plan, None, playhead=body.playhead)
             if body.playhead is not None and _points_here(prompt):
                 # "yaha normal kar do" typed in the chat: "yaha" is where the player stands
                 last = db.last_job(pid, "done")
@@ -1100,6 +1110,26 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         rec = parse_intent(prompt).recognized
         return bool(rec) and all(r.startswith("auto edit") for r in rec) and not auto_ask.search(prompt)
 
+    def _recent_edits(pid: str) -> list[dict[str, Any]]:
+        """The tool calls of the latest version (with the values they were applied with) — what "aur thoda",
+        "kam karo", "dobara" and "isko hata do" refer to."""
+        job = db.last_job(pid, "done")
+        if not job:
+            return []
+        try:
+            calls = json.loads(job["options"] or "{}").get("tools") or []
+            st = jobs.get(job["id"]) if hasattr(jobs, "get") else None
+            applied = ((st or {}).get("explain") or {}).get("tools") or []
+        except Exception:  # noqa: BLE001 — no memory of the last edit: relative words are simply not relative
+            return []
+        out = []
+        for i, c in enumerate(calls):
+            params = dict(c.get("params") or {})
+            if i < len(applied) and applied[i].get("skill") == c.get("id"):
+                params = {**(applied[i].get("params") or {}), **params}
+            out.append({"id": c.get("id"), "params": params, "time": c.get("time")})
+        return out
+
     def _points_here(prompt: str) -> bool:
         from .tools.fuzzy import canonical_words
         from .tools.resolve import DEICTIC
@@ -1118,22 +1148,35 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             ctx["comment"] = False  # a chat message points at the playhead only when it says "yaha / here"
         log = UnmetLog(db)
         ctx["learned"] = log.learned(prompt)
+        ctx["recent_edits"] = _recent_edits(pid)
         res = resolve(prompt, ctx)
-        if res.decision == "apply":
-            best = res.choices[0]
+        chips = lambda cs: [{"id": c["id"], "label": c["label"], "calls": c["calls"]} for c in cs]  # noqa: E731
+        if res.decision == "non_edit":
+            raise ApiError(422, "non_edit", res.reply or "Kya karna hai likho.")
+        if res.decision == "undo":  # "isko hata do" right after an edit: the previous version comes back
+            from .versions import undo
+
+            out = _version_op(pid, undo)
+            return {**out, "did": res.reply, "decision": "undo"}
+        if res.decision in ("apply", "act", "partial"):
             try:
-                job_id = jobs.submit_tools(pid, best["calls"], prompt)
+                job_id = jobs.submit_tools(pid, res.apply, prompt)
             except ManualError as exc:
                 raise ApiError(422, "bad_tools", str(exc)) from exc
-            return {"job_id": job_id, "status": "queued", "did": best["label"]}
+            alts = chips(res.choices[1:]) if res.decision == "act" else []
+            unclear = [{"text": u["text"], "supported": u["supported"], "not_available": u.get("not_available", []),
+                        "choices": chips(u["choices"])} for u in res.unclear]
+            rid = log.log(pid, prompt, ctx, res.decision, res.choices) if (alts or unclear) else None
+            return {"job_id": job_id, "status": "queued", "did": res.reply or res.choices[0]["label"],
+                    "decision": res.decision, "alternatives": alts, "unclear": unclear, "request_id": rid}
         rid = log.log(pid, prompt, ctx, res.decision, res.choices)
         here = at if at is not None else playhead
         where = f" ({here:.1f}s)" if here is not None else ""
         msg = (f'"{prompt[:60]}"{where} ke ek se zyada matlab ho sakte hain — jo chahiye us pe tap karo:'
                if res.decision == "choose" else
                f'"{prompt[:60]}"{where} pakka samajh nahi aaya. Shayad aap inme se kuch chahte ho:')
-        chips = [{"id": c["id"], "label": c["label"], "calls": c["calls"]} for c in res.choices]
-        raise ApiError(422, "choose", msg, {"choices": chips, "request_id": rid, "decision": res.decision})
+        raise ApiError(422, "choose", (res.reply + " " if res.reply else "") + msg,
+                       {"choices": chips(res.choices), "request_id": rid, "decision": res.decision})
 
     def _must_understand(prompt: str, options: dict[str, Any]) -> None:
         """Never turn a message the agent did not understand into a "default edit" the user did not ask for: say

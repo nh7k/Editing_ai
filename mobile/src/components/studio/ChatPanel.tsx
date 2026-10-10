@@ -39,6 +39,11 @@ export interface ChatTurn {
   choices?: IntentChoice[];
   /** The resolver applied its reading directly — what it did, in plain words (undo is one tap away). */
   did?: string;
+  /** "replace": the choices are other readings of an edit already applied (tap = undo it + apply the choice);
+   * "add": the choices are for parts that were not done (tap = apply on top). */
+  choiceMode?: 'replace' | 'add';
+  /** The agent's answer when the message was not an edit (a greeting, a question). */
+  reply?: string;
 }
 
 export interface ChatPanelProps {
@@ -297,11 +302,39 @@ function TurnView({ turn, playingVariant, onPlayVariant, onChosen, onSend, disab
           ) : null}
         </View>
       ) : null}
+      {turn.reply ? (
+        <View style={styles.agentBubble} testID="agent-reply">
+          <AppText size="sm" color={studio.text}>
+            {turn.reply}
+          </AppText>
+        </View>
+      ) : null}
       {turn.did ? (
         <View style={styles.agentBubble} testID="agent-did">
           <AppText size="sm" color={studio.text}>
-            ✓ Kiya: {turn.did} — pasand na aaye to ↶ Undo
+            ✓ {turn.did.startsWith('Kiya') || turn.did.startsWith('Maine') ? turn.did : `Kiya: ${turn.did}`} — pasand na aaye to ↶ Undo
           </AppText>
+          {!turn.error && turn.choices?.length ? (
+            <View style={styles.suggestRow} testID="agent-alternatives">
+              <AppText size="xs" color={studio.muted}>
+                {turn.choiceMode === 'add' ? 'Ye nahi hua — chahiye to tap karo:' : 'Ya ye chahiye tha?'}
+              </AppText>
+              {turn.choices.map((c, i) => (
+                <Pressable
+                  key={`alt-${c.id}-${i}`}
+                  onPress={() => !disabled && !sending && onPickChoice?.(turn.key, c)}
+                  style={styles.suggestChip}
+                  accessibilityRole="button"
+                  accessibilityLabel={c.label}
+                  testID={`agent-alt-${i}`}
+                >
+                  <AppText size="xs" color={studio.text}>
+                    {c.label}
+                  </AppText>
+                </Pressable>
+              ))}
+            </View>
+          ) : null}
         </View>
       ) : null}
       {turn.pending && !job && !turn.error ? (

@@ -1,0 +1,9070 @@
+written: '2026-10-10'
+items:
+- prompt: yaha screen white kar do nomal jasia tha
+  context: &id001
+    marker_time: 4.3
+    effects_present_at_time:
+    - type: grade
+      label: black and white
+      start: 3.0
+      end: 5.5
+  expect: restore_normal
+  also_top3:
+  - flash
+  kind: single
+  group: intent_v1
+  split: dev
+- prompt: yaha screen white kar do nomal jasia tha
+  context:
+    marker_time: 4.3
+  expect: flash
+  kind: single
+  group: intent_v1
+  split: dev
+- prompt: bas 2 se 8 sec tak rakho baaki hata do
+  expect: trim
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: video ko 0 se 10 second tak hi rakhna
+  expect: trim
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: starting ke 3 sec aur end ke baad ka kaat do 3 se 12 rakho
+  expect: trim
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: sirf 5 se 15 sec wala part chahiye
+  expect: trim
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: trim kr do 1 se 6 sec
+  expect: trim
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: bhai 4 sec se 9 sec tak ka hi rakh
+  expect: trim
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: keep only 2 to 7 seconds
+  expect: trim
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: cut it down to 3-10 sec
+  expect: trim
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: 4 सेकंड से 10 सेकंड तक रखो
+  expect: trim
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: trimm 0 to 5 sec
+  expect: trim
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: 3 se 5 sec wala hissa hata do
+  expect: delete_segment
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: 2 se 4 second ka part delete karo
+  expect: delete_segment
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: beech ka 6 se 8 sec nikal do
+  expect: delete_segment
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: remove 1 to 3 sec
+  expect: delete_segment
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: 7 se 9 sec bekar hai uda do
+  expect: delete_segment
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: ye 2-3 sec wala part hatao
+  expect: delete_segment
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: delete from 5 to 6 seconds
+  expect: delete_segment
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: 4 से 6 सेकंड हटा दो
+  expect: delete_segment
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: 10 se 12 sec kaat ke hata do yaar
+  expect: delete_segment
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: dlt 3 to 4 sec
+  expect: delete_segment
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: jaha koi bol nahi raha wo hata do
+  expect: remove_silence
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: chup wale part nikal do
+  expect: remove_silence
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: silence hata do please
+  expect: remove_silence
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: khamoshi wale hisse kaat do
+  expect: remove_silence
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: remove the silent parts
+  expect: remove_silence
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: jab main ruk raha hu wo gap hata do
+  expect: remove_silence
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: dead air remove karo
+  expect: remove_silence
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: चुप वाले हिस्से हटाओ
+  expect: remove_silence
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: silnce hatao
+  expect: remove_silence
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: pause wale part uda do sab
+  expect: remove_silence
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: 30 sec ka bana do
+  expect: fit_to_duration
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: video 15 second ki kar do
+  expect: fit_to_duration
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: isko 1 minute me fit karo
+  expect: fit_to_duration
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: make it 20 seconds long
+  expect: fit_to_duration
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: pura video 45 sec me la do
+  expect: fit_to_duration
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: reel ke liye 30 sec ka chahiye
+  expect: fit_to_duration
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: 60 सेकंड का बना दो
+  expect: fit_to_duration
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: 10 sec ka chota version
+  expect: fit_to_duration
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: ise 25 sec ka krdo
+  expect: fit_to_duration
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: total length 40 sec rakho
+  expect: fit_to_duration
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: video fast kar do
+  expect: speed_up
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: thoda tez chalao
+  expect: speed_up
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: 2x speed kar do
+  expect: speed_up
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: speed badha do
+  expect: speed_up
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: make it faster
+  expect: speed_up
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: 1.5x pe chalao
+  expect: speed_up
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: isko jaldi jaldi chalao
+  expect: speed_up
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: तेज़ कर दो
+  expect: speed_up
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: fst kr do video
+  expect: speed_up
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: speeed up karo bhai
+  expect: speed_up
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: slow motion kar do
+  expect: slow_motion
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: dheere dheere chalao
+  expect: slow_motion
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: slowmo laga do
+  expect: slow_motion
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: half speed kar do
+  expect: slow_motion
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: make it slow
+  expect: slow_motion
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: yaha slow mo dalo
+  expect: slow_motion
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: dheema kar do video
+  expect: slow_motion
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: स्लो मोशन करो
+  expect: slow_motion
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: slo mo plz
+  expect: slow_motion
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: 0.5x pe chalao
+  expect: slow_motion
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: zoom karo
+  expect: zoom_in
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: thoda zoom in karo
+  expect: zoom_in
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: andar ki taraf zoom
+  expect: zoom_in
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: zoom in kar do 2 se 4 sec
+  expect: zoom_in
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: close up jaisa zoom
+  expect: zoom_in
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: zoom krdo yaha
+  expect: zoom_in
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: slow zoom in
+  expect: zoom_in
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: ज़ूम करो
+  expect: zoom_in
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: zom in karo
+  expect: zoom_in
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: face pe zoom in karo
+  expect: zoom_in
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: zoom out karo
+  expect: zoom_out
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: bahar ki taraf zoom
+  expect: zoom_out
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: pichhe ki taraf zoom karo
+  expect: zoom_out
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: zoom out kar do end me
+  expect: zoom_out
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: wide karo zoom out se
+  expect: zoom_out
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: dheere se zoom out
+  expect: zoom_out
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: ज़ूम आउट करो
+  expect: zoom_out
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: zoom aout
+  expect: zoom_out
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: reverse zoom karo
+  expect: zoom_out
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: camera pichhe jaye aisa zoom
+  expect: zoom_out
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: shake karo
+  expect: shake
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: video hilao
+  expect: shake
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: camera shake daalo
+  expect: shake
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: jhatka do video ko
+  expect: shake
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: earthquake jaisa hilao
+  expect: shake
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: hilne wala effect
+  expect: shake
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: shake effect lagao drop pe
+  expect: shake
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: हिलाओ वीडियो
+  expect: shake
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: shak karo
+  expect: shake
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: thoda kaanpta hua karo
+  expect: shake
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: clips ke beech crossfade
+  expect: crossfade
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: smooth transition do clips me
+  expect: crossfade
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: ek clip se dusre me dheere badlo
+  expect: crossfade
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: dissolve lagao
+  expect: crossfade
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: crossfade krdo sab cuts pe
+  expect: crossfade
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: blend karke badlo shots
+  expect: crossfade
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: क्रॉसफेड लगाओ
+  expect: crossfade
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: crosfade
+  expect: crossfade
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: fade karke jodo clips
+  expect: crossfade
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: mix transition do
+  expect: crossfade
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: end me black me fade karo
+  expect: fade_black
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: kaale me fade out
+  expect: fade_black
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: shuru me black se fade in
+  expect: fade_black
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: fade to black
+  expect: fade_black
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: andhera hote hue khatam
+  expect: fade_black
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: black screen me dheere jao
+  expect: fade_black
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: अंत में काला फेड
+  expect: fade_black
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: fade blak
+  expect: fade_black
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: fade in fade out kaala
+  expect: fade_black
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: dhire dhire kala ho jaye end me
+  expect: fade_black
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: white me fade karo transition
+  expect: fade_white
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: safed fade between clips
+  expect: fade_white
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: fade through white karo
+  expect: fade_white
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: white transition do
+  expect: fade_white
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: ujale wala transition
+  expect: fade_white
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: dream jaisa white fade
+  expect: fade_white
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: सफ़ेद फेड करो
+  expect: fade_white
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: wite fade
+  expect: fade_white
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: clips ke beech white fade
+  expect: fade_white
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: fade to white karo
+  expect: fade_white
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: flash lagao
+  expect: flash
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: camera flash jaisa
+  expect: flash
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: white flash do cut pe
+  expect: flash
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: chamak do beat pe
+  expect: flash
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: ek flash de do yaha
+  expect: flash
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: photo click wala flash
+  expect: flash
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: flash effect
+  expect: flash
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: चमक दो
+  expect: flash
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: flsh karo
+  expect: flash
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: beat pe safed flash
+  expect: flash
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: black and white kar do
+  expect: grayscale
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: b&w karo
+  expect: grayscale
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: rang hata do
+  expect: grayscale
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: purani film jaisa black white
+  expect: grayscale
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: grey kar do video
+  expect: grayscale
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: colour nikal do
+  expect: grayscale
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: black n white
+  expect: grayscale
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: ब्लैक एंड व्हाइट करो
+  expect: grayscale
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: blak and wite
+  expect: grayscale
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: bina rang ka kar do
+  expect: grayscale
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: sepia kar do
+  expect: sepia
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: purana bhura look
+  expect: sepia
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: old photo jaisa brown
+  expect: sepia
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: sepia tone lagao
+  expect: sepia
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: vintage brown colour
+  expect: sepia
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: bhura sa purana
+  expect: sepia
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: सीपिया करो
+  expect: sepia
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: sepiya
+  expect: sepia
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: old brown filter
+  expect: sepia
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: dada ji ki photo jaisa
+  expect: sepia
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: thoda bright karo
+  expect: brightness
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: roshni badhao
+  expect: brightness
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: video dark hai bright karo
+  expect: brightness
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: brightness badha do
+  expect: brightness
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: andhera hai ujala karo
+  expect: brightness
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: make it brighter
+  expect: brightness
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: ब्राइट करो
+  expect: brightness
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: brite karo
+  expect: brightness
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: zyada roshni chahiye
+  expect: brightness
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: brightness kam karo thoda
+  expect: brightness
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: contrast badhao
+  expect: contrast
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: thoda contrast
+  expect: contrast
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: zyada punchy contrast
+  expect: contrast
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: contrast kam karo
+  expect: contrast
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: colors ko gehra karo contrast se
+  expect: contrast
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: increase contrast
+  expect: contrast
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: कंट्रास्ट बढ़ाओ
+  expect: contrast
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: contrst
+  expect: contrast
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: dark aur light ka farak badhao
+  expect: contrast
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: contrast high karo
+  expect: contrast
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: colors zyada karo
+  expect: saturation
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: rang badha do
+  expect: saturation
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: saturation badhao
+  expect: saturation
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: vibrant bana do
+  expect: saturation
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: colour pop karo zyada
+  expect: saturation
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: rang halka karo
+  expect: saturation
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: रंग बढ़ाओ
+  expect: saturation
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: satration up
+  expect: saturation
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: colours bright aur gehre
+  expect: saturation
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: saturation kam karo
+  expect: saturation
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: warm kar do
+  expect: warm
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: garam tone do
+  expect: warm
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: golden look
+  expect: warm
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: sunset jaisa peela
+  expect: warm
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: thoda warm
+  expect: warm
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: garmi wala colour
+  expect: warm
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: गर्म रंग करो
+  expect: warm
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: warmm
+  expect: warm
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: orange tint do
+  expect: warm
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: dhoop jaisa colour
+  expect: warm
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: cool tone do
+  expect: cool
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: thanda colour
+  expect: cool
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: blue tint karo
+  expect: cool
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: neela sa look
+  expect: cool
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: thoda cool
+  expect: cool
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: sardi wala colour
+  expect: cool
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: ठंडा रंग
+  expect: cool
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: kool tone
+  expect: cool
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: icy look do
+  expect: cool
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: blueish kar do
+  expect: cool
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: cinematic bana do
+  expect: cinematic_look
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: movie jaisa look
+  expect: cinematic_look
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: film wala colour
+  expect: cinematic_look
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: cinematic grade karo
+  expect: cinematic_look
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: hollywood look do
+  expect: cinematic_look
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: picture jaisa feel
+  expect: cinematic_look
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: सिनेमैटिक करो
+  expect: cinematic_look
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: cinamatic
+  expect: cinematic_look
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: filmy look do
+  expect: cinematic_look
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: movie colour grading
+  expect: cinematic_look
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: vintage look do
+  expect: vintage_faded
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: faded purana look
+  expect: vintage_faded
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: retro faded colour
+  expect: vintage_faded
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: old faded film
+  expect: vintage_faded
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: 90s faded look
+  expect: vintage_faded
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: halka purana rang
+  expect: vintage_faded
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: विंटेज करो
+  expect: vintage_faded
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: vintag
+  expect: vintage_faded
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: faded karo colours
+  expect: vintage_faded
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: retro wala halka look
+  expect: vintage_faded
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: subtitles daal do
+  expect: auto_captions
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: captions lagao
+  expect: auto_captions
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: jo bol raha hu wo likh do
+  expect: auto_captions
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: text me bolna dikhao
+  expect: auto_captions
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: auto captions
+  expect: auto_captions
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: sub title chahiye
+  expect: auto_captions
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: कैप्शन लगाओ
+  expect: auto_captions
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: captons
+  expect: auto_captions
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: har baat ka text niche
+  expect: auto_captions
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: subs add karo
+  expect: auto_captions
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: upar 'Goa' likh do
+  expect: text_overlay
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: text daalo 'Happy'
+  expect: text_overlay
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: screen pe 'WOW' likho
+  expect: text_overlay
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: naam likh do 'Rahul'
+  expect: text_overlay
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: '''Sale'' text add karo'
+  expect: text_overlay
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: beech me 'Hello' likhna
+  expect: text_overlay
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: '''शुभ दिन'' लिखो'
+  expect: text_overlay
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: txt 'Party' daalo
+  expect: text_overlay
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: likh do 'Best day'
+  expect: text_overlay
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: '''Nice'' word dikhao'
+  expect: text_overlay
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: shuru me title card 'Trip'
+  expect: title_card
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: title daalo 'My Vlog'
+  expect: title_card
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: opening title 'Diwali'
+  expect: title_card
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: heading card 'Goa 2026'
+  expect: title_card
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: starting me naam ka card
+  expect: title_card
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: title screen 'Episode 1'
+  expect: title_card
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: शीर्षक कार्ड 'यात्रा'
+  expect: title_card
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: titel card 'Fun'
+  expect: title_card
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: intro title 'Shaadi'
+  expect: title_card
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: bada title 'Hello' start pe
+  expect: title_card
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: captions yellow karo
+  expect: caption_style
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: subtitle ka style hormozi
+  expect: caption_style
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: captions bade karo
+  expect: caption_style
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: text ka color white karo
+  expect: caption_style
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: caption style neon
+  expect: caption_style
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: subtitles bold karo
+  expect: caption_style
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: कैप्शन पीले करो
+  expect: caption_style
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: captn style badlo
+  expect: caption_style
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: caption font mota karo
+  expect: caption_style
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: captions minimal style
+  expect: caption_style
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: music lagao
+  expect: add_music
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: gaana daalo
+  expect: add_music
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: background music chahiye
+  expect: add_music
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: koi song laga do
+  expect: add_music
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: upbeat music add karo
+  expect: add_music
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: bgm daal do
+  expect: add_music
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: गाना लगाओ
+  expect: add_music
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: musik lagao
+  expect: add_music
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: piche halka music
+  expect: add_music
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: song add kar do
+  expect: add_music
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: awaaz badhao
+  expect: volume
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: volume kam karo
+  expect: volume
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: sound tez karo
+  expect: volume
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: awaz dheemi karo
+  expect: volume
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: louder karo
+  expect: volume
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: volume up
+  expect: volume
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: आवाज़ बढ़ाओ
+  expect: volume
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: volum kam
+  expect: volume
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: music ki awaaz kam karo
+  expect: volume
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: awaaz thodi zyada
+  expect: volume
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: awaaz band karo
+  expect: mute
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: mute kar do
+  expect: mute
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: sound hata do
+  expect: mute
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: bina awaaz ka
+  expect: mute
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: silent kar do video
+  expect: mute
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: no sound
+  expect: mute
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: आवाज़ बंद करो
+  expect: mute
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: mut karo
+  expect: mute
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: audio off karo
+  expect: mute
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: chup kara do video ko
+  expect: mute
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: background noise hatao
+  expect: denoise
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: shor kam karo
+  expect: denoise
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: awaaz saaf karo
+  expect: denoise
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: noise remove
+  expect: denoise
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: hiss hata do
+  expect: denoise
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: hawa ki awaaz hatao
+  expect: denoise
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: शोर हटाओ
+  expect: denoise
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: nois hatao
+  expect: denoise
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: peeche ka shor kam
+  expect: denoise
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: clean audio karo
+  expect: denoise
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: jab bolu tab music dheema
+  expect: duck_music
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: voice ke time gaana kam
+  expect: duck_music
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: duck music
+  expect: duck_music
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: baat ke beech music neeche
+  expect: duck_music
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: music ko voice ke liye dabao
+  expect: duck_music
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: bolte waqt background kam
+  expect: duck_music
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: बोलते समय संगीत कम
+  expect: duck_music
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: duk music
+  expect: duck_music
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: voice pe music halka
+  expect: duck_music
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: talking pe music down
+  expect: duck_music
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: awaaz dheere se shuru ho
+  expect: audio_fade
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: sound fade out end me
+  expect: audio_fade
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: music fade in karo
+  expect: audio_fade
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: audio fade in aur out
+  expect: audio_fade
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: gaana dheere khatam ho
+  expect: audio_fade
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: volume fade karo
+  expect: audio_fade
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: आवाज़ धीरे से खत्म
+  expect: audio_fade
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: audio fad out
+  expect: audio_fade
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: end me music dheere band
+  expect: audio_fade
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: sound smoothly start ho
+  expect: audio_fade
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: reel ke liye vertical karo
+  expect: aspect_9_16
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: 9:16 bana do
+  expect: aspect_9_16
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: instagram reel size
+  expect: aspect_9_16
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: shorts ke liye khada video
+  expect: aspect_9_16
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: vertical format
+  expect: aspect_9_16
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: phone wala lamba size
+  expect: aspect_9_16
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: वर्टिकल करो
+  expect: aspect_9_16
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: 9 by 16
+  expect: aspect_9_16
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: tiktok size karo
+  expect: aspect_9_16
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: portrait mode me karo
+  expect: aspect_9_16
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: square bana do
+  expect: aspect_1_1
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: 1:1 karo
+  expect: aspect_1_1
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: instagram post size square
+  expect: aspect_1_1
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: chokor video
+  expect: aspect_1_1
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: square format
+  expect: aspect_1_1
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: 1 by 1 ratio
+  expect: aspect_1_1
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: स्क्वेयर करो
+  expect: aspect_1_1
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: sqare
+  expect: aspect_1_1
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: post ke liye square
+  expect: aspect_1_1
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: barabar lambai chaudai
+  expect: aspect_1_1
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: blur karo
+  expect: blur
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: dhundla kar do
+  expect: blur
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: video dhundhli karo
+  expect: blur
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: blur effect
+  expect: blur
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: halka blur
+  expect: blur
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: dreamy blur
+  expect: blur
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: धुंधला करो
+  expect: blur
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: blurr
+  expect: blur
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: saaf mat dikhao blur karo
+  expect: blur
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: focus hata ke blur
+  expect: blur
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: glitch effect
+  expect: glitch
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: glitch lagao
+  expect: glitch
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: toota hua digital effect
+  expect: glitch
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: glitchy karo
+  expect: glitch
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: signal kharab wala effect
+  expect: glitch
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: glich karo
+  expect: glitch
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: ग्लिच करो
+  expect: glitch
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: glitchh
+  expect: glitch
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: error wala effect
+  expect: glitch
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: digital gadbad dikhao
+  expect: glitch
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: vhs look
+  expect: vhs_retro
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: purani cassette jaisa
+  expect: vhs_retro
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: vhs effect do
+  expect: vhs_retro
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: retro tape wala
+  expect: vhs_retro
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: 80s vhs
+  expect: vhs_retro
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: video cassette look
+  expect: vhs_retro
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: वीएचएस लुक
+  expect: vhs_retro
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: vhs retro
+  expect: vhs_retro
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: old tv tape jaisa
+  expect: vhs_retro
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: vcr wala look
+  expect: vhs_retro
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: logo lagao corner me
+  expect: watermark_logo
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: watermark daalo
+  expect: watermark_logo
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: apna logo add karo
+  expect: watermark_logo
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: brand logo kone me
+  expect: watermark_logo
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: logo chipka do
+  expect: watermark_logo
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: watermark lagao
+  expect: watermark_logo
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: लोगो लगाओ
+  expect: watermark_logo
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: watermrk
+  expect: watermark_logo
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: channel logo dikhao
+  expect: watermark_logo
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: logo daal do niche
+  expect: watermark_logo
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: instagram ke liye export
+  expect: export_preset
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: youtube shorts ke liye nikalo
+  expect: export_preset
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: whatsapp status ke liye
+  expect: export_preset
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: reels export karo
+  expect: export_preset
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: youtube ke liye ready karo
+  expect: export_preset
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: linkedin ke liye export
+  expect: export_preset
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: यूट्यूब के लिए
+  expect: export_preset
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: exprt for insta
+  expect: export_preset
+  split: heldout
+  kind: single
+  group: intent_v1
+- prompt: status ke liye video
+  expect: export_preset
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: shorts ke liye final
+  expect: export_preset
+  split: dev
+  kind: single
+  group: intent_v1
+- prompt: yaha normal kar do
+  expect: restore_normal
+  split: dev
+  context: *id001
+  kind: single
+  group: intent_v1
+- prompt: pehle jaisa kar do yaha
+  expect: restore_normal
+  split: dev
+  context: *id001
+  kind: single
+  group: intent_v1
+- prompt: ye effect hata do yahan
+  expect: restore_normal
+  split: dev
+  context: *id001
+  kind: single
+  group: intent_v1
+- prompt: yaha original jaisa tha waisa karo
+  expect: restore_normal
+  split: heldout
+  context: *id001
+  kind: single
+  group: intent_v1
+- prompt: ye black white hatao yaha se
+  expect: restore_normal
+  split: dev
+  context: *id001
+  kind: single
+  group: intent_v1
+- prompt: yahan wapas normal
+  expect: restore_normal
+  split: dev
+  context: *id001
+  kind: single
+  group: intent_v1
+- prompt: yaha zoom hata ke normal karo
+  expect: restore_normal
+  split: dev
+  context: &id002
+    marker_time: 2.0
+    effects_present_at_time:
+    - type: zoom
+      label: zoom
+      start: 1.0
+      end: 3.0
+  kind: single
+  group: intent_v1
+- prompt: is jagah pehle wala look
+  expect: restore_normal
+  split: heldout
+  context: *id001
+  kind: single
+  group: intent_v1
+- prompt: यहाँ पहले जैसा करो
+  expect: restore_normal
+  split: dev
+  context: *id001
+  kind: single
+  group: intent_v1
+- prompt: yhn nrml krdo
+  expect: restore_normal
+  split: dev
+  context: *id001
+  kind: single
+  group: intent_v1
+- prompt: effect nikal do idhar se jaisa tha
+  expect: restore_normal
+  split: dev
+  context: *id002
+  kind: single
+  group: intent_v1
+- prompt: ye wala change undo karo yaha
+  expect: restore_normal
+  split: heldout
+  context: *id001
+  kind: single
+  group: intent_v1
+- prompt: yaha screen white sa kar do
+  expect: brighten_to_white
+  split: dev
+  context: &id003
+    marker_time: 3.0
+  kind: single
+  group: intent_v1
+- prompt: thoda safed sa karo yahan
+  expect: brighten_to_white
+  split: dev
+  context: *id003
+  kind: single
+  group: intent_v1
+- prompt: yaha picture ko white wash karo
+  expect: brighten_to_white
+  split: dev
+  context: *id003
+  kind: single
+  group: intent_v1
+- prompt: is jagah overexpose karo
+  expect: brighten_to_white
+  split: heldout
+  context: *id003
+  kind: single
+  group: intent_v1
+- prompt: yaha dhula dhula safed
+  expect: brighten_to_white
+  split: dev
+  context: *id003
+  kind: single
+  group: intent_v1
+- prompt: screen ko bright white sa
+  expect: brighten_to_white
+  split: dev
+  context: *id003
+  kind: single
+  group: intent_v1
+- prompt: यहाँ सफ़ेद सा करो
+  expect: brighten_to_white
+  split: dev
+  context: *id003
+  kind: single
+  group: intent_v1
+- prompt: yaha whitish kar do
+  expect: brighten_to_white
+  split: heldout
+  context: *id003
+  kind: single
+  group: intent_v1
+- prompt: yaha 1 sec white screen daalo
+  expect: white_screen_card
+  split: dev
+  context: *id003
+  kind: single
+  group: intent_v1
+- prompt: beech me safed screen dikhao
+  expect: white_screen_card
+  split: dev
+  context: *id003
+  kind: single
+  group: intent_v1
+- prompt: yaha khali white screen
+  expect: white_screen_card
+  split: dev
+  context: *id003
+  kind: single
+  group: intent_v1
+- prompt: is jagah white card lagao
+  expect: white_screen_card
+  split: heldout
+  context: *id003
+  kind: single
+  group: intent_v1
+- prompt: yahan blank white screen 2 sec
+  expect: white_screen_card
+  split: dev
+  context: *id003
+  kind: single
+  group: intent_v1
+- prompt: सफ़ेद स्क्रीन यहाँ
+  expect: white_screen_card
+  split: dev
+  context: *id003
+  kind: single
+  group: intent_v1
+- prompt: yaha wite screen
+  expect: white_screen_card
+  split: dev
+  context: *id003
+  kind: single
+  group: intent_v1
+- prompt: ek safed parda dikha do yaha
+  expect: white_screen_card
+  split: heldout
+  context: *id003
+  kind: single
+  group: intent_v1
+- kind: relative
+  prompt: aur thoda
+  context:
+    recent_edits: &id004
+    - id: zoom_in
+      params:
+        amount: 0.15
+      time:
+        mode: between_times
+        start: 2.0
+        end: 4.0
+  expect: zoom_in
+  param: amount
+  direction: up
+  group: relative
+  split: dev
+- kind: relative
+  prompt: thoda aur zoom
+  context:
+    recent_edits: *id004
+  expect: zoom_in
+  param: amount
+  direction: up
+  group: relative
+  split: dev
+- kind: relative
+  prompt: kam karo
+  context:
+    recent_edits: *id004
+  expect: zoom_in
+  param: amount
+  direction: down
+  group: relative
+  split: dev
+- kind: relative
+  prompt: itna nahi, halka
+  context:
+    recent_edits: *id004
+  expect: zoom_in
+  param: amount
+  direction: down
+  group: relative
+  split: heldout
+- kind: relative
+  prompt: bahut zyada ho gaya
+  context:
+    recent_edits: &id005
+    - id: warm
+      params:
+        amount: 0.5
+      time: null
+  expect: warm
+  param: amount
+  direction: down
+  group: relative
+  split: dev
+- kind: relative
+  prompt: aur warm
+  context:
+    recent_edits: *id005
+  expect: warm
+  param: amount
+  direction: up
+  group: relative
+  split: dev
+- kind: relative
+  prompt: thoda kam garam
+  context:
+    recent_edits: *id005
+  expect: warm
+  param: amount
+  direction: down
+  group: relative
+  split: dev
+- kind: relative
+  prompt: aur tez
+  context:
+    recent_edits: &id006
+    - id: speed_up
+      params:
+        factor: 1.5
+      time: null
+  expect: speed_up
+  param: factor
+  direction: up
+  group: relative
+  split: heldout
+- kind: relative
+  prompt: itna fast nahi
+  context:
+    recent_edits: *id006
+  expect: speed_up
+  param: factor
+  direction: down
+  group: relative
+  split: dev
+- kind: relative
+  prompt: aur zor se
+  context:
+    recent_edits: &id007
+    - id: volume
+      params:
+        gain_db: 6.0
+        what: mix
+      time: null
+  expect: volume
+  param: gain_db
+  direction: up
+  group: relative
+  split: dev
+- kind: relative
+  prompt: awaaz thodi kam karo ab
+  context:
+    recent_edits: *id007
+  expect: volume
+  param: gain_db
+  direction: down
+  group: relative
+  split: dev
+- kind: relative
+  prompt: aur blur
+  context:
+    recent_edits: &id008
+    - id: blur
+      params:
+        radius: 6
+      time: null
+  expect: blur
+  param: radius
+  direction: up
+  group: relative
+  split: heldout
+- kind: relative
+  prompt: blur kam
+  context:
+    recent_edits: *id008
+  expect: blur
+  param: radius
+  direction: down
+  group: relative
+  split: dev
+- kind: relative
+  prompt: rang thoda aur
+  context:
+    recent_edits: &id009
+    - id: saturation
+      params:
+        amount: 1.35
+      time: null
+  expect: saturation
+  param: amount
+  direction: up
+  group: relative
+  split: dev
+- kind: relative
+  prompt: more
+  context:
+    recent_edits: *id004
+  expect: zoom_in
+  param: amount
+  direction: up
+  group: relative
+  split: dev
+- kind: relative
+  prompt: less please
+  context:
+    recent_edits: *id005
+  expect: warm
+  param: amount
+  direction: down
+  group: relative
+  split: heldout
+- kind: relative
+  prompt: a bit more
+  context:
+    recent_edits: *id009
+  expect: saturation
+  param: amount
+  direction: up
+  group: relative
+  split: dev
+- kind: relative
+  prompt: aur jyada
+  context:
+    recent_edits: *id008
+  expect: blur
+  param: radius
+  direction: up
+  group: relative
+  split: dev
+- kind: relative
+  prompt: थोड़ा और
+  context:
+    recent_edits: *id004
+  expect: zoom_in
+  param: amount
+  direction: up
+  group: relative
+  split: dev
+- kind: relative
+  prompt: थोड़ा कम
+  context:
+    recent_edits: *id005
+  expect: warm
+  param: amount
+  direction: down
+  group: relative
+  split: heldout
+- kind: relative
+  prompt: isko hata do
+  context:
+    recent_edits: *id004
+  expect: zoom_in
+  param: ''
+  direction: remove
+  group: relative
+  split: dev
+- kind: relative
+  prompt: ye wala effect hatao
+  context:
+    recent_edits: *id005
+  expect: warm
+  param: ''
+  direction: remove
+  group: relative
+  split: dev
+- kind: relative
+  prompt: pichla wala hata do
+  context:
+    recent_edits: *id008
+  expect: blur
+  param: ''
+  direction: remove
+  group: relative
+  split: dev
+- kind: relative
+  prompt: undo the last one
+  context:
+    recent_edits: *id009
+  expect: saturation
+  param: ''
+  direction: remove
+  group: relative
+  split: heldout
+- kind: relative
+  prompt: dobara karo
+  context:
+    recent_edits: *id004
+  expect: zoom_in
+  param: ''
+  direction: same
+  group: relative
+  split: dev
+- kind: relative
+  prompt: wahi dobara
+  context:
+    recent_edits: *id005
+  expect: warm
+  param: ''
+  direction: same
+  group: relative
+  split: dev
+- kind: relative
+  prompt: same again
+  context:
+    recent_edits: *id008
+  expect: blur
+  param: ''
+  direction: same
+  group: relative
+  split: dev
+- kind: relative
+  prompt: ek baar aur
+  context:
+    recent_edits: *id006
+  expect: speed_up
+  param: ''
+  direction: same
+  group: relative
+  split: heldout
+- kind: relative
+  prompt: full kar do
+  context:
+    recent_edits: *id009
+  expect: saturation
+  param: amount
+  direction: up
+  group: relative
+  split: dev
+- kind: relative
+  prompt: bilkul halka kar do
+  context:
+    recent_edits: *id004
+  expect: zoom_in
+  param: amount
+  direction: down
+  group: relative
+  split: dev
+- kind: relative
+  prompt: double karo
+  context:
+    recent_edits: *id007
+  expect: volume
+  param: gain_db
+  direction: up
+  group: relative
+  split: dev
+- kind: relative
+  prompt: aadha karo
+  context:
+    recent_edits: *id008
+  expect: blur
+  param: radius
+  direction: down
+  group: relative
+  split: heldout
+- kind: relative
+  prompt: zyada ho gaya thoda kam
+  context:
+    recent_edits: *id009
+  expect: saturation
+  param: amount
+  direction: down
+  group: relative
+  split: dev
+- kind: relative
+  prompt: aur thoda sa please
+  context:
+    recent_edits: *id005
+  expect: warm
+  param: amount
+  direction: up
+  group: relative
+  split: dev
+- kind: relative
+  prompt: kam kar de yaar
+  context:
+    recent_edits: *id006
+  expect: speed_up
+  param: factor
+  direction: down
+  group: relative
+  split: dev
+- kind: relative
+  prompt: thoda zyada
+  context:
+    recent_edits: *id007
+  expect: volume
+  param: gain_db
+  direction: up
+  group: relative
+  split: heldout
+- kind: relative
+  prompt: aur halka
+  context:
+    recent_edits: *id008
+  expect: blur
+  param: radius
+  direction: down
+  group: relative
+  split: dev
+- kind: relative
+  prompt: increase it
+  context:
+    recent_edits: *id004
+  expect: zoom_in
+  param: amount
+  direction: up
+  group: relative
+  split: dev
+- kind: relative
+  prompt: reduce it
+  context:
+    recent_edits: *id009
+  expect: saturation
+  param: amount
+  direction: down
+  group: relative
+  split: dev
+- kind: relative
+  prompt: tone it down
+  context:
+    recent_edits: *id005
+  expect: warm
+  param: amount
+  direction: down
+  group: relative
+  split: heldout
+- kind: multi
+  prompt: warm karo, captions lagao aur mere chehre ko jawan dikhao
+  expect_all:
+  - warm
+  - auto_captions
+  unsupported: 1
+  group: multi
+  split: dev
+- kind: multi
+  prompt: zoom karo aur dragon wala AI video bana do
+  expect_all:
+  - zoom_in
+  unsupported: 1
+  group: multi
+  split: dev
+- kind: multi
+  prompt: music lagao, black and white karo, 3d animation daalo, slow motion aur 4k
+    upscale
+  expect_all:
+  - add_music
+  - grayscale
+  - slow_motion
+  unsupported: 2
+  group: multi
+  split: dev
+- kind: multi
+  prompt: silence hatao, captions yellow, background hatao aur fade out
+  expect_all:
+  - remove_silence
+  - caption_style
+  - fade_black
+  unsupported: 1
+  group: multi
+  split: heldout
+- kind: multi
+  prompt: vertical banao, music lagao, mera voice change karo ladki jaisa
+  expect_all:
+  - aspect_9_16
+  - add_music
+  unsupported: 1
+  group: multi
+  split: dev
+- kind: multi
+  prompt: glitch daalo, shake bhi, aur ek naya scene generate karo
+  expect_all:
+  - glitch
+  - shake
+  unsupported: 1
+  group: multi
+  split: dev
+- kind: multi
+  prompt: 30 sec ka karo, warm tone, captions, logo lagao aur ai voiceover
+  expect_all:
+  - fit_to_duration
+  - warm
+  - auto_captions
+  - watermark_logo
+  unsupported: 1
+  group: multi
+  split: dev
+- kind: multi
+  prompt: crossfade lagao, contrast badhao, translate to tamil
+  expect_all:
+  - crossfade
+  - contrast
+  unsupported: 1
+  group: multi
+  split: heldout
+- kind: multi
+  prompt: speed 2x, music, aur face ko cartoon bana do
+  expect_all:
+  - speed_up
+  - add_music
+  unsupported: 1
+  group: multi
+  split: dev
+- kind: multi
+  prompt: sepia, vignette, film grain aur meri height badha do
+  expect_all:
+  - sepia
+  - vignette
+  - film_grain
+  unsupported: 1
+  group: multi
+  split: dev
+- kind: multi
+  prompt: zoom in, flash, whoosh sound, aur sky ko pink kar do
+  expect_all:
+  - zoom_in
+  - flash
+  - sfx_whoosh
+  unsupported: 1
+  group: multi
+  split: dev
+- kind: multi
+  prompt: captions lagao aur noise hatao aur script likh do mere liye
+  expect_all:
+  - auto_captions
+  - denoise
+  unsupported: 1
+  group: multi
+  split: heldout
+- kind: multi
+  prompt: square karo, cool tone, blur karo aur object remove karo
+  expect_all:
+  - aspect_1_1
+  - cool
+  - blur
+  unsupported: 1
+  group: multi
+  split: dev
+- kind: multi
+  prompt: fade in fade out, music, vhs look aur lip sync theek karo
+  expect_all:
+  - fade_black
+  - add_music
+  - vhs_retro
+  unsupported: 1
+  group: multi
+  split: dev
+- kind: multi
+  prompt: black and white, slow motion, vignette
+  expect_all:
+  - grayscale
+  - slow_motion
+  - vignette
+  unsupported: 0
+  group: multi
+  split: dev
+- kind: multi
+  prompt: vertical, captions, music, 15 sec
+  expect_all:
+  - aspect_9_16
+  - auto_captions
+  - add_music
+  - fit_to_duration
+  unsupported: 0
+  group: multi
+  split: heldout
+- kind: multi
+  prompt: trim 2 se 10 sec, warm karo, music lagao, fade out, logo
+  expect_all:
+  - trim
+  - warm
+  - add_music
+  - fade_black
+  - watermark_logo
+  unsupported: 0
+  group: multi
+  split: dev
+- kind: multi
+  prompt: silence hatao, jump cuts, captions, music aur ducking
+  expect_all:
+  - remove_silence
+  - jump_cut_tighten
+  - auto_captions
+  - add_music
+  - duck_music
+  unsupported: 0
+  group: multi
+  split: dev
+- kind: multi
+  prompt: zoom, shake, glitch, flash aur rgb split
+  expect_all:
+  - zoom_in
+  - shake
+  - glitch
+  - flash
+  - rgb_split
+  unsupported: 0
+  group: multi
+  split: dev
+- kind: multi
+  prompt: cinematic look, letterbox, slow zoom in aur film grain
+  expect_all:
+  - cinematic_look
+  - letterbox
+  - zoom_in
+  - film_grain
+  unsupported: 0
+  group: multi
+  split: heldout
+- kind: multi
+  prompt: music lagao, captions daalo, warm karo, logo lagao, square banao aur 20
+    sec ka karo
+  expect_all:
+  - add_music
+  - auto_captions
+  - warm
+  - watermark_logo
+  - aspect_1_1
+  - fit_to_duration
+  unsupported: 0
+  group: multi
+  split: dev
+- kind: multi
+  prompt: noise hatao, awaaz badhao, captions aur hindi me dubbing karo
+  expect_all:
+  - denoise
+  - volume
+  - auto_captions
+  unsupported: 1
+  group: multi
+  split: dev
+- kind: multi
+  prompt: vintage look, vignette, slow motion, aur purane zamane ki awaaz bana do
+    robot jaisi
+  expect_all:
+  - vintage_faded
+  - vignette
+  - slow_motion
+  unsupported: 1
+  group: multi
+  split: dev
+- kind: multi
+  prompt: reel bana do vertical, flash har cut pe, music aur ek AI host jo bole
+  expect_all:
+  - aspect_9_16
+  - flash
+  - add_music
+  unsupported: 1
+  group: multi
+  split: heldout
+- kind: multi
+  prompt: crossfade, fade in, fade out aur sabke chehre blur karo automatically
+  expect_all:
+  - crossfade
+  - fade_black
+  - blur_box_censor
+  unsupported: 0
+  group: multi
+  split: dev
+- kind: multi
+  prompt: trim 0 se 30, speed 1.5x, cool tone, music aur thumbnail bana do
+  expect_all:
+  - trim
+  - speed_up
+  - cool
+  - add_music
+  - thumbnail
+  unsupported: 0
+  group: multi
+  split: dev
+- kind: multi
+  prompt: black and white, captions, aur video me mujhe udte hue dikhao
+  expect_all:
+  - grayscale
+  - auto_captions
+  unsupported: 1
+  group: multi
+  split: dev
+- kind: multi
+  prompt: glitch, vhs, rgb split, aur isko nft bana do
+  expect_all:
+  - glitch
+  - vhs_retro
+  - rgb_split
+  unsupported: 1
+  group: multi
+  split: heldout
+- kind: multi
+  prompt: zoom out, shake, music aur crowd cheering ki awaaz daalo jo nahi hai
+  expect_all:
+  - zoom_out
+  - shake
+  - add_music
+  unsupported: 1
+  group: multi
+  split: dev
+- kind: multi
+  prompt: silence hatao aur fillers hatao aur captions aur music aur 60 sec
+  expect_all:
+  - remove_silence
+  - remove_fillers
+  - auto_captions
+  - add_music
+  - fit_to_duration
+  unsupported: 0
+  group: multi
+  split: dev
+- kind: non_edit
+  prompt: hi
+  group: non_edit
+  split: dev
+- kind: non_edit
+  prompt: hello bhai
+  group: non_edit
+  split: dev
+- kind: non_edit
+  prompt: kaise ho
+  group: non_edit
+  split: dev
+- kind: non_edit
+  prompt: thank you
+  group: non_edit
+  split: heldout
+- kind: non_edit
+  prompt: thanks yaar
+  group: non_edit
+  split: dev
+- kind: non_edit
+  prompt: ye app kaise kaam karta hai
+  group: non_edit
+  split: dev
+- kind: non_edit
+  prompt: kya kya kar sakte ho
+  group: non_edit
+  split: dev
+- kind: non_edit
+  prompt: namaste
+  group: non_edit
+  split: heldout
+- kind: non_edit
+  prompt: good morning
+  group: non_edit
+  split: dev
+- kind: non_edit
+  prompt: help
+  group: non_edit
+  split: dev
+- kind: non_edit
+  prompt: mujhe samjhao export kaise karu
+  group: non_edit
+  split: dev
+- kind: non_edit
+  prompt: ok
+  group: non_edit
+  split: heldout
+- kind: non_edit
+  prompt: accha
+  group: non_edit
+  split: dev
+- kind: non_edit
+  prompt: 👍
+  group: non_edit
+  split: dev
+- kind: non_edit
+  prompt: 😂😂
+  group: non_edit
+  split: dev
+- kind: non_edit
+  prompt: tum kaun ho
+  group: non_edit
+  split: heldout
+- kind: non_edit
+  prompt: bas itna hi
+  group: non_edit
+  split: dev
+- kind: non_edit
+  prompt: bye
+  group: non_edit
+  split: dev
+- kind: non_edit
+  prompt: nice
+  group: non_edit
+  split: dev
+- kind: non_edit
+  prompt: wow badhiya
+  group: non_edit
+  split: heldout
+- kind: non_edit
+  prompt: kya hua
+  group: non_edit
+  split: dev
+- kind: non_edit
+  prompt: kitna time lagega
+  group: non_edit
+  split: dev
+- kind: non_edit
+  prompt: मदद करो
+  group: non_edit
+  split: dev
+- kind: non_edit
+  prompt: shukriya
+  group: non_edit
+  split: heldout
+- kind: non_edit
+  prompt: theek hai
+  group: non_edit
+  split: dev
+- kind: unsupported
+  prompt: meri height badha do
+  group: unsupported
+  split: dev
+- kind: unsupported
+  prompt: isko 3d animation bana do
+  group: unsupported
+  split: dev
+- kind: unsupported
+  prompt: naya video generate karo dragon ka
+  group: unsupported
+  split: dev
+- kind: unsupported
+  prompt: face swap karo
+  group: unsupported
+  split: heldout
+- kind: unsupported
+  prompt: voice ko ladki jaisa kar do
+  group: unsupported
+  split: dev
+- kind: unsupported
+  prompt: sky ko pink kar do
+  group: unsupported
+  split: dev
+- kind: unsupported
+  prompt: is script ko likh do
+  group: unsupported
+  split: dev
+- kind: unsupported
+  prompt: translate to japanese audio
+  group: unsupported
+  split: heldout
+- kind: unsupported
+  prompt: lip sync theek karo
+  group: unsupported
+  split: dev
+- kind: unsupported
+  prompt: background me paris daal do
+  group: unsupported
+  split: dev
+- kind: unsupported
+  prompt: object remove karo jo peeche hai
+  group: unsupported
+  split: dev
+- kind: unsupported
+  prompt: mere dost ko video se hata do
+  group: unsupported
+  split: heldout
+- kind: unsupported
+  prompt: anime style bana do
+  group: unsupported
+  split: dev
+- kind: unsupported
+  prompt: deepfake bana do
+  group: unsupported
+  split: dev
+- kind: unsupported
+  prompt: 8k me upscale karo
+  group: unsupported
+  split: dev
+- kind: unsupported
+  prompt: video ko song me badal do
+  group: unsupported
+  split: heldout
+- kind: unsupported
+  prompt: car ka colour red karo sirf
+  group: unsupported
+  split: dev
+- kind: unsupported
+  prompt: mera chashma hata do
+  group: unsupported
+  split: dev
+- kind: unsupported
+  prompt: gaana khud bana do
+  group: unsupported
+  split: dev
+- kind: unsupported
+  prompt: AI avatar bana do mera
+  group: unsupported
+  split: heldout
+- kind: unsupported
+  prompt: ye video viral kar do
+  group: unsupported
+  split: dev
+- kind: unsupported
+  prompt: followers badha do
+  group: unsupported
+  split: dev
+- kind: unsupported
+  prompt: isse instagram pe post kar do
+  group: unsupported
+  split: dev
+- kind: unsupported
+  prompt: hindi me dub karo
+  group: unsupported
+  split: heldout
+- kind: unsupported
+  prompt: baal kale kar do
+  group: unsupported
+  split: dev
+- kind: single
+  prompt: ज़ूम करो
+  expect: zoom_in
+  group: devanagari
+  split: dev
+- kind: single
+  prompt: गाना लगाओ
+  expect: add_music
+  group: devanagari
+  split: dev
+- kind: single
+  prompt: कैप्शन लगाओ
+  expect: auto_captions
+  group: devanagari
+  split: dev
+- kind: single
+  prompt: ब्लैक एंड व्हाइट करो
+  expect: grayscale
+  group: devanagari
+  split: heldout
+- kind: single
+  prompt: धीमा करो वीडियो
+  expect: slow_motion
+  group: devanagari
+  split: dev
+- kind: single
+  prompt: तेज़ करो
+  expect: speed_up
+  group: devanagari
+  split: dev
+- kind: single
+  prompt: आवाज़ बंद करो
+  expect: mute
+  group: devanagari
+  split: dev
+- kind: single
+  prompt: शोर हटाओ
+  expect: denoise
+  group: devanagari
+  split: heldout
+- kind: single
+  prompt: गर्म रंग करो
+  expect: warm
+  group: devanagari
+  split: dev
+- kind: single
+  prompt: ठंडा रंग
+  expect: cool
+  group: devanagari
+  split: dev
+- kind: single
+  prompt: चमक दो
+  expect: flash
+  group: devanagari
+  split: dev
+- kind: single
+  prompt: हिलाओ वीडियो
+  expect: shake
+  group: devanagari
+  split: heldout
+- kind: single
+  prompt: धुंधला करो
+  expect: blur
+  group: devanagari
+  split: dev
+- kind: single
+  prompt: लोगो लगाओ
+  expect: watermark_logo
+  group: devanagari
+  split: dev
+- kind: single
+  prompt: वर्टिकल करो
+  expect: aspect_9_16
+  group: devanagari
+  split: dev
+- kind: single
+  prompt: स्क्वेयर करो
+  expect: aspect_1_1
+  group: devanagari
+  split: heldout
+- kind: single
+  prompt: सिनेमैटिक करो
+  expect: cinematic_look
+  group: devanagari
+  split: dev
+- kind: single
+  prompt: पहले जैसा करो
+  expect: restore_normal
+  group: devanagari
+  split: dev
+- kind: single
+  prompt: सफ़ेद स्क्रीन
+  expect: white_screen_card
+  group: devanagari
+  split: dev
+- kind: single
+  prompt: ग्लिच करो
+  expect: glitch
+  group: devanagari
+  split: heldout
+- kind: single
+  prompt: चुप वाले हिस्से हटाओ
+  expect: remove_silence
+  group: devanagari
+  split: dev
+- kind: single
+  prompt: रंग बढ़ाओ
+  expect: saturation
+  group: devanagari
+  split: dev
+- kind: single
+  prompt: कंट्रास्ट बढ़ाओ
+  expect: contrast
+  group: devanagari
+  split: dev
+- kind: single
+  prompt: सीपिया करो
+  expect: sepia
+  group: devanagari
+  split: heldout
+- kind: single
+  prompt: विंटेज करो
+  expect: vintage_faded
+  group: devanagari
+  split: dev
+- kind: single
+  prompt: काले में फेड करो
+  expect: fade_black
+  group: devanagari
+  split: dev
+- kind: single
+  prompt: क्रॉसफेड लगाओ
+  expect: crossfade
+  group: devanagari
+  split: dev
+- kind: single
+  prompt: आवाज़ बढ़ाओ
+  expect: volume
+  group: devanagari
+  split: heldout
+- kind: single
+  prompt: bhai dekho na ye video thoda boring lag raha hai to isme na thoda music
+    daal do jo upbeat ho
+  expect: add_music
+  group: runon
+  split: dev
+- kind: single
+  prompt: haan to mai soch raha tha ki agar hum isko black and white kar de to kaisa
+    lagega kar do
+  expect: grayscale
+  group: runon
+  split: dev
+- kind: single
+  prompt: matlab jo bhi bol raha hu na wo neeche likha aaye subtitle jaisa
+  expect: auto_captions
+  group: runon
+  split: dev
+- kind: single
+  prompt: ye jo beech me koi kuch nahi bol raha wo sab hata do please time waste hai
+  expect: remove_silence
+  group: runon
+  split: heldout
+- kind: single
+  prompt: uh so like can you make it a bit zoomed in maybe slowly
+  expect: zoom_in
+  group: runon
+  split: dev
+- kind: single
+  prompt: acha suno isko na instagram reel jaisa lamba wala khada format me karo
+  expect: aspect_9_16
+  group: runon
+  split: dev
+- kind: single
+  prompt: ek kaam karo poora video thoda garam garam sunset wala colour de do
+  expect: warm
+  group: runon
+  split: dev
+- kind: single
+  prompt: are yaar awaaz bahut dheemi hai isko thoda badhao na
+  expect: volume
+  group: runon
+  split: heldout
+- kind: single
+  prompt: ye last wala part bohot slow hai usko fast kar do thoda
+  expect: speed_up
+  group: runon
+  split: dev
+- kind: single
+  prompt: background me jo shor aa raha hai fan ka wo hata sakte ho kya
+  expect: denoise
+  group: runon
+  split: dev
+- kind: single
+  prompt: video thoda hil raha hai camera shake ki wajah se usko theek karo
+  expect: stabilize
+  group: runon
+  split: dev
+- kind: single
+  prompt: bhai end me na dheere dheere kaala ho jaye aisa kuch
+  expect: fade_black
+  group: runon
+  split: heldout
+- kind: single
+  prompt: purani film jaisa bhura sa look chahiye mujhe
+  expect: sepia
+  group: runon
+  split: dev
+- kind: single
+  prompt: ek dum movie wala feel aana chahiye colour me
+  expect: cinematic_look
+  group: runon
+  split: dev
+- kind: single
+  prompt: jab main bolu tab gaana dheema ho jaye aur baaki time normal
+  expect: duck_music
+  group: runon
+  split: dev
+- kind: single
+  prompt: mere logo ko kone me chipka do chhota sa
+  expect: watermark_logo
+  group: runon
+  split: heldout
+- kind: single
+  group: generated
+  split: generated
+  prompt: add musicc
+  expect: add_music
+  source: add music
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar baackground msic
+  expect: add_music
+  source: background music
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi add a sonng
+  expect: add_music
+  source: add a song
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar bgm
+  expect: add_music
+  source: bgm
+- kind: single
+  group: generated
+  split: generated
+  prompt: please music tack
+  expect: add_music
+  source: music track
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo put moosic
+  expect: add_music
+  source: put music
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo sundtrack
+  expect: add_music
+  source: soundtrack
+- kind: single
+  group: generated
+  split: generated
+  prompt: gaana daaalo
+  expect: add_music
+  source: gaana daalo
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi musc lagao
+  expect: add_music
+  source: music lagao
+- kind: single
+  group: generated
+  split: generated
+  prompt: landcape
+  expect: aspect_16_9
+  source: landscape
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz 16:9
+  expect: aspect_16_9
+  source: '16:9'
+- kind: single
+  group: generated
+  split: generated
+  prompt: horzontal
+  expect: aspect_16_9
+  source: horizontal
+- kind: single
+  group: generated
+  split: generated
+  prompt: youtub sizze
+  expect: aspect_16_9
+  source: youtube size
+- kind: single
+  group: generated
+  split: generated
+  prompt: na wiescreen
+  expect: aspect_16_9
+  source: widescreen
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara mae it landcape
+  expect: aspect_16_9
+  source: make it landscape
+- kind: single
+  group: generated
+  split: generated
+  prompt: wide viddeo
+  expect: aspect_16_9
+  source: wide video
+- kind: single
+  group: generated
+  split: generated
+  prompt: lanscape banao
+  expect: aspect_16_9
+  source: landscape banao
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar youtube ke lye
+  expect: aspect_16_9
+  source: youtube ke liye
+- kind: single
+  group: generated
+  split: generated
+  prompt: squae
+  expect: aspect_1_1
+  source: square
+- kind: single
+  group: generated
+  split: generated
+  prompt: '1:1'
+  expect: aspect_1_1
+  source: '1:1'
+- kind: single
+  group: generated
+  split: generated
+  prompt: squarre post
+  expect: aspect_1_1
+  source: square post
+- kind: single
+  group: generated
+  split: generated
+  prompt: inst post
+  expect: aspect_1_1
+  source: insta post
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar shquare formaat
+  expect: aspect_1_1
+  source: square format
+- kind: single
+  group: generated
+  split: generated
+  prompt: na makke it sqooare
+  expect: aspect_1_1
+  source: make it square
+- kind: single
+  group: generated
+  split: generated
+  prompt: na feedd pos
+  expect: aspect_1_1
+  source: feed post
+- kind: single
+  group: generated
+  split: generated
+  prompt: na squaare baao
+  expect: aspect_1_1
+  source: square banao
+- kind: single
+  group: generated
+  split: generated
+  prompt: chaukkor banao
+  expect: aspect_1_1
+  source: chaukor banao
+- kind: single
+  group: generated
+  split: generated
+  prompt: '4:5'
+  expect: aspect_4_5
+  source: '4:5'
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai portraeet pst
+  expect: aspect_4_5
+  source: portrait post
+- kind: single
+  group: generated
+  split: generated
+  prompt: insta portrit
+  expect: aspect_4_5
+  source: insta portrait
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz 4 by 5
+  expect: aspect_4_5
+  source: 4 by 5
+- kind: single
+  group: generated
+  split: generated
+  prompt: feed prtrait
+  expect: aspect_4_5
+  source: feed portrait
+- kind: single
+  group: generated
+  split: generated
+  prompt: taall posst
+  expect: aspect_4_5
+  source: tall post
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz instaram portraeet
+  expect: aspect_4_5
+  source: instagram portrait
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai 4:5 kro
+  expect: aspect_4_5
+  source: 4:5 karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: please insta portrrait sie
+  expect: aspect_4_5
+  source: insta portrait size
+- kind: single
+  group: generated
+  split: generated
+  prompt: vertcal
+  expect: aspect_9_16
+  source: vertical
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi 9:16
+  expect: aspect_9_16
+  source: '9:16'
+- kind: single
+  group: generated
+  split: generated
+  prompt: reel seeze
+  expect: aspect_9_16
+  source: reel size
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar short sze
+  expect: aspect_9_16
+  source: shorts size
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai portraeet viddeo
+  expect: aspect_9_16
+  source: portrait video
+- kind: single
+  group: generated
+  split: generated
+  prompt: make it verical
+  expect: aspect_9_16
+  source: make it vertical
+- kind: single
+  group: generated
+  split: generated
+  prompt: tktk size
+  expect: aspect_9_16
+  source: tiktok size
+- kind: single
+  group: generated
+  split: generated
+  prompt: verrtical banau
+  expect: aspect_9_16
+  source: vertical banao
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara ree banao
+  expect: aspect_9_16
+  source: reel banao
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara audio fadde
+  expect: audio_fade
+  source: audio fade
+- kind: single
+  group: generated
+  split: generated
+  prompt: fde the audiu
+  expect: audio_fade
+  source: fade the audio
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara sounnd fae out
+  expect: audio_fade
+  source: sound fade out
+- kind: single
+  group: generated
+  split: generated
+  prompt: fade the museec out
+  expect: audio_fade
+  source: fade the music out
+- kind: single
+  group: generated
+  split: generated
+  prompt: aoodio fde in
+  expect: audio_fade
+  source: audio fade in
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai softt endig
+  expect: audio_fade
+  source: soft ending
+- kind: single
+  group: generated
+  split: generated
+  prompt: na fade soud
+  expect: audio_fade
+  source: fade sound
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi awaaz deere kam
+  expect: audio_fade
+  source: awaaz dheere kam
+- kind: single
+  group: generated
+  split: generated
+  prompt: na awaaz dheere aaaye
+  expect: audio_fade
+  source: awaaz dheere aaye
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara caaptions
+  expect: auto_captions
+  source: captions
+- kind: single
+  group: generated
+  split: generated
+  prompt: sutitles
+  expect: auto_captions
+  source: subtitles
+- kind: single
+  group: generated
+  split: generated
+  prompt: na aooto cptns
+  expect: auto_captions
+  source: auto captions
+- kind: single
+  group: generated
+  split: generated
+  prompt: add sbttls
+  expect: auto_captions
+  source: add subtitles
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai transhcribe
+  expect: auto_captions
+  source: transcribe
+- kind: single
+  group: generated
+  split: generated
+  prompt: textt of wat i say
+  expect: auto_captions
+  source: text of what i say
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz klosed captions
+  expect: auto_captions
+  source: closed captions
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi captions laga
+  expect: auto_captions
+  source: captions lagao
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar sutitle daal do
+  expect: auto_captions
+  source: subtitle daal do
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar enhane
+  expect: auto_enhance
+  source: enhance
+- kind: single
+  group: generated
+  split: generated
+  prompt: aauto enhance
+  expect: auto_enhance
+  source: auto enhance
+- kind: single
+  group: generated
+  split: generated
+  prompt: autu corret
+  expect: auto_enhance
+  source: auto correct
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo fix the clors
+  expect: auto_enhance
+  source: fix the colours
+- kind: single
+  group: generated
+  split: generated
+  prompt: na improe qulty
+  expect: auto_enhance
+  source: improve quality
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai make it look betterr
+  expect: auto_enhance
+  source: make it look better
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz ato colour
+  expect: auto_enhance
+  source: auto colour
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo quallity sudharo
+  expect: auto_enhance
+  source: quality sudharo
+- kind: single
+  group: generated
+  split: generated
+  prompt: beter baao
+  expect: auto_enhance
+  source: better banao
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar aauto rerame
+  expect: auto_reframe
+  source: auto reframe
+- kind: single
+  group: generated
+  split: generated
+  prompt: follw the person
+  expect: auto_reframe
+  source: follow the person
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar kee me in frrame
+  expect: auto_reframe
+  source: keep me in frame
+- kind: single
+  group: generated
+  split: generated
+  prompt: trac the fae
+  expect: auto_reframe
+  source: track the face
+- kind: single
+  group: generated
+  split: generated
+  prompt: keepp the subject centered
+  expect: auto_reframe
+  source: keep the subject centered
+- kind: single
+  group: generated
+  split: generated
+  prompt: sart cop
+  expect: auto_reframe
+  source: smart crop
+- kind: single
+  group: generated
+  split: generated
+  prompt: folow subject
+  expect: auto_reframe
+  source: follow subject
+- kind: single
+  group: generated
+  split: generated
+  prompt: please chera follow kaaro
+  expect: auto_reframe
+  source: chehra follow karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz mujhhe fraame me rakho
+  expect: auto_reframe
+  source: mujhe frame me rakho
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz bea sync
+  expect: beat_sync
+  source: beat sync
+- kind: single
+  group: generated
+  split: generated
+  prompt: cut on the bea
+  expect: beat_sync
+  source: cut on the beat
+- kind: single
+  group: generated
+  split: generated
+  prompt: syc to the musicc
+  expect: beat_sync
+  source: sync to the music
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz on bea cutss
+  expect: beat_sync
+  source: on beat cuts
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai cut to the rythm
+  expect: beat_sync
+  source: cut to the rhythm
+- kind: single
+  group: generated
+  split: generated
+  prompt: musik sync
+  expect: beat_sync
+  source: music sync
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi beat math
+  expect: beat_sync
+  source: beat match
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi beaat par cut
+  expect: beat_sync
+  source: beat par cut
+- kind: single
+  group: generated
+  split: generated
+  prompt: musik ke shaath cut
+  expect: beat_sync
+  source: music ke saath cut
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi blr
+  expect: blur
+  source: blur
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara burry
+  expect: blur
+  source: blurry
+- kind: single
+  group: generated
+  split: generated
+  prompt: sot focoos
+  expect: blur
+  source: soft focus
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar defous
+  expect: blur
+  source: defocus
+- kind: single
+  group: generated
+  split: generated
+  prompt: out of focs
+  expect: blur
+  source: out of focus
+- kind: single
+  group: generated
+  split: generated
+  prompt: mak it blurry
+  expect: blur
+  source: make it blurry
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai bur effet
+  expect: blur
+  source: blur effect
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi dhundhhla kar
+  expect: blur
+  source: dhundhla karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: blur laga
+  expect: blur
+  source: blur lagao
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi background blurr
+  expect: blur_background_fill
+  source: background blur
+- kind: single
+  group: generated
+  split: generated
+  prompt: blu bars
+  expect: blur_background_fill
+  source: blur bars
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai blured sidess
+  expect: blur_background_fill
+  source: blurred sides
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi bur fil
+  expect: blur_background_fill
+  source: blur fill
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar no blac barsh
+  expect: blur_background_fill
+  source: no black bars
+- kind: single
+  group: generated
+  split: generated
+  prompt: bloorry bacckground
+  expect: blur_background_fill
+  source: blurry background
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara fill withh blur
+  expect: blur_background_fill
+  source: fill with blur
+- kind: single
+  group: generated
+  split: generated
+  prompt: side me bur
+  expect: blur_background_fill
+  source: side me blur
+- kind: single
+  group: generated
+  split: generated
+  prompt: blur wala baccground
+  expect: blur_background_fill
+  source: blur wala background
+- kind: single
+  group: generated
+  split: generated
+  prompt: bllur box
+  expect: blur_box_censor
+  source: blur box
+- kind: single
+  group: generated
+  split: generated
+  prompt: blur the ara
+  expect: blur_box_censor
+  source: blur the area
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar blu out
+  expect: blur_box_censor
+  source: blur out
+- kind: single
+  group: generated
+  split: generated
+  prompt: cnsor withh blur
+  expect: blur_box_censor
+  source: censor with blur
+- kind: single
+  group: generated
+  split: generated
+  prompt: hide wih blur
+  expect: blur_box_censor
+  source: hide with blur
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar blur the lgo
+  expect: blur_box_censor
+  source: blur the logo
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz blur this partt
+  expect: blur_box_censor
+  source: blur this part
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo chupa do
+  expect: blur_box_censor
+  source: chhupa do
+- kind: single
+  group: generated
+  split: generated
+  prompt: na blurr box laggao
+  expect: blur_box_censor
+  source: blur box lagao
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara brighen to white
+  expect: brighten_to_white
+  source: brighten to white
+- kind: single
+  group: generated
+  split: generated
+  prompt: please washh out to whitte
+  expect: brighten_to_white
+  source: wash out to white
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai make it white
+  expect: brighten_to_white
+  source: make it whiter
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar ovverexpose
+  expect: brighten_to_white
+  source: overexpose
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz bleah the picture
+  expect: brighten_to_white
+  source: bleach the picture
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi wshd out bright
+  expect: brighten_to_white
+  source: washed out bright
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi vhite wah
+  expect: brighten_to_white
+  source: white wash
+- kind: single
+  group: generated
+  split: generated
+  prompt: vhite sa kaaro
+  expect: brighten_to_white
+  source: white sa karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: jyada bright aur whte
+  expect: brighten_to_white
+  source: zyada bright aur white
+- kind: single
+  group: generated
+  split: generated
+  prompt: brigtness
+  expect: brightness
+  source: brightness
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar brigher
+  expect: brightness
+  source: brighter
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz brghten
+  expect: brightness
+  source: brighten
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz make it brigght
+  expect: brightness
+  source: make it bright
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi lihter
+  expect: brightness
+  source: lighter
+- kind: single
+  group: generated
+  split: generated
+  prompt: darke
+  expect: brightness
+  source: darker
+- kind: single
+  group: generated
+  split: generated
+  prompt: too drk
+  expect: brightness
+  source: too dark
+- kind: single
+  group: generated
+  split: generated
+  prompt: roshhni badhau
+  expect: brightness
+  source: roshni badhao
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara ujala karu
+  expect: brightness
+  source: ujala karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: capption stle
+  expect: caption_style
+  source: caption style
+- kind: single
+  group: generated
+  split: generated
+  prompt: chhange the caption font
+  expect: caption_style
+  source: change the caption font
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar subbtitle style
+  expect: caption_style
+  source: subtitle style
+- kind: single
+  group: generated
+  split: generated
+  prompt: bod yellow captions
+  expect: caption_style
+  source: bold yellow captions
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi make captions biggger
+  expect: caption_style
+  source: make captions bigger
+- kind: single
+  group: generated
+  split: generated
+  prompt: caption kolour
+  expect: caption_style
+  source: caption colour
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi restylle cptions
+  expect: caption_style
+  source: restyle captions
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai caption sttyle badlo
+  expect: caption_style
+  source: caption style badlo
+- kind: single
+  group: generated
+  split: generated
+  prompt: font badlu captions ka
+  expect: caption_style
+  source: font badlo captions ka
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar cinemmatic
+  expect: cinematic_look
+  source: cinematic
+- kind: single
+  group: generated
+  split: generated
+  prompt: cinemmatic look
+  expect: cinematic_look
+  source: cinematic look
+- kind: single
+  group: generated
+  split: generated
+  prompt: feelm look
+  expect: cinematic_look
+  source: film look
+- kind: single
+  group: generated
+  split: generated
+  prompt: movvie looc
+  expect: cinematic_look
+  source: movie look
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara filmmic
+  expect: cinematic_look
+  source: filmic
+- kind: single
+  group: generated
+  split: generated
+  prompt: hollywood grrade
+  expect: cinematic_look
+  source: hollywood grade
+- kind: single
+  group: generated
+  split: generated
+  prompt: cinema collour
+  expect: cinematic_look
+  source: cinema colour
+- kind: single
+  group: generated
+  split: generated
+  prompt: move colour grdng
+  expect: cinematic_look
+  source: movie colour grading
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara fillmy loo
+  expect: cinematic_look
+  source: filmy look
+- kind: single
+  group: generated
+  split: generated
+  prompt: clr pop
+  expect: color_pop
+  source: color pop
+- kind: single
+  group: generated
+  split: generated
+  prompt: colourr pop
+  expect: color_pop
+  source: colour pop
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar colourr splash
+  expect: color_pop
+  source: colour splash
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz onnly red
+  expect: color_pop
+  source: only red
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai kep one colour
+  expect: color_pop
+  source: keep one colour
+- kind: single
+  group: generated
+  split: generated
+  prompt: seletive colour
+  expect: color_pop
+  source: selective colour
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi splas of color
+  expect: color_pop
+  source: splash of colour
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek rang rakhu
+  expect: color_pop
+  source: ek rang rakho
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara baaki blck wheete
+  expect: color_pop
+  source: baaki black white
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar cotrast
+  expect: contrast
+  source: contrast
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara mre conntrast
+  expect: contrast
+  source: more contrast
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi poonchier
+  expect: contrast
+  source: punchier
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai lesss contrast
+  expect: contrast
+  source: less contrast
+- kind: single
+  group: generated
+  split: generated
+  prompt: fat lookk
+  expect: contrast
+  source: flat look
+- kind: single
+  group: generated
+  split: generated
+  prompt: deepe blaccks
+  expect: contrast
+  source: deeper blacks
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo mor pop
+  expect: contrast
+  source: more pop
+- kind: single
+  group: generated
+  split: generated
+  prompt: contraast bahao
+  expect: contrast
+  source: contrast badhao
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai gehra karro
+  expect: contrast
+  source: gehra karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi coo
+  expect: cool
+  source: cool
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi colr
+  expect: cool
+  source: cooler
+- kind: single
+  group: generated
+  split: generated
+  prompt: cool tonne
+  expect: cool
+  source: cool tone
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi blooe tonne
+  expect: cool
+  source: blue tone
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo cld loo
+  expect: cool
+  source: cold look
+- kind: single
+  group: generated
+  split: generated
+  prompt: icy
+  expect: cool
+  source: icy
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi winnter lok
+  expect: cool
+  source: winter look
+- kind: single
+  group: generated
+  split: generated
+  prompt: thand ton
+  expect: cool
+  source: thanda tone
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi cul kao
+  expect: cool
+  source: cool karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: cooontdown
+  expect: countdown_timer
+  source: countdown
+- kind: single
+  group: generated
+  split: generated
+  prompt: count don
+  expect: countdown_timer
+  source: count down
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara timmer
+  expect: countdown_timer
+  source: timer
+- kind: single
+  group: generated
+  split: generated
+  prompt: na 3 2 1
+  expect: countdown_timer
+  source: 3 2 1
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar countdown timerr
+  expect: countdown_timer
+  source: countdown timer
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz cunt from 5
+  expect: countdown_timer
+  source: count from 5
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz counttdown numbers
+  expect: countdown_timer
+  source: countdown numbers
+- kind: single
+  group: generated
+  split: generated
+  prompt: ulti gini
+  expect: countdown_timer
+  source: ulti ginti
+- kind: single
+  group: generated
+  split: generated
+  prompt: na countdovn laga
+  expect: countdown_timer
+  source: countdown lagao
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo crrop
+  expect: crop
+  source: crop
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar crrop in
+  expect: crop
+  source: crop in
+- kind: single
+  group: generated
+  split: generated
+  prompt: please zoomm eento the corner
+  expect: crop
+  source: zoom into the corner
+- kind: single
+  group: generated
+  split: generated
+  prompt: cut the edgges
+  expect: crop
+  source: cut the edges
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi cropp the frae
+  expect: crop
+  source: crop the frame
+- kind: single
+  group: generated
+  split: generated
+  prompt: cro to the midde
+  expect: crop
+  source: crop to the middle
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara tigghter frame
+  expect: crop
+  source: tighter frame
+- kind: single
+  group: generated
+  split: generated
+  prompt: cro karo
+  expect: crop
+  source: crop karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: kinare kaaato
+  expect: crop
+  source: kinare kaato
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar crossfaade
+  expect: crossfade
+  source: crossfade
+- kind: single
+  group: generated
+  split: generated
+  prompt: dissove
+  expect: crossfade
+  source: dissolve
+- kind: single
+  group: generated
+  split: generated
+  prompt: sooth trnsition
+  expect: crossfade
+  source: smooth transition
+- kind: single
+  group: generated
+  split: generated
+  prompt: bend the clips
+  expect: crossfade
+  source: blend the clips
+- kind: single
+  group: generated
+  split: generated
+  prompt: shoft transsition
+  expect: crossfade
+  source: soft transition
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara croshs dishsolve
+  expect: crossfade
+  source: cross dissolve
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar mix transeetion
+  expect: crossfade
+  source: mix transition
+- kind: single
+  group: generated
+  split: generated
+  prompt: dhire se badlo
+  expect: crossfade
+  source: dheere se badlo
+- kind: single
+  group: generated
+  split: generated
+  prompt: smooh transsition do
+  expect: crossfade
+  source: smooth transition do
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi delee paart
+  expect: delete_segment
+  source: delete part
+- kind: single
+  group: generated
+  split: generated
+  prompt: removve part
+  expect: delete_segment
+  source: remove part
+- kind: single
+  group: generated
+  split: generated
+  prompt: na rmove fom
+  expect: delete_segment
+  source: remove from
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz cut out
+  expect: delete_segment
+  source: cut out
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo dlt the section
+  expect: delete_segment
+  source: delete the section
+- kind: single
+  group: generated
+  split: generated
+  prompt: get rid of
+  expect: delete_segment
+  source: get rid of
+- kind: single
+  group: generated
+  split: generated
+  prompt: remove sho
+  expect: delete_segment
+  source: remove shot
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar delete shhot
+  expect: delete_segment
+  source: delete shot
+- kind: single
+  group: generated
+  split: generated
+  prompt: hatta do
+  expect: delete_segment
+  source: hata do
+- kind: single
+  group: generated
+  split: generated
+  prompt: denose
+  expect: denoise
+  source: denoise
+- kind: single
+  group: generated
+  split: generated
+  prompt: remove background noie
+  expect: denoise
+  source: remove background noise
+- kind: single
+  group: generated
+  split: generated
+  prompt: rmve noise
+  expect: denoise
+  source: remove noise
+- kind: single
+  group: generated
+  split: generated
+  prompt: clean the audi
+  expect: denoise
+  source: clean the audio
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar remoe heess
+  expect: denoise
+  source: remove hiss
+- kind: single
+  group: generated
+  split: generated
+  prompt: noisse reduction
+  expect: denoise
+  source: noise reduction
+- kind: single
+  group: generated
+  split: generated
+  prompt: rmove the hum
+  expect: denoise
+  source: remove the hum
+- kind: single
+  group: generated
+  split: generated
+  prompt: noie hatao
+  expect: denoise
+  source: noise hatao
+- kind: single
+  group: generated
+  split: generated
+  prompt: shor haatao
+  expect: denoise
+  source: shor hatao
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara duckng
+  expect: duck_music
+  source: ducking
+- kind: single
+  group: generated
+  split: generated
+  prompt: na duc the muic
+  expect: duck_music
+  source: duck the music
+- kind: single
+  group: generated
+  split: generated
+  prompt: music under the voeece
+  expect: duck_music
+  source: music under the voice
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai lowerr museec when talking
+  expect: duck_music
+  source: lower music when talking
+- kind: single
+  group: generated
+  split: generated
+  prompt: na keep the voike clear
+  expect: duck_music
+  source: keep the voice clear
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo auo ducck
+  expect: duck_music
+  source: auto duck
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara sdechain
+  expect: duck_music
+  source: sidechain
+- kind: single
+  group: generated
+  split: generated
+  prompt: msc down while talking
+  expect: duck_music
+  source: music down while talking
+- kind: single
+  group: generated
+  split: generated
+  prompt: awaaz ke neechhe musicc kam
+  expect: duck_music
+  source: awaaz ke neeche music kam
+- kind: single
+  group: generated
+  split: generated
+  prompt: please eho
+  expect: echo_reverb
+  source: echo
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi rewerb
+  expect: echo_reverb
+  source: reverb
+- kind: single
+  group: generated
+  split: generated
+  prompt: halll sounnd
+  expect: echo_reverb
+  source: hall sound
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo room ekho
+  expect: echo_reverb
+  source: room echo
+- kind: single
+  group: generated
+  split: generated
+  prompt: cathedal soud
+  expect: echo_reverb
+  source: cathedral sound
+- kind: single
+  group: generated
+  split: generated
+  prompt: echho effct
+  expect: echo_reverb
+  source: echo effect
+- kind: single
+  group: generated
+  split: generated
+  prompt: big roo
+  expect: echo_reverb
+  source: big room
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi goonj
+  expect: echo_reverb
+  source: gunj
+- kind: single
+  group: generated
+  split: generated
+  prompt: echho daaalo
+  expect: echo_reverb
+  source: echo daalo
+- kind: single
+  group: generated
+  split: generated
+  prompt: exporrt
+  expect: export_preset
+  source: export
+- kind: single
+  group: generated
+  split: generated
+  prompt: exprt for insttagram
+  expect: export_preset
+  source: export for instagram
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo sae for youtube
+  expect: export_preset
+  source: save for youtube
+- kind: single
+  group: generated
+  split: generated
+  prompt: for whtspp
+  expect: export_preset
+  source: for whatsapp
+- kind: single
+  group: generated
+  split: generated
+  prompt: exort settings
+  expect: export_preset
+  source: export settings
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi uplload readyy
+  expect: export_preset
+  source: upload ready
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara pltfrm exprt
+  expect: export_preset
+  source: platform export
+- kind: single
+  group: generated
+  split: generated
+  prompt: exporrt kar
+  expect: export_preset
+  source: export karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: save caro
+  expect: export_preset
+  source: save karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz etract auddio
+  expect: extract_audio
+  source: extract audio
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz export audeeo
+  expect: extract_audio
+  source: export audio
+- kind: single
+  group: generated
+  split: generated
+  prompt: adio onl
+  expect: extract_audio
+  source: audio only
+- kind: single
+  group: generated
+  split: generated
+  prompt: shave as mp3
+  expect: extract_audio
+  source: save as mp3
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo get the snd
+  expect: extract_audio
+  source: get the sound
+- kind: single
+  group: generated
+  split: generated
+  prompt: expot mp3
+  expect: extract_audio
+  source: export mp3
+- kind: single
+  group: generated
+  split: generated
+  prompt: audi feele
+  expect: extract_audio
+  source: audio file
+- kind: single
+  group: generated
+  split: generated
+  prompt: aoodio nikaalo
+  expect: extract_audio
+  source: audio nikalo
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi mp3 baao
+  expect: extract_audio
+  source: mp3 banao
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo highlightsh
+  expect: extract_highlights
+  source: highlights
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai besst momentts
+  expect: extract_highlights
+  source: best moments
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar bestt partsh
+  expect: extract_highlights
+  source: best parts
+- kind: single
+  group: generated
+  split: generated
+  prompt: the besst bits
+  expect: extract_highlights
+  source: the best bits
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi top mments
+  expect: extract_highlights
+  source: top moments
+- kind: single
+  group: generated
+  split: generated
+  prompt: vral part
+  expect: extract_highlights
+  source: viral part
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi higghlight ree
+  expect: extract_highlights
+  source: highlight reel
+- kind: single
+  group: generated
+  split: generated
+  prompt: sase achha hissa nikalo
+  expect: extract_highlights
+  source: sabse achha hissa nikalo
+- kind: single
+  group: generated
+  split: generated
+  prompt: best partt nikalo
+  expect: extract_highlights
+  source: best part nikalo
+- kind: single
+  group: generated
+  split: generated
+  prompt: fad to blackk
+  expect: fade_black
+  source: fade to black
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo phade through black
+  expect: fade_black
+  source: fade through black
+- kind: single
+  group: generated
+  split: generated
+  prompt: phade in
+  expect: fade_black
+  source: fade in
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar fae out
+  expect: fade_black
+  source: fade out
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz fadde in and out
+  expect: fade_black
+  source: fade in and out
+- kind: single
+  group: generated
+  split: generated
+  prompt: dip to back
+  expect: fade_black
+  source: dip to black
+- kind: single
+  group: generated
+  split: generated
+  prompt: black fadde
+  expect: fade_black
+  source: black fade
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai kaala fadde
+  expect: fade_black
+  source: kala fade
+- kind: single
+  group: generated
+  split: generated
+  prompt: na andhera kare badlo
+  expect: fade_black
+  source: andhera karke badlo
+- kind: single
+  group: generated
+  split: generated
+  prompt: fae to wheete
+  expect: fade_white
+  source: fade to white
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara white fadde
+  expect: fade_white
+  source: white fade
+- kind: single
+  group: generated
+  split: generated
+  prompt: wite flash fde
+  expect: fade_white
+  source: white flash fade
+- kind: single
+  group: generated
+  split: generated
+  prompt: dip to vhite
+  expect: fade_white
+  source: dip to white
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar flah transsition
+  expect: fade_white
+  source: flash transition
+- kind: single
+  group: generated
+  split: generated
+  prompt: whte trasition
+  expect: fade_white
+  source: white transition
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar bright fae
+  expect: fade_white
+  source: bright fade
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara fade to white herre
+  expect: fade_white
+  source: fade to white here
+- kind: single
+  group: generated
+  split: generated
+  prompt: saffed fadde
+  expect: fade_white
+  source: safed fade
+- kind: single
+  group: generated
+  split: generated
+  prompt: fillm gain
+  expect: film_grain
+  source: film grain
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi graain
+  expect: film_grain
+  source: grain
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai grany
+  expect: film_grain
+  source: grainy
+- kind: single
+  group: generated
+  split: generated
+  prompt: na add textre
+  expect: film_grain
+  source: add texture
+- kind: single
+  group: generated
+  split: generated
+  prompt: noeese texture
+  expect: film_grain
+  source: noise texture
+- kind: single
+  group: generated
+  split: generated
+  prompt: anallog grrain
+  expect: film_grain
+  source: analog grain
+- kind: single
+  group: generated
+  split: generated
+  prompt: na flm texture
+  expect: film_grain
+  source: film texture
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo philm jaisa daa
+  expect: film_grain
+  source: film jaisa dana
+- kind: single
+  group: generated
+  split: generated
+  prompt: gain daalo
+  expect: film_grain
+  source: grain daalo
+- kind: single
+  group: generated
+  split: generated
+  prompt: mke it sheconds
+  expect: fit_to_duration
+  source: make it seconds
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz fit to
+  expect: fit_to_duration
+  source: fit to
+- kind: single
+  group: generated
+  split: generated
+  prompt: na cut to lngth
+  expect: fit_to_duration
+  source: cut to length
+- kind: single
+  group: generated
+  split: generated
+  prompt: cut dwn to
+  expect: fit_to_duration
+  source: cut down to
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi mak it seconds long
+  expect: fit_to_duration
+  source: make it seconds long
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz shortten to
+  expect: fit_to_duration
+  source: shorten to
+- kind: single
+  group: generated
+  split: generated
+  prompt: undder a minute
+  expect: fit_to_duration
+  source: under a minute
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar lengt of
+  expect: fit_to_duration
+  source: length of
+- kind: single
+  group: generated
+  split: generated
+  prompt: na seconnd ka karro
+  expect: fit_to_duration
+  source: second ka karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo fllash
+  expect: flash
+  source: flash
+- kind: single
+  group: generated
+  split: generated
+  prompt: na white flas
+  expect: flash
+  source: white flash
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai camerra flash
+  expect: flash
+  source: camera flash
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi fllash on the bat
+  expect: flash
+  source: flash on the beat
+- kind: single
+  group: generated
+  split: generated
+  prompt: flash at coots
+  expect: flash
+  source: flash at cuts
+- kind: single
+  group: generated
+  split: generated
+  prompt: brigght flas
+  expect: flash
+  source: bright flash
+- kind: single
+  group: generated
+  split: generated
+  prompt: na photu flaash
+  expect: flash
+  source: photo flash
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar chamakk
+  expect: flash
+  source: chamak
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo flah laga
+  expect: flash
+  source: flash lagao
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara freezze frame
+  expect: freeze_frame
+  source: freeze frame
+- kind: single
+  group: generated
+  split: generated
+  prompt: frz
+  expect: freeze_frame
+  source: freeze
+- kind: single
+  group: generated
+  split: generated
+  prompt: na hold the framme
+  expect: freeze_frame
+  source: hold the frame
+- kind: single
+  group: generated
+  split: generated
+  prompt: pase the pcture
+  expect: freeze_frame
+  source: pause the picture
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi stil fram
+  expect: freeze_frame
+  source: still frame
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi shtop the frame
+  expect: freeze_frame
+  source: stop the frame
+- kind: single
+  group: generated
+  split: generated
+  prompt: frreeze it
+  expect: freeze_frame
+  source: freeze it
+- kind: single
+  group: generated
+  split: generated
+  prompt: please fraame rok do
+  expect: freeze_frame
+  source: frame rok do
+- kind: single
+  group: generated
+  split: generated
+  prompt: na ruk jao
+  expect: freeze_frame
+  source: ruk jao
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo gitch
+  expect: glitch
+  source: glitch
+- kind: single
+  group: generated
+  split: generated
+  prompt: na glitcch effet
+  expect: glitch
+  source: glitch effect
+- kind: single
+  group: generated
+  split: generated
+  prompt: na digital gllitch
+  expect: glitch
+  source: digital glitch
+- kind: single
+  group: generated
+  split: generated
+  prompt: glitcchy
+  expect: glitch
+  source: glitchy
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai corrrupted look
+  expect: glitch
+  source: corrupted look
+- kind: single
+  group: generated
+  split: generated
+  prompt: please daatamosh
+  expect: glitch
+  source: datamosh
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai eror ephfect
+  expect: glitch
+  source: error effect
+- kind: single
+  group: generated
+  split: generated
+  prompt: na hang hua jaeesa
+  expect: glitch
+  source: hang hua jaisa
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara gleetch laagao
+  expect: glitch
+  source: glitch lagao
+- kind: single
+  group: generated
+  split: generated
+  prompt: na gitch trnsition
+  expect: glitch_transition
+  source: glitch transition
+- kind: single
+  group: generated
+  split: generated
+  prompt: glitcch cut
+  expect: glitch_transition
+  source: glitch cut
+- kind: single
+  group: generated
+  split: generated
+  prompt: dgtl transition
+  expect: glitch_transition
+  source: digital transition
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo pixl trnstn
+  expect: glitch_transition
+  source: pixel transition
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz gltchy transition
+  expect: glitch_transition
+  source: glitchy transition
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi eror transition
+  expect: glitch_transition
+  source: error transition
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi data glitc
+  expect: glitch_transition
+  source: data glitch
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz glitcch wala cut
+  expect: glitch_transition
+  source: glitch wala cut
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara glitchh transition do
+  expect: glitch_transition
+  source: glitch transition do
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara blak and whitte
+  expect: grayscale
+  source: black and white
+- kind: single
+  group: generated
+  split: generated
+  prompt: na b&w
+  expect: grayscale
+  source: b&w
+- kind: single
+  group: generated
+  split: generated
+  prompt: na bw
+  expect: grayscale
+  source: bw
+- kind: single
+  group: generated
+  split: generated
+  prompt: na grascale
+  expect: grayscale
+  source: grayscale
+- kind: single
+  group: generated
+  split: generated
+  prompt: na grescale
+  expect: grayscale
+  source: greyscale
+- kind: single
+  group: generated
+  split: generated
+  prompt: moochrome
+  expect: grayscale
+  source: monochrome
+- kind: single
+  group: generated
+  split: generated
+  prompt: no clr
+  expect: grayscale
+  source: no colour
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara kala safd
+  expect: grayscale
+  source: kala safed
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi blackk and wite kar do
+  expect: grayscale
+  source: black and white kar do
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar add huk
+  expect: hook_first
+  source: add hook
+- kind: single
+  group: generated
+  split: generated
+  prompt: na hookk first
+  expect: hook_first
+  source: hook first
+- kind: single
+  group: generated
+  split: generated
+  prompt: start with the besst partt
+  expect: hook_first
+  source: start with the best part
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi strong oppening
+  expect: hook_first
+  source: strong opening
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz open with the hghlight
+  expect: hook_first
+  source: open with the highlight
+- kind: single
+  group: generated
+  split: generated
+  prompt: grab aattention at the startt
+  expect: hook_first
+  source: grab attention at the start
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi best moment frst
+  expect: hook_first
+  source: best moment first
+- kind: single
+  group: generated
+  split: generated
+  prompt: hook laagao
+  expect: hook_first
+  source: hook lagao
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi shuu me best part
+  expect: hook_first
+  source: shuru me best part
+- kind: single
+  group: generated
+  split: generated
+  prompt: b-roll
+  expect: insert_broll
+  source: b-roll
+- kind: single
+  group: generated
+  split: generated
+  prompt: boll
+  expect: insert_broll
+  source: broll
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi kutaway
+  expect: insert_broll
+  source: cutaway
+- kind: single
+  group: generated
+  split: generated
+  prompt: na eensert a shhot
+  expect: insert_broll
+  source: insert a shot
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo show anothr clipp over
+  expect: insert_broll
+  source: show another clip over
+- kind: single
+  group: generated
+  split: generated
+  prompt: add b rol
+  expect: insert_broll
+  source: add b roll
+- kind: single
+  group: generated
+  split: generated
+  prompt: cvr shot
+  expect: insert_broll
+  source: cover shot
+- kind: single
+  group: generated
+  split: generated
+  prompt: please brol daal
+  expect: insert_broll
+  source: broll daalo
+- kind: single
+  group: generated
+  split: generated
+  prompt: bch me doosra shot lagao
+  expect: insert_broll
+  source: beech me doosra shot lagao
+- kind: single
+  group: generated
+  split: generated
+  prompt: na eentro
+  expect: intro_outro
+  source: intro
+- kind: single
+  group: generated
+  split: generated
+  prompt: please otr
+  expect: intro_outro
+  source: outro
+- kind: single
+  group: generated
+  split: generated
+  prompt: into carrd
+  expect: intro_outro
+  source: intro card
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz end crd
+  expect: intro_outro
+  source: end card
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz openinng tile
+  expect: intro_outro
+  source: opening title
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar clsing cardd
+  expect: intro_outro
+  source: closing card
+- kind: single
+  group: generated
+  split: generated
+  prompt: na thak you caard
+  expect: intro_outro
+  source: thank you card
+- kind: single
+  group: generated
+  split: generated
+  prompt: shuruaat me tite
+  expect: intro_outro
+  source: shuruaat me title
+- kind: single
+  group: generated
+  split: generated
+  prompt: na ant me than you
+  expect: intro_outro
+  source: ant me thank you
+- kind: single
+  group: generated
+  split: generated
+  prompt: cirrcle transition
+  expect: iris_circle
+  source: circle transition
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz irris
+  expect: iris_circle
+  source: iris
+- kind: single
+  group: generated
+  split: generated
+  prompt: iri wipe
+  expect: iris_circle
+  source: iris wipe
+- kind: single
+  group: generated
+  split: generated
+  prompt: circle oppen
+  expect: iris_circle
+  source: circle open
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo crcle cose
+  expect: iris_circle
+  source: circle close
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai rounnd transeetion
+  expect: iris_circle
+  source: round transition
+- kind: single
+  group: generated
+  split: generated
+  prompt: please carttoon circl
+  expect: iris_circle
+  source: cartoon circle
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo golaa khule
+  expect: iris_circle
+  source: gola khule
+- kind: single
+  group: generated
+  split: generated
+  prompt: na circle wala trnstn
+  expect: iris_circle
+  source: circle wala transition
+- kind: single
+  group: generated
+  split: generated
+  prompt: j cut
+  expect: j_cut
+  source: j cut
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo j-cut
+  expect: j_cut
+  source: j-cut
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz sond fist
+  expect: j_cut
+  source: sound first
+- kind: single
+  group: generated
+  split: generated
+  prompt: aaudio leaads
+  expect: j_cut
+  source: audio leads
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar hea the next clip first
+  expect: j_cut
+  source: hear the next clip first
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo audeeo before peecture
+  expect: j_cut
+  source: audio before picture
+- kind: single
+  group: generated
+  split: generated
+  prompt: pre-lap
+  expect: j_cut
+  source: pre-lap
+- kind: single
+  group: generated
+  split: generated
+  prompt: awaaz pehle aye
+  expect: j_cut
+  source: awaaz pehle aaye
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai agle clipp ki awaaz pehlle
+  expect: j_cut
+  source: agle clip ki awaaz pehle
+- kind: single
+  group: generated
+  split: generated
+  prompt: tightenn
+  expect: jump_cut_tighten
+  source: tighten
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi joomp cut
+  expect: jump_cut_tighten
+  source: jump cut
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai tigghten the pauses
+  expect: jump_cut_tighten
+  source: tighten the pauses
+- kind: single
+  group: generated
+  split: generated
+  prompt: na mak it snapy
+  expect: jump_cut_tighten
+  source: make it snappy
+- kind: single
+  group: generated
+  split: generated
+  prompt: remve gaps between sentences
+  expect: jump_cut_tighten
+  source: remove gaps between sentences
+- kind: single
+  group: generated
+  split: generated
+  prompt: faste talcing
+  expect: jump_cut_tighten
+  source: faster talking
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi tight edi
+  expect: jump_cut_tighten
+  source: tight edit
+- kind: single
+  group: generated
+  split: generated
+  prompt: please tigh karro
+  expect: jump_cut_tighten
+  source: tight karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar gap kam kro
+  expect: jump_cut_tighten
+  source: gap kam karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: na karaoke cations
+  expect: karaoke_captions
+  source: karaoke captions
+- kind: single
+  group: generated
+  split: generated
+  prompt: word hghlght
+  expect: karaoke_captions
+  source: word highlight
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara hghlght each word
+  expect: karaoke_captions
+  source: highlight each word
+- kind: single
+  group: generated
+  split: generated
+  prompt: karraoke sutitles
+  expect: karaoke_captions
+  source: karaoke subtitles
+- kind: single
+  group: generated
+  split: generated
+  prompt: words lighht up
+  expect: karaoke_captions
+  source: words light up
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz wordd by word cations
+  expect: karaoke_captions
+  source: word by word captions
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar active word captionsh
+  expect: karaoke_captions
+  source: active word captions
+- kind: single
+  group: generated
+  split: generated
+  prompt: bolte hi chaamke
+  expect: karaoke_captions
+  source: bolte hi chamke
+- kind: single
+  group: generated
+  split: generated
+  prompt: har word highight
+  expect: karaoke_captions
+  source: har word highlight
+- kind: single
+  group: generated
+  split: generated
+  prompt: ken burnsh
+  expect: ken_burns
+  source: ken burns
+- kind: single
+  group: generated
+  split: generated
+  prompt: aneemate the photo
+  expect: ken_burns
+  source: animate the photo
+- kind: single
+  group: generated
+  split: generated
+  prompt: sow pan and joom
+  expect: ken_burns
+  source: slow pan and zoom
+- kind: single
+  group: generated
+  split: generated
+  prompt: foto motion
+  expect: ken_burns
+  source: photo motion
+- kind: single
+  group: generated
+  split: generated
+  prompt: pan and joom
+  expect: ken_burns
+  source: pan and zoom
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi docmentary joom
+  expect: ken_burns
+  source: documentary zoom
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai movve the stil
+  expect: ken_burns
+  source: move the still
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi photo ko hilo
+  expect: ken_burns
+  source: photo ko hilao
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi photo aanimate kao
+  expect: ken_burns
+  source: photo animate karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar l cut
+  expect: l_cut
+  source: l cut
+- kind: single
+  group: generated
+  split: generated
+  prompt: l-cut
+  expect: l_cut
+  source: l-cut
+- kind: single
+  group: generated
+  split: generated
+  prompt: aaudio carries over
+  expect: l_cut
+  source: audio carries over
+- kind: single
+  group: generated
+  split: generated
+  prompt: shound continues
+  expect: l_cut
+  source: sound continues
+- kind: single
+  group: generated
+  split: generated
+  prompt: let the audo run oer
+  expect: l_cut
+  source: let the audio run over
+- kind: single
+  group: generated
+  split: generated
+  prompt: please auio after the cut
+  expect: l_cut
+  source: audio after the cut
+- kind: single
+  group: generated
+  split: generated
+  prompt: na owerlap the shound
+  expect: l_cut
+  source: overlap the sound
+- kind: single
+  group: generated
+  split: generated
+  prompt: awaaz aagge tak chale
+  expect: l_cut
+  source: awaaz aage tak chale
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar pikhle ki awaaz chaltee rahe
+  expect: l_cut
+  source: pichle ki awaaz chalti rahe
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara cinematic barrs
+  expect: letterbox
+  source: cinematic bars
+- kind: single
+  group: generated
+  split: generated
+  prompt: black barsh
+  expect: letterbox
+  source: black bars
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara letterrbox
+  expect: letterbox
+  source: letterbox
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai cinea barrs
+  expect: letterbox
+  source: cinema bars
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi mowie bars
+  expect: letterbox
+  source: movie bars
+- kind: single
+  group: generated
+  split: generated
+  prompt: please widecreen barsh
+  expect: letterbox
+  source: widescreen bars
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar scoppe barsh
+  expect: letterbox
+  source: scope bars
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz kalli ptti
+  expect: letterbox
+  source: kali patti
+- kind: single
+  group: generated
+  split: generated
+  prompt: upaar neecche kali patti
+  expect: letterbox
+  source: upar neeche kali patti
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar lighht leak
+  expect: light_leak
+  source: light leak
+- kind: single
+  group: generated
+  split: generated
+  prompt: ligh leacs
+  expect: light_leak
+  source: light leaks
+- kind: single
+  group: generated
+  split: generated
+  prompt: feelm bun
+  expect: light_leak
+  source: film burn
+- kind: single
+  group: generated
+  split: generated
+  prompt: please varm glow
+  expect: light_leak
+  source: warm glow
+- kind: single
+  group: generated
+  split: generated
+  prompt: lns leak
+  expect: light_leak
+  source: lens leak
+- kind: single
+  group: generated
+  split: generated
+  prompt: phlare
+  expect: light_leak
+  source: flare
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara sun leaak
+  expect: light_leak
+  source: sun leak
+- kind: single
+  group: generated
+  split: generated
+  prompt: roshn ka lek
+  expect: light_leak
+  source: roshni ka leak
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo leeght leak lagao
+  expect: light_leak
+  source: light leak lagao
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara boomeraang
+  expect: loop_boomerang
+  source: boomerang
+- kind: single
+  group: generated
+  split: generated
+  prompt: loop bakk and frth
+  expect: loop_boomerang
+  source: loop back and forth
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz forwarrd and bacckward
+  expect: loop_boomerang
+  source: forward and backward
+- kind: single
+  group: generated
+  split: generated
+  prompt: ping pong loo
+  expect: loop_boomerang
+  source: ping pong loop
+- kind: single
+  group: generated
+  split: generated
+  prompt: boommerang effectt
+  expect: loop_boomerang
+  source: boomerang effect
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar loo it
+  expect: loop_boomerang
+  source: loop it
+- kind: single
+  group: generated
+  split: generated
+  prompt: rewwind loopp
+  expect: loop_boomerang
+  source: rewind loop
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara bomerang bannao
+  expect: loop_boomerang
+  source: boomerang banao
+- kind: single
+  group: generated
+  split: generated
+  prompt: aage pch chalo
+  expect: loop_boomerang
+  source: aage peeche chalao
+- kind: single
+  group: generated
+  split: generated
+  prompt: please lowwer theerd
+  expect: lower_third
+  source: lower third
+- kind: single
+  group: generated
+  split: generated
+  prompt: naame stap
+  expect: lower_third
+  source: name strap
+- kind: single
+  group: generated
+  split: generated
+  prompt: nae tag
+  expect: lower_third
+  source: name tag
+- kind: single
+  group: generated
+  split: generated
+  prompt: name at the bttm
+  expect: lower_third
+  source: name at the bottom
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz inntroduce the speker
+  expect: lower_third
+  source: introduce the speaker
+- kind: single
+  group: generated
+  split: generated
+  prompt: namme ttl
+  expect: lower_third
+  source: name title
+- kind: single
+  group: generated
+  split: generated
+  prompt: caaption wth name
+  expect: lower_third
+  source: caption with name
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara naaam patti
+  expect: lower_third
+  source: naam patti
+- kind: single
+  group: generated
+  split: generated
+  prompt: niche naaam likkho
+  expect: lower_third
+  source: niche naam likho
+- kind: single
+  group: generated
+  split: generated
+  prompt: mrg
+  expect: merge_clips
+  source: merge
+- kind: single
+  group: generated
+  split: generated
+  prompt: jin
+  expect: merge_clips
+  source: join
+- kind: single
+  group: generated
+  split: generated
+  prompt: kombine klips
+  expect: merge_clips
+  source: combine clips
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo put tgether
+  expect: merge_clips
+  source: put together
+- kind: single
+  group: generated
+  split: generated
+  prompt: sttch
+  expect: merge_clips
+  source: stitch
+- kind: single
+  group: generated
+  split: generated
+  prompt: one vieo
+  expect: merge_clips
+  source: one video
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi jon all
+  expect: merge_clips
+  source: join all
+- kind: single
+  group: generated
+  split: generated
+  prompt: na jdo
+  expect: merge_clips
+  source: jodo
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar sab jod do
+  expect: merge_clips
+  source: sab jod do
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi mirro effet
+  expect: mirror_effect
+  source: mirror effect
+- kind: single
+  group: generated
+  split: generated
+  prompt: syymmetric
+  expect: mirror_effect
+  source: symmetric
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi kaledoscope
+  expect: mirror_effect
+  source: kaleidoscope
+- kind: single
+  group: generated
+  split: generated
+  prompt: please mirrored iage
+  expect: mirror_effect
+  source: mirrored image
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz refection effet
+  expect: mirror_effect
+  source: reflection effect
+- kind: single
+  group: generated
+  split: generated
+  prompt: symmetryy
+  expect: mirror_effect
+  source: symmetry
+- kind: single
+  group: generated
+  split: generated
+  prompt: aaia
+  expect: mirror_effect
+  source: aaina
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz mrrr effec do
+  expect: mirror_effect
+  source: mirror effect do
+- kind: single
+  group: generated
+  split: generated
+  prompt: dno taraf shame
+  expect: mirror_effect
+  source: dono taraf same
+- kind: single
+  group: generated
+  split: generated
+  prompt: motage
+  expect: montage_builder
+  source: montage
+- kind: single
+  group: generated
+  split: generated
+  prompt: queeck cutts
+  expect: montage_builder
+  source: quick cuts
+- kind: single
+  group: generated
+  split: generated
+  prompt: fat montaage
+  expect: montage_builder
+  source: fast montage
+- kind: single
+  group: generated
+  split: generated
+  prompt: rapid cut
+  expect: montage_builder
+  source: rapid cuts
+- kind: single
+  group: generated
+  split: generated
+  prompt: mix of all cips
+  expect: montage_builder
+  source: mix of all clips
+- kind: single
+  group: generated
+  split: generated
+  prompt: please sizze ril
+  expect: montage_builder
+  source: sizzle reel
+- kind: single
+  group: generated
+  split: generated
+  prompt: shortt shotts
+  expect: montage_builder
+  source: short shots
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara motage baanao
+  expect: montage_builder
+  source: montage banao
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo sab clipps ka mix
+  expect: montage_builder
+  source: sab clips ka mix
+- kind: single
+  group: generated
+  split: generated
+  prompt: moote
+  expect: mute
+  source: mute
+- kind: single
+  group: generated
+  split: generated
+  prompt: no sond
+  expect: mute
+  source: no sound
+- kind: single
+  group: generated
+  split: generated
+  prompt: na silentt
+  expect: mute
+  source: silent
+- kind: single
+  group: generated
+  split: generated
+  prompt: remove the snd
+  expect: mute
+  source: remove the sound
+- kind: single
+  group: generated
+  split: generated
+  prompt: turn off the auddio
+  expect: mute
+  source: turn off the audio
+- kind: single
+  group: generated
+  split: generated
+  prompt: mute the audeeo
+  expect: mute
+  source: mute the audio
+- kind: single
+  group: generated
+  split: generated
+  prompt: sounnd off
+  expect: mute
+  source: sound off
+- kind: single
+  group: generated
+  split: generated
+  prompt: awaa bnd
+  expect: mute
+  source: awaaz band
+- kind: single
+  group: generated
+  split: generated
+  prompt: sond hattao
+  expect: mute
+  source: sound hatao
+- kind: single
+  group: generated
+  split: generated
+  prompt: nrmlze louness
+  expect: normalize_loudness
+  source: normalize loudness
+- kind: single
+  group: generated
+  split: generated
+  prompt: ewen out the volume
+  expect: normalize_loudness
+  source: even out the volume
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai lodnss
+  expect: normalize_loudness
+  source: loudness
+- kind: single
+  group: generated
+  split: generated
+  prompt: lfs
+  expect: normalize_loudness
+  source: lufs
+- kind: single
+  group: generated
+  split: generated
+  prompt: conistent vlume
+  expect: normalize_loudness
+  source: consistent volume
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz normalize aoodio
+  expect: normalize_loudness
+  source: normalize audio
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai level the audeeo
+  expect: normalize_loudness
+  source: level the audio
+- kind: single
+  group: generated
+  split: generated
+  prompt: vlume barabar karo
+  expect: normalize_loudness
+  source: volume barabar karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: please awwaaz brabar karo
+  expect: normalize_loudness
+  source: awaaz barabar karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo pan
+  expect: pan
+  source: pan
+- kind: single
+  group: generated
+  split: generated
+  prompt: pan lef
+  expect: pan
+  source: pan left
+- kind: single
+  group: generated
+  split: generated
+  prompt: pan rigt
+  expect: pan
+  source: pan right
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo slide the framme
+  expect: pan
+  source: slide the frame
+- kind: single
+  group: generated
+  split: generated
+  prompt: camerra pan
+  expect: pan
+  source: camera pan
+- kind: single
+  group: generated
+  split: generated
+  prompt: moe sidways
+  expect: pan
+  source: move sideways
+- kind: single
+  group: generated
+  split: generated
+  prompt: na tillt up
+  expect: pan
+  source: tilt up
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo sid me sarrkao
+  expect: pan
+  source: side me sarkao
+- kind: single
+  group: generated
+  split: generated
+  prompt: lepht right ghumao
+  expect: pan
+  source: left right ghumao
+- kind: single
+  group: generated
+  split: generated
+  prompt: pictoore in pictre
+  expect: picture_in_picture
+  source: picture in picture
+- kind: single
+  group: generated
+  split: generated
+  prompt: pip
+  expect: picture_in_picture
+  source: pip
+- kind: single
+  group: generated
+  split: generated
+  prompt: sall video in the corner
+  expect: picture_in_picture
+  source: small video in the corner
+- kind: single
+  group: generated
+  split: generated
+  prompt: reacttion vieo
+  expect: picture_in_picture
+  source: reaction video
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo overrlay video
+  expect: picture_in_picture
+  source: overlay video
+- kind: single
+  group: generated
+  split: generated
+  prompt: insset videu
+  expect: picture_in_picture
+  source: inset video
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar min vdeo
+  expect: picture_in_picture
+  source: mini video
+- kind: single
+  group: generated
+  split: generated
+  prompt: chhota vido koe me
+  expect: picture_in_picture
+  source: chhota video kone me
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai kon me video
+  expect: picture_in_picture
+  source: kone me video
+- kind: single
+  group: generated
+  split: generated
+  prompt: pixelaate
+  expect: pixelate_censor
+  source: pixelate
+- kind: single
+  group: generated
+  split: generated
+  prompt: censo
+  expect: pixelate_censor
+  source: censor
+- kind: single
+  group: generated
+  split: generated
+  prompt: mossaic
+  expect: pixelate_censor
+  source: mosaic
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi hde the faace
+  expect: pixelate_censor
+  source: hide the face
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai pxel blur
+  expect: pixelate_censor
+  source: pixel blur
+- kind: single
+  group: generated
+  split: generated
+  prompt: blur the facce
+  expect: pixelate_censor
+  source: blur the face
+- kind: single
+  group: generated
+  split: generated
+  prompt: pixelate the number plte
+  expect: pixelate_censor
+  source: pixelate the number plate
+- kind: single
+  group: generated
+  split: generated
+  prompt: please khehra chhupao
+  expect: pixelate_censor
+  source: chehra chhupao
+- kind: single
+  group: generated
+  split: generated
+  prompt: na pxl kar do
+  expect: pixelate_censor
+  source: pixel kar do
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo progresss bar
+  expect: progress_bar
+  source: progress bar
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo loaing bar
+  expect: progress_bar
+  source: loading bar
+- kind: single
+  group: generated
+  split: generated
+  prompt: timmeline bar
+  expect: progress_bar
+  source: timeline bar
+- kind: single
+  group: generated
+  split: generated
+  prompt: bar thaat fills
+  expect: progress_bar
+  source: bar that fills
+- kind: single
+  group: generated
+  split: generated
+  prompt: please prgress line
+  expect: progress_bar
+  source: progress line
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo watc progreshs
+  expect: progress_bar
+  source: watch progress
+- kind: single
+  group: generated
+  split: generated
+  prompt: na tme bar
+  expect: progress_bar
+  source: time bar
+- kind: single
+  group: generated
+  split: generated
+  prompt: please prrogress bar lagao
+  expect: progress_bar
+  source: progress bar lagao
+- kind: single
+  group: generated
+  split: generated
+  prompt: loadin bar
+  expect: progress_bar
+  source: loading bar
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar punkh in
+  expect: punch_in
+  source: punch in
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai pnch zom
+  expect: punch_in
+  source: punch zoom
+- kind: single
+  group: generated
+  split: generated
+  prompt: joom hit
+  expect: punch_in
+  source: zoom hit
+- kind: single
+  group: generated
+  split: generated
+  prompt: quck zoom
+  expect: punch_in
+  source: quick zoom
+- kind: single
+  group: generated
+  split: generated
+  prompt: na snap zum
+  expect: punch_in
+  source: snap zoom
+- kind: single
+  group: generated
+  split: generated
+  prompt: impacct zum
+  expect: punch_in
+  source: impact zoom
+- kind: single
+  group: generated
+  split: generated
+  prompt: jump zoo
+  expect: punch_in
+  source: jump zoom
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai jhhatka zoom
+  expect: punch_in
+  source: jhatka zoom
+- kind: single
+  group: generated
+  split: generated
+  prompt: bea par zum
+  expect: punch_in
+  source: beat par zoom
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai remowe umm
+  expect: remove_fillers
+  source: remove umm
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz rmve fillers
+  expect: remove_fillers
+  source: remove fillers
+- kind: single
+  group: generated
+  split: generated
+  prompt: cut filler wrds
+  expect: remove_fillers
+  source: cut filler words
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai remmove uh
+  expect: remove_fillers
+  source: remove uh
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara cut the ums
+  expect: remove_fillers
+  source: cut the ums
+- kind: single
+  group: generated
+  split: generated
+  prompt: no ummsh
+  expect: remove_fillers
+  source: no umms
+- kind: single
+  group: generated
+  split: generated
+  prompt: please klean the ums
+  expect: remove_fillers
+  source: clean the ums
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar filler words haao
+  expect: remove_fillers
+  source: filler words hatao
+- kind: single
+  group: generated
+  split: generated
+  prompt: fllers hata
+  expect: remove_fillers
+  source: fillers hatao
+- kind: single
+  group: generated
+  split: generated
+  prompt: please remove silene
+  expect: remove_silence
+  source: remove silence
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo cut silenes
+  expect: remove_silence
+  source: cut silences
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo removve pausses
+  expect: remove_silence
+  source: remove pauses
+- kind: single
+  group: generated
+  split: generated
+  prompt: cut the deaad air
+  expect: remove_silence
+  source: cut the dead air
+- kind: single
+  group: generated
+  split: generated
+  prompt: no silenke
+  expect: remove_silence
+  source: no silence
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai reove quiet partss
+  expect: remove_silence
+  source: remove quiet parts
+- kind: single
+  group: generated
+  split: generated
+  prompt: cut gas
+  expect: remove_silence
+  source: cut gaps
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar remove slnt partss
+  expect: remove_silence
+  source: remove silent parts
+- kind: single
+  group: generated
+  split: generated
+  prompt: silenke haatao
+  expect: remove_silence
+  source: silence hatao
+- kind: single
+  group: generated
+  split: generated
+  prompt: reorderr
+  expect: reorder_clips
+  source: reorder
+- kind: single
+  group: generated
+  split: generated
+  prompt: change the orer
+  expect: reorder_clips
+  source: change the order
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi svap klips
+  expect: reorder_clips
+  source: swap clips
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz move cleep
+  expect: reorder_clips
+  source: move clip
+- kind: single
+  group: generated
+  split: generated
+  prompt: rerrange
+  expect: reorder_clips
+  source: rearrange
+- kind: single
+  group: generated
+  split: generated
+  prompt: please put phirst
+  expect: reorder_clips
+  source: put first
+- kind: single
+  group: generated
+  split: generated
+  prompt: put at the end
+  expect: reorder_clips
+  source: put at the end
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi order bdl
+  expect: reorder_clips
+  source: order badlo
+- kind: single
+  group: generated
+  split: generated
+  prompt: aage peeche kao
+  expect: reorder_clips
+  source: aage peeche karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: please replace the audiu
+  expect: replace_audio
+  source: replace the audio
+- kind: single
+  group: generated
+  split: generated
+  prompt: svap the aaudio
+  expect: replace_audio
+  source: swap the audio
+- kind: single
+  group: generated
+  split: generated
+  prompt: please use onlly music
+  expect: replace_audio
+  source: use only music
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo replace snd witth music
+  expect: replace_audio
+  source: replace sound with music
+- kind: single
+  group: generated
+  split: generated
+  prompt: new audi trac
+  expect: replace_audio
+  source: new audio track
+- kind: single
+  group: generated
+  split: generated
+  prompt: remove original sond and add moosic
+  expect: replace_audio
+  source: remove original sound and add music
+- kind: single
+  group: generated
+  split: generated
+  prompt: dub
+  expect: replace_audio
+  source: dub
+- kind: single
+  group: generated
+  split: generated
+  prompt: awz badlo
+  expect: replace_audio
+  source: awaaz badlo
+- kind: single
+  group: generated
+  split: generated
+  prompt: audio replace karu
+  expect: replace_audio
+  source: audio replace karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: mace it norml
+  expect: restore_normal
+  source: make it normal
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo bakk to normmal
+  expect: restore_normal
+  source: back to normal
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz resttore the oiginal
+  expect: restore_normal
+  source: restore the original
+- kind: single
+  group: generated
+  split: generated
+  prompt: remove the effec hee
+  expect: restore_normal
+  source: remove the effect here
+- kind: single
+  group: generated
+  split: generated
+  prompt: udo the ephfect here
+  expect: restore_normal
+  source: undo the effect here
+- kind: single
+  group: generated
+  split: generated
+  prompt: origginal loo
+  expect: restore_normal
+  source: original look
+- kind: single
+  group: generated
+  split: generated
+  prompt: as it was bfre
+  expect: restore_normal
+  source: as it was before
+- kind: single
+  group: generated
+  split: generated
+  prompt: cleaar the efects
+  expect: restore_normal
+  source: clear the effects
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo normall kar do
+  expect: restore_normal
+  source: normal kar do
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz reversse
+  expect: reverse
+  source: reverse
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara play bckwrds
+  expect: reverse
+  source: play backwards
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz rewind effectt
+  expect: reverse
+  source: rewind effect
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo backwardsh
+  expect: reverse
+  source: backwards
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi reverse the cleep
+  expect: reverse
+  source: reverse the clip
+- kind: single
+  group: generated
+  split: generated
+  prompt: rewid
+  expect: reverse
+  source: rewind
+- kind: single
+  group: generated
+  split: generated
+  prompt: please pay it in reverse
+  expect: reverse
+  source: play it in reverse
+- kind: single
+  group: generated
+  split: generated
+  prompt: ulta chlao
+  expect: reverse
+  source: ulta chalao
+- kind: single
+  group: generated
+  split: generated
+  prompt: ultaa kar do video
+  expect: reverse
+  source: ulta kar do video
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi rgb splitt
+  expect: rgb_split
+  source: rgb split
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz chrromatic abrrtin
+  expect: rgb_split
+  source: chromatic aberration
+- kind: single
+  group: generated
+  split: generated
+  prompt: colou slit
+  expect: rgb_split
+  source: colour split
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo rgb shit
+  expect: rgb_split
+  source: rgb shift
+- kind: single
+  group: generated
+  split: generated
+  prompt: channel spleet
+  expect: rgb_split
+  source: channel split
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar aberrtion
+  expect: rgb_split
+  source: aberration
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai colur fringe
+  expect: rgb_split
+  source: colour fringe
+- kind: single
+  group: generated
+  split: generated
+  prompt: rag alag aag
+  expect: rgb_split
+  source: rang alag alag
+- kind: single
+  group: generated
+  split: generated
+  prompt: rgb split laga
+  expect: rgb_split
+  source: rgb split lagao
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi rotat
+  expect: rotate_flip
+  source: rotate
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi fllip
+  expect: rotate_flip
+  source: flip
+- kind: single
+  group: generated
+  split: generated
+  prompt: na meerror
+  expect: rotate_flip
+  source: mirror
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi turrn the video
+  expect: rotate_flip
+  source: turn the video
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar upide don
+  expect: rotate_flip
+  source: upside down
+- kind: single
+  group: generated
+  split: generated
+  prompt: roate 90
+  expect: rotate_flip
+  source: rotate 90
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz sieways vdeo fix
+  expect: rotate_flip
+  source: sideways video fix
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai ghuao
+  expect: rotate_flip
+  source: ghumao
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo palatt do
+  expect: rotate_flip
+  source: palat do
+- kind: single
+  group: generated
+  split: generated
+  prompt: please satturation
+  expect: saturation
+  source: saturation
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi mre clrfl
+  expect: saturation
+  source: more colourful
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi vbrant
+  expect: saturation
+  source: vibrant
+- kind: single
+  group: generated
+  split: generated
+  prompt: riche coloursh
+  expect: saturation
+  source: richer colours
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo faded clours
+  expect: saturation
+  source: faded colours
+- kind: single
+  group: generated
+  split: generated
+  prompt: desatrate
+  expect: saturation
+  source: desaturate
+- kind: single
+  group: generated
+  split: generated
+  prompt: wivid
+  expect: saturation
+  source: vivid
+- kind: single
+  group: generated
+  split: generated
+  prompt: rangg gehre karo
+  expect: saturation
+  source: rang gehre karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: colorful baao
+  expect: saturation
+  source: colorful banao
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo sene detection
+  expect: scene_detect
+  source: scene detection
+- kind: single
+  group: generated
+  split: generated
+  prompt: deect scennes
+  expect: scene_detect
+  source: detect scenes
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara split intto scenes
+  expect: scene_detect
+  source: split into scenes
+- kind: single
+  group: generated
+  split: generated
+  prompt: fin the skenes
+  expect: scene_detect
+  source: find the scenes
+- kind: single
+  group: generated
+  split: generated
+  prompt: auto spit
+  expect: scene_detect
+  source: auto split
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi cut at scen chaanges
+  expect: scene_detect
+  source: cut at scene changes
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz scne cuts
+  expect: scene_detect
+  source: scene cuts
+- kind: single
+  group: generated
+  split: generated
+  prompt: scenes alag kro
+  expect: scene_detect
+  source: scenes alag karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: na scee dhoondo
+  expect: scene_detect
+  source: scene dhoondo
+- kind: single
+  group: generated
+  split: generated
+  prompt: na sepeea
+  expect: sepia
+  source: sepia
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai brrown tonne
+  expect: sepia
+  source: brown tone
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai old phhoto lookk
+  expect: sepia
+  source: old photo look
+- kind: single
+  group: generated
+  split: generated
+  prompt: antiqooe look
+  expect: sepia
+  source: antique look
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo shepia tone
+  expect: sepia
+  source: sepia tone
+- kind: single
+  group: generated
+  split: generated
+  prompt: browish
+  expect: sepia
+  source: brownish
+- kind: single
+  group: generated
+  split: generated
+  prompt: na old pctre
+  expect: sepia
+  source: old picture
+- kind: single
+  group: generated
+  split: generated
+  prompt: puraa look
+  expect: sepia
+  source: purana look
+- kind: single
+  group: generated
+  split: generated
+  prompt: bron tne do
+  expect: sepia
+  source: brown tone do
+- kind: single
+  group: generated
+  split: generated
+  prompt: na whosh
+  expect: sfx_whoosh
+  source: whoosh
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai soosh soundd
+  expect: sfx_whoosh
+  source: swoosh sound
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar whsh sound effct
+  expect: sfx_whoosh
+  source: whoosh sound effect
+- kind: single
+  group: generated
+  split: generated
+  prompt: soundd effec at cuts
+  expect: sfx_whoosh
+  source: sound effect at cuts
+- kind: single
+  group: generated
+  split: generated
+  prompt: transition sund
+  expect: sfx_whoosh
+  source: transition sound
+- kind: single
+  group: generated
+  split: generated
+  prompt: swishh
+  expect: sfx_whoosh
+  source: swish
+- kind: single
+  group: generated
+  split: generated
+  prompt: whooh on cuts
+  expect: sfx_whoosh
+  source: whoosh on cuts
+- kind: single
+  group: generated
+  split: generated
+  prompt: swoosh snd lagao
+  expect: sfx_whoosh
+  source: swoosh sound lagao
+- kind: single
+  group: generated
+  split: generated
+  prompt: please whoosh daallo
+  expect: sfx_whoosh
+  source: whoosh daalo
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz shke
+  expect: shake
+  source: shake
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar camera shhake
+  expect: shake
+  source: camera shake
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai erthquke efect
+  expect: shake
+  source: earthquake effect
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi shakky cam
+  expect: shake
+  source: shaky cam
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi handhed looc
+  expect: shake
+  source: handheld look
+- kind: single
+  group: generated
+  split: generated
+  prompt: screen shaake
+  expect: shake
+  source: screen shake
+- kind: single
+  group: generated
+  split: generated
+  prompt: ruble
+  expect: shake
+  source: rumble
+- kind: single
+  group: generated
+  split: generated
+  prompt: hillao
+  expect: shake
+  source: hilao
+- kind: single
+  group: generated
+  split: generated
+  prompt: jhate do
+  expect: shake
+  source: jhatke do
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara mrk thhis spot
+  expect: shape_highlight
+  source: mark this spot
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai yahan highight kaaro
+  expect: shape_highlight
+  source: yahan highlight karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: cicle it
+  expect: shape_highlight
+  source: circle it
+- kind: single
+  group: generated
+  split: generated
+  prompt: add an aarrow
+  expect: shape_highlight
+  source: add an arrow
+- kind: single
+  group: generated
+  split: generated
+  prompt: na pont at
+  expect: shape_highlight
+  source: point at
+- kind: single
+  group: generated
+  split: generated
+  prompt: please draaw a box
+  expect: shape_highlight
+  source: draw a box
+- kind: single
+  group: generated
+  split: generated
+  prompt: please circl thees
+  expect: shape_highlight
+  source: circle this
+- kind: single
+  group: generated
+  split: generated
+  prompt: arrw pointig
+  expect: shape_highlight
+  source: arrow pointing
+- kind: single
+  group: generated
+  split: generated
+  prompt: na crcle lgao
+  expect: shape_highlight
+  source: circle lagao
+- kind: single
+  group: generated
+  split: generated
+  prompt: sharpe
+  expect: sharpen
+  source: sharpen
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai sarper
+  expect: sharpen
+  source: sharper
+- kind: single
+  group: generated
+  split: generated
+  prompt: cris
+  expect: sharpen
+  source: crisp
+- kind: single
+  group: generated
+  split: generated
+  prompt: mor dtal
+  expect: sharpen
+  source: more detail
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz clearer picure
+  expect: sharpen
+  source: clearer picture
+- kind: single
+  group: generated
+  split: generated
+  prompt: please mke it sharp
+  expect: sharpen
+  source: make it sharp
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi crispr
+  expect: sharpen
+  source: crisper
+- kind: single
+  group: generated
+  split: generated
+  prompt: shharp caro
+  expect: sharpen
+  source: sharp karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: cler kaaro
+  expect: sharpen
+  source: clear karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: sllide
+  expect: slide
+  source: slide
+- kind: single
+  group: generated
+  split: generated
+  prompt: side transition
+  expect: slide
+  source: slide transition
+- kind: single
+  group: generated
+  split: generated
+  prompt: na sllide in
+  expect: slide
+  source: slide in
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz puh transition
+  expect: slide
+  source: push transition
+- kind: single
+  group: generated
+  split: generated
+  prompt: slie lefft
+  expect: slide
+  source: slide left
+- kind: single
+  group: generated
+  split: generated
+  prompt: slide rigght
+  expect: slide
+  source: slide right
+- kind: single
+  group: generated
+  split: generated
+  prompt: swipe trnsition
+  expect: slide
+  source: swipe transition
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar sakao
+  expect: slide
+  source: sarkao
+- kind: single
+  group: generated
+  split: generated
+  prompt: side se aye
+  expect: slide
+  source: side se aaye
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar sllow motio
+  expect: slow_motion
+  source: slow motion
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz slov mo
+  expect: slow_motion
+  source: slow mo
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo slom
+  expect: slow_motion
+  source: slomo
+- kind: single
+  group: generated
+  split: generated
+  prompt: sow down
+  expect: slow_motion
+  source: slow down
+- kind: single
+  group: generated
+  split: generated
+  prompt: please haf shpeed
+  expect: slow_motion
+  source: half speed
+- kind: single
+  group: generated
+  split: generated
+  prompt: please slowr
+  expect: slow_motion
+  source: slower
+- kind: single
+  group: generated
+  split: generated
+  prompt: slow-mo
+  expect: slow_motion
+  source: slow-mo
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz dheemaa karo
+  expect: slow_motion
+  source: dheema karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: sow motion me chalao
+  expect: slow_motion
+  source: slow motion me chalao
+- kind: single
+  group: generated
+  split: generated
+  prompt: spee rampp
+  expect: speed_ramp
+  source: speed ramp
+- kind: single
+  group: generated
+  split: generated
+  prompt: rmp
+  expect: speed_ramp
+  source: ramp
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi fast then slo
+  expect: speed_ramp
+  source: fast then slow
+- kind: single
+  group: generated
+  split: generated
+  prompt: slow ten fas
+  expect: speed_ramp
+  source: slow then fast
+- kind: single
+  group: generated
+  split: generated
+  prompt: welocity edeet
+  expect: speed_ramp
+  source: velocity edit
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo speed changge
+  expect: speed_ramp
+  source: speed change
+- kind: single
+  group: generated
+  split: generated
+  prompt: ram the seed
+  expect: speed_ramp
+  source: ramp the speed
+- kind: single
+  group: generated
+  split: generated
+  prompt: tez phirr sloww
+  expect: speed_ramp
+  source: tez phir slow
+- kind: single
+  group: generated
+  split: generated
+  prompt: please slow fir tez
+  expect: speed_ramp
+  source: slow phir tez
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi spee up
+  expect: speed_up
+  source: speed up
+- kind: single
+  group: generated
+  split: generated
+  prompt: fasterr
+  expect: speed_up
+  source: faster
+- kind: single
+  group: generated
+  split: generated
+  prompt: fast forwaard
+  expect: speed_up
+  source: fast forward
+- kind: single
+  group: generated
+  split: generated
+  prompt: 2x seed
+  expect: speed_up
+  source: 2x speed
+- kind: single
+  group: generated
+  split: generated
+  prompt: timelapshe
+  expect: speed_up
+  source: timelapse
+- kind: single
+  group: generated
+  split: generated
+  prompt: na mace it quicker
+  expect: speed_up
+  source: make it quicker
+- kind: single
+  group: generated
+  split: generated
+  prompt: doule spd
+  expect: speed_up
+  source: double speed
+- kind: single
+  group: generated
+  split: generated
+  prompt: tez kaaro
+  expect: speed_up
+  source: tez karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara jald chalau
+  expect: speed_up
+  source: jaldi chalao
+- kind: single
+  group: generated
+  split: generated
+  prompt: splitt
+  expect: split
+  source: split
+- kind: single
+  group: generated
+  split: generated
+  prompt: spplit at
+  expect: split
+  source: split at
+- kind: single
+  group: generated
+  split: generated
+  prompt: cut intto two
+  expect: split
+  source: cut into two
+- kind: single
+  group: generated
+  split: generated
+  prompt: break the clp
+  expect: split
+  source: break the clip
+- kind: single
+  group: generated
+  split: generated
+  prompt: na diwide the clp
+  expect: split
+  source: divide the clip
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara mak a cut at
+  expect: split
+  source: make a cut at
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo raor
+  expect: split
+  source: razor
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai tod do
+  expect: split
+  source: tod do
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo do hissse caro
+  expect: split
+  source: do hisse karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi split shcreen
+  expect: split_screen
+  source: split screen
+- kind: single
+  group: generated
+  split: generated
+  prompt: sid by seede
+  expect: split_screen
+  source: side by side
+- kind: single
+  group: generated
+  split: generated
+  prompt: two vds togeter
+  expect: split_screen
+  source: two videos together
+- kind: single
+  group: generated
+  split: generated
+  prompt: haf and half
+  expect: split_screen
+  source: half and half
+- kind: single
+  group: generated
+  split: generated
+  prompt: please compare seede by side
+  expect: split_screen
+  source: compare side by side
+- kind: single
+  group: generated
+  split: generated
+  prompt: na dul scree
+  expect: split_screen
+  source: dual screen
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo befoe and after
+  expect: split_screen
+  source: before and after
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai do videu saathh
+  expect: split_screen
+  source: do video saath
+- kind: single
+  group: generated
+  split: generated
+  prompt: na aada aada
+  expect: split_screen
+  source: aadha aadha
+- kind: single
+  group: generated
+  split: generated
+  prompt: srt
+  expect: srt_export
+  source: srt
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz subitle fle
+  expect: srt_export
+  source: subtitle file
+- kind: single
+  group: generated
+  split: generated
+  prompt: expot soobtitles
+  expect: srt_export
+  source: export subtitles
+- kind: single
+  group: generated
+  split: generated
+  prompt: capion file
+  expect: srt_export
+  source: caption file
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai sve the kaptions
+  expect: srt_export
+  source: save the captions
+- kind: single
+  group: generated
+  split: generated
+  prompt: srt fle
+  expect: srt_export
+  source: srt file
+- kind: single
+  group: generated
+  split: generated
+  prompt: dovnload sbtitles
+  expect: srt_export
+  source: download subtitles
+- kind: single
+  group: generated
+  split: generated
+  prompt: subtitle fle do
+  expect: srt_export
+  source: subtitle file do
+- kind: single
+  group: generated
+  split: generated
+  prompt: srt bano
+  expect: srt_export
+  source: srt banao
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar staabilize
+  expect: stabilize
+  source: stabilize
+- kind: single
+  group: generated
+  split: generated
+  prompt: stbls
+  expect: stabilize
+  source: stabilise
+- kind: single
+  group: generated
+  split: generated
+  prompt: stady
+  expect: stabilize
+  source: steady
+- kind: single
+  group: generated
+  split: generated
+  prompt: remoe shaake
+  expect: stabilize
+  source: remove shake
+- kind: single
+  group: generated
+  split: generated
+  prompt: fix the shacy videu
+  expect: stabilize
+  source: fix the shaky video
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara smoothh the camera
+  expect: stabilize
+  source: smooth the camera
+- kind: single
+  group: generated
+  split: generated
+  prompt: aanti sake
+  expect: stabilize
+  source: anti shake
+- kind: single
+  group: generated
+  split: generated
+  prompt: na hln bannd karo
+  expect: stabilize
+  source: hilna band karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo videu stable karo
+  expect: stabilize
+  source: video stable karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: stticker
+  expect: sticker_lottie
+  source: sticker
+- kind: single
+  group: generated
+  split: generated
+  prompt: na add a shticker
+  expect: sticker_lottie
+  source: add a sticker
+- kind: single
+  group: generated
+  split: generated
+  prompt: emoji steecker
+  expect: sticker_lottie
+  source: emoji sticker
+- kind: single
+  group: generated
+  split: generated
+  prompt: animmated sticker
+  expect: sticker_lottie
+  source: animated sticker
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi add an emojee
+  expect: sticker_lottie
+  source: add an emoji
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar put an emmoji
+  expect: sticker_lottie
+  source: put an emoji
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara lotti
+  expect: sticker_lottie
+  source: lottie
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo stikker laao
+  expect: sticker_lottie
+  source: sticker lagao
+- kind: single
+  group: generated
+  split: generated
+  prompt: emj lagao
+  expect: sticker_lottie
+  source: emoji lagao
+- kind: single
+  group: generated
+  split: generated
+  prompt: na teal and orng
+  expect: teal_orange
+  source: teal and orange
+- kind: single
+  group: generated
+  split: generated
+  prompt: teall orannge
+  expect: teal_orange
+  source: teal orange
+- kind: single
+  group: generated
+  split: generated
+  prompt: please hllywod luk
+  expect: teal_orange
+  source: hollywood look
+- kind: single
+  group: generated
+  split: generated
+  prompt: blocckbuster luk
+  expect: teal_orange
+  source: blockbuster look
+- kind: single
+  group: generated
+  split: generated
+  prompt: orannge and tea
+  expect: teal_orange
+  source: orange and teal
+- kind: single
+  group: generated
+  split: generated
+  prompt: action movi colour
+  expect: teal_orange
+  source: action movie colour
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai tea toe
+  expect: teal_orange
+  source: teal tone
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara teal orane kro
+  expect: teal_orange
+  source: teal orange karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz hollyywood jasa
+  expect: teal_orange
+  source: hollywood jaisa
+- kind: single
+  group: generated
+  split: generated
+  prompt: neon tex
+  expect: text_glow_neon
+  source: neon text
+- kind: single
+  group: generated
+  split: generated
+  prompt: please glo txt
+  expect: text_glow_neon
+  source: glow text
+- kind: single
+  group: generated
+  split: generated
+  prompt: glowing tet
+  expect: text_glow_neon
+  source: glowing text
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi neon titlle
+  expect: text_glow_neon
+  source: neon title
+- kind: single
+  group: generated
+  split: generated
+  prompt: ligght up txt
+  expect: text_glow_neon
+  source: light up text
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara neon siggn
+  expect: text_glow_neon
+  source: neon sign
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi glow effect txt
+  expect: text_glow_neon
+  source: glow effect text
+- kind: single
+  group: generated
+  split: generated
+  prompt: chamkta txt
+  expect: text_glow_neon
+  source: chamakta text
+- kind: single
+  group: generated
+  split: generated
+  prompt: neon wala tet
+  expect: text_glow_neon
+  source: neon wala text
+- kind: single
+  group: generated
+  split: generated
+  prompt: add textt
+  expect: text_overlay
+  source: add text
+- kind: single
+  group: generated
+  split: generated
+  prompt: wrt
+  expect: text_overlay
+  source: write
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz put textt
+  expect: text_overlay
+  source: put text
+- kind: single
+  group: generated
+  split: generated
+  prompt: tex on screen
+  expect: text_overlay
+  source: text on screen
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi cptn sayingg
+  expect: text_overlay
+  source: caption saying
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz writte on the veedeo
+  expect: text_overlay
+  source: write on the video
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi sho the wrds
+  expect: text_overlay
+  source: show the words
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara textt likho
+  expect: text_overlay
+  source: text likho
+- kind: single
+  group: generated
+  split: generated
+  prompt: yahan ye likhu
+  expect: text_overlay
+  source: yahan ye likho
+- kind: single
+  group: generated
+  split: generated
+  prompt: pop textt
+  expect: text_pop_in
+  source: pop text
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai bounnce text
+  expect: text_pop_in
+  source: bounce text
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi pop in
+  expect: text_pop_in
+  source: pop in
+- kind: single
+  group: generated
+  split: generated
+  prompt: text pop up
+  expect: text_pop_in
+  source: text pops up
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar bouncy tile
+  expect: text_pop_in
+  source: bouncy title
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi joom in text
+  expect: text_pop_in
+  source: zoom in text
+- kind: single
+  group: generated
+  split: generated
+  prompt: pop aanimation
+  expect: text_pop_in
+  source: pop animation
+- kind: single
+  group: generated
+  split: generated
+  prompt: please uchhalta textt
+  expect: text_pop_in
+  source: uchhalta text
+- kind: single
+  group: generated
+  split: generated
+  prompt: na pop carke aaye text
+  expect: text_pop_in
+  source: pop karke aaye text
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara text slid
+  expect: text_slide
+  source: text slide
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi shlide in text
+  expect: text_slide
+  source: slide in text
+- kind: single
+  group: generated
+  split: generated
+  prompt: tet from the left
+  expect: text_slide
+  source: text from the left
+- kind: single
+  group: generated
+  split: generated
+  prompt: slliding ttle
+  expect: text_slide
+  source: sliding title
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz texxt fls in
+  expect: text_slide
+  source: text flies in
+- kind: single
+  group: generated
+  split: generated
+  prompt: textt moves in
+  expect: text_slide
+  source: text moves in
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo sleede text
+  expect: text_slide
+  source: slide text
+- kind: single
+  group: generated
+  split: generated
+  prompt: text side se aae
+  expect: text_slide
+  source: text side se aaye
+- kind: single
+  group: generated
+  split: generated
+  prompt: text sarak ke aay
+  expect: text_slide
+  source: text sarak ke aaye
+- kind: single
+  group: generated
+  split: generated
+  prompt: typeriter
+  expect: text_typewriter
+  source: typewriter
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara tyyping texxt
+  expect: text_typewriter
+  source: typing text
+- kind: single
+  group: generated
+  split: generated
+  prompt: tye it out
+  expect: text_typewriter
+  source: type it out
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara typewiter effectt
+  expect: text_typewriter
+  source: typewriter effect
+- kind: single
+  group: generated
+  split: generated
+  prompt: lettters appar one by one
+  expect: text_typewriter
+  source: letters appear one by one
+- kind: single
+  group: generated
+  split: generated
+  prompt: tped textt
+  expect: text_typewriter
+  source: typed text
+- kind: single
+  group: generated
+  split: generated
+  prompt: typin animaion
+  expect: text_typewriter
+  source: typing animation
+- kind: single
+  group: generated
+  split: generated
+  prompt: typ hota hua txt
+  expect: text_typewriter
+  source: type hota hua text
+- kind: single
+  group: generated
+  split: generated
+  prompt: na typewiter wala texxt
+  expect: text_typewriter
+  source: typewriter wala text
+- kind: single
+  group: generated
+  split: generated
+  prompt: thmbnail
+  expect: thumbnail
+  source: thumbnail
+- kind: single
+  group: generated
+  split: generated
+  prompt: cvr imag
+  expect: thumbnail
+  source: cover image
+- kind: single
+  group: generated
+  split: generated
+  prompt: covver photo
+  expect: thumbnail
+  source: cover photo
+- kind: single
+  group: generated
+  split: generated
+  prompt: posterr frame
+  expect: thumbnail
+  source: poster frame
+- kind: single
+  group: generated
+  split: generated
+  prompt: na make a thmbnl
+  expect: thumbnail
+  source: make a thumbnail
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz video covver
+  expect: thumbnail
+  source: video cover
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi prviw eemage
+  expect: thumbnail
+  source: preview image
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar cover photto banao
+  expect: thumbnail
+  source: cover photo banao
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara thumbnail khahiye
+  expect: thumbnail
+  source: thumbnail chahiye
+- kind: single
+  group: generated
+  split: generated
+  prompt: title carrd
+  expect: title_card
+  source: title card
+- kind: single
+  group: generated
+  split: generated
+  prompt: teetle
+  expect: title_card
+  source: title
+- kind: single
+  group: generated
+  split: generated
+  prompt: heding
+  expect: title_card
+  source: heading
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai fooll scree title
+  expect: title_card
+  source: full screen title
+- kind: single
+  group: generated
+  split: generated
+  prompt: chapter tite
+  expect: title_card
+  source: chapter title
+- kind: single
+  group: generated
+  split: generated
+  prompt: title skreen
+  expect: title_card
+  source: title screen
+- kind: single
+  group: generated
+  split: generated
+  prompt: big titl
+  expect: title_card
+  source: big title
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi tite laggao
+  expect: title_card
+  source: title lagao
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo headng laagao
+  expect: title_card
+  source: heading lagao
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz trimm
+  expect: trim
+  source: trim
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai kep onl
+  expect: trim
+  source: keep only
+- kind: single
+  group: generated
+  split: generated
+  prompt: cut to
+  expect: trim
+  source: cut to
+- kind: single
+  group: generated
+  split: generated
+  prompt: cop the tim
+  expect: trim
+  source: crop the time
+- kind: single
+  group: generated
+  split: generated
+  prompt: kee frrom
+  expect: trim
+  source: keep from
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai onlly kip the part
+  expect: trim
+  source: only keep the part
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo cli it to
+  expect: trim
+  source: clip it to
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai sir rakho
+  expect: trim
+  source: sirf rakho
+- kind: single
+  group: generated
+  split: generated
+  prompt: eetna hi rakhho
+  expect: trim
+  source: itna hi rakho
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo vhs
+  expect: vhs_retro
+  source: vhs
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz vhs effct
+  expect: vhs_retro
+  source: vhs effect
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz rettro tap
+  expect: vhs_retro
+  source: retro tape
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara camcorer looc
+  expect: vhs_retro
+  source: camcorder look
+- kind: single
+  group: generated
+  split: generated
+  prompt: please 90s tappe
+  expect: vhs_retro
+  source: 90s tape
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo old wideo loo
+  expect: vhs_retro
+  source: old video look
+- kind: single
+  group: generated
+  split: generated
+  prompt: tappe effect
+  expect: vhs_retro
+  source: tape effect
+- kind: single
+  group: generated
+  split: generated
+  prompt: please wideo csstt look
+  expect: vhs_retro
+  source: video cassette look
+- kind: single
+  group: generated
+  split: generated
+  prompt: vcr lok
+  expect: vhs_retro
+  source: vcr look
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi vinette
+  expect: vignette
+  source: vignette
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo dark korners
+  expect: vignette
+  source: dark corners
+- kind: single
+  group: generated
+  split: generated
+  prompt: dak edges
+  expect: vignette
+  source: dark edges
+- kind: single
+  group: generated
+  split: generated
+  prompt: please fous on the centre
+  expect: vignette
+  source: focus on the centre
+- kind: single
+  group: generated
+  split: generated
+  prompt: ege darkeneeng
+  expect: vignette
+  source: edge darkening
+- kind: single
+  group: generated
+  split: generated
+  prompt: please vignnetting
+  expect: vignette
+  source: vignetting
+- kind: single
+  group: generated
+  split: generated
+  prompt: sadowy edge
+  expect: vignette
+  source: shadowy edges
+- kind: single
+  group: generated
+  split: generated
+  prompt: kinare kle
+  expect: vignette
+  source: kinare kale
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar kone kaale kao
+  expect: vignette
+  source: kone kale karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara wintage
+  expect: vintage_faded
+  source: vintage
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz reto
+  expect: vintage_faded
+  source: retro
+- kind: single
+  group: generated
+  split: generated
+  prompt: mtt luk
+  expect: vintage_faded
+  source: matte look
+- kind: single
+  group: generated
+  split: generated
+  prompt: fadedd flm
+  expect: vintage_faded
+  source: faded film
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi old schhool luk
+  expect: vintage_faded
+  source: old school look
+- kind: single
+  group: generated
+  split: generated
+  prompt: veentage fltr
+  expect: vintage_faded
+  source: vintage filter
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo feelm fade
+  expect: vintage_faded
+  source: film fade
+- kind: single
+  group: generated
+  split: generated
+  prompt: purna zamana
+  expect: vintage_faded
+  source: purana zamana
+- kind: single
+  group: generated
+  split: generated
+  prompt: rettro look do
+  expect: vintage_faded
+  source: retro look do
+- kind: single
+  group: generated
+  split: generated
+  prompt: please voice clareety
+  expect: voice_clarity
+  source: voice clarity
+- kind: single
+  group: generated
+  split: generated
+  prompt: clr woice
+  expect: voice_clarity
+  source: clear voice
+- kind: single
+  group: generated
+  split: generated
+  prompt: voie better
+  expect: voice_clarity
+  source: voice better
+- kind: single
+  group: generated
+  split: generated
+  prompt: make the voie crishp
+  expect: voice_clarity
+  source: make the voice crisp
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz speec eq
+  expect: voice_clarity
+  source: speech eq
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar podcast voic
+  expect: voice_clarity
+  source: podcast voice
+- kind: single
+  group: generated
+  split: generated
+  prompt: cearer speech
+  expect: voice_clarity
+  source: clearer speech
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo voice beter karo
+  expect: voice_clarity
+  source: voice better karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: na awaaz klear caro
+  expect: voice_clarity
+  source: awaaz clear karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai voloome
+  expect: volume
+  source: volume
+- kind: single
+  group: generated
+  split: generated
+  prompt: luder
+  expect: volume
+  source: louder
+- kind: single
+  group: generated
+  split: generated
+  prompt: quiter
+  expect: volume
+  source: quieter
+- kind: single
+  group: generated
+  split: generated
+  prompt: volumme up
+  expect: volume
+  source: volume up
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi volume dwn
+  expect: volume
+  source: volume down
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara tur it up
+  expect: volume
+  source: turn it up
+- kind: single
+  group: generated
+  split: generated
+  prompt: turnn it down
+  expect: volume
+  source: turn it down
+- kind: single
+  group: generated
+  split: generated
+  prompt: awz tez caro
+  expect: volume
+  source: awaaz tez karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo awaa kam karo
+  expect: volume
+  source: awaaz kam karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: please wam
+  expect: warm
+  source: warm
+- kind: single
+  group: generated
+  split: generated
+  prompt: warme
+  expect: warm
+  source: warmer
+- kind: single
+  group: generated
+  split: generated
+  prompt: warmm tone
+  expect: warm
+  source: warm tone
+- kind: single
+  group: generated
+  split: generated
+  prompt: na goldden
+  expect: warm
+  source: golden
+- kind: single
+  group: generated
+  split: generated
+  prompt: shunset lookk
+  expect: warm
+  source: sunset look
+- kind: single
+  group: generated
+  split: generated
+  prompt: na oraange tit
+  expect: warm
+  source: orange tint
+- kind: single
+  group: generated
+  split: generated
+  prompt: coshy colours
+  expect: warm
+  source: cosy colours
+- kind: single
+  group: generated
+  split: generated
+  prompt: na garam ton
+  expect: warm
+  source: garam tone
+- kind: single
+  group: generated
+  split: generated
+  prompt: varm karo
+  expect: warm
+  source: warm karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo lgo
+  expect: watermark_logo
+  source: logo
+- kind: single
+  group: generated
+  split: generated
+  prompt: vatermark
+  expect: watermark_logo
+  source: watermark
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo brrand logo
+  expect: watermark_logo
+  source: brand logo
+- kind: single
+  group: generated
+  split: generated
+  prompt: add my logu
+  expect: watermark_logo
+  source: add my logo
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi put the log
+  expect: watermark_logo
+  source: put the logo
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz chhannel loggo
+  expect: watermark_logo
+  source: channel logo
+- kind: single
+  group: generated
+  split: generated
+  prompt: lgo in the crnr
+  expect: watermark_logo
+  source: logo in the corner
+- kind: single
+  group: generated
+  split: generated
+  prompt: na lgo laggao
+  expect: watermark_logo
+  source: logo lagao
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar watermark laao
+  expect: watermark_logo
+  source: watermark lagao
+- kind: single
+  group: generated
+  split: generated
+  prompt: whhip pan
+  expect: whip_pan
+  source: whip pan
+- kind: single
+  group: generated
+  split: generated
+  prompt: whip traansition
+  expect: whip_pan
+  source: whip transition
+- kind: single
+  group: generated
+  split: generated
+  prompt: svoosh transition
+  expect: whip_pan
+  source: swoosh transition
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi faast pan transition
+  expect: whip_pan
+  source: fast pan transition
+- kind: single
+  group: generated
+  split: generated
+  prompt: whi
+  expect: whip_pan
+  source: whip
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz smmear transhition
+  expect: whip_pan
+  source: smear transition
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi seed pan
+  expect: whip_pan
+  source: speed pan
+- kind: single
+  group: generated
+  split: generated
+  prompt: please zhatke se bado
+  expect: whip_pan
+  source: jhatke se badlo
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo wip laga
+  expect: whip_pan
+  source: whip lagao
+- kind: single
+  group: generated
+  split: generated
+  prompt: na whhite screenn
+  expect: white_screen_card
+  source: white screen
+- kind: single
+  group: generated
+  split: generated
+  prompt: wht crd
+  expect: white_screen_card
+  source: white card
+- kind: single
+  group: generated
+  split: generated
+  prompt: blank wht sccreen
+  expect: white_screen_card
+  source: blank white screen
+- kind: single
+  group: generated
+  split: generated
+  prompt: whte frm
+  expect: white_screen_card
+  source: white frame
+- kind: single
+  group: generated
+  split: generated
+  prompt: plain white slde
+  expect: white_screen_card
+  source: plain white slide
+- kind: single
+  group: generated
+  split: generated
+  prompt: ful white screen
+  expect: white_screen_card
+  source: full white screen
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz whhite background for a momennt
+  expect: white_screen_card
+  source: white background for a moment
+- kind: single
+  group: generated
+  split: generated
+  prompt: safed screen dikhau
+  expect: white_screen_card
+  source: safed screen dikhao
+- kind: single
+  group: generated
+  split: generated
+  prompt: please khali sfd screen
+  expect: white_screen_card
+  source: khali safed screen
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai wie
+  expect: wipe
+  source: wipe
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz wipe trnsition
+  expect: wipe
+  source: wipe transition
+- kind: single
+  group: generated
+  split: generated
+  prompt: wippe left
+  expect: wipe
+  source: wipe left
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai wippe righht
+  expect: wipe
+  source: wipe right
+- kind: single
+  group: generated
+  split: generated
+  prompt: currtain trnsition
+  expect: wipe
+  source: curtain transition
+- kind: single
+  group: generated
+  split: generated
+  prompt: lin wip
+  expect: wipe
+  source: line wipe
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi wpe acoss
+  expect: wipe
+  source: wipe across
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara seede se mitaao
+  expect: wipe
+  source: side se mitao
+- kind: single
+  group: generated
+  split: generated
+  prompt: plz pardah trasition
+  expect: wipe
+  source: pardah transition
+- kind: single
+  group: generated
+  split: generated
+  prompt: joom in
+  expect: zoom_in
+  source: zoom in
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara puh in
+  expect: zoom_in
+  source: push in
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi sllow zoom
+  expect: zoom_in
+  source: slow zoom
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi zoom intu
+  expect: zoom_in
+  source: zoom into
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi get close
+  expect: zoom_in
+  source: get closer
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi doly in
+  expect: zoom_in
+  source: dolly in
+- kind: single
+  group: generated
+  split: generated
+  prompt: zom effect
+  expect: zoom_in
+  source: zoom effect
+- kind: single
+  group: generated
+  split: generated
+  prompt: bhai paa lao
+  expect: zoom_in
+  source: paas lao
+- kind: single
+  group: generated
+  split: generated
+  prompt: dhheere zoomm
+  expect: zoom_in
+  source: dheere zoom
+- kind: single
+  group: generated
+  split: generated
+  prompt: joom out
+  expect: zoom_out
+  source: zoom out
+- kind: single
+  group: generated
+  split: generated
+  prompt: pulll out
+  expect: zoom_out
+  source: pull out
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi pul bak
+  expect: zoom_out
+  source: pull back
+- kind: single
+  group: generated
+  split: generated
+  prompt: revveal
+  expect: zoom_out
+  source: reveal
+- kind: single
+  group: generated
+  split: generated
+  prompt: zoom bacck
+  expect: zoom_out
+  source: zoom back
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara doll out
+  expect: zoom_out
+  source: dolly out
+- kind: single
+  group: generated
+  split: generated
+  prompt: zara widder
+  expect: zoom_out
+  source: wider
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi revese zoo
+  expect: zoom_out
+  source: reverse zoom
+- kind: single
+  group: generated
+  split: generated
+  prompt: doorr karu
+  expect: zoom_out
+  source: door karo
+- kind: single
+  group: generated
+  split: generated
+  prompt: please zoom trnsition
+  expect: zoom_transition
+  source: zoom transition
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi zoomm throuh
+  expect: zoom_transition
+  source: zoom through
+- kind: single
+  group: generated
+  split: generated
+  prompt: abhi zum cut
+  expect: zoom_transition
+  source: zoom cut
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi zom into the next
+  expect: zoom_transition
+  source: zoom into the next
+- kind: single
+  group: generated
+  split: generated
+  prompt: yaar punh transhition
+  expect: zoom_transition
+  source: punch transition
+- kind: single
+  group: generated
+  split: generated
+  prompt: zoo bur transition
+  expect: zoom_transition
+  source: zoom blur transition
+- kind: single
+  group: generated
+  split: generated
+  prompt: jaldi zoom betwen
+  expect: zoom_transition
+  source: zoom between
+- kind: single
+  group: generated
+  split: generated
+  prompt: ek kaam karo zoomm karke baddlo
+  expect: zoom_transition
+  source: zoom karke badlo
+- kind: single
+  group: generated
+  split: generated
+  prompt: joom wala tranition
+  expect: zoom_transition
+  source: zoom wala transition

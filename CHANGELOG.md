@@ -330,3 +330,12 @@
     shares one 2 s model budget (`CUTMIND_LLM_WAIT`), the model keeps working in the background and its answer is
     cached; requests never wait for the embedding model to load. Measured after warm-up: ~2 s (was 21-28 s).
     "yaha …" in the chat now means the player's position.
+60. **Understanding v2, checkpoint 1** (docs/UNDERSTANDING_REVIEW.md) — trace tool (`eval/trace.py`), 1,556-prompt
+    corpus (584 hand-written incl. 125 held-out, 972 generated with machine misspellings), synthetic spelling
+    variants (`tools/variants.py`, 9,000+ reviewed in catalog/generated_variants.json), non-edit turns (greetings /
+    questions answered, never edited), relative turns ("aur thoda", "kam karo", "dobara", "isko hata do" = undo),
+    clause-level partial execution (the clear parts run, each unclear part gets its own chips), act-show-undo
+    policy (best guess applied with the other readings as chips; thresholds from a dev sweep). Fixed on the way:
+    "fillers" matched "flash" (same phonetic key, far spelling), verb-only synonyms ("30 sec ka bana do") made any
+    "bana do" a duration request. Dev hand-written: multi-instruction all-applied 5/23 → 18/23, relative 0/30 →
+    29/30, non-edit 18 → 19/19, unsupported acted-on 4 → 1, single top-1 90.8 → 91.6 %, dead ends 0.

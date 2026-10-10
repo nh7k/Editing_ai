@@ -19,7 +19,7 @@ def test_the_bug_prompt_with_a_colour_effect_there_ranks_restore_first_and_white
     r = resolve(BUG, MONO_AT_MARKER)
     assert ids(r)[0] == "restore_normal", r.trace
     assert "flash" in ids(r)[:3], r.trace
-    assert r.decision in ("choose", "apply")  # never a dead end
+    assert r.decision in ("choose", "apply", "act")  # never a dead end (act: best guess applied, others shown)
     top = r.choices[0]
     assert top["time"]["mode"] == "between_times" and top["time"]["start"] <= 4.3 <= top["time"]["end"]
 

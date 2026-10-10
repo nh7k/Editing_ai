@@ -31,6 +31,11 @@ APPLY_MIN, MARGIN, CHOOSE_MIN = 0.80, 0.30, 0.30  # dev sweep (eval/results/inte
 # skills: "CHUP wale part nikal do" matched delete_segment on "nikal do" and ignored "chup" (calibrated on the dev
 # corpus: 0.4 cut silent wrong edits 42 → 12 — docs/INTENT_EVAL.md)
 UNEXPLAINED_MAX = 0.4
+# act = apply the best guess AND show the alternatives (docs/UNDERSTANDING_REVIEW.md: act, show, undo). Not on a long
+# video when the readings are close: a wrong render there costs minutes (eval/results/perf.json)
+# dev sweep (docs/UNDERSTANDING_EVAL.md): 0.7 / 0.5 → 34 right acts, 7 wrong (all with chips), 1 unsupported acted on;
+# 0.6 unexplained acted 47 right but 11 wrong and 4 unsupported
+ACT_MIN, ACT_UNEXPLAINED, LONG_VIDEO_S = 0.70, 0.5, 120.0
 NUMERIC = re.compile(r"\d+(?:\.\d+)?|sec|second|seconds|s|se|to|tak|x|min|minute|qtk\d+")
 DEICTIC = {"yaha", "idhar"}  # not "abhi" / "now": in a command they mean "right away", not "at this second"
 RESTORE_WORDS = {"normal", "original", "wapas", "pehle"}
@@ -43,17 +48,28 @@ WINDOW_S = 2.5  # how long an effect placed "here" lasts
 VERBS = {"dikhao", "dikha", "lagao", "laga", "daalo", "dalo", "daal", "add", "banao", "bana", "chahiye", "put", "show",
          "make", "apply", "use", "karo", "lagado", "dikhana", "chalao"}
 VERB_WEIGHT = 0.5  # dev sweep: 0.25 → 10 silent wrong edits, 0.5 → 8
+# "take away" verbs: meaningful (remove, not add) but they do not say WHAT
+REMOVE_VERBS = {"hatao", "hata", "remove", "delete", "nikal", "kaat", "kaato", "kat", "cut", "uda"}
+WEAK_SYNONYM = 0.55  # a synonym with no word saying WHAT ("hatao do", "30 sec ka bana do") is weak evidence
 QUOTED = re.compile(r"['\"‘“][^'\"’”]{1,80}['\"’”]")
 
 
 @dataclass
 class Resolution:
+    """decision: apply (clearly understood) | act (best guess applied, alternatives shown) | choose (one tap needed)
+    | unknown (nothing close: nearest skills from the user's words) | partial (the understood parts applied, the
+    rest as choices) | non_edit (an answer, no edit) | undo (take the last edit back)."""
+
     choices: list[dict[str, Any]]
-    decision: str  # "apply" | "choose" | "unknown"
+    decision: str
     trace: dict[str, Any] = field(default_factory=dict)
+    apply: list[dict[str, Any]] = field(default_factory=list)   # calls that run without a tap
+    unclear: list[dict[str, Any]] = field(default_factory=list)  # parts not done: {text, supported, choices}
+    reply: str | None = None                                     # words for the user (non_edit, undo, disclosure)
 
     def to_dict(self) -> dict[str, Any]:
-        return {"decision": self.decision, "choices": self.choices, "trace": self.trace}
+        return {"decision": self.decision, "choices": self.choices, "apply": self.apply, "unclear": self.unclear,
+                "reply": self.reply, "trace": self.trace}
 
 
 @lru_cache(maxsize=1)
@@ -123,6 +139,8 @@ def score_skills(words: list[str]) -> dict[str, tuple[float, str]]:
                 continue
             got = sum(x * _best(t, near) for t, x in ws if x > 0)
             cov = got / total
+            if not any(x > 0 and t not in VERBS and t not in REMOVE_VERBS for t, x in ws):
+                cov *= WEAK_SYNONYM  # "anime style bana do" matched "30 sec ka bana do" on "bana" alone
             # a synonym that says more (more meaning words) is a slightly better witness than a one-word one
             # (a stronger length penalty was tried and lost: dev top-1 0.887 vs 0.913 — docs/INTENT_EVAL.md)
             sc = cov * (0.85 + 0.15 * min(1.0, total / 6.0))
@@ -197,61 +215,13 @@ def label(sid: str, when: dict[str, Any] | None, ctx: dict[str, Any], params: di
     return f"{at}{name}"[:68]
 
 
-def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
-    ctx = dict(context or {})
+def _ranked(prompt: str, words: list[str], exact: dict[str, Any], ctx: dict[str, Any], point: float | None,
+            restore_said: bool, present: list[dict[str, Any]], trace: dict[str, Any]
+            ) -> tuple[list[dict[str, Any]], dict[str, float]]:
+    """Up to 3 readings of (part of) a prompt, best first, each ready to run."""
     specs = spec.load()
-    words = canonical_words(prompt)
-    t = ctx.get("marker_time", ctx.get("playhead"))
-    t = float(t) if t is not None else None
-    deictic = bool(DEICTIC & set(words)) or "is jagah" in " ".join(words)
-    point = t if (t is not None and (deictic or ctx.get("comment", True))) else None
-    ctx["_t"] = point
-    trace: dict[str, Any] = {"words": words, "time": point}
-
-    # 1. the exact matcher: a clear request stays exactly what it was
-    from .parse import parse
-
-    exact = parse(prompt)
-    trace["exact"] = {"calls": [c["id"] for c in exact["calls"]], "unknown": [u["text"] for u in exact["unknown"]],
-                      "negated": exact["negated"]}
-    present = _effects_at(ctx, point)
-    calls_in = exact["calls"]
-    if any(c["id"] == "add_music" for c in calls_in) and any(
-            (c.get("params") or {}).get("what") == "music" for c in calls_in if c["id"] != "add_music"):
-        # "music ki awaaz kam karo": the music is what is changed, not something to add
-        exact = {**exact, "calls": [c for c in calls_in if c["id"] != "add_music"]}
-    if any(c["id"] == "restore_normal" for c in exact["calls"]):
-        # "yaha zoom hata ke normal karo": the other skills named are WHAT to take off, not new effects
-        named = [c["id"] for c in exact["calls"] if c["id"] != "restore_normal"]
-        fams = {_family_of(specs[x]) for x in named} - {None}
-        rc = next(c for c in exact["calls"] if c["id"] == "restore_normal")
-        if len(fams) == 1:
-            rc = {**rc, "params": {**rc.get("params", {}), "what": fams.pop()}}
-        exact = {**exact, "calls": [rc]}
     exact_ids = [c["id"] for c in exact["calls"]]
-    # "ye black white hatao yaha se" with that effect on screen: take it off (restore), not add it again
-    on_screen = {w for f in present for w in canonical_words(f"{f.get('label', '')} {f.get('type', '')}")} - FILLER
-    removing = bool(REMOVE_WORDS & set(words)) and bool(present) and (
-        any(specs[x]["category"] in EFFECT_CATEGORIES for x in exact_ids)
-        or bool(on_screen & set(words)) or bool({"effect", "filter"} & set(words)))
-    restore_said = bool(RESTORE_WORDS & set(words)) or "jaisa tha" in " ".join(words) or removing
-    # a clear request is applied as it is — unless it also says "like it was / normal" and the matcher did not read
-    # that part, or leaves too many of the prompt's meaning words unexplained: then the readings are ranked
-    trace["unexplained"] = round(unexplained(words, exact_ids), 3) if exact_ids else None
-    clear = (bool(exact["calls"]) and not exact["unknown"] and unexplained(words, exact_ids) < UNEXPLAINED_MAX
-             and not (restore_said and "restore_normal" not in exact_ids))
-    if clear:
-        calls = []
-        for c in exact["calls"]:
-            if point is not None and not c.get("time"):
-                c = {**c, "time": _when(c["id"], point, ctx, specs[c["id"]])}
-            calls.append(c)
-        first = calls[0]
-        choice = {"id": first["id"], "params": first.get("params", {}), "time": first.get("time"), "score": 1.0,
-                  "calls": calls, "label": " + ".join(label(c["id"], c.get("time"), ctx) for c in calls)[:68]}
-        return Resolution([choice], "apply", trace)
-
-    # 2. weighted token scores
+    # weighted token scores
     scores = {k: v[0] for k, v in score_skills(words).items()}
     trace["matched"] = {k: v for k, v in sorted(score_skills(words).items(), key=lambda kv: -kv[1][0])[:6]}
     for sid in exact_ids:  # what the exact matcher read is a strong candidate
@@ -262,7 +232,7 @@ def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
         # words in quotes are almost always text to put on screen ("'Nice' word dikhao")
         scores["text_overlay"] = max(scores.get("text_overlay", 0.0), 0.5) + 0.3
 
-    # 3. context evidence
+    # context evidence
     if "restore_normal" in specs:
         r = scores.get("restore_normal", 0.0)
         if restore_said and present:
@@ -306,14 +276,170 @@ def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
         call = {"id": sid, "params": {}, "time": when}
         choices.append({"id": sid, "params": {}, "time": when, "score": round(min(scores[sid], 1.0), 3),
                         "calls": [call], "label": label(sid, when, ctx)})
+    return choices, scores
+
+
+def _timed(c: dict[str, Any], point: float | None, ctx: dict[str, Any]) -> dict[str, Any]:
+    if point is not None and not c.get("time"):
+        return {**c, "time": _when(c["id"], point, ctx, spec.load()[c["id"]])}
+    return c
+
+
+def _not_available(text: str) -> list[str]:
+    try:
+        from ..skill_registry import named_later
+
+        return list(named_later(text))
+    except Exception:  # noqa: BLE001
+        return []
+
+
+def _meaning(words: list[str]) -> list[str]:
+    return [w for w in words if w not in FILLER and not NUMERIC.fullmatch(w)]
+
+
+def _partial(prompt: str, exact: dict[str, Any], ctx: dict[str, Any], point: float | None,
+             present: list[dict[str, Any]], trace: dict[str, Any]) -> Resolution | None:
+    from .parse import clauses, parse
+
+    parts = clauses(prompt)
+    if len(parts) < 2:
+        return None
+    known: list[str] = []
+    unclear: list[dict[str, Any]] = []
+    for text in parts:
+        pw = canonical_words(text)
+        if not _meaning(pw):
+            continue  # "2 se 4 sec": a setting of the clause before it
+        pr = parse(text)
+        ids = [c["id"] for c in pr["calls"]]
+        if pr["negated"] and not ids:
+            continue  # "zoom mat lagao": understood (nothing to do)
+        if ids and not pr["unknown"] and unexplained(pw, ids) < UNEXPLAINED_MAX:
+            known += [i for i in ids if i not in known]
+            continue
+        sub = {"calls": [], "unknown": [], "negated": exact["negated"]}
+        sub_choices, _ = _ranked(text, pw, sub, ctx, point, False, present, {})
+        later = _not_available(text)
+        supported = (not later and bool(sub_choices) and sub_choices[0]["score"] >= ACT_MIN
+                     and unexplained(pw, [sub_choices[0]["id"]]) < ACT_UNEXPLAINED)
+        unclear.append({"text": text.strip(), "supported": supported, "not_available": later,
+                        "choices": [c for c in sub_choices if c["id"] not in known]})
+    if not known or not unclear:
+        return None
+    # the calls come from the whole message (it keeps settings said in other clauses: times, numbers)
+    calls = [c for c in exact["calls"] if c["id"] in known]
+    calls += [c for t in parts for c in parse(t)["calls"] if c["id"] in known and c["id"] not in {x["id"] for x in calls}]
+    calls = [_timed(c, point, ctx) for c in calls]
+    first = calls[0]
+    choice = {"id": first["id"], "params": first.get("params", {}), "time": first.get("time"), "score": 1.0,
+              "calls": calls, "label": " + ".join(label(c["id"], c.get("time"), ctx) for c in calls)[:68]}
+    trace["turn"] = "partial"
+    trace["clauses"] = {"known": known, "unclear": [u["text"] for u in unclear]}
+    undone = ", ".join(f'"{u["text"]}"' for u in unclear)
+    return Resolution([choice], "partial", trace, apply=calls, unclear=unclear,
+                      reply=f"Kiya: {choice['label']}. Ye nahi ho paaya: {undone} — neeche ke options dekho.")
+
+
+def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
+    ctx = dict(context or {})
+    specs = spec.load()
+    words = canonical_words(prompt)
+    t = ctx.get("marker_time", ctx.get("playhead"))
+    t = float(t) if t is not None else None
+    deictic = bool(DEICTIC & set(words)) or "is jagah" in " ".join(words)
+    point = t if (t is not None and (deictic or ctx.get("comment", True))) else None
+    ctx["_t"] = point
+    trace: dict[str, Any] = {"words": words, "time": point}
+
+    # 1. the exact matcher: a clear request stays exactly what it was
+    from .parse import parse
+
+    exact = parse(prompt)
+    trace["exact"] = {"calls": [c["id"] for c in exact["calls"]], "unknown": [u["text"] for u in exact["unknown"]],
+                      "negated": exact["negated"]}
+    present = _effects_at(ctx, point)
+    calls_in = exact["calls"]
+    if any(c["id"] == "add_music" for c in calls_in) and any(
+            (c.get("params") or {}).get("what") == "music" for c in calls_in if c["id"] != "add_music"):
+        # "music ki awaaz kam karo": the music is what is changed, not something to add
+        exact = {**exact, "calls": [c for c in calls_in if c["id"] != "add_music"]}
+    if any(c["id"] == "restore_normal" for c in exact["calls"]):
+        # "yaha zoom hata ke normal karo": the other skills named are WHAT to take off, not new effects
+        named = [c["id"] for c in exact["calls"] if c["id"] != "restore_normal"]
+        fams = {_family_of(specs[x]) for x in named} - {None}
+        rc = next(c for c in exact["calls"] if c["id"] == "restore_normal")
+        if len(fams) == 1:
+            rc = {**rc, "params": {**rc.get("params", {}), "what": fams.pop()}}
+        exact = {**exact, "calls": [rc]}
+    exact_ids = [c["id"] for c in exact["calls"]]
+    from .turns import non_edit, relative
+
+    # 0. not an edit at all (greeting, thanks, a question about the app, emoji only): an answer, never an edit
+    reply = non_edit(prompt, exact["calls"])
+    if reply is not None:
+        trace["turn"] = "non_edit"
+        return Resolution([], "non_edit", trace, reply=reply)
+    # 0b. about the last edit: "aur thoda", "kam karo", "dobara", "isko hata do"
+    rel = relative(prompt, ctx.get("recent_edits"), exact_ids)
+    if rel is not None:
+        trace["turn"] = f"relative:{rel['kind']}"
+        c = rel["call"]
+        choice = {"id": c["id"], "params": c.get("params", {}), "time": c.get("time"), "score": 1.0, "calls": [c],
+                  "label": rel["said"][:68]}
+        return Resolution([choice], "undo" if rel["kind"] == "remove" else "apply", trace, apply=[c], reply=rel["said"])
+    # "ye black white hatao yaha se" with that effect on screen: take it off (restore), not add it again
+    on_screen = {w for f in present for w in canonical_words(f"{f.get('label', '')} {f.get('type', '')}")} - FILLER
+    removing = bool(REMOVE_WORDS & set(words)) and bool(present) and (
+        any(specs[x]["category"] in EFFECT_CATEGORIES for x in exact_ids)
+        or bool(on_screen & set(words)) or bool({"effect", "filter"} & set(words)))
+    restore_said = bool(RESTORE_WORDS & set(words)) or "jaisa tha" in " ".join(words) or removing
+    # a clear request is applied as it is — unless it also says "like it was / normal" and the matcher did not read
+    # that part, or leaves too many of the prompt's meaning words unexplained: then the readings are ranked
+    # words of a skill the user said NOT to use ("zoom mat lagao") are understood too
+    said = exact_ids + list(exact["negated"])
+    trace["unexplained"] = round(unexplained(words, said), 3) if exact_ids else None
+    clear = (bool(exact["calls"]) and not exact["unknown"] and unexplained(words, said) < UNEXPLAINED_MAX
+             and not (restore_said and "restore_normal" not in exact_ids))
+    # partial: some parts are clear, some are not ("warm karo, captions lagao aur mere chehre ko jawan dikhao") — each
+    # clause is judged on its own: the clear ones run, every unclear one gets its own choices. One unknown part never
+    # sinks the whole message (before: the whole message became one "pick one" question)
+    if not (restore_said and "restore_normal" not in exact_ids):
+        part = _partial(prompt, exact, ctx, point, present, trace)
+        if part is not None:
+            return part
+    if clear:
+        calls = []
+        for c in exact["calls"]:
+            if point is not None and not c.get("time"):
+                c = {**c, "time": _when(c["id"], point, ctx, specs[c["id"]])}
+            calls.append(c)
+        first = calls[0]
+        choice = {"id": first["id"], "params": first.get("params", {}), "time": first.get("time"), "score": 1.0,
+                  "calls": calls, "label": " + ".join(label(c["id"], c.get("time"), ctx) for c in calls)[:68]}
+        return Resolution([choice], "apply", trace)
+
+    choices, scores = _ranked(prompt, words, exact, ctx, point, restore_said, present, trace)
     top = choices[0]["score"] if choices else 0.0
     second = choices[1]["score"] if len(choices) > 1 else 0.0
-    trace["margin"] = round(top - second, 3)
-    if top >= APPLY_MIN and top - second >= MARGIN:
-        return Resolution(choices[:1], "apply", trace)
+    top_unexplained = unexplained(words, [choices[0]["id"]]) if choices else 1.0
+    later = _not_available(prompt)
+    trace.update({"margin": round(top - second, 3), "top_unexplained": round(top_unexplained, 3),
+                  "not_available": later})
+    long_video = float(ctx.get("duration") or 0.0) > LONG_VIDEO_S
+    if later and not exact_ids:  # "4k upscale", "face swap": never apply something else instead
+        return Resolution(choices, "unknown", trace,
+                          reply=f"'{later[0]}' abhi available nahi hai. Ye paas wale options hain:")
+    if top >= APPLY_MIN and top - second >= MARGIN and top_unexplained < UNEXPLAINED_MAX:
+        return Resolution(choices[:1], "apply", trace, apply=list(choices[0]["calls"]))
+    if top >= ACT_MIN and top_unexplained < ACT_UNEXPLAINED and not long_video:
+        # act, show, undo: the best guess runs, the other readings stay one tap away
+        return Resolution(choices, "act", trace, apply=list(choices[0]["calls"]),
+                          reply=f"Maine ye kiya: {choices[0]['label']}. Galat ho to neeche se badlo ya ↶ Undo.")
     if top >= CHOOSE_MIN:
         return Resolution(choices, "choose", trace)
-    return Resolution(choices, "unknown", trace)
+    return Resolution(choices, "unknown", trace,
+                      reply="Exact skill nahi mila — ye sabse paas wale hain (aapke shabdon se):")
 
 
 def context_from_plan(plan: Any, t: float | None) -> dict[str, Any]:

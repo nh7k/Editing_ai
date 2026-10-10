@@ -49,6 +49,10 @@ interface Turn {
   requestId?: string;
   /** Applied directly by the resolver: what it did. */
   did?: string;
+  /** replace = other readings of the applied edit; add = parts that were not done. */
+  choiceMode?: 'replace' | 'add';
+  /** The answer to a message that was not an edit. */
+  reply?: string;
 }
 
 const WAVEFORM_POINTS = 200;
@@ -146,6 +150,8 @@ export function StudioEditor({ navigation, route }: Props) {
         error: t.error,
         choices: t.choices,
         did: t.did,
+        choiceMode: t.choiceMode,
+        reply: t.reply,
       };
     });
   }, [turns, activeJob, cleared, withChoice, plan.data?.decisions, liveEvents]);
@@ -263,9 +269,20 @@ export function StudioEditor({ navigation, route }: Props) {
       if (extra.at === undefined && currentTime > 0) body.playhead = Math.round(currentTime * 100) / 100;
       if (aspect) body.aspect_ratio = aspect;
       const res = await api.startEdit(projectId, body);
+      // act / partial: the edit runs, and the other readings (or the parts not done) wait as one-tap chips
+      const alts = res.alternatives?.length ? res.alternatives : undefined;
+      const adds = res.unclear?.flatMap((u) => u.choices.slice(0, 2)) ?? [];
+      const chipsExtra = alts
+        ? { choices: alts, choiceMode: 'replace' as const }
+        : adds.length
+          ? { choices: adds, choiceMode: 'add' as const }
+          : {};
       setTurns((prev) =>
         prev.map((t) =>
-          t.key === pendingKey ? { ...t, jobId: res.job_id, pending: false, understood, ...(res.did ? { did: res.did } : {}) } : t,
+          t.key === pendingKey
+            ? { ...t, jobId: res.job_id, pending: false, understood, ...(res.did ? { did: res.did } : {}), ...chipsExtra,
+                ...(res.request_id ? { requestId: res.request_id } : {}) }
+            : t,
         ),
       );
       setPlayingVariant(null);
@@ -277,8 +294,16 @@ export function StudioEditor({ navigation, route }: Props) {
       const choices =
         isApiError(e) && e.code === 'choose' && Array.isArray(e.details.choices) ? (e.details.choices as IntentChoice[]) : undefined;
       const requestId = isApiError(e) && typeof e.details.request_id === 'string' ? e.details.request_id : undefined;
+      // a greeting / a question about the app: an answer, not an error
+      const answer = isApiError(e) && e.code === 'non_edit';
       setTurns((prev) =>
-        prev.map((t) => (t.key === pendingKey ? { ...t, pending: false, error: msg, choices, requestId } : t)),
+        prev.map((t) =>
+          t.key === pendingKey
+            ? answer
+              ? { ...t, pending: false, reply: msg }
+              : { ...t, pending: false, error: msg, choices, requestId }
+            : t,
+        ),
       );
       return false;
     } finally {
@@ -292,6 +317,8 @@ export function StudioEditor({ navigation, route }: Props) {
     setSending(true);
     setSendError(null);
     try {
+      // another reading of an edit that was already applied: take that edit back first, then apply this one
+      if (asked?.did && asked.choiceMode === 'replace') await api.undo(projectId);
       const res = await api.runTools(projectId, choice.calls, asked?.prompt ?? choice.label);
       if (asked?.requestId) void api.pickChoice(asked.requestId, choice.id).catch(() => undefined);
       const frozen = poll.job;
