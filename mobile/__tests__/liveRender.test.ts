@@ -206,6 +206,12 @@ describe('renderProgress (render steps → ✓ on the Main blocks)', () => {
     expect(renderProgress('working', step('segment', 4, 9), 9).doneCount).toBe(0);
     expect(renderProgress('rendering', step('segment', 4, 9), 0).doneCount).toBe(0);
   });
+  it('rendering with no shot finished yet (start, a styled version, segment 0) shimmers: it never looks idle', () => {
+    expect(renderProgress('rendering', null, 3)).toEqual({ doneCount: 0, shimmer: true, reuse: false });
+    expect(renderProgress('rendering', step('start'), 3)).toEqual({ doneCount: 0, shimmer: true, reuse: false });
+    expect(renderProgress('rendering', step('segment', 0, 3), 3)).toEqual({ doneCount: 0, shimmer: true, reuse: false });
+    expect(renderProgress('working', null, 3).shimmer).toBe(false);
+  });
 });
 
 describe('raw footage → kept ranges → cuts', () => {

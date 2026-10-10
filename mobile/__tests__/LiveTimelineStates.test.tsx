@@ -170,6 +170,35 @@ describe('StudioTimeline live states', () => {
     expect(screen.getByTestId('build-cursor').props.accessibilityLabel).toBe('AI review sweep');
   });
 
+  it('rendering a styled version (no shot step): cursor sweeps, Main glows, shimmer, the chip names the version', async () => {
+    const versionTracks: LiveTimeline = { ...tracks, color: [{ preset: 'none', lut: null, name: 'Violet Authority' }] };
+    const stage = 'rendering version 2/3: Violet Authority';
+    const model = buildLiveStudioTimeline({ tracks: versionTracks, thoughts, stage }, [clipA, clipB], job(stage));
+    await render(<StudioTimeline {...props(model)} />);
+    await layout();
+    expect(screen.getByTestId('build-cursor').props.accessibilityLabel).toBe('AI render sweep');
+    expect(screen.getByTestId('live-main-rendering')).toBeTruthy();
+    expect(screen.getByTestId('timeline-render-shimmer')).toBeTruthy();
+    expect(screen.getByText('🎨 Violet Authority')).toBeTruthy(); // "none" is not shown as a colour
+    expect(screen.getByText('🎬 Version 2/3 ban raha hai: Violet Authority')).toBeTruthy();
+  });
+
+  it('agents still deciding: empty Text / FX lanes say who is working; rendering removes those notes', async () => {
+    const onlyCut: LiveTimeline = { video, music: tracks.music };
+    const working = buildLiveStudioTimeline({ tracks: onlyCut, thoughts }, [clipA, clipB], job('effects agent'));
+    const { rerender } = await render(<StudioTimeline {...props(working)} />);
+    await layout();
+    expect(screen.getByTestId('live-text-working')).toBeTruthy();
+    expect(screen.getByTestId('live-fx-working-0')).toBeTruthy();
+    expect(screen.getByText('✦  Effects agent kaam kar raha hai…')).toBeTruthy();
+
+    const rendering = buildLiveStudioTimeline({ tracks: onlyCut, thoughts, stage: 'rendering' }, [clipA, clipB], job('rendering'));
+    await rerender(<StudioTimeline {...props(rendering)} />);
+    expect(screen.queryByTestId('live-text-working')).toBeNull();
+    expect(screen.queryByTestId('live-fx-working-0')).toBeNull();
+    expect(screen.getByTestId('live-main-rendering')).toBeTruthy();
+  });
+
   it('the ticker animates to new text; a burst of lines is shown one by one', async () => {
     jest.useFakeTimers();
     try {

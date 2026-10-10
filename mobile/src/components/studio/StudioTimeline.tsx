@@ -163,13 +163,17 @@ export function StudioTimeline({
   const phase = live?.phase ?? 'working';
   const doneCount = live?.render.doneCount ?? 0;
   const renderX = doneCount > 0 ? segs[Math.min(doneCount, segs.length) - 1].end * pps : 0;
+  // the cursor never stands still until the whole edit is done: while rendering with no shot finished yet
+  // (one long shot, or a variation being rendered) it sweeps the whole timeline
   const cursor: { x: number; loop: boolean; label: string } | null = !live
     ? null
     : phase === 'reviewing'
       ? { x: model.total * pps, loop: true, label: 'AI review sweep' }
-      : phase === 'rendering' && hasVideo
+      : phase === 'rendering' && hasVideo && doneCount > 0 && doneCount < segs.length
         ? { x: renderX, loop: false, label: 'AI render cursor' }
-        : phase === 'working' && !hasVideo && showRaw
+        : phase === 'rendering' && hasVideo
+          ? { x: model.total * pps, loop: true, label: 'AI render sweep' }
+          : phase === 'working' && !hasVideo && showRaw
           ? { x: model.total * pps, loop: true, label: 'AI watching the raw footage' }
           : { x: live.buildEnd * pps, loop: false, label: 'AI build cursor' };
 
@@ -375,6 +379,9 @@ export function StudioTimeline({
                           />
                         ))
                       : null}
+                    {live && phase === 'working' && model.text.length === 0 ? (
+                      <LaneWorking width={contentW} label="T  Text agent kaam kar raha hai…" testID="live-text-working" />
+                    ) : null}
                   </View>
 
                   {model.overlays.map((o) => {
@@ -420,10 +427,16 @@ export function StudioTimeline({
                           testID={`live-chip-fx-${li}-${i}`}
                         />
                       ))}
+                      {phase === 'working' && lane.length === 0 ? (
+                        <LaneWorking width={contentW} label="✦  Effects agent kaam kar raha hai…" testID={`live-fx-working-${li}`} />
+                      ) : null}
                     </View>
                   ))}
 
                   <View style={[styles.row, { height: MAIN_H }]} testID="main-track">
+                    {live && phase === 'rendering' && hasVideo ? (
+                      <LaneWorking width={contentW} over testID="live-main-rendering" />
+                    ) : null}
                     {live && showRaw && (!hasVideo || animateCut) ? (
                       <RawFootage
                         key={`raw-${live.videoSig}`}
@@ -736,8 +749,23 @@ function BuildCursor({
       easing: Easing.inOut(Easing.cubic),
       useNativeDriver: NATIVE_DRIVER,
     });
-    anim.start();
-    return () => anim.stop();
+    // after the sweep, keep scanning back and forth over what is built: the agents are still working, so the
+    // cursor never stands still until the edit is done (the live view then goes away)
+    let idle: Animated.CompositeAnimation | null = null;
+    anim.start(({ finished }) => {
+      if (!finished || x < 24) return;
+      idle = Animated.loop(
+        Animated.sequence([
+          Animated.timing(pos, { toValue: x * 0.15, duration: 1600, easing: Easing.inOut(Easing.quad), useNativeDriver: NATIVE_DRIVER }),
+          Animated.timing(pos, { toValue: x, duration: 1600, easing: Easing.inOut(Easing.quad), useNativeDriver: NATIVE_DRIVER }),
+        ]),
+      );
+      idle.start();
+    });
+    return () => {
+      anim.stop();
+      idle?.stop();
+    };
   }, [pos, x, revision, sweepMs, loop]);
 
   useEffect(() => {
@@ -1120,6 +1148,28 @@ function CutGhost({
 }
 
 /** Thin shimmer running across the whole timeline while the shots are joined / the final pass runs. */
+/** Live, agents still deciding: an empty lane shows a moving glint + who is working on it (not a promise of
+ * content — it disappears when the agents move on to rendering). */
+function LaneWorking({ width, label, testID, over = false }: { width: number; label?: string; testID?: string; over?: boolean }) {
+  const [v] = useState(() => new Animated.Value(0));
+  useEffect(() => {
+    const anim = Animated.loop(Animated.timing(v, { toValue: 1, duration: 1500, easing: Easing.linear, useNativeDriver: NATIVE_DRIVER }));
+    anim.start();
+    return () => anim.stop();
+  }, [v]);
+  const translateX = v.interpolate({ inputRange: [0, 1], outputRange: [-160, Math.max(160, width)] });
+  return (
+    <View pointerEvents="none" style={over ? styles.laneOver : styles.laneWorking} testID={testID}>
+      <Animated.View style={[over ? styles.laneGlintOver : styles.laneGlint, { transform: [{ translateX }] }]} />
+      {label ? (
+        <AppText size="xs" weight="semibold" color={studio.cyan} style={styles.laneWorkingText} numberOfLines={1}>
+          {label}
+        </AppText>
+      ) : null}
+    </View>
+  );
+}
+
 function RenderShimmer({ width }: { width: number }) {
   const [v] = useState(() => new Animated.Value(0));
   useEffect(() => {
@@ -1352,6 +1402,30 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     zIndex: 3,
   },
+  laneWorking: {
+    position: 'absolute',
+    top: 4,
+    bottom: 4,
+    left: 0,
+    right: 0,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    borderColor: 'rgba(34, 211, 238, 0.45)',
+    overflow: 'hidden',
+    justifyContent: 'center',
+  },
+  laneOver: { position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, overflow: 'hidden', zIndex: 3 },
+  laneGlint: { position: 'absolute', top: 0, bottom: 0, width: 160, backgroundColor: 'rgba(34, 211, 238, 0.16)' },
+  laneGlintOver: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    width: 160,
+    backgroundColor: 'rgba(255, 255, 255, 0.22)',
+    boxShadow: '0 0 24px 8px rgba(34, 211, 238, 0.35)',
+  },
+  laneWorkingText: { paddingLeft: 10 },
   shimmerTrack: { position: 'absolute', top: RULER_H - 3, left: 0, right: 0, height: 3, overflow: 'hidden', zIndex: 2 },
   shimmerGlint: {
     position: 'absolute',

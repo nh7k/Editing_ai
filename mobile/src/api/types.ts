@@ -203,6 +203,8 @@ export interface LiveMusicItem {
 export interface LiveColorItem {
   preset: string | null;
   lut: string | null;
+  /** Name of the styled version being rendered ("Violet Authority"), when the job renders variations. */
+  name?: string | null;
 }
 
 export interface LiveTimeline {

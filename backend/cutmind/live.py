@@ -81,7 +81,10 @@ def finished(ctx: Any, tracker: Any, agent: str) -> None:
         elif agent == "color" and sec.get("color"):
             c = sec["color"]
             _emit(tracker, "timeline", track="color", items=[{"preset": c.get("preset"), "lut": c.get("lut")}])
-        elif agent == "effects" and sec.get("effects") and sec.get("cutter") and sec.get("color") is not None:
+        # colour and effects run in parallel: the whole plan is known when the LAST of the two finishes. Before,
+        # only "effects finished after colour" sent the text / FX tracks, so when effects won the race the live
+        # timeline showed empty Text / FX rows for the rest of the edit.
+        if agent in ("effects", "color") and sec.get("effects") and sec.get("cutter") and sec.get("color") is not None:
             plan_tracks(ctx, tracker)
     except Exception as exc:  # noqa: BLE001 — the live view must never break an edit
         log = getattr(ctx, "log", None)
@@ -89,11 +92,12 @@ def finished(ctx: Any, tracker: Any, agent: str) -> None:
             log("director", "warn", f"live timeline skipped: {str(exc)[:160]}")
 
 
-def plan_tracks(ctx: Any, tracker: Any) -> None:
+def plan_tracks(ctx: Any, tracker: Any, plan: Any = None) -> None:
     """The whole plan is known: exact output times (transitions overlap, ramps change lengths)."""
-    from .agents.director import DirectorAgent
+    if plan is None:
+        from .agents.director import DirectorAgent
 
-    plan = DirectorAgent.merge(ctx.sections, ctx.decisions)
+        plan = DirectorAgent.merge(ctx.sections, ctx.decisions)
     tl = plan.timeline()
     segs = [{"source": e.segment.source, "in": e.segment.in_, "out": e.segment.out, "speed": e.segment.speed,
              "order": e.index} for e in tl]
@@ -124,6 +128,21 @@ def plan_tracks(ctx: Any, tracker: Any) -> None:
     if plan.audio.music:
         _emit(tracker, "timeline", track="music", items=[
             {"start": 0.0, "dur": round(plan.total_duration(), 3), "name": plan.audio.music.split("/")[-1]}])
+
+
+def variation(ctx: Any, tracker: Any, i: int, n: int, name: str, description: str, plan: Any) -> None:
+    """A styled version starts rendering: say which, and draw ITS tracks (its looks, text, effects), so the
+    timeline keeps showing work while the versions render (they are most of a variations job's time)."""
+    try:
+        _emit(tracker, "thought", agent="director", text=f"Version {i}/{n}: {name} — {description}"[:300])
+        c = plan.color
+        _emit(tracker, "timeline", track="color", items=[{"preset": getattr(c, "preset", None), "lut": getattr(c, "lut", None),
+                                                          "name": name}])
+        plan_tracks(ctx, tracker, plan)
+    except Exception as exc:  # noqa: BLE001 — the live view must never break an edit
+        log = getattr(ctx, "log", None)
+        if callable(log):
+            log("director", "warn", f"live timeline skipped: {str(exc)[:160]}")
 
 
 def analysis_done(ctx: Any, tracker: Any) -> None:

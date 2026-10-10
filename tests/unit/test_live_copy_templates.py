@@ -158,6 +158,25 @@ def test_live_view_reports_thoughts_once_and_the_video_track():
     live.started(object(), "cutter")  # a tracker without events (tests, CLI) is fine
 
 
+def test_each_styled_version_draws_its_own_tracks():
+    """Variations are most of such a job's time (job_75684d9d5b5e: 12 s edit, 105 s rendering 3 versions) and
+    the timeline used to stand still meanwhile: now every version says its name and draws its looks."""
+    from cutmind.plan import EditPlan
+
+    tr = _Tracker()
+    ctx = SimpleNamespace(clips=[SimpleNamespace(id="c1", filename="a.mp4")], project_id="p1")
+    plan = EditPlan.model_validate({
+        "clips": [{"source": "c1", "in": 0, "out": 4, "order": 0}],
+        "effects": [{"type": "zoom", "target": -1}], "color": {"preset": "bw"},
+        "text": [{"kind": "title", "text": "Hi", "start": 0, "end": 1}]})
+    live.variation(ctx, tr, 2, 3, "Violet Authority", "bold purple", plan)
+    assert any(k == "thought" and d["text"].startswith("Version 2/3: Violet Authority") for k, d in tr.events)
+    tracks = {d["track"]: d["items"] for k, d in tr.events if k == "timeline"}
+    assert tracks["color"][0]["name"] == "Violet Authority" and tracks["color"][0]["preset"] == "bw"
+    assert [f["type"] for f in tracks["fx"]] == ["zoom"] and tracks["text"][0]["text"] == "Hi"
+    live.variation(ctx, object(), 1, 3, "x", "y", plan)  # a tracker without events is fine
+
+
 # ---- camera moves: measured on a liked video, replayed on the user's footage -------------------------------
 @pytest.fixture(scope="module")
 def still_clip(tmp_path_factory) -> Path:

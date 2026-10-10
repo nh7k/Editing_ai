@@ -541,7 +541,7 @@ export function buildLiveStudioTimeline(
       buildCount:
         state.lastTrack && state.lastTrack !== 'color' ? (tracks[state.lastTrack]?.length ?? 0) : segments.length,
       phase,
-      ticker: tickerText(phase, { thoughts: state.thoughts ?? [], renderStep: state.renderStep ?? null }),
+      ticker: tickerText(phase, { thoughts: state.thoughts ?? [], renderStep: state.renderStep ?? null, stage: state.stage }),
       queuePosition: typeof job?.queue_position === 'number' ? job.queue_position : null,
       raw,
       rawTotal,

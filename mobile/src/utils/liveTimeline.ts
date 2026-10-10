@@ -139,6 +139,7 @@ export function normalizeItems(track: LiveTrack, raw: unknown): LiveTimeline[Liv
     return list.map((x) => ({
       preset: typeof x.preset === 'string' ? x.preset : null,
       lut: typeof x.lut === 'string' ? x.lut : null,
+      ...(typeof x.name === 'string' && x.name ? { name: x.name } : {}),
     })) as LiveColorItem[];
   }
   const timed: (Record<string, unknown> & { start: number; dur: number })[] = list.map((x) => ({ ...x, start: Math.max(0, num(x.start)), dur: Math.max(0, num(x.dur)) }));
@@ -324,8 +325,10 @@ export function workingAgent(job: Pick<Job, 'status' | 'agents'> | null | undefi
 export function colorLabel(items: LiveColorItem[] | undefined): string | null {
   const c = items?.[0];
   if (!c) return null;
-  if (c.preset && c.lut) return `${c.preset} · ${c.lut}`;
-  return c.preset ?? (c.lut ? `LUT ${c.lut}` : null);
+  const preset = c.preset && c.preset !== 'none' ? c.preset : null; // "none" = no grade: no chip
+  const look = preset && c.lut ? `${preset} · ${c.lut}` : (preset ?? (c.lut ? `LUT ${c.lut}` : null));
+  if (c.name) return look ? `${c.name} · ${look}` : c.name;
+  return look;
 }
 
 /** "0:04" style seconds label for ruler / tooltips. */
@@ -372,8 +375,11 @@ export function renderStepLabel(step: RenderStep | null | undefined): string {
       return '🎬 Cut wahi hai, sirf text/gaana';
     case 'done':
       return '🎬 Render ho gaya';
-    default:
-      return '🎬 Render shuru…';
+    default: {
+      // "rendering version 2/3: Violet Authority" (a variations job renders each styled version)
+      const v = /rendering version (\d+)\s*\/\s*(\d+):\s*(.+)$/i.exec(step.text ?? '');
+      return v ? `🎬 Version ${v[1]}/${v[2]} ban raha hai: ${v[3].trim()}` : '🎬 Render shuru…';
+    }
   }
 }
 
@@ -386,11 +392,12 @@ export function queueLabel(position: number | null | undefined): string {
 /** One line: what the agent is doing right now, from the phase, the render step and the latest thought. */
 export function tickerText(
   phase: LivePhase,
-  state: Pick<LiveState, 'thoughts' | 'renderStep'>,
+  state: Pick<LiveState, 'thoughts' | 'renderStep'> & Partial<Pick<LiveState, 'stage'>>,
 ): string {
   if (phase === 'queued') return '⏳ Pichla edit khatam hone ka intezaar';
   if (phase === 'reviewing') return '👀 Result dekh raha hai';
-  if (phase === 'rendering') return renderStepLabel(state.renderStep);
+  // a styled version's tracks arrive after its stage and clear the step: read the stage itself then
+  if (phase === 'rendering') return renderStepLabel(state.renderStep ?? (state.stage ? parseRenderStep(state.stage) : null));
   const last = state.thoughts[state.thoughts.length - 1];
   if (!last) return '🧠 Prompt samajh raha hai';
   const line = shortThought(last.text);
@@ -411,14 +418,16 @@ export function renderProgress(phase: LivePhase, step: RenderStep | null | undef
   const none: RenderProgress = { doneCount: 0, shimmer: false, reuse: false };
   if (shots <= 0) return none;
   if (phase === 'reviewing') return { doneCount: shots, shimmer: false, reuse: false };
-  if (phase !== 'rendering' || !step) return none;
+  if (phase !== 'rendering') return none;
+  // rendering but no shot finished yet (just started, one long shot, a variation): shimmer so it never looks idle
+  if (!step) return { ...none, shimmer: true };
   switch (step.step) {
     case 'segment': {
       const done = step.done ?? 0;
       const total = step.total && step.total > 0 ? step.total : shots;
       // the renderer may count shots differently from the live track (e.g. a re-cut): scale to our blocks
-      const count = total === shots ? done : Math.round((done / total) * shots);
-      return { doneCount: Math.max(0, Math.min(shots, count)), shimmer: false, reuse: false };
+      const count = Math.max(0, Math.min(shots, total === shots ? done : Math.round((done / total) * shots)));
+      return { doneCount: count, shimmer: count === 0, reuse: false };
     }
     case 'join':
     case 'finish':
@@ -428,6 +437,6 @@ export function renderProgress(phase: LivePhase, step: RenderStep | null | undef
     case 'done':
       return { doneCount: shots, shimmer: false, reuse: false };
     default:
-      return none;
+      return { ...none, shimmer: true };
   }
 }

@@ -449,6 +449,7 @@ class DirectorAgent(BaseAgent):
             tracker.stage(f"rendering version {i + 1}/{intent.variations}: {style.name}", min(0.97, 0.88 + 0.03 * i))
             ctx.log("director", "info", f"version {i + 1}: {style.name} — {style.description}")
             vplan = apply_style(base, sid, keep_color=intent.color_preset is not None)
+            live.variation(ctx, tracker, i + 1, intent.variations, style.name, style.description, vplan)
             out_v = ctx.work_dir / f"var_{i}.mp4"
             render_sources = ({c.id: c.media for c in ctx.clips} if vplan.canvas.resolution <= PROXY_SHORT_SIDE
                               else sources)
