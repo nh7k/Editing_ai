@@ -317,3 +317,16 @@
 57. **Old render tests `strobe` / `echo`** failed in the full regression after the exact-trim timing change: their
     sample frames fell between strobe flashes and the clip part used barely moves (echo blends motion). The
     effects were fine; the test now puts them on the moving shot and checks a frame every 0.04 s (150/150).
+58. **Intent: never a dead end** (docs/INTENT_FAILURE_REVIEW.md, docs/INTENT_EVAL.md) — "yaha screen white kar do
+    nomal jasia tha" at a marker got "samajh nahi aaya" + a fixed unrelated list; in the chat the same words
+    started an automatic re-edit. Root causes: the old `nearest()` let filler words ("kar") tie with meaning words;
+    no spelling variants / phonetic key; no restore skill; the comment path never tried the Tier 1 skills. Now:
+    `tools/fuzzy.py` + `tools/resolve.py` (exact matcher first, weighted token scorer, marker / playhead and the
+    effects on screen as context, apply / up to 3 chips), skills restore_normal, brighten_to_white,
+    white_screen_card, chips in the app, local unmet-request log + review script. Held-out top-1 71.8 → 85.9 %,
+    top-3 75.3 → 91.8 %, silent wrong edits 8 → 3; previous eval unchanged.
+59. **The chat no longer waits 20-40 s on unusual words** — `/understand` waited for the local planner LLM
+    (21-28 s per phrase on this CPU) and, after a restart, for the phrase-embedding model (~32 s). Now a message
+    shares one 2 s model budget (`CUTMIND_LLM_WAIT`), the model keeps working in the background and its answer is
+    cached; requests never wait for the embedding model to load. Measured after warm-up: ~2 s (was 21-28 s).
+    "yaha …" in the chat now means the player's position.

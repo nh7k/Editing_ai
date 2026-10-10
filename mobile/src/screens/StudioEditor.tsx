@@ -259,6 +259,8 @@ export function StudioEditor({ navigation, route }: Props) {
       // version leaves out); the clean English prompt is shown as "Samajh gaya"
       const sent = prompt;
       const body: EditRequest = { prompt: sent, ...(threeVariations ? { variations: 3 } : {}), ...extra };
+      // "yaha …" in the chat points at the player's position (the backend uses it only when the words say "here")
+      if (extra.at === undefined && currentTime > 0) body.playhead = Math.round(currentTime * 100) / 100;
       if (aspect) body.aspect_ratio = aspect;
       const res = await api.startEdit(projectId, body);
       setTurns((prev) =>

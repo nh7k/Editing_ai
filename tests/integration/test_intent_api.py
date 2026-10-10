@@ -104,3 +104,19 @@ def test_resolve_endpoint_reads_what_is_on_screen_from_the_project(env):
     t = next(x for x in plan.timeline() if grey and x.index == grey.target).start + 0.2 if grey else 4.3
     r = c.post("/tools/resolve", json={"prompt": BUG, "project_id": pid, "context": {"marker_time": t}}).json()
     assert r["choices"] and r["decision"] in ("choose", "apply")
+
+
+def test_yaha_in_the_chat_means_the_playhead(env):
+    c, pid = env
+    plan = plan_of(c, pid)
+    grey = [e for e in plan.effects if e.type == "grade"]
+    if not grey:  # put the black and white back (an earlier test restored it)
+        r = c.post(f"/projects/{pid}/tools", json={"calls": [
+            {"id": "grayscale", "time": {"mode": "between_times", "start": 3.0, "end": 5.5}}]})
+        assert wait_job(c, r.json()["job_id"])["status"] == "done"
+    r = c.post(f"/projects/{pid}/edit", json={"prompt": "yaha pehle jaisa kar do", "playhead": 4.3})
+    if r.status_code == 422:
+        assert r.json()["error"]["choices"][0]["id"] == "restore_normal", r.text
+    else:
+        assert r.status_code == 202 and "normal" in r.json().get("did", ""), r.text
+        assert wait_job(c, r.json()["job_id"])["status"] == "done"

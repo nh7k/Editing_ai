@@ -356,6 +356,8 @@ export interface EditRequest {
    * The edit then applies to that moment only; a comment that can't be read there answers 422 `not_understood`.
    */
   at?: number;
+  /** Chat: where the player stands; "yaha / here" in the message means this second. */
+  playhead?: number;
 }
 
 export interface EditResponse {

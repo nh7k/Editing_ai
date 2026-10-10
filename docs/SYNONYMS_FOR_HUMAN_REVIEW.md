@@ -186,6 +186,7 @@ Removed: aa, aaa, aah, umm, hmm, हम्म, आ, अ. **Not** removed (often 
 | `saturation` | रंग गहरे करो | synonym (hi) |
 | `saturation` | रंग तेज़ करो | synonym (hi) |
 | `saturation` | रंग हल्के करो | synonym (hi) |
+| `saturation` | रंग बढ़ाओ | synonym (hi) |
 | `saturation` | रंग गहरे करो | example |
 | `warm` | गर्म रंग | synonym (hi) |
 | `warm` | सुनहरा करो | synonym (hi) |
@@ -371,6 +372,7 @@ Removed: aa, aaa, aah, umm, hmm, हम्म, आ, अ. **Not** removed (often 
 | `duck_music` | बोलते वक़्त गाना धीमा | synonym (hi) |
 | `duck_music` | आवाज़ के नीचे म्यूज़िक | synonym (hi) |
 | `duck_music` | डकिंग | synonym (hi) |
+| `duck_music` | बोलते समय संगीत कम | synonym (hi) |
 | `duck_music` | बोलते वक़्त गाना धीमा करो | example |
 | `volume` | आवाज़ तेज़ करो | synonym (hi) |
 | `volume` | आवाज़ कम करो | synonym (hi) |
@@ -444,6 +446,19 @@ Removed: aa, aaa, aah, umm, hmm, हम्म, आ, अ. **Not** removed (often 
 | `srt_export` | एसआरटी | synonym (hi) |
 | `srt_export` | कैप्शन की फ़ाइल | synonym (hi) |
 | `srt_export` | सबटाइटल फ़ाइल दो | example |
+| `restore_normal` | पहले जैसा करो | synonym (hi) |
+| `restore_normal` | नॉर्मल कर दो | synonym (hi) |
+| `restore_normal` | इफ़ेक्ट हटाओ | synonym (hi) |
+| `restore_normal` | असली जैसा करो | synonym (hi) |
+| `restore_normal` | पहले जैसा कर दो | example |
+| `brighten_to_white` | सफ़ेद सा करो | synonym (hi) |
+| `brighten_to_white` | ज़्यादा उजाला करो | synonym (hi) |
+| `brighten_to_white` | सफ़ेद रोशनी करो | synonym (hi) |
+| `brighten_to_white` | स्क्रीन को सफ़ेद सा करो | example |
+| `white_screen_card` | सफ़ेद स्क्रीन | synonym (hi) |
+| `white_screen_card` | खाली सफ़ेद स्क्रीन | synonym (hi) |
+| `white_screen_card` | सफ़ेद पर्दा | synonym (hi) |
+| `white_screen_card` | 2 सेकंड पर सफ़ेद स्क्रीन | example |
 
 ## 4. Hinglish synonyms I am least sure about
 

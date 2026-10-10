@@ -32,7 +32,7 @@ APPLY_MIN, MARGIN, CHOOSE_MIN = 0.80, 0.30, 0.30  # dev sweep (eval/results/inte
 # corpus: 0.4 cut silent wrong edits 42 → 12 — docs/INTENT_EVAL.md)
 UNEXPLAINED_MAX = 0.4
 NUMERIC = re.compile(r"\d+(?:\.\d+)?|sec|second|seconds|s|se|to|tak|x|min|minute|qtk\d+")
-DEICTIC = {"yaha", "isjagah", "abhi", "now", "idhar"}
+DEICTIC = {"yaha", "idhar"}  # not "abhi" / "now": in a command they mean "right away", not "at this second"
 RESTORE_WORDS = {"normal", "original", "wapas", "pehle"}
 REMOVE_WORDS = {"hatao", "hata", "nikal", "nikalo", "remove", "hatana", "band", "uda"}
 EFFECT_CATEGORIES = {"color", "motion", "stylize", "transitions"}

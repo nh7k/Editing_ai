@@ -14,6 +14,7 @@ for phrases the user taught (similarity ≥ 0.93 to a taught phrase).
 
 from __future__ import annotations
 
+import os
 import re
 import threading
 import time
@@ -88,11 +89,24 @@ _FILLER = re.compile(r"^(bhai|yaar|please|pls|plz|ok|okay|ji|na|sir|bro|aur|and|
                      r"de|do|isko|isme|mera|meri|this|the|a|it|ko|ka|ki|ke|hai|h|haan|thoda|thode|thodi|zara|jara|sa|si|se)$")
 _lock = threading.Lock()
 _model: Any = None
+_loading = threading.Event()
 
 
-def _embedder() -> Any:
-    """(session, tokenizer) or None when the model can't be loaded (then suggestions use word overlap)."""
+def _embedder(wait: bool = False) -> Any:
+    """(session, tokenizer) or None when the model can't be loaded (then suggestions use word overlap).
+
+    A request never waits for the model: creating the ONNX session takes 20-35 s on a laptop, and the first chat
+    message after a restart sat on this lock for 36 s ("Agent aapki baat samajh raha hai…"). While the model loads
+    in the background (warm_up at server start) requests use word overlap; only warm_up waits (wait=True)."""
     global _model
+    if _model is not None:
+        return _model or None
+    if not wait:
+        if not _loading.is_set():  # nobody started loading it: do it in the background, answer without it now
+            _loading.set()
+            threading.Thread(target=_embedder, kwargs={"wait": True}, name="embedder-load", daemon=True).start()
+        return None
+    _loading.set()
     with _lock:
         if _model is None:
             try:
@@ -140,8 +154,8 @@ _TRANSLATIONS: dict[str, Future] = {}
 _EMB_CACHE: dict[str, np.ndarray] = {}  # the example sentences never change: embed them once (was 5 s per message)
 
 
-def embed(texts: list[str]) -> np.ndarray | None:
-    m = _embedder()
+def embed(texts: list[str], wait: bool = False) -> np.ndarray | None:
+    m = _embedder(wait)
     if m is None or not texts:
         return None
     todo = list(dict.fromkeys(t for t in texts if t not in _EMB_CACHE))
@@ -160,7 +174,7 @@ def warm_up() -> None:
     """Load the model and embed the example bank in the background at server start."""
     try:
         bank = [ex for exs in SEED.values() for ex in exs] + list(COMMANDS.values())
-        embed(bank)
+        embed(bank, wait=True)
     except Exception:  # noqa: BLE001
         pass
 
@@ -210,12 +224,46 @@ HALF_UNDERSTOOD = 0.6  # coverage below this = the rules probably guessed (preno
 LLM_BUDGET = 40.0  # s of model time per message at most (CPU); the rules' answer stands after that
 
 
-def _llm(phrase: str, t0: float) -> str | None:
+# s a message waits for the model (it keeps working in the background; its answer is cached). On this laptop one
+# reading takes ~21 s, so a longer wait rarely helps; a GPU server can raise it (CUTMIND_LLM_WAIT).
+WAIT_LLM = float(os.environ.get("CUTMIND_LLM_WAIT", "2.0"))
+_LLM_POOL = ThreadPoolExecutor(max_workers=1, thread_name_prefix="phrase-llm")
+_LLM_FUTURES: dict[str, Future] = {}
+
+
+def _llm_call(phrase: str, deadline: float) -> str | None:
     from .llm_router import understand_phrase
 
     try:
-        return understand_phrase(phrase, deadline=t0 + LLM_BUDGET)
+        return understand_phrase(phrase, deadline=deadline)
     except Exception:  # noqa: BLE001 — the model never breaks an edit
+        return None
+
+
+def _llm(phrase: str, t0: float) -> str | None:
+    """The model's reading of a phrase, waiting at most WAIT_LLM seconds.
+
+    On this laptop's CPU one reading took 21-28 s, and the chat sat on "Agent aapki baat samajh raha hai…" for it on
+    every unusual message (measured 2026-10-10). Now the message goes on with the rules (and the skill resolver's
+    choices); the model's answer, when it comes, is kept for the same words — /edit, which follows /understand,
+    does not wait a second time."""
+    try:  # an answer belongs to the model that gave it (a test / a settings change swaps the provider)
+        from .llm_provider import get_provider
+
+        who = id(get_provider())
+    except Exception:  # noqa: BLE001
+        who = 0
+    key = f"{who}:{phrase.strip().lower()}"
+    fut = _LLM_FUTURES.get(key)
+    # the whole message waits WAIT_LLM at most (a message of several clauses does not wait once per clause)
+    wait = 0.0 if fut is not None else max(0.0, t0 + WAIT_LLM - time.monotonic())
+    if fut is None:
+        if len(_LLM_FUTURES) > 500:
+            _LLM_FUTURES.clear()
+        fut = _LLM_FUTURES[key] = _LLM_POOL.submit(_llm_call, phrase, time.monotonic() + LLM_BUDGET)
+    try:
+        return fut.result(timeout=wait) if not fut.done() else fut.result()
+    except Exception:  # noqa: BLE001 — timeout: answer without the model this time
         return None
 
 
@@ -283,7 +331,7 @@ class PhraseBook:
         best = sorted(score.items(), key=lambda kv: -kv[1])[:n]
         return [{"command": c, "label": COMMANDS[c], "score": round(s, 2)} for c, s in best if s >= SUGGEST_MIN]
 
-    def _translate(self, phrase: str) -> str | None:
+    def _translate(self, phrase: str, t0: float | None = None) -> str | None:
         """The trained Hinglish → English model (if installed): its English must be understood by the rules."""
         from .translator import Translator, is_known, trained_available
 
@@ -292,7 +340,9 @@ class PhraseBook:
         # on a laptop short of RAM one translation took 5-20 s: the chat answers after WAIT_TRANSLATION seconds
         # ("samajh nahi aaya" + suggestions); the translation finishes in the background, so asking again works
         fut = _TRANSLATIONS.get(phrase)
-        wait = 0.0 if fut is not None else WAIT_TRANSLATION  # already waited for once (/understand): don't again
+        # already waited for once (/understand): don't again; and the message's model time is shared (WAIT_LLM)
+        budget = WAIT_TRANSLATION if t0 is None else max(0.0, t0 + WAIT_LLM - time.monotonic())
+        wait = 0.0 if fut is not None else min(WAIT_TRANSLATION, budget)
         if fut is None:
             fut = _POOL.submit(Translator("trained").translate, phrase)
             _TRANSLATIONS[phrase] = fut
@@ -342,9 +392,9 @@ class PhraseBook:
         if replaced:
             prompt = ". ".join(replaced.get(c, c) for c in clauses(prompt))
         for c in unclear(prompt):
-            # the whole message gets ~6 s of translating at most: the chat must answer quickly
+            # the whole message gets WAIT_LLM (4 s) of model time at most: the chat must answer quickly
             # taught phrase → planner LLM (llm_router: small model, bigger one if unsure) → fine-tuned translator
-            cmd = self.resolve(c) or _llm(c, t0) or (self._translate(c) if time.monotonic() - t0 < 6.0 else None)
+            cmd = self.resolve(c) or _llm(c, t0) or self._translate(c, t0)
             if cmd:
                 extra.append(cmd)
             elif ask:

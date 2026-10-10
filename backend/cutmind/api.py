@@ -173,6 +173,8 @@ class EditIn(BaseModel):
     music_track: str | None = Field(None, max_length=120, description="song for this edit (project or library file name)")
     at: float | None = Field(None, ge=0, le=36000, description="timeline comment: the second of the CURRENT edit "
                                                                "the message is about (only that moment changes)")
+    playhead: float | None = Field(None, ge=0, le=36000, description="chat: where the player stands; 'yaha / here' "
+                                                                     "in the message means this second")
 
 
 class TeachIn(BaseModel):
@@ -1069,6 +1071,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             except ValueError as exc:
                 raise ApiError(422, "not_understood", str(exc)) from exc
         else:
+            if body.playhead is not None and _points_here(prompt):
+                # "yaha normal kar do" typed in the chat: "yaha" is where the player stands
+                last = db.last_job(pid, "done")
+                if last and last["plan"]:
+                    return _resolve_or_ask(pid, prompt, EditPlan.model_validate(json.loads(last["plan"])), None,
+                                           playhead=body.playhead)
             if _only_auto_guess(prompt, options):
                 # "yaha screen white kar do" used to read as "auto edit" (from "kar do") and re-edit everything
                 from .tools.resolve import CHOOSE_MIN, resolve
@@ -1092,15 +1100,22 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         rec = parse_intent(prompt).recognized
         return bool(rec) and all(r.startswith("auto edit") for r in rec) and not auto_ask.search(prompt)
 
-    def _resolve_or_ask(pid: str, prompt: str, plan: EditPlan | None, at: float | None) -> dict[str, Any]:
+    def _points_here(prompt: str) -> bool:
+        from .tools.fuzzy import canonical_words
+        from .tools.resolve import DEICTIC
+
+        return bool(DEICTIC & set(canonical_words(prompt)))
+
+    def _resolve_or_ask(pid: str, prompt: str, plan: EditPlan | None, at: float | None,
+                        playhead: float | None = None) -> dict[str, Any]:
         """Apply the resolver's reading when it is clearly ahead; otherwise 422 "choose" with up to 3 choices (each
         is ready-to-run tool calls for POST /projects/{pid}/tools) and a request id for POST /tools/resolve/pick."""
         from .tools.resolve import context_from_plan, resolve
         from .unmet import UnmetLog
 
-        ctx = context_from_plan(plan, at) if plan is not None else {}
+        ctx = context_from_plan(plan, at if at is not None else playhead) if plan is not None else {}
         if at is None:
-            ctx["comment"] = False
+            ctx["comment"] = False  # a chat message points at the playhead only when it says "yaha / here"
         log = UnmetLog(db)
         ctx["learned"] = log.learned(prompt)
         res = resolve(prompt, ctx)
@@ -1112,7 +1127,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 raise ApiError(422, "bad_tools", str(exc)) from exc
             return {"job_id": job_id, "status": "queued", "did": best["label"]}
         rid = log.log(pid, prompt, ctx, res.decision, res.choices)
-        where = f" ({at:.1f}s)" if at is not None else ""
+        here = at if at is not None else playhead
+        where = f" ({here:.1f}s)" if here is not None else ""
         msg = (f'"{prompt[:60]}"{where} ke ek se zyada matlab ho sakte hain — jo chahiye us pe tap karo:'
                if res.decision == "choose" else
                f'"{prompt[:60]}"{where} pakka samajh nahi aaya. Shayad aap inme se kuch chahte ho:')
