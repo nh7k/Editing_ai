@@ -3,14 +3,14 @@
   "configurations": [
     {
       "name": "backend",
-      "runtimeExecutable": "backend/.venv/Scripts/python.exe",
-      "runtimeArgs": ["-m", "uvicorn", "cutmind.api:create_app", "--factory", "--app-dir", "backend", "--port", "8000"],
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "set PLANNER_MODE=mock&& set LLM_PROVIDER=llamacpp&& set CUTMIND_TRANSLATOR=off&& backend\\.venv\\Scripts\\python.exe -m uvicorn cutmind.api:create_app --factory --app-dir backend --host 0.0.0.0 --port 8000"],
       "port": 8000
     },
     {
       "name": "web",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["--prefix", "mobile", "expo", "start", "--web", "--port", "8081"],
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "cd mobile&& set CI=1&& npx expo start --web --port 8081"],
       "port": 8081
     }
   ]
