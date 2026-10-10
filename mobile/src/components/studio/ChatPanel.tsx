@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 
 import { api, errorMessage } from '../../api/client';
-import type { Job, JobAgent, JobEvent, JobVariation, UnclearPart, Understood } from '../../api/types';
+import type { IntentChoice, Job, JobAgent, JobEvent, JobVariation, UnclearPart, Understood } from '../../api/types';
 import { isTerminal } from '../../hooks/useJobPolling';
 import { useJobEvents } from '../../hooks/useJobEvents';
 import { useVoicePrompt } from '../../hooks/useVoicePrompt';
@@ -35,6 +35,10 @@ export interface ChatTurn {
   pending?: boolean;
   /** The agent's answer when no edit was started ("samajh nahi aaya…", a network error). */
   error?: string | null;
+  /** An unclear request: up to 3 readings to tap (the first is the best guess). */
+  choices?: IntentChoice[];
+  /** The resolver applied its reading directly — what it did, in plain words (undo is one tap away). */
+  did?: string;
 }
 
 export interface ChatPanelProps {
@@ -62,6 +66,8 @@ export interface ChatPanelProps {
   focusRequest?: number;
   /** Rendered between the header and the transcript (e.g. the memory card). */
   topSlot?: ReactNode;
+  /** The user tapped one reading of an unclear request. */
+  onPickChoice?: (turnKey: string, choice: IntentChoice) => void;
 }
 
 export function ChatPanel(props: ChatPanelProps) {
@@ -244,7 +250,7 @@ export function plainProblem(name: string, detail: string): string {
   return known[name] ?? `${name.replace(/_/g, ' ')}: ${detail}`;
 }
 
-function TurnView({ turn, playingVariant, onPlayVariant, onChosen, onSend, disabled, sending }: { turn: ChatTurn } & ChatPanelProps) {
+function TurnView({ turn, playingVariant, onPlayVariant, onChosen, onSend, disabled, sending, onPickChoice }: { turn: ChatTurn } & ChatPanelProps) {
   const job = turn.job;
   const failedChecks = job?.review?.checks.filter((c) => !c.passed) ?? [];
   const passed = job?.review?.checks.filter((c) => c.passed).length ?? 0;
@@ -269,6 +275,32 @@ function TurnView({ turn, playingVariant, onPlayVariant, onChosen, onSend, disab
         <View style={[styles.agentBubble, styles.agentBubbleError]} testID="agent-error">
           <AppText size="sm" color={studio.text}>
             {turn.error}
+          </AppText>
+          {turn.choices?.length ? (
+            <View style={styles.suggestRow} testID="agent-choices">
+              {turn.choices.map((c, i) => (
+                <Pressable
+                  key={`ch-${c.id}`}
+                  onPress={() => !disabled && !sending && onPickChoice?.(turn.key, c)}
+                  style={[styles.suggestChip, i === 0 && styles.choiceBest]}
+                  accessibilityRole="button"
+                  accessibilityLabel={c.label}
+                  testID={`agent-choice-${i}`}
+                >
+                  <AppText size="xs" weight={i === 0 ? 'semibold' : 'regular'} color={studio.text}>
+                    {i === 0 ? '★ ' : ''}
+                    {c.label}
+                  </AppText>
+                </Pressable>
+              ))}
+            </View>
+          ) : null}
+        </View>
+      ) : null}
+      {turn.did ? (
+        <View style={styles.agentBubble} testID="agent-did">
+          <AppText size="sm" color={studio.text}>
+            ✓ Kiya: {turn.did} — pasand na aaye to ↶ Undo
           </AppText>
         </View>
       ) : null}
@@ -731,6 +763,7 @@ function VariationRow({
 
 const styles = StyleSheet.create({
   suggestRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 6, alignItems: 'center' },
+  choiceBest: { borderColor: studio.cyan, backgroundColor: 'rgba(34, 211, 238, 0.12)' },
   suggestChip: {
     paddingHorizontal: 10,
     paddingVertical: 5,

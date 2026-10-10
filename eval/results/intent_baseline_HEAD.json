@@ -1,0 +1,16 @@
+{
+ "dev+regression": {
+  "n": 335,
+  "top1": 0.642,
+  "top3": 0.701,
+  "applied": 247,
+  "silent_wrong": 42
+ },
+ "heldout": {
+  "n": 85,
+  "top1": 0.718,
+  "top3": 0.753,
+  "applied": 65,
+  "silent_wrong": 8
+ }
+}

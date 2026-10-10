@@ -1,0 +1,94 @@
+# added for the "yaha screen white kar do" failure (docs/INTENT_FAILURE_REVIEW.md)
+id: brighten_to_white
+seed: 107
+category: color
+name: Wash out to white
+name_hi: Safed sa karo
+description: Push a part of the video bright and pale, towards white (brighter, flatter, less colour). For a
+  quick white blink use flash; for a white transition use fade_white.
+params:
+  amount:
+    type: number
+    default: 0.7
+    min: 0.2
+    max: 1.0
+    extract: magnitude
+    desc: how far towards white
+time_modes:
+- whole
+- segment
+- between_times
+- intermittent
+builder: restore.brighten_to_white
+graph: eq=brightness/contrast/saturation (GPL-only filter → server only)
+media3:
+  status: mapped
+  how: brightness + contrast + saturation adjustments on the item — NOT TESTED
+stage: color
+conflicts: []
+cost: cheap
+licence: own code; FFmpeg eq (GPL build only — server process)
+changes_duration: false
+needs: []
+variant_axes:
+  amount:
+  - light
+  - normal
+  - strong
+synonyms:
+  en:
+  - brighten to white
+  - wash out to white
+  - make it whiter
+  - overexpose
+  - bleach the picture
+  - washed out bright
+  - white wash
+  hinglish:
+  - white sa karo
+  - zyada bright aur white
+  - screen bright karo
+  - ekdum ujala safed karo
+  - dhula dhula sa karo
+  - safed sa kar do
+  - roshni se safed kar do
+  hi:
+  - सफ़ेद सा करो
+  - ज़्यादा उजाला करो
+  - सफ़ेद रोशनी करो
+  slang:
+  - heaven light look
+  - overexposed look
+  typos:
+  - brighten to wite
+  - bryt white
+  - ovrexpose
+negations:
+- white sa mat karo
+examples:
+- prompt: wash the picture out to white
+  lang: en
+- prompt: overexpose from 2 to 4 sec
+  lang: en
+- prompt: स्क्रीन को सफ़ेद सा करो
+  lang: hi
+- prompt: thoda safed sa kar do
+  lang: hinglish
+- prompt: 1 se 3 sec screen bright karo
+  lang: hinglish
+- prompt: brighten to wite
+  lang: typo
+- prompt: sapne wali roshni chahiye
+  lang: vague
+- prompt: white sa karo aur slow motion
+  lang: multi
+  also:
+  - slow_motion
+test:
+  check: washed_white
+  params:
+    amount: 0.8
+  time:
+    mode: between_times
+    start: 1.0
+    end: 3.0

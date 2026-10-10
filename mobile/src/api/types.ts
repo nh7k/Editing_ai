@@ -361,6 +361,22 @@ export interface EditRequest {
 export interface EditResponse {
   job_id: string;
   status: JobStatus;
+  /** The resolver applied its reading directly: what it did, in plain words ("4.3s par white flash"). */
+  did?: string;
+}
+
+/** A Tier 1 tool call (POST /projects/{id}/tools). */
+export interface ToolCall {
+  id: string;
+  params?: Record<string, unknown>;
+  time?: Record<string, unknown> | null;
+}
+
+/** One tap-able reading of an unclear request (422 "choose"). */
+export interface IntentChoice {
+  id: string;
+  label: string;
+  calls: ToolCall[];
 }
 
 export interface FeedbackRequest {

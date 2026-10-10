@@ -1,0 +1,105 @@
+# added for the "yaha screen white kar do nomal jasia tha" failure (docs/INTENT_FAILURE_REVIEW.md)
+id: restore_normal
+seed: 106
+category: stylize
+name: Back to normal
+name_hi: Pehle jaisa karo
+description: Take the effects off a part of the video (or all of it) so it looks like the original again. Colour,
+  zoom / motion, style effects and graphics / stickers; text and cuts stay. A colour grade on the whole video
+  stays when only a part is restored (it is said back).
+params:
+  what:
+    type: choice
+    default: all
+    choices:
+    - all
+    - color
+    - motion
+    - style
+    - overlays
+    desc: which kind of effect to take off
+time_modes:
+- whole
+- segment
+- between_times
+builder: restore.restore_normal
+graph: removes plan effects / graphics / stickers in the window (no filter of its own)
+media3:
+  status: mapped
+  how: drop the effects of the EditedMediaItems in the window — NOT TESTED
+stage: effect
+conflicts: []
+cost: cheap
+licence: own code
+changes_duration: false
+needs: []
+variant_axes:
+  what:
+  - all
+  - color
+  - motion
+synonyms:
+  en:
+  - make it normal
+  - back to normal
+  - restore the original
+  - remove the effect here
+  - undo the effect here
+  - original look
+  - as it was before
+  - clear the effects
+  hinglish:
+  - normal kar do
+  - pehle jaisa kar do
+  - jaisa tha waisa karo
+  - effect hata do yaha
+  - original jaisa karo
+  - wapas normal karo
+  - asli look wapas
+  - normal jaisa tha
+  - saare effect hatao
+  hi:
+  - पहले जैसा करो
+  - नॉर्मल कर दो
+  - इफ़ेक्ट हटाओ
+  - असली जैसा करो
+  slang:
+  - sab saaf karo
+  - effect ki chhutti
+  typos:
+  - nomal kar do
+  - pehle jesa karo
+  - orignal look
+negations:
+- normal mat karo
+examples:
+- prompt: make it normal again
+  lang: en
+- prompt: remove the effect from 2 to 4 sec
+  lang: en
+- prompt: पहले जैसा कर दो
+  lang: hi
+- prompt: yaha pehle jaisa kar do
+  lang: hinglish
+- prompt: 3 se 5 sec effect hata do
+  lang: hinglish
+- prompt: nomal kar do
+  lang: typo
+- prompt: ye ajeeb lag raha hai theek karo
+  lang: vague
+- prompt: normal kar do aur music lagao
+  lang: multi
+  also:
+  - add_music
+test:
+  check: restored_look
+  setup:
+  - id: grayscale
+    time:
+      mode: between_times
+      start: 1.0
+      end: 3.0
+  time:
+    mode: between_times
+    start: 1.0
+    end: 3.0

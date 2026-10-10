@@ -2,8 +2,8 @@ import { useVideoPlayer } from 'expo-video';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
-import { api, errorMessage } from '../api/client';
-import type { AspectRatio, EditRequest, Job, ManualOp, OutputFormat, StyleId, StyleInfo, Understood, Waveform } from '../api/types';
+import { api, errorMessage, isApiError } from '../api/client';
+import type { AspectRatio, EditRequest, IntentChoice, Job, ManualOp, OutputFormat, StyleId, StyleInfo, Understood, Waveform } from '../api/types';
 import { AppText } from '../components/AppText';
 import { ChatPanel, type ChatTurn } from '../components/studio/ChatPanel';
 import { EffectsPanel } from '../components/studio/EffectsPanel';
@@ -44,6 +44,11 @@ interface Turn {
   pending?: boolean;
   /** No edit was started: the agent's answer ("samajh nahi aaya…", network error). */
   error?: string | null;
+  /** An unclear request: the readings to tap, and the id that remembers which one was tapped. */
+  choices?: IntentChoice[];
+  requestId?: string;
+  /** Applied directly by the resolver: what it did. */
+  did?: string;
 }
 
 const WAVEFORM_POINTS = 200;
@@ -139,6 +144,8 @@ export function StudioEditor({ navigation, route }: Props) {
         events: isActive ? liveEvents : undefined,
         pending: t.pending,
         error: t.error,
+        choices: t.choices,
+        did: t.did,
       };
     });
   }, [turns, activeJob, cleared, withChoice, plan.data?.decisions, liveEvents]);
@@ -255,15 +262,46 @@ export function StudioEditor({ navigation, route }: Props) {
       if (aspect) body.aspect_ratio = aspect;
       const res = await api.startEdit(projectId, body);
       setTurns((prev) =>
-        prev.map((t) => (t.key === pendingKey ? { ...t, jobId: res.job_id, pending: false, understood } : t)),
+        prev.map((t) =>
+          t.key === pendingKey ? { ...t, jobId: res.job_id, pending: false, understood, ...(res.did ? { did: res.did } : {}) } : t,
+        ),
       );
       setPlayingVariant(null);
       return true;
     } catch (e) {
-      // e.g. "Ye samajh nahi aaya … Aise likho: …" — the agent's answer, in the chat where the user looks
+      // e.g. "Ye samajh nahi aaya … Aise likho: …" — the agent's answer, in the chat where the user looks;
+      // an unclear request comes with readings to tap (never a dead end)
       const msg = errorMessage(e);
-      setTurns((prev) => prev.map((t) => (t.key === pendingKey ? { ...t, pending: false, error: msg } : t)));
+      const choices =
+        isApiError(e) && e.code === 'choose' && Array.isArray(e.details.choices) ? (e.details.choices as IntentChoice[]) : undefined;
+      const requestId = isApiError(e) && typeof e.details.request_id === 'string' ? e.details.request_id : undefined;
+      setTurns((prev) =>
+        prev.map((t) => (t.key === pendingKey ? { ...t, pending: false, error: msg, choices, requestId } : t)),
+      );
       return false;
+    } finally {
+      setSending(false);
+    }
+  };
+
+  /** One reading of an unclear request was tapped: run it as tool calls (a new version) and remember the pick. */
+  const pickChoice = async (turnKey: string, choice: IntentChoice) => {
+    const asked = turns.find((t) => t.key === turnKey);
+    setSending(true);
+    setSendError(null);
+    try {
+      const res = await api.runTools(projectId, choice.calls, asked?.prompt ?? choice.label);
+      if (asked?.requestId) void api.pickChoice(asked.requestId, choice.id).catch(() => undefined);
+      const frozen = poll.job;
+      setTurns((prev) => {
+        const base = prev.map((t) =>
+          t.key === turnKey ? { ...t, choices: undefined } : t.jobId && t.jobId === frozen?.id ? { ...t, snapshot: frozen } : t,
+        );
+        return [...base, { key: `${res.job_id}-${base.length}`, prompt: `👉 ${choice.label}`, jobId: res.job_id, snapshot: null, understood: null }];
+      });
+      setPlayingVariant(null);
+    } catch (e) {
+      setSendError(errorMessage(e));
     } finally {
       setSending(false);
     }
@@ -470,6 +508,7 @@ export function StudioEditor({ navigation, route }: Props) {
           running={running}
           pollError={poll.error}
           onSend={(p) => void startEdit(p)}
+          onPickChoice={(key, c) => void pickChoice(key, c)}
           sending={sending}
           sendError={sendError}
           disabled={clips.length === 0}

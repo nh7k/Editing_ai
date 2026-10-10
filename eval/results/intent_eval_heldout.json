@@ -1,0 +1,702 @@
+{
+ "split": "heldout",
+ "before": {
+  "n": 85,
+  "top1": 0.824,
+  "top3": 0.859,
+  "applied": 69,
+  "asked": 16,
+  "silent_wrong": 8,
+  "silent_wrong_rate": 0.094,
+  "latency_ms_p50": 9.7,
+  "latency_ms_p95": 211.7,
+  "per_skill": {
+   "add_music": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "aspect_1_1": {
+    "n": 2,
+    "top1": 1,
+    "top3": 1
+   },
+   "aspect_9_16": {
+    "n": 2,
+    "top1": 1,
+    "top3": 1
+   },
+   "audio_fade": {
+    "n": 2,
+    "top1": 1,
+    "top3": 1
+   },
+   "auto_captions": {
+    "n": 2,
+    "top1": 1,
+    "top3": 1
+   },
+   "blur": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "brighten_to_white": {
+    "n": 2,
+    "top1": 1,
+    "top3": 1
+   },
+   "brightness": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "caption_style": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "cinematic_look": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "contrast": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "cool": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "crossfade": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "delete_segment": {
+    "n": 2,
+    "top1": 1,
+    "top3": 2
+   },
+   "denoise": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "duck_music": {
+    "n": 2,
+    "top1": 0,
+    "top3": 0
+   },
+   "export_preset": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "fade_black": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "fade_white": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "fit_to_duration": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "flash": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "glitch": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "grayscale": {
+    "n": 2,
+    "top1": 1,
+    "top3": 1
+   },
+   "mute": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "remove_silence": {
+    "n": 2,
+    "top1": 1,
+    "top3": 1
+   },
+   "restore_normal": {
+    "n": 3,
+    "top1": 2,
+    "top3": 2
+   },
+   "saturation": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "sepia": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "shake": {
+    "n": 2,
+    "top1": 1,
+    "top3": 2
+   },
+   "slow_motion": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "speed_up": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "text_overlay": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "title_card": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "trim": {
+    "n": 2,
+    "top1": 0,
+    "top3": 1
+   },
+   "vhs_retro": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "vintage_faded": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "volume": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "warm": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "watermark_logo": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "white_screen_card": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "zoom_in": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "zoom_out": {
+    "n": 2,
+    "top1": 1,
+    "top3": 1
+   }
+  },
+  "fails": [
+   {
+    "prompt": "sirf 5 se 15 sec wala part chahiye",
+    "expect": "trim",
+    "got": [
+     "split",
+     "fit_to_duration",
+     "trim"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "cut it down to 3-10 sec",
+    "expect": "trim",
+    "got": [
+     "fit_to_duration"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "remove 1 to 3 sec",
+    "expect": "delete_segment",
+    "got": [
+     "restore_normal",
+     "mute",
+     "delete_segment"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "khamoshi wale hisse kaat do",
+    "expect": "remove_silence",
+    "got": [
+     "delete_segment"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "zoom aout",
+    "expect": "zoom_out",
+    "got": [
+     "zoom_in"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "jhatka do video ko",
+    "expect": "shake",
+    "got": [
+     "fit_to_duration",
+     "shake",
+     "punch_in"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "purani film jaisa black white",
+    "expect": "grayscale",
+    "got": [
+     "vintage_faded"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "text me bolna dikhao",
+    "expect": "auto_captions",
+    "got": [
+     "shape_highlight",
+     "film_grain",
+     "text_overlay"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "baat ke beech music neeche",
+    "expect": "duck_music",
+    "got": [
+     "add_music"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "duk music",
+    "expect": "duck_music",
+    "got": [
+     "add_music"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "audio fad out",
+    "expect": "audio_fade",
+    "got": [
+     "fade_black"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "9 by 16",
+    "expect": "aspect_9_16",
+    "got": [
+     "aspect_4_5",
+     "split_screen",
+     "karaoke_captions"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "chokor video",
+    "expect": "aspect_1_1",
+    "got": [
+     "fit_to_duration",
+     "merge_clips",
+     "picture_in_picture"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "is jagah pehle wala look",
+    "expect": "restore_normal",
+    "got": [
+     "reorder_clips"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "yaha whitish kar do",
+    "expect": "brighten_to_white",
+    "got": [
+     "zoom_in",
+     "add_music",
+     "auto_captions"
+    ],
+    "applied": false
+   }
+  ]
+ },
+ "after": {
+  "n": 85,
+  "top1": 0.859,
+  "top3": 0.918,
+  "applied": 66,
+  "asked": 19,
+  "silent_wrong": 3,
+  "silent_wrong_rate": 0.035,
+  "latency_ms_p50": 210.2,
+  "latency_ms_p95": 1176.1,
+  "per_skill": {
+   "add_music": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "aspect_1_1": {
+    "n": 2,
+    "top1": 1,
+    "top3": 1
+   },
+   "aspect_9_16": {
+    "n": 2,
+    "top1": 1,
+    "top3": 1
+   },
+   "audio_fade": {
+    "n": 2,
+    "top1": 1,
+    "top3": 1
+   },
+   "auto_captions": {
+    "n": 2,
+    "top1": 1,
+    "top3": 1
+   },
+   "blur": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "brighten_to_white": {
+    "n": 2,
+    "top1": 1,
+    "top3": 1
+   },
+   "brightness": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "caption_style": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "cinematic_look": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "contrast": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "cool": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "crossfade": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "delete_segment": {
+    "n": 2,
+    "top1": 1,
+    "top3": 2
+   },
+   "denoise": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "duck_music": {
+    "n": 2,
+    "top1": 1,
+    "top3": 1
+   },
+   "export_preset": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "fade_black": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "fade_white": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "fit_to_duration": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "flash": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "glitch": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "grayscale": {
+    "n": 2,
+    "top1": 1,
+    "top3": 2
+   },
+   "mute": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "remove_silence": {
+    "n": 2,
+    "top1": 1,
+    "top3": 2
+   },
+   "restore_normal": {
+    "n": 3,
+    "top1": 3,
+    "top3": 3
+   },
+   "saturation": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "sepia": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "shake": {
+    "n": 2,
+    "top1": 1,
+    "top3": 2
+   },
+   "slow_motion": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "speed_up": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "text_overlay": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "title_card": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "trim": {
+    "n": 2,
+    "top1": 0,
+    "top3": 1
+   },
+   "vhs_retro": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "vintage_faded": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "volume": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "warm": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "watermark_logo": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "white_screen_card": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "zoom_in": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   },
+   "zoom_out": {
+    "n": 2,
+    "top1": 2,
+    "top3": 2
+   }
+  },
+  "fails": [
+   {
+    "prompt": "sirf 5 se 15 sec wala part chahiye",
+    "expect": "trim",
+    "got": [
+     "split",
+     "fit_to_duration",
+     "trim"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "cut it down to 3-10 sec",
+    "expect": "trim",
+    "got": [
+     "fit_to_duration"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "remove 1 to 3 sec",
+    "expect": "delete_segment",
+    "got": [
+     "mute",
+     "delete_segment",
+     "remove_silence"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "khamoshi wale hisse kaat do",
+    "expect": "remove_silence",
+    "got": [
+     "delete_segment",
+     "split",
+     "remove_silence"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "jhatka do video ko",
+    "expect": "shake",
+    "got": [
+     "fit_to_duration",
+     "shake",
+     "punch_in"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "purani film jaisa black white",
+    "expect": "grayscale",
+    "got": [
+     "vintage_faded",
+     "grayscale",
+     "flash"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "text me bolna dikhao",
+    "expect": "auto_captions",
+    "got": [
+     "shape_highlight",
+     "film_grain",
+     "text_overlay"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "baat ke beech music neeche",
+    "expect": "duck_music",
+    "got": [
+     "add_music",
+     "pixelate_censor",
+     "beat_sync"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "audio fad out",
+    "expect": "audio_fade",
+    "got": [
+     "fade_black"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "9 by 16",
+    "expect": "aspect_9_16",
+    "got": [
+     "aspect_4_5"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "chokor video",
+    "expect": "aspect_1_1",
+    "got": [
+     "fit_to_duration",
+     "merge_clips",
+     "picture_in_picture"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "yaha whitish kar do",
+    "expect": "brighten_to_white",
+    "got": [],
+    "applied": false
+   }
+  ]
+ },
+ "thresholds": {
+  "apply_min": 0.8,
+  "margin": 0.3,
+  "choose_min": 0.3
+ }
+}

@@ -25,7 +25,7 @@ def plan2(text: list[dict] | None = None) -> EditPlan:
 
 def test_specs_are_valid_and_complete():
     s = spec.load()
-    assert len(s) == 105, len(s)
+    assert len(s) == 108, len(s)
     assert spec.problems() == []
     for sid, x in s.items():
         assert sum(len(v) for v in x["synonyms"].values()) >= 15, sid

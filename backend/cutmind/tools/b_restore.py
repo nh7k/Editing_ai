@@ -1,0 +1,152 @@
+"""Restore and white skills (docs/INTENT_FAILURE_REVIEW.md).
+
+restore_normal     take the effects off a part of the video (or all of it): "yaha normal karo", "pehle jaisa"
+brighten_to_white  push a part of the video bright and pale, towards white: "yaha screen white sa karo"
+white_screen_card  a plain white screen for a moment (the video waits and continues): "1 sec safed screen"
+
+The white flash and the fade through white already exist (`flash`, `fade_white`).
+"""
+
+from __future__ import annotations
+
+from typing import Any
+
+from ..engines.stack import COLOR, FLASH, GEOMETRY, GLITCH, TEXTURE, TIME_BLEND
+from ..plan import EditPlan, Effect
+from . import generated
+from .engine import ToolCtx, tool
+from .timeline import ToolError, isolate, split_at
+from .timewin import When
+
+FAMILIES: dict[str, set[str]] = {
+    "color": set(COLOR),
+    "motion": set(GEOMETRY),
+    "style": set(GLITCH) | set(TEXTURE) | set(FLASH) | set(TIME_BLEND),
+}
+WORDS = {"color": "colour", "motion": "zoom / motion", "style": "effects", "overlays": "graphics / stickers"}
+
+
+def _family(kind: str) -> str:
+    return next((f for f, types in FAMILIES.items() if kind in types), "style")
+
+
+def _cut_items(items: list[dict[str, Any]], a: float, b: float) -> tuple[list[dict[str, Any]], int]:
+    """Timed items (graphics / stickers) without the part inside [a, b]: before / after pieces stay."""
+    out, hit = [], 0
+    for it in items:
+        s, e = float(it["start"]), float(it["end"])
+        if e <= a + 1e-3 or s >= b - 1e-3:
+            out.append(it)
+            continue
+        hit += 1
+        if s < a - 0.05:
+            out.append({**it, "end": round(a, 3)})
+        if e > b + 0.05:
+            out.append({**it, "start": round(b, 3)})
+    return out, hit
+
+
+@tool("restore_normal")
+def restore_normal(plan: EditPlan, p: dict[str, Any], when: When, ctx: ToolCtx) -> EditPlan:
+    what = str(p.get("what") or "all")
+    fams = set(FAMILIES) | {"overlays"} if what == "all" else {what}
+    removed: list[str] = []
+    if when.whole:
+        data = plan.to_json()
+        keep = [e for e in data["effects"] if _family(e["type"]) not in fams]
+        removed += sorted({e["type"] for e in data["effects"] if e not in keep})
+        data["effects"] = keep
+        if "color" in fams and plan.color.preset != "none":
+            removed.append(f"colour grade '{plan.color.preset}'")
+            data["color"] = {**data["color"], "preset": "none", "lut": None}
+        if "overlays" in fams:
+            n = len(data.get("graphics", [])) + len(data.get("stickers", []))
+            if n:
+                removed.append(f"{n} graphic(s) / sticker(s)")
+            data["graphics"], data["stickers"] = [], []
+        if not removed:
+            raise ToolError("there is no effect on this video to take off — it already looks normal")
+        ctx.notes.append("back to normal everywhere: " + ", ".join(removed))
+        return EditPlan.model_validate(data)
+
+    for a, b in when.windows:
+        plan, idx = isolate(plan, a, b)
+        tl = plan.timeline()
+        lo, hi = tl[idx[0]].start, tl[idx[-1]].end
+        data = plan.to_json()
+        new_fx = []
+        for e in data["effects"]:
+            if _family(e["type"]) not in fams:
+                new_fx.append(e)
+            elif e["target"] in idx:
+                removed.append(e["type"])
+            elif e["target"] == -1:
+                # an effect on the whole video: it stays everywhere except here
+                removed.append(e["type"])
+                new_fx += [Effect.model_validate({**e, "target": x.index}).model_dump() for x in tl if x.index not in idx]
+            else:
+                new_fx.append(e)
+        data["effects"] = new_fx
+        if "overlays" in fams:
+            data["graphics"], g = _cut_items(data.get("graphics", []), lo, hi)
+            data["stickers"], s = _cut_items(data.get("stickers", []), lo, hi)
+            if g + s:
+                removed.append(f"{g + s} graphic(s) / sticker(s)")
+        plan = EditPlan.model_validate(data)
+    if "color" in fams and plan.color.preset != "none":
+        ctx.notes.append(f"the colour grade '{plan.color.preset}' covers the whole video, so it stays here too — "
+                         "say 'poori video ka colour normal karo' to take it off everywhere")
+    if not removed:
+        raise ToolError(f"there is no {WORDS.get(what, 'effect')} here to take off ({when.describe()})")
+    ctx.notes.append(f"back to normal ({when.describe()}): removed " + ", ".join(dict.fromkeys(removed)))
+    return plan
+
+
+@tool("brighten_to_white")
+def brighten_to_white(plan: EditPlan, p: dict[str, Any], when: When, ctx: ToolCtx) -> EditPlan:
+    from .b_color import _grade
+
+    a = float(p["amount"])
+    # brighter, flatter and paler: the picture washes out towards white (still readable at 0.5)
+    params = {"brightness": round(0.45 * a, 3), "contrast": round(1 - 0.35 * a, 3), "saturation": round(1 - 0.6 * a, 3)}
+    return _grade(plan, when, ctx, params, f"washed bright towards white x{a:g}")
+
+
+@tool("white_screen_card")
+def white_screen_card(plan: EditPlan, p: dict[str, Any], when: When, ctx: ToolCtx) -> EditPlan:
+    at = when.instants[0] if when.instants else (when.windows[0][0] if when.windows else 0.0)
+    d = float(p["duration"])
+    total = plan.total_duration()
+    if not 0 <= at <= total:
+        raise ToolError(f"{at:g}s is outside the video (it is {total:.1f}s long)")
+    w, h = plan.canvas.size
+    card_id, path = generated.card(ctx.gen_dir, w, h, d, "white", plan.canvas.fps)
+    ctx.sources[card_id] = path
+    tl = plan.timeline()
+    ends = [0.0] + [e.end - plan.overlap_after(e.index) for e in tl]
+    if all(abs(at - x) > 0.05 for x in ends):
+        plan = split_at(plan, at)
+        tl = plan.timeline()
+    k = next((x.index for x in tl if abs(x.start - at) <= 0.06), len(tl))  # the card goes before shot k
+    data = plan.to_json()
+    for c in data["clips"]:
+        if c["order"] >= k:
+            c["order"] += 1
+    for e in data["effects"]:
+        if e["target"] >= k:
+            e["target"] += 1
+    for t in data["transitions"]:
+        if t["after"] >= k:
+            t["after"] += 1
+    for x in data.get("audio_edits", []):
+        if x["after"] >= k:
+            x["after"] += 1
+    for key in ("text", "stickers", "graphics", "overlays"):
+        for it in data.get(key, []):
+            if it["start"] >= at - 1e-3:
+                it["start"], it["end"] = round(it["start"] + d, 3), round(it["end"] + d, 3)
+            elif it["end"] > at:
+                it["end"] = round(it["end"] + d, 3)
+    data["clips"].append({"source": card_id, "in": 0.0, "out": d, "order": k})
+    ctx.notes.append(f"{d:g}s white screen at {at:.1f}s (the video continues after it)")
+    return EditPlan.model_validate(data)

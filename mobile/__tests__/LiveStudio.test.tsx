@@ -191,3 +191,22 @@ describe('LiveProgressCard', () => {
     expect(screen.getByText('Colour: —')).toBeTruthy();
   });
 });
+
+describe('ChatPanel: an unclear request is never a dead end', () => {
+  const choices = [
+    { id: 'restore_normal', label: 'Yaha ka effect hata ke normal karo (grade hatega)', calls: [{ id: 'restore_normal' }] },
+    { id: 'flash', label: '4.3s par white flash (0.3 sec)', calls: [{ id: 'flash', time: { mode: 'at_time', at: 4.3 } }] },
+  ];
+  it('shows the readings as chips (best guess first, starred) and a tap sends that choice', async () => {
+    const props = { ...chatProps([{ key: 't1', prompt: 'yaha screen white kar do nomal jasia tha', job: null, error: 'ek se zyada matlab', choices }], false), onPickChoice: jest.fn() };
+    await render(<ChatPanel {...props} />);
+    expect(screen.getByTestId('agent-choices')).toBeTruthy();
+    expect(screen.getByText(/★ Yaha ka effect hata ke normal karo/)).toBeTruthy();
+    await fireEvent.press(screen.getByTestId('agent-choice-1'));
+    expect(props.onPickChoice).toHaveBeenCalledWith('t1', choices[1]);
+  });
+  it('says what it did when the reading was applied directly', async () => {
+    await render(<ChatPanel {...chatProps([{ key: 't1', prompt: 'is jagah flash', job: null, did: '1.0s par white flash (0.3 sec)' }], false)} />);
+    expect(screen.getByText(/Kiya: 1.0s par white flash/)).toBeTruthy();
+  });
+});

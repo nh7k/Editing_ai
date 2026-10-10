@@ -331,6 +331,38 @@ def sepia_tone(r: Run) -> tuple[bool, str]:
     return hue_ok and toned < 20, f"R {rr:.0f} > G {gg:.0f} > B {bb:.0f}; R-B spread {toned:.1f} (a tone, not colours)"
 
 
+def restored_look(r: Run) -> tuple[bool, str]:
+    """The setup made 1-3 s black and white; restore takes it off: colour is back inside, outside untouched, and
+    inside matches the never-edited source picture (the plain render's own outside frames show the same clip)."""
+    i, i0, o, o0 = _in_out(r, sat)
+    src = frame(r.media["_clips"][0], 2.0)
+    out = frame(r.out, 2.0)
+    if src.shape != out.shape:  # the source is bigger than the 360p render: compare at the render's size
+        from PIL import Image
+
+        src = np.asarray(Image.fromarray(src.astype(np.uint8)).resize((out.shape[1], out.shape[0]))).astype(float)
+    d = diff(out, src)
+    return i > i0 + 15 and abs(o - o0) < 3 and d < 12, \
+        f"saturation inside {i0:.1f}→{i:.1f} (grey→colour), outside {o0:.1f}→{o:.1f}; vs source {d:.1f}"
+
+
+def washed_white(r: Run) -> tuple[bool, str]:
+    li, li0, lo, lo0 = _in_out(r, luma)
+    si, si0, _, _ = _in_out(r, sat)
+    return li - li0 > 25 and si < si0 - 10 and abs(lo - lo0) < 2, \
+        f"luma inside {li0:.1f}→{li:.1f}, saturation {si0:.1f}→{si:.1f}; outside luma {lo0:.1f}→{lo:.1f}"
+
+
+def white_card(r: Run) -> tuple[bool, str]:
+    at, d = 2.0, float(r.params.get("duration", 1.0))
+    grew = dur(r.out) - dur(r.plain)
+    mid = frame(r.out, at + d / 2)
+    after = diff(frame(r.out, at + d + 0.4), frame(r.plain, at + 0.4))
+    before = diff(frame(r.out, at - 0.5), frame(r.plain, at - 0.5))
+    return abs(grew - d) < 0.1 and luma(mid) > 235 and sat(mid) < 6 and after < 4 and before < 4, \
+        f"+{grew:.2f}s (want {d:g}); card luma {luma(mid):.0f} sat {sat(mid):.1f}; video after it vs plain {after:.1f}, before {before:.1f}"
+
+
 def luma_up(r: Run) -> tuple[bool, str]:
     i, i0, o, o0 = _in_out(r, luma)
     return i - i0 > 10 and abs(o - o0) < 2, f"luma inside {i0:.1f}→{i:.1f}, outside {o0:.1f}→{o:.1f}"

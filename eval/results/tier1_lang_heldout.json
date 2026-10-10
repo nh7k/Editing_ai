@@ -186,7 +186,13 @@
    "prompt": "black white bana do",
    "lang": "hinglish",
    "why": "skill not found",
-   "got": []
+   "got": [
+    [
+     "flash",
+     {},
+     null
+    ]
+   ]
   },
   {
    "skill": "saturation",
@@ -591,9 +597,9 @@
     "background_removal"
    ],
    "nearest": [
-    "replace_audio",
-    "stabilize",
-    "jump_cut_tighten"
+    "denoise",
+    "blur_background_fill",
+    "add_music"
    ],
    "has_3": true
   },
@@ -603,9 +609,9 @@
    "wrong_calls": [],
    "not_available_yet": [],
    "nearest": [
-    "vhs_retro",
-    "thumbnail",
-    "jump_cut_tighten"
+    "auto_reframe",
+    "pixelate_censor",
+    "watermark_logo"
    ],
    "has_3": true
   },
@@ -615,9 +621,9 @@
    "wrong_calls": [],
    "not_available_yet": [],
    "nearest": [
-    "duck_music",
-    "caption_style",
-    "voice_clarity"
+    "voice_clarity",
+    "watermark_logo",
+    "duck_music"
    ],
    "has_3": true
   },
@@ -629,9 +635,9 @@
     "upscale"
    ],
    "nearest": [
-    "replace_audio",
-    "stabilize",
-    "hook_first"
+    "zoom_in",
+    "add_music",
+    "auto_captions"
    ],
    "has_3": true
   },

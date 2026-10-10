@@ -1,0 +1,1306 @@
+written: '2026-10-10'
+items:
+- prompt: yaha screen white kar do nomal jasia tha
+  context: &id001
+    marker_time: 4.3
+    effects_present_at_time:
+    - type: grade
+      label: black and white
+      start: 3.0
+      end: 5.5
+  expect: restore_normal
+  also_top3:
+  - flash
+- prompt: yaha screen white kar do nomal jasia tha
+  context:
+    marker_time: 4.3
+  expect: flash
+- prompt: bas 2 se 8 sec tak rakho baaki hata do
+  expect: trim
+  split: dev
+- prompt: video ko 0 se 10 second tak hi rakhna
+  expect: trim
+  split: dev
+- prompt: starting ke 3 sec aur end ke baad ka kaat do 3 se 12 rakho
+  expect: trim
+  split: dev
+- prompt: sirf 5 se 15 sec wala part chahiye
+  expect: trim
+  split: heldout
+- prompt: trim kr do 1 se 6 sec
+  expect: trim
+  split: dev
+- prompt: bhai 4 sec se 9 sec tak ka hi rakh
+  expect: trim
+  split: dev
+- prompt: keep only 2 to 7 seconds
+  expect: trim
+  split: dev
+- prompt: cut it down to 3-10 sec
+  expect: trim
+  split: heldout
+- prompt: 4 सेकंड से 10 सेकंड तक रखो
+  expect: trim
+  split: dev
+- prompt: trimm 0 to 5 sec
+  expect: trim
+  split: dev
+- prompt: 3 se 5 sec wala hissa hata do
+  expect: delete_segment
+  split: dev
+- prompt: 2 se 4 second ka part delete karo
+  expect: delete_segment
+  split: dev
+- prompt: beech ka 6 se 8 sec nikal do
+  expect: delete_segment
+  split: dev
+- prompt: remove 1 to 3 sec
+  expect: delete_segment
+  split: heldout
+- prompt: 7 se 9 sec bekar hai uda do
+  expect: delete_segment
+  split: dev
+- prompt: ye 2-3 sec wala part hatao
+  expect: delete_segment
+  split: dev
+- prompt: delete from 5 to 6 seconds
+  expect: delete_segment
+  split: dev
+- prompt: 4 से 6 सेकंड हटा दो
+  expect: delete_segment
+  split: heldout
+- prompt: 10 se 12 sec kaat ke hata do yaar
+  expect: delete_segment
+  split: dev
+- prompt: dlt 3 to 4 sec
+  expect: delete_segment
+  split: dev
+- prompt: jaha koi bol nahi raha wo hata do
+  expect: remove_silence
+  split: dev
+- prompt: chup wale part nikal do
+  expect: remove_silence
+  split: dev
+- prompt: silence hata do please
+  expect: remove_silence
+  split: dev
+- prompt: khamoshi wale hisse kaat do
+  expect: remove_silence
+  split: heldout
+- prompt: remove the silent parts
+  expect: remove_silence
+  split: dev
+- prompt: jab main ruk raha hu wo gap hata do
+  expect: remove_silence
+  split: dev
+- prompt: dead air remove karo
+  expect: remove_silence
+  split: dev
+- prompt: चुप वाले हिस्से हटाओ
+  expect: remove_silence
+  split: heldout
+- prompt: silnce hatao
+  expect: remove_silence
+  split: dev
+- prompt: pause wale part uda do sab
+  expect: remove_silence
+  split: dev
+- prompt: 30 sec ka bana do
+  expect: fit_to_duration
+  split: dev
+- prompt: video 15 second ki kar do
+  expect: fit_to_duration
+  split: dev
+- prompt: isko 1 minute me fit karo
+  expect: fit_to_duration
+  split: dev
+- prompt: make it 20 seconds long
+  expect: fit_to_duration
+  split: heldout
+- prompt: pura video 45 sec me la do
+  expect: fit_to_duration
+  split: dev
+- prompt: reel ke liye 30 sec ka chahiye
+  expect: fit_to_duration
+  split: dev
+- prompt: 60 सेकंड का बना दो
+  expect: fit_to_duration
+  split: dev
+- prompt: 10 sec ka chota version
+  expect: fit_to_duration
+  split: heldout
+- prompt: ise 25 sec ka krdo
+  expect: fit_to_duration
+  split: dev
+- prompt: total length 40 sec rakho
+  expect: fit_to_duration
+  split: dev
+- prompt: video fast kar do
+  expect: speed_up
+  split: dev
+- prompt: thoda tez chalao
+  expect: speed_up
+  split: dev
+- prompt: 2x speed kar do
+  expect: speed_up
+  split: dev
+- prompt: speed badha do
+  expect: speed_up
+  split: heldout
+- prompt: make it faster
+  expect: speed_up
+  split: dev
+- prompt: 1.5x pe chalao
+  expect: speed_up
+  split: dev
+- prompt: isko jaldi jaldi chalao
+  expect: speed_up
+  split: dev
+- prompt: तेज़ कर दो
+  expect: speed_up
+  split: heldout
+- prompt: fst kr do video
+  expect: speed_up
+  split: dev
+- prompt: speeed up karo bhai
+  expect: speed_up
+  split: dev
+- prompt: slow motion kar do
+  expect: slow_motion
+  split: dev
+- prompt: dheere dheere chalao
+  expect: slow_motion
+  split: dev
+- prompt: slowmo laga do
+  expect: slow_motion
+  split: dev
+- prompt: half speed kar do
+  expect: slow_motion
+  split: heldout
+- prompt: make it slow
+  expect: slow_motion
+  split: dev
+- prompt: yaha slow mo dalo
+  expect: slow_motion
+  split: dev
+- prompt: dheema kar do video
+  expect: slow_motion
+  split: dev
+- prompt: स्लो मोशन करो
+  expect: slow_motion
+  split: heldout
+- prompt: slo mo plz
+  expect: slow_motion
+  split: dev
+- prompt: 0.5x pe chalao
+  expect: slow_motion
+  split: dev
+- prompt: zoom karo
+  expect: zoom_in
+  split: dev
+- prompt: thoda zoom in karo
+  expect: zoom_in
+  split: dev
+- prompt: andar ki taraf zoom
+  expect: zoom_in
+  split: dev
+- prompt: zoom in kar do 2 se 4 sec
+  expect: zoom_in
+  split: heldout
+- prompt: close up jaisa zoom
+  expect: zoom_in
+  split: dev
+- prompt: zoom krdo yaha
+  expect: zoom_in
+  split: dev
+- prompt: slow zoom in
+  expect: zoom_in
+  split: dev
+- prompt: ज़ूम करो
+  expect: zoom_in
+  split: heldout
+- prompt: zom in karo
+  expect: zoom_in
+  split: dev
+- prompt: face pe zoom in karo
+  expect: zoom_in
+  split: dev
+- prompt: zoom out karo
+  expect: zoom_out
+  split: dev
+- prompt: bahar ki taraf zoom
+  expect: zoom_out
+  split: dev
+- prompt: pichhe ki taraf zoom karo
+  expect: zoom_out
+  split: dev
+- prompt: zoom out kar do end me
+  expect: zoom_out
+  split: heldout
+- prompt: wide karo zoom out se
+  expect: zoom_out
+  split: dev
+- prompt: dheere se zoom out
+  expect: zoom_out
+  split: dev
+- prompt: ज़ूम आउट करो
+  expect: zoom_out
+  split: dev
+- prompt: zoom aout
+  expect: zoom_out
+  split: heldout
+- prompt: reverse zoom karo
+  expect: zoom_out
+  split: dev
+- prompt: camera pichhe jaye aisa zoom
+  expect: zoom_out
+  split: dev
+- prompt: shake karo
+  expect: shake
+  split: dev
+- prompt: video hilao
+  expect: shake
+  split: dev
+- prompt: camera shake daalo
+  expect: shake
+  split: dev
+- prompt: jhatka do video ko
+  expect: shake
+  split: heldout
+- prompt: earthquake jaisa hilao
+  expect: shake
+  split: dev
+- prompt: hilne wala effect
+  expect: shake
+  split: dev
+- prompt: shake effect lagao drop pe
+  expect: shake
+  split: dev
+- prompt: हिलाओ वीडियो
+  expect: shake
+  split: heldout
+- prompt: shak karo
+  expect: shake
+  split: dev
+- prompt: thoda kaanpta hua karo
+  expect: shake
+  split: dev
+- prompt: clips ke beech crossfade
+  expect: crossfade
+  split: dev
+- prompt: smooth transition do clips me
+  expect: crossfade
+  split: dev
+- prompt: ek clip se dusre me dheere badlo
+  expect: crossfade
+  split: dev
+- prompt: dissolve lagao
+  expect: crossfade
+  split: heldout
+- prompt: crossfade krdo sab cuts pe
+  expect: crossfade
+  split: dev
+- prompt: blend karke badlo shots
+  expect: crossfade
+  split: dev
+- prompt: क्रॉसफेड लगाओ
+  expect: crossfade
+  split: dev
+- prompt: crosfade
+  expect: crossfade
+  split: heldout
+- prompt: fade karke jodo clips
+  expect: crossfade
+  split: dev
+- prompt: mix transition do
+  expect: crossfade
+  split: dev
+- prompt: end me black me fade karo
+  expect: fade_black
+  split: dev
+- prompt: kaale me fade out
+  expect: fade_black
+  split: dev
+- prompt: shuru me black se fade in
+  expect: fade_black
+  split: dev
+- prompt: fade to black
+  expect: fade_black
+  split: heldout
+- prompt: andhera hote hue khatam
+  expect: fade_black
+  split: dev
+- prompt: black screen me dheere jao
+  expect: fade_black
+  split: dev
+- prompt: अंत में काला फेड
+  expect: fade_black
+  split: dev
+- prompt: fade blak
+  expect: fade_black
+  split: heldout
+- prompt: fade in fade out kaala
+  expect: fade_black
+  split: dev
+- prompt: dhire dhire kala ho jaye end me
+  expect: fade_black
+  split: dev
+- prompt: white me fade karo transition
+  expect: fade_white
+  split: dev
+- prompt: safed fade between clips
+  expect: fade_white
+  split: dev
+- prompt: fade through white karo
+  expect: fade_white
+  split: dev
+- prompt: white transition do
+  expect: fade_white
+  split: heldout
+- prompt: ujale wala transition
+  expect: fade_white
+  split: dev
+- prompt: dream jaisa white fade
+  expect: fade_white
+  split: dev
+- prompt: सफ़ेद फेड करो
+  expect: fade_white
+  split: dev
+- prompt: wite fade
+  expect: fade_white
+  split: heldout
+- prompt: clips ke beech white fade
+  expect: fade_white
+  split: dev
+- prompt: fade to white karo
+  expect: fade_white
+  split: dev
+- prompt: flash lagao
+  expect: flash
+  split: dev
+- prompt: camera flash jaisa
+  expect: flash
+  split: dev
+- prompt: white flash do cut pe
+  expect: flash
+  split: dev
+- prompt: chamak do beat pe
+  expect: flash
+  split: heldout
+- prompt: ek flash de do yaha
+  expect: flash
+  split: dev
+- prompt: photo click wala flash
+  expect: flash
+  split: dev
+- prompt: flash effect
+  expect: flash
+  split: dev
+- prompt: चमक दो
+  expect: flash
+  split: heldout
+- prompt: flsh karo
+  expect: flash
+  split: dev
+- prompt: beat pe safed flash
+  expect: flash
+  split: dev
+- prompt: black and white kar do
+  expect: grayscale
+  split: dev
+- prompt: b&w karo
+  expect: grayscale
+  split: dev
+- prompt: rang hata do
+  expect: grayscale
+  split: dev
+- prompt: purani film jaisa black white
+  expect: grayscale
+  split: heldout
+- prompt: grey kar do video
+  expect: grayscale
+  split: dev
+- prompt: colour nikal do
+  expect: grayscale
+  split: dev
+- prompt: black n white
+  expect: grayscale
+  split: dev
+- prompt: ब्लैक एंड व्हाइट करो
+  expect: grayscale
+  split: heldout
+- prompt: blak and wite
+  expect: grayscale
+  split: dev
+- prompt: bina rang ka kar do
+  expect: grayscale
+  split: dev
+- prompt: sepia kar do
+  expect: sepia
+  split: dev
+- prompt: purana bhura look
+  expect: sepia
+  split: dev
+- prompt: old photo jaisa brown
+  expect: sepia
+  split: dev
+- prompt: sepia tone lagao
+  expect: sepia
+  split: heldout
+- prompt: vintage brown colour
+  expect: sepia
+  split: dev
+- prompt: bhura sa purana
+  expect: sepia
+  split: dev
+- prompt: सीपिया करो
+  expect: sepia
+  split: dev
+- prompt: sepiya
+  expect: sepia
+  split: heldout
+- prompt: old brown filter
+  expect: sepia
+  split: dev
+- prompt: dada ji ki photo jaisa
+  expect: sepia
+  split: dev
+- prompt: thoda bright karo
+  expect: brightness
+  split: dev
+- prompt: roshni badhao
+  expect: brightness
+  split: dev
+- prompt: video dark hai bright karo
+  expect: brightness
+  split: dev
+- prompt: brightness badha do
+  expect: brightness
+  split: heldout
+- prompt: andhera hai ujala karo
+  expect: brightness
+  split: dev
+- prompt: make it brighter
+  expect: brightness
+  split: dev
+- prompt: ब्राइट करो
+  expect: brightness
+  split: dev
+- prompt: brite karo
+  expect: brightness
+  split: heldout
+- prompt: zyada roshni chahiye
+  expect: brightness
+  split: dev
+- prompt: brightness kam karo thoda
+  expect: brightness
+  split: dev
+- prompt: contrast badhao
+  expect: contrast
+  split: dev
+- prompt: thoda contrast
+  expect: contrast
+  split: dev
+- prompt: zyada punchy contrast
+  expect: contrast
+  split: dev
+- prompt: contrast kam karo
+  expect: contrast
+  split: heldout
+- prompt: colors ko gehra karo contrast se
+  expect: contrast
+  split: dev
+- prompt: increase contrast
+  expect: contrast
+  split: dev
+- prompt: कंट्रास्ट बढ़ाओ
+  expect: contrast
+  split: dev
+- prompt: contrst
+  expect: contrast
+  split: heldout
+- prompt: dark aur light ka farak badhao
+  expect: contrast
+  split: dev
+- prompt: contrast high karo
+  expect: contrast
+  split: dev
+- prompt: colors zyada karo
+  expect: saturation
+  split: dev
+- prompt: rang badha do
+  expect: saturation
+  split: dev
+- prompt: saturation badhao
+  expect: saturation
+  split: dev
+- prompt: vibrant bana do
+  expect: saturation
+  split: heldout
+- prompt: colour pop karo zyada
+  expect: saturation
+  split: dev
+- prompt: rang halka karo
+  expect: saturation
+  split: dev
+- prompt: रंग बढ़ाओ
+  expect: saturation
+  split: dev
+- prompt: satration up
+  expect: saturation
+  split: heldout
+- prompt: colours bright aur gehre
+  expect: saturation
+  split: dev
+- prompt: saturation kam karo
+  expect: saturation
+  split: dev
+- prompt: warm kar do
+  expect: warm
+  split: dev
+- prompt: garam tone do
+  expect: warm
+  split: dev
+- prompt: golden look
+  expect: warm
+  split: dev
+- prompt: sunset jaisa peela
+  expect: warm
+  split: heldout
+- prompt: thoda warm
+  expect: warm
+  split: dev
+- prompt: garmi wala colour
+  expect: warm
+  split: dev
+- prompt: गर्म रंग करो
+  expect: warm
+  split: dev
+- prompt: warmm
+  expect: warm
+  split: heldout
+- prompt: orange tint do
+  expect: warm
+  split: dev
+- prompt: dhoop jaisa colour
+  expect: warm
+  split: dev
+- prompt: cool tone do
+  expect: cool
+  split: dev
+- prompt: thanda colour
+  expect: cool
+  split: dev
+- prompt: blue tint karo
+  expect: cool
+  split: dev
+- prompt: neela sa look
+  expect: cool
+  split: heldout
+- prompt: thoda cool
+  expect: cool
+  split: dev
+- prompt: sardi wala colour
+  expect: cool
+  split: dev
+- prompt: ठंडा रंग
+  expect: cool
+  split: dev
+- prompt: kool tone
+  expect: cool
+  split: heldout
+- prompt: icy look do
+  expect: cool
+  split: dev
+- prompt: blueish kar do
+  expect: cool
+  split: dev
+- prompt: cinematic bana do
+  expect: cinematic_look
+  split: dev
+- prompt: movie jaisa look
+  expect: cinematic_look
+  split: dev
+- prompt: film wala colour
+  expect: cinematic_look
+  split: dev
+- prompt: cinematic grade karo
+  expect: cinematic_look
+  split: heldout
+- prompt: hollywood look do
+  expect: cinematic_look
+  split: dev
+- prompt: picture jaisa feel
+  expect: cinematic_look
+  split: dev
+- prompt: सिनेमैटिक करो
+  expect: cinematic_look
+  split: dev
+- prompt: cinamatic
+  expect: cinematic_look
+  split: heldout
+- prompt: filmy look do
+  expect: cinematic_look
+  split: dev
+- prompt: movie colour grading
+  expect: cinematic_look
+  split: dev
+- prompt: vintage look do
+  expect: vintage_faded
+  split: dev
+- prompt: faded purana look
+  expect: vintage_faded
+  split: dev
+- prompt: retro faded colour
+  expect: vintage_faded
+  split: dev
+- prompt: old faded film
+  expect: vintage_faded
+  split: heldout
+- prompt: 90s faded look
+  expect: vintage_faded
+  split: dev
+- prompt: halka purana rang
+  expect: vintage_faded
+  split: dev
+- prompt: विंटेज करो
+  expect: vintage_faded
+  split: dev
+- prompt: vintag
+  expect: vintage_faded
+  split: heldout
+- prompt: faded karo colours
+  expect: vintage_faded
+  split: dev
+- prompt: retro wala halka look
+  expect: vintage_faded
+  split: dev
+- prompt: subtitles daal do
+  expect: auto_captions
+  split: dev
+- prompt: captions lagao
+  expect: auto_captions
+  split: dev
+- prompt: jo bol raha hu wo likh do
+  expect: auto_captions
+  split: dev
+- prompt: text me bolna dikhao
+  expect: auto_captions
+  split: heldout
+- prompt: auto captions
+  expect: auto_captions
+  split: dev
+- prompt: sub title chahiye
+  expect: auto_captions
+  split: dev
+- prompt: कैप्शन लगाओ
+  expect: auto_captions
+  split: dev
+- prompt: captons
+  expect: auto_captions
+  split: heldout
+- prompt: har baat ka text niche
+  expect: auto_captions
+  split: dev
+- prompt: subs add karo
+  expect: auto_captions
+  split: dev
+- prompt: upar 'Goa' likh do
+  expect: text_overlay
+  split: dev
+- prompt: text daalo 'Happy'
+  expect: text_overlay
+  split: dev
+- prompt: screen pe 'WOW' likho
+  expect: text_overlay
+  split: dev
+- prompt: naam likh do 'Rahul'
+  expect: text_overlay
+  split: heldout
+- prompt: '''Sale'' text add karo'
+  expect: text_overlay
+  split: dev
+- prompt: beech me 'Hello' likhna
+  expect: text_overlay
+  split: dev
+- prompt: '''शुभ दिन'' लिखो'
+  expect: text_overlay
+  split: dev
+- prompt: txt 'Party' daalo
+  expect: text_overlay
+  split: heldout
+- prompt: likh do 'Best day'
+  expect: text_overlay
+  split: dev
+- prompt: '''Nice'' word dikhao'
+  expect: text_overlay
+  split: dev
+- prompt: shuru me title card 'Trip'
+  expect: title_card
+  split: dev
+- prompt: title daalo 'My Vlog'
+  expect: title_card
+  split: dev
+- prompt: opening title 'Diwali'
+  expect: title_card
+  split: dev
+- prompt: heading card 'Goa 2026'
+  expect: title_card
+  split: heldout
+- prompt: starting me naam ka card
+  expect: title_card
+  split: dev
+- prompt: title screen 'Episode 1'
+  expect: title_card
+  split: dev
+- prompt: शीर्षक कार्ड 'यात्रा'
+  expect: title_card
+  split: dev
+- prompt: titel card 'Fun'
+  expect: title_card
+  split: heldout
+- prompt: intro title 'Shaadi'
+  expect: title_card
+  split: dev
+- prompt: bada title 'Hello' start pe
+  expect: title_card
+  split: dev
+- prompt: captions yellow karo
+  expect: caption_style
+  split: dev
+- prompt: subtitle ka style hormozi
+  expect: caption_style
+  split: dev
+- prompt: captions bade karo
+  expect: caption_style
+  split: dev
+- prompt: text ka color white karo
+  expect: caption_style
+  split: heldout
+- prompt: caption style neon
+  expect: caption_style
+  split: dev
+- prompt: subtitles bold karo
+  expect: caption_style
+  split: dev
+- prompt: कैप्शन पीले करो
+  expect: caption_style
+  split: dev
+- prompt: captn style badlo
+  expect: caption_style
+  split: heldout
+- prompt: caption font mota karo
+  expect: caption_style
+  split: dev
+- prompt: captions minimal style
+  expect: caption_style
+  split: dev
+- prompt: music lagao
+  expect: add_music
+  split: dev
+- prompt: gaana daalo
+  expect: add_music
+  split: dev
+- prompt: background music chahiye
+  expect: add_music
+  split: dev
+- prompt: koi song laga do
+  expect: add_music
+  split: heldout
+- prompt: upbeat music add karo
+  expect: add_music
+  split: dev
+- prompt: bgm daal do
+  expect: add_music
+  split: dev
+- prompt: गाना लगाओ
+  expect: add_music
+  split: dev
+- prompt: musik lagao
+  expect: add_music
+  split: heldout
+- prompt: piche halka music
+  expect: add_music
+  split: dev
+- prompt: song add kar do
+  expect: add_music
+  split: dev
+- prompt: awaaz badhao
+  expect: volume
+  split: dev
+- prompt: volume kam karo
+  expect: volume
+  split: dev
+- prompt: sound tez karo
+  expect: volume
+  split: dev
+- prompt: awaz dheemi karo
+  expect: volume
+  split: heldout
+- prompt: louder karo
+  expect: volume
+  split: dev
+- prompt: volume up
+  expect: volume
+  split: dev
+- prompt: आवाज़ बढ़ाओ
+  expect: volume
+  split: dev
+- prompt: volum kam
+  expect: volume
+  split: heldout
+- prompt: music ki awaaz kam karo
+  expect: volume
+  split: dev
+- prompt: awaaz thodi zyada
+  expect: volume
+  split: dev
+- prompt: awaaz band karo
+  expect: mute
+  split: dev
+- prompt: mute kar do
+  expect: mute
+  split: dev
+- prompt: sound hata do
+  expect: mute
+  split: dev
+- prompt: bina awaaz ka
+  expect: mute
+  split: heldout
+- prompt: silent kar do video
+  expect: mute
+  split: dev
+- prompt: no sound
+  expect: mute
+  split: dev
+- prompt: आवाज़ बंद करो
+  expect: mute
+  split: dev
+- prompt: mut karo
+  expect: mute
+  split: heldout
+- prompt: audio off karo
+  expect: mute
+  split: dev
+- prompt: chup kara do video ko
+  expect: mute
+  split: dev
+- prompt: background noise hatao
+  expect: denoise
+  split: dev
+- prompt: shor kam karo
+  expect: denoise
+  split: dev
+- prompt: awaaz saaf karo
+  expect: denoise
+  split: dev
+- prompt: noise remove
+  expect: denoise
+  split: heldout
+- prompt: hiss hata do
+  expect: denoise
+  split: dev
+- prompt: hawa ki awaaz hatao
+  expect: denoise
+  split: dev
+- prompt: शोर हटाओ
+  expect: denoise
+  split: dev
+- prompt: nois hatao
+  expect: denoise
+  split: heldout
+- prompt: peeche ka shor kam
+  expect: denoise
+  split: dev
+- prompt: clean audio karo
+  expect: denoise
+  split: dev
+- prompt: jab bolu tab music dheema
+  expect: duck_music
+  split: dev
+- prompt: voice ke time gaana kam
+  expect: duck_music
+  split: dev
+- prompt: duck music
+  expect: duck_music
+  split: dev
+- prompt: baat ke beech music neeche
+  expect: duck_music
+  split: heldout
+- prompt: music ko voice ke liye dabao
+  expect: duck_music
+  split: dev
+- prompt: bolte waqt background kam
+  expect: duck_music
+  split: dev
+- prompt: बोलते समय संगीत कम
+  expect: duck_music
+  split: dev
+- prompt: duk music
+  expect: duck_music
+  split: heldout
+- prompt: voice pe music halka
+  expect: duck_music
+  split: dev
+- prompt: talking pe music down
+  expect: duck_music
+  split: dev
+- prompt: awaaz dheere se shuru ho
+  expect: audio_fade
+  split: dev
+- prompt: sound fade out end me
+  expect: audio_fade
+  split: dev
+- prompt: music fade in karo
+  expect: audio_fade
+  split: dev
+- prompt: audio fade in aur out
+  expect: audio_fade
+  split: heldout
+- prompt: gaana dheere khatam ho
+  expect: audio_fade
+  split: dev
+- prompt: volume fade karo
+  expect: audio_fade
+  split: dev
+- prompt: आवाज़ धीरे से खत्म
+  expect: audio_fade
+  split: dev
+- prompt: audio fad out
+  expect: audio_fade
+  split: heldout
+- prompt: end me music dheere band
+  expect: audio_fade
+  split: dev
+- prompt: sound smoothly start ho
+  expect: audio_fade
+  split: dev
+- prompt: reel ke liye vertical karo
+  expect: aspect_9_16
+  split: dev
+- prompt: 9:16 bana do
+  expect: aspect_9_16
+  split: dev
+- prompt: instagram reel size
+  expect: aspect_9_16
+  split: dev
+- prompt: shorts ke liye khada video
+  expect: aspect_9_16
+  split: heldout
+- prompt: vertical format
+  expect: aspect_9_16
+  split: dev
+- prompt: phone wala lamba size
+  expect: aspect_9_16
+  split: dev
+- prompt: वर्टिकल करो
+  expect: aspect_9_16
+  split: dev
+- prompt: 9 by 16
+  expect: aspect_9_16
+  split: heldout
+- prompt: tiktok size karo
+  expect: aspect_9_16
+  split: dev
+- prompt: portrait mode me karo
+  expect: aspect_9_16
+  split: dev
+- prompt: square bana do
+  expect: aspect_1_1
+  split: dev
+- prompt: 1:1 karo
+  expect: aspect_1_1
+  split: dev
+- prompt: instagram post size square
+  expect: aspect_1_1
+  split: dev
+- prompt: chokor video
+  expect: aspect_1_1
+  split: heldout
+- prompt: square format
+  expect: aspect_1_1
+  split: dev
+- prompt: 1 by 1 ratio
+  expect: aspect_1_1
+  split: dev
+- prompt: स्क्वेयर करो
+  expect: aspect_1_1
+  split: dev
+- prompt: sqare
+  expect: aspect_1_1
+  split: heldout
+- prompt: post ke liye square
+  expect: aspect_1_1
+  split: dev
+- prompt: barabar lambai chaudai
+  expect: aspect_1_1
+  split: dev
+- prompt: blur karo
+  expect: blur
+  split: dev
+- prompt: dhundla kar do
+  expect: blur
+  split: dev
+- prompt: video dhundhli karo
+  expect: blur
+  split: dev
+- prompt: blur effect
+  expect: blur
+  split: heldout
+- prompt: halka blur
+  expect: blur
+  split: dev
+- prompt: dreamy blur
+  expect: blur
+  split: dev
+- prompt: धुंधला करो
+  expect: blur
+  split: dev
+- prompt: blurr
+  expect: blur
+  split: heldout
+- prompt: saaf mat dikhao blur karo
+  expect: blur
+  split: dev
+- prompt: focus hata ke blur
+  expect: blur
+  split: dev
+- prompt: glitch effect
+  expect: glitch
+  split: dev
+- prompt: glitch lagao
+  expect: glitch
+  split: dev
+- prompt: toota hua digital effect
+  expect: glitch
+  split: dev
+- prompt: glitchy karo
+  expect: glitch
+  split: heldout
+- prompt: signal kharab wala effect
+  expect: glitch
+  split: dev
+- prompt: glich karo
+  expect: glitch
+  split: dev
+- prompt: ग्लिच करो
+  expect: glitch
+  split: dev
+- prompt: glitchh
+  expect: glitch
+  split: heldout
+- prompt: error wala effect
+  expect: glitch
+  split: dev
+- prompt: digital gadbad dikhao
+  expect: glitch
+  split: dev
+- prompt: vhs look
+  expect: vhs_retro
+  split: dev
+- prompt: purani cassette jaisa
+  expect: vhs_retro
+  split: dev
+- prompt: vhs effect do
+  expect: vhs_retro
+  split: dev
+- prompt: retro tape wala
+  expect: vhs_retro
+  split: heldout
+- prompt: 80s vhs
+  expect: vhs_retro
+  split: dev
+- prompt: video cassette look
+  expect: vhs_retro
+  split: dev
+- prompt: वीएचएस लुक
+  expect: vhs_retro
+  split: dev
+- prompt: vhs retro
+  expect: vhs_retro
+  split: heldout
+- prompt: old tv tape jaisa
+  expect: vhs_retro
+  split: dev
+- prompt: vcr wala look
+  expect: vhs_retro
+  split: dev
+- prompt: logo lagao corner me
+  expect: watermark_logo
+  split: dev
+- prompt: watermark daalo
+  expect: watermark_logo
+  split: dev
+- prompt: apna logo add karo
+  expect: watermark_logo
+  split: dev
+- prompt: brand logo kone me
+  expect: watermark_logo
+  split: heldout
+- prompt: logo chipka do
+  expect: watermark_logo
+  split: dev
+- prompt: watermark lagao
+  expect: watermark_logo
+  split: dev
+- prompt: लोगो लगाओ
+  expect: watermark_logo
+  split: dev
+- prompt: watermrk
+  expect: watermark_logo
+  split: heldout
+- prompt: channel logo dikhao
+  expect: watermark_logo
+  split: dev
+- prompt: logo daal do niche
+  expect: watermark_logo
+  split: dev
+- prompt: instagram ke liye export
+  expect: export_preset
+  split: dev
+- prompt: youtube shorts ke liye nikalo
+  expect: export_preset
+  split: dev
+- prompt: whatsapp status ke liye
+  expect: export_preset
+  split: dev
+- prompt: reels export karo
+  expect: export_preset
+  split: heldout
+- prompt: youtube ke liye ready karo
+  expect: export_preset
+  split: dev
+- prompt: linkedin ke liye export
+  expect: export_preset
+  split: dev
+- prompt: यूट्यूब के लिए
+  expect: export_preset
+  split: dev
+- prompt: exprt for insta
+  expect: export_preset
+  split: heldout
+- prompt: status ke liye video
+  expect: export_preset
+  split: dev
+- prompt: shorts ke liye final
+  expect: export_preset
+  split: dev
+- prompt: yaha normal kar do
+  expect: restore_normal
+  split: dev
+  context: *id001
+- prompt: pehle jaisa kar do yaha
+  expect: restore_normal
+  split: dev
+  context: *id001
+- prompt: ye effect hata do yahan
+  expect: restore_normal
+  split: dev
+  context: *id001
+- prompt: yaha original jaisa tha waisa karo
+  expect: restore_normal
+  split: heldout
+  context: *id001
+- prompt: ye black white hatao yaha se
+  expect: restore_normal
+  split: dev
+  context: *id001
+- prompt: yahan wapas normal
+  expect: restore_normal
+  split: dev
+  context: *id001
+- prompt: yaha zoom hata ke normal karo
+  expect: restore_normal
+  split: dev
+  context: &id002
+    marker_time: 2.0
+    effects_present_at_time:
+    - type: zoom
+      label: zoom
+      start: 1.0
+      end: 3.0
+- prompt: is jagah pehle wala look
+  expect: restore_normal
+  split: heldout
+  context: *id001
+- prompt: यहाँ पहले जैसा करो
+  expect: restore_normal
+  split: dev
+  context: *id001
+- prompt: yhn nrml krdo
+  expect: restore_normal
+  split: dev
+  context: *id001
+- prompt: effect nikal do idhar se jaisa tha
+  expect: restore_normal
+  split: dev
+  context: *id002
+- prompt: ye wala change undo karo yaha
+  expect: restore_normal
+  split: heldout
+  context: *id001
+- prompt: yaha screen white sa kar do
+  expect: brighten_to_white
+  split: dev
+  context: &id003
+    marker_time: 3.0
+- prompt: thoda safed sa karo yahan
+  expect: brighten_to_white
+  split: dev
+  context: *id003
+- prompt: yaha picture ko white wash karo
+  expect: brighten_to_white
+  split: dev
+  context: *id003
+- prompt: is jagah overexpose karo
+  expect: brighten_to_white
+  split: heldout
+  context: *id003
+- prompt: yaha dhula dhula safed
+  expect: brighten_to_white
+  split: dev
+  context: *id003
+- prompt: screen ko bright white sa
+  expect: brighten_to_white
+  split: dev
+  context: *id003
+- prompt: यहाँ सफ़ेद सा करो
+  expect: brighten_to_white
+  split: dev
+  context: *id003
+- prompt: yaha whitish kar do
+  expect: brighten_to_white
+  split: heldout
+  context: *id003
+- prompt: yaha 1 sec white screen daalo
+  expect: white_screen_card
+  split: dev
+  context: *id003
+- prompt: beech me safed screen dikhao
+  expect: white_screen_card
+  split: dev
+  context: *id003
+- prompt: yaha khali white screen
+  expect: white_screen_card
+  split: dev
+  context: *id003
+- prompt: is jagah white card lagao
+  expect: white_screen_card
+  split: heldout
+  context: *id003
+- prompt: yahan blank white screen 2 sec
+  expect: white_screen_card
+  split: dev
+  context: *id003
+- prompt: सफ़ेद स्क्रीन यहाँ
+  expect: white_screen_card
+  split: dev
+  context: *id003
+- prompt: yaha wite screen
+  expect: white_screen_card
+  split: dev
+  context: *id003
+- prompt: ek safed parda dikha do yaha
+  expect: white_screen_card
+  split: heldout
+  context: *id003

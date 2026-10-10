@@ -1,0 +1,1105 @@
+{
+ "split": "dev+regression",
+ "before": {
+  "n": 335,
+  "top1": 0.875,
+  "top3": 0.922,
+  "applied": 283,
+  "asked": 52,
+  "silent_wrong": 26,
+  "silent_wrong_rate": 0.078,
+  "latency_ms_p50": 6.8,
+  "latency_ms_p95": 209.3,
+  "per_skill": {
+   "add_music": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "aspect_1_1": {
+    "n": 8,
+    "top1": 7,
+    "top3": 7
+   },
+   "aspect_9_16": {
+    "n": 8,
+    "top1": 7,
+    "top3": 8
+   },
+   "audio_fade": {
+    "n": 8,
+    "top1": 5,
+    "top3": 7
+   },
+   "auto_captions": {
+    "n": 8,
+    "top1": 6,
+    "top3": 7
+   },
+   "blur": {
+    "n": 8,
+    "top1": 7,
+    "top3": 8
+   },
+   "brighten_to_white": {
+    "n": 6,
+    "top1": 6,
+    "top3": 6
+   },
+   "brightness": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "caption_style": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "cinematic_look": {
+    "n": 8,
+    "top1": 7,
+    "top3": 7
+   },
+   "contrast": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "cool": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "crossfade": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "delete_segment": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "denoise": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "duck_music": {
+    "n": 8,
+    "top1": 4,
+    "top3": 4
+   },
+   "export_preset": {
+    "n": 8,
+    "top1": 4,
+    "top3": 5
+   },
+   "fade_black": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "fade_white": {
+    "n": 8,
+    "top1": 7,
+    "top3": 7
+   },
+   "fit_to_duration": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "flash": {
+    "n": 9,
+    "top1": 9,
+    "top3": 9
+   },
+   "glitch": {
+    "n": 8,
+    "top1": 6,
+    "top3": 8
+   },
+   "grayscale": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "mute": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "remove_silence": {
+    "n": 8,
+    "top1": 6,
+    "top3": 6
+   },
+   "restore_normal": {
+    "n": 10,
+    "top1": 5,
+    "top3": 6
+   },
+   "saturation": {
+    "n": 8,
+    "top1": 6,
+    "top3": 6
+   },
+   "sepia": {
+    "n": 8,
+    "top1": 6,
+    "top3": 8
+   },
+   "shake": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "slow_motion": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "speed_up": {
+    "n": 8,
+    "top1": 7,
+    "top3": 8
+   },
+   "text_overlay": {
+    "n": 8,
+    "top1": 7,
+    "top3": 8
+   },
+   "title_card": {
+    "n": 8,
+    "top1": 6,
+    "top3": 7
+   },
+   "trim": {
+    "n": 8,
+    "top1": 7,
+    "top3": 7
+   },
+   "vhs_retro": {
+    "n": 8,
+    "top1": 7,
+    "top3": 8
+   },
+   "vintage_faded": {
+    "n": 8,
+    "top1": 6,
+    "top3": 6
+   },
+   "volume": {
+    "n": 8,
+    "top1": 6,
+    "top3": 7
+   },
+   "warm": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "watermark_logo": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "white_screen_card": {
+    "n": 6,
+    "top1": 6,
+    "top3": 6
+   },
+   "zoom_in": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "zoom_out": {
+    "n": 8,
+    "top1": 7,
+    "top3": 7
+   }
+  },
+  "fails": [
+   {
+    "prompt": "yaha screen white kar do nomal jasia tha",
+    "expect": "restore_normal",
+    "got": [
+     "flash"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "starting ke 3 sec aur end ke baad ka kaat do 3 se 12 rakho",
+    "expect": "trim",
+    "got": [
+     "delete_segment"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "jaha koi bol nahi raha wo hata do",
+    "expect": "remove_silence",
+    "got": [
+     "delete_segment"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "chup wale part nikal do",
+    "expect": "remove_silence",
+    "got": [
+     "delete_segment"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "fst kr do video",
+    "expect": "speed_up",
+    "got": [
+     "fit_to_duration",
+     "speed_up",
+     "reorder_clips"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "camera pichhe jaye aisa zoom",
+    "expect": "zoom_out",
+    "got": [
+     "zoom_in"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "सफ़ेद फेड करो",
+    "expect": "fade_white",
+    "got": [
+     "flash"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "old photo jaisa brown",
+    "expect": "sepia",
+    "got": [
+     "restore_normal",
+     "sepia",
+     "vhs_retro"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "old brown filter",
+    "expect": "sepia",
+    "got": [
+     "contrast",
+     "sepia",
+     "vintage_faded"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "colour pop karo zyada",
+    "expect": "saturation",
+    "got": [
+     "color_pop"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "colours bright aur gehre",
+    "expect": "saturation",
+    "got": [
+     "brightness",
+     "contrast",
+     "cool"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "hollywood look do",
+    "expect": "cinematic_look",
+    "got": [
+     "teal_orange"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "90s faded look",
+    "expect": "vintage_faded",
+    "got": [
+     "vhs_retro"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "faded karo colours",
+    "expect": "vintage_faded",
+    "got": [
+     "saturation"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "jo bol raha hu wo likh do",
+    "expect": "auto_captions",
+    "got": [
+     "text_overlay"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "har baat ka text niche",
+    "expect": "auto_captions",
+    "got": [
+     "film_grain",
+     "auto_captions",
+     "text_overlay"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "'Nice' word dikhao",
+    "expect": "text_overlay",
+    "got": [
+     "shape_highlight",
+     "karaoke_captions",
+     "text_overlay"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "opening title 'Diwali'",
+    "expect": "title_card",
+    "got": [
+     "intro_outro"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "intro title 'Shaadi'",
+    "expect": "title_card",
+    "got": [
+     "intro_outro",
+     "title_card"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "music ki awaaz kam karo",
+    "expect": "volume",
+    "got": [
+     "add_music",
+     "volume"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "awaaz thodi zyada",
+    "expect": "volume",
+    "got": [
+     "saturation",
+     "normalize_loudness",
+     "mute"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "voice ke time gaana kam",
+    "expect": "duck_music",
+    "got": [
+     "volume"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "music ko voice ke liye dabao",
+    "expect": "duck_music",
+    "got": [
+     "add_music"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "voice pe music halka",
+    "expect": "duck_music",
+    "got": [
+     "add_music"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "talking pe music down",
+    "expect": "duck_music",
+    "got": [
+     "volume"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "awaaz dheere se shuru ho",
+    "expect": "audio_fade",
+    "got": [
+     "slow_motion",
+     "audio_fade",
+     "j_cut"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "आवाज़ धीरे से खत्म",
+    "expect": "audio_fade",
+    "got": [
+     "slow_motion",
+     "audio_fade",
+     "normalize_loudness"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "end me music dheere band",
+    "expect": "audio_fade",
+    "got": [
+     "add_music"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "portrait mode me karo",
+    "expect": "aspect_9_16",
+    "got": [
+     "aspect_4_5",
+     "aspect_9_16",
+     "replace_audio"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "1 by 1 ratio",
+    "expect": "aspect_1_1",
+    "got": [
+     "aspect_4_5",
+     "voice_clarity",
+     "split_screen"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "video dhundhli karo",
+    "expect": "blur",
+    "got": [
+     "fit_to_duration",
+     "blur",
+     "merge_clips"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "signal kharab wala effect",
+    "expect": "glitch",
+    "got": [
+     "restore_normal",
+     "glitch",
+     "mirror_effect"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "digital gadbad dikhao",
+    "expect": "glitch",
+    "got": [
+     "shape_highlight",
+     "glitch",
+     "glitch_transition"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "old tv tape jaisa",
+    "expect": "vhs_retro",
+    "got": [
+     "restore_normal",
+     "vhs_retro",
+     "grayscale"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "whatsapp status ke liye",
+    "expect": "export_preset",
+    "got": [
+     "aspect_9_16"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "यूट्यूब के लिए",
+    "expect": "export_preset",
+    "got": [
+     "aspect_16_9",
+     "export_preset",
+     "shape_highlight"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "status ke liye video",
+    "expect": "export_preset",
+    "got": [
+     "aspect_9_16"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "shorts ke liye final",
+    "expect": "export_preset",
+    "got": [
+     "aspect_9_16"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "ye effect hata do yahan",
+    "expect": "restore_normal",
+    "got": [
+     "delete_segment"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "ye black white hatao yaha se",
+    "expect": "restore_normal",
+    "got": [
+     "delete_segment"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "yaha zoom hata ke normal karo",
+    "expect": "restore_normal",
+    "got": [
+     "zoom_in",
+     "restore_normal"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "effect nikal do idhar se jaisa tha",
+    "expect": "restore_normal",
+    "got": [
+     "delete_segment"
+    ],
+    "applied": true
+   }
+  ]
+ },
+ "after": {
+  "n": 335,
+  "top1": 0.913,
+  "top3": 0.964,
+  "applied": 264,
+  "asked": 71,
+  "silent_wrong": 7,
+  "silent_wrong_rate": 0.021,
+  "latency_ms_p50": 64.3,
+  "latency_ms_p95": 531.0,
+  "per_skill": {
+   "add_music": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "aspect_1_1": {
+    "n": 8,
+    "top1": 7,
+    "top3": 7
+   },
+   "aspect_9_16": {
+    "n": 8,
+    "top1": 7,
+    "top3": 8
+   },
+   "audio_fade": {
+    "n": 8,
+    "top1": 6,
+    "top3": 8
+   },
+   "auto_captions": {
+    "n": 8,
+    "top1": 7,
+    "top3": 8
+   },
+   "blur": {
+    "n": 8,
+    "top1": 7,
+    "top3": 8
+   },
+   "brighten_to_white": {
+    "n": 6,
+    "top1": 5,
+    "top3": 6
+   },
+   "brightness": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "caption_style": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "cinematic_look": {
+    "n": 8,
+    "top1": 7,
+    "top3": 7
+   },
+   "contrast": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "cool": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "crossfade": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "delete_segment": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "denoise": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "duck_music": {
+    "n": 8,
+    "top1": 4,
+    "top3": 6
+   },
+   "export_preset": {
+    "n": 8,
+    "top1": 4,
+    "top3": 6
+   },
+   "fade_black": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "fade_white": {
+    "n": 8,
+    "top1": 7,
+    "top3": 7
+   },
+   "fit_to_duration": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "flash": {
+    "n": 9,
+    "top1": 9,
+    "top3": 9
+   },
+   "glitch": {
+    "n": 8,
+    "top1": 7,
+    "top3": 8
+   },
+   "grayscale": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "mute": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "remove_silence": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "restore_normal": {
+    "n": 10,
+    "top1": 10,
+    "top3": 10
+   },
+   "saturation": {
+    "n": 8,
+    "top1": 6,
+    "top3": 6
+   },
+   "sepia": {
+    "n": 8,
+    "top1": 7,
+    "top3": 8
+   },
+   "shake": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "slow_motion": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "speed_up": {
+    "n": 8,
+    "top1": 7,
+    "top3": 8
+   },
+   "text_overlay": {
+    "n": 8,
+    "top1": 7,
+    "top3": 8
+   },
+   "title_card": {
+    "n": 8,
+    "top1": 6,
+    "top3": 8
+   },
+   "trim": {
+    "n": 8,
+    "top1": 7,
+    "top3": 8
+   },
+   "vhs_retro": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "vintage_faded": {
+    "n": 8,
+    "top1": 6,
+    "top3": 6
+   },
+   "volume": {
+    "n": 8,
+    "top1": 7,
+    "top3": 7
+   },
+   "warm": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "watermark_logo": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "white_screen_card": {
+    "n": 6,
+    "top1": 6,
+    "top3": 6
+   },
+   "zoom_in": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   },
+   "zoom_out": {
+    "n": 8,
+    "top1": 8,
+    "top3": 8
+   }
+  },
+  "fails": [
+   {
+    "prompt": "video ko 0 se 10 second tak hi rakhna",
+    "expect": "trim",
+    "got": [
+     "fit_to_duration",
+     "trim",
+     "merge_clips"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "fst kr do video",
+    "expect": "speed_up",
+    "got": [
+     "fit_to_duration",
+     "speed_up",
+     "reorder_clips"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "सफ़ेद फेड करो",
+    "expect": "fade_white",
+    "got": [
+     "flash",
+     "brighten_to_white",
+     "text_overlay"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "old brown filter",
+    "expect": "sepia",
+    "got": [
+     "contrast",
+     "sepia",
+     "vintage_faded"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "colour pop karo zyada",
+    "expect": "saturation",
+    "got": [
+     "color_pop"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "colours bright aur gehre",
+    "expect": "saturation",
+    "got": [
+     "brightness",
+     "contrast",
+     "cool"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "hollywood look do",
+    "expect": "cinematic_look",
+    "got": [
+     "teal_orange"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "90s faded look",
+    "expect": "vintage_faded",
+    "got": [
+     "vhs_retro"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "faded karo colours",
+    "expect": "vintage_faded",
+    "got": [
+     "saturation"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "har baat ka text niche",
+    "expect": "auto_captions",
+    "got": [
+     "film_grain",
+     "auto_captions",
+     "text_overlay"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "'Nice' word dikhao",
+    "expect": "text_overlay",
+    "got": [
+     "shape_highlight",
+     "text_overlay",
+     "karaoke_captions"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "opening title 'Diwali'",
+    "expect": "title_card",
+    "got": [
+     "intro_outro",
+     "title_card",
+     "text_overlay"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "intro title 'Shaadi'",
+    "expect": "title_card",
+    "got": [
+     "intro_outro",
+     "title_card",
+     "text_overlay"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "awaaz thodi zyada",
+    "expect": "volume",
+    "got": [
+     "saturation",
+     "normalize_loudness",
+     "mute"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "voice ke time gaana kam",
+    "expect": "duck_music",
+    "got": [
+     "volume",
+     "add_music",
+     "countdown_timer"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "music ko voice ke liye dabao",
+    "expect": "duck_music",
+    "got": [
+     "add_music",
+     "pixelate_censor",
+     "duck_music"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "voice pe music halka",
+    "expect": "duck_music",
+    "got": [
+     "add_music",
+     "pixelate_censor",
+     "duck_music"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "talking pe music down",
+    "expect": "duck_music",
+    "got": [
+     "volume",
+     "add_music",
+     "pixelate_censor"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "awaaz dheere se shuru ho",
+    "expect": "audio_fade",
+    "got": [
+     "slow_motion",
+     "audio_fade",
+     "j_cut"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "आवाज़ धीरे से खत्म",
+    "expect": "audio_fade",
+    "got": [
+     "slow_motion",
+     "audio_fade",
+     "normalize_loudness"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "portrait mode me karo",
+    "expect": "aspect_9_16",
+    "got": [
+     "aspect_4_5",
+     "aspect_9_16",
+     "replace_audio"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "1 by 1 ratio",
+    "expect": "aspect_1_1",
+    "got": [
+     "aspect_4_5"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "video dhundhli karo",
+    "expect": "blur",
+    "got": [
+     "fit_to_duration",
+     "blur",
+     "merge_clips"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "digital gadbad dikhao",
+    "expect": "glitch",
+    "got": [
+     "shape_highlight",
+     "glitch",
+     "glitch_transition"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "whatsapp status ke liye",
+    "expect": "export_preset",
+    "got": [
+     "aspect_9_16",
+     "export_preset",
+     "aspect_16_9"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "यूट्यूब के लिए",
+    "expect": "export_preset",
+    "got": [
+     "aspect_16_9"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "status ke liye video",
+    "expect": "export_preset",
+    "got": [
+     "aspect_9_16"
+    ],
+    "applied": true
+   },
+   {
+    "prompt": "shorts ke liye final",
+    "expect": "export_preset",
+    "got": [
+     "aspect_9_16",
+     "montage_builder",
+     "export_preset"
+    ],
+    "applied": false
+   },
+   {
+    "prompt": "screen ko bright white sa",
+    "expect": "brighten_to_white",
+    "got": [
+     "flash",
+     "brighten_to_white",
+     "white_screen_card"
+    ],
+    "applied": false
+   }
+  ]
+ },
+ "thresholds": {
+  "apply_min": 0.8,
+  "margin": 0.3,
+  "choose_min": 0.3
+ }
+}

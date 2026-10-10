@@ -13,7 +13,6 @@ longest synonym first, so "zoom transition" is the transition and not the zoom.
 
 from __future__ import annotations
 
-import difflib
 import re
 from functools import lru_cache
 from typing import Any
@@ -724,17 +723,22 @@ def choice_in(clause: str, choices: list[Any]) -> Any:
 
 
 def nearest(text: str, n: int = 3) -> list[dict[str, str]]:
-    """The closest Tier 1 skills to words nobody matched (fuzzy over synonyms) — never empty."""
-    words = [w for w in re.findall(r"[\wऀ-ॿ]+", _norm(normalize(text))) if len(w) > 2]
-    scores: dict[str, float] = {}
-    for syn, sid, _weak in _index():
-        for part in syn:
-            for w in words or [text]:
-                r = difflib.SequenceMatcher(None, w, part).ratio()
-                if r > scores.get(sid, 0.0):
-                    scores[sid] = r
+    """The closest Tier 1 skills to words nobody matched — never empty.
+
+    Weighted by how much each word means (tools.resolve.score_skills): filler words like "kar" / "tha" weigh 0, so
+    they can no longer tie with the word that matters (the old per-word difflib max did — docs/INTENT_FAILURE_REVIEW.md).
+    """
+    from .fuzzy import canonical_words
+    from .resolve import score_skills
+
     specs = spec.load()
-    top = sorted(scores, key=lambda k: -scores[k])[:n]
+    scores = score_skills(canonical_words(text))
+    top = sorted(scores, key=lambda k: -scores[k][0])[:n]
+    for sid in ("zoom_in", "add_music", "auto_captions", "trim", "warm"):  # nothing alike at all: the common ones
+        if len(top) >= n:
+            break
+        if sid not in top:
+            top.append(sid)
     return [{"id": k, "name": specs[k]["name"], "try": specs[k]["examples"][0]["prompt"]} for k in top]
 
 

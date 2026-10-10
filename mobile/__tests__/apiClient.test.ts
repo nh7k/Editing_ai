@@ -75,6 +75,13 @@ describe('api client', () => {
     expect(err.message).toBe('prompt is required');
   });
 
+  it('keeps the rest of the error object (the choices of a 422 "choose")', () => {
+    const err = parseErrorBody(422, JSON.stringify({ error: { code: 'choose', message: 'tap one', request_id: 'amb_1', choices: [{ id: 'flash', label: 'flash', calls: [] }] } }));
+    expect(err.code).toBe('choose');
+    expect(err.details.request_id).toBe('amb_1');
+    expect((err.details.choices as unknown[]).length).toBe(1);
+  });
+
   it('maps network failures to network_error', async () => {
     fetchMock.mockRejectedValueOnce(new TypeError('Network request failed'));
     const err = (await api.health().catch((e: unknown) => e)) as ApiError;

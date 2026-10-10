@@ -98,6 +98,15 @@ def _warm_up_planner() -> None:
         pass
 
 
+def _warm_up_resolver() -> None:
+    try:
+        from .tools.resolve import warm
+
+        warm()
+    except Exception:  # noqa: BLE001 — built on the first request instead
+        pass
+
+
 class RateLimiter:
     """Edit requests per client per minute (in memory; one API process). 0 = off."""
 
@@ -129,8 +138,8 @@ def _warm_up_llm(settings: Settings) -> None:
 
 
 class ApiError(Exception):
-    def __init__(self, status: int, code: str, message: str) -> None:
-        self.status, self.code, self.message = status, code, message
+    def __init__(self, status: int, code: str, message: str, extra: dict[str, Any] | None = None) -> None:
+        self.status, self.code, self.message, self.extra = status, code, message, extra or {}
 
 
 class ProjectIn(BaseModel):
@@ -221,6 +230,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         # the planner LLM (llama.cpp in-process): load it and cache its system prompt now — the first chat message
         # must not pay 10-30 s of model loading + prompt reading
         threading.Thread(target=_warm_up_planner, name="planner-warmup", daemon=True).start()
+        # the skill resolver's index (~2 s): built now so the first unclear message is answered at once
+        threading.Thread(target=_warm_up_resolver, name="resolver-warmup", daemon=True).start()
         yield
         jobs.shutdown()
 
@@ -244,7 +255,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     # ---- uniform error shape ------------------------------------------------------------------------
     @app.exception_handler(ApiError)
     async def _api_error(_: Request, exc: ApiError) -> JSONResponse:
-        return JSONResponse({"error": {"code": exc.code, "message": exc.message}}, status_code=exc.status)
+        return JSONResponse({"error": {"code": exc.code, "message": exc.message, **exc.extra}}, status_code=exc.status)
 
     @app.exception_handler(RequestValidationError)
     async def _validation(_: Request, exc: RequestValidationError) -> JSONResponse:
@@ -686,6 +697,37 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         r["not_available_yet"] = named_later(prompt)
         return r
 
+    @app.post("/tools/resolve", tags=["tools"])
+    def resolve_tools(body: dict[str, Any]) -> dict[str, Any]:
+        """A prompt + where the user is → ranked readings (no edit made). Body: {prompt, project_id?, context?:
+        {marker_time, playhead, effects_present_at_time, ...}}. With a project and a marker, what is on screen
+        there is read from the latest version."""
+        from .tools.resolve import context_from_plan, resolve
+        from .unmet import UnmetLog
+
+        prompt = str(body.get("prompt") or "")[:2000]
+        if not prompt.strip():
+            raise ApiError(422, "empty_prompt", "Say what to change.")
+        ctx = dict(body.get("context") or {})
+        pid = body.get("project_id")
+        t = ctx.get("marker_time", ctx.get("playhead"))
+        if pid and t is not None and "effects_present_at_time" not in ctx:
+            job = db.last_job(str(pid), "done")
+            if job and job["plan"]:
+                ctx = {**context_from_plan(EditPlan.model_validate(json.loads(job["plan"])), float(t)), **ctx}
+        ctx["learned"] = UnmetLog(db).learned(prompt)
+        return resolve(prompt, ctx).to_dict()
+
+    @app.post("/tools/resolve/pick", tags=["tools"])
+    def resolve_pick(body: dict[str, Any]) -> dict[str, Any]:
+        """The choice the user tapped for a request that was not clear (local memory; never the shared synonyms)."""
+        from .unmet import UnmetLog
+
+        ok = UnmetLog(db).pick(str(body.get("request_id") or ""), str(body.get("choice_id") or ""))
+        if not ok:
+            raise ApiError(404, "not_found", "unknown request id")
+        return {"ok": True}
+
     @app.post("/projects/{pid}/tools", tags=["tools"], status_code=202)
     def apply_tools(pid: str, body: dict[str, Any]) -> dict[str, Any]:
         """Run Tier 1 skills on the latest version: {"calls": [{"id", "params", "time"}]} or {"prompt": "..."}.
@@ -1012,19 +1054,70 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                                      "variations": body.variations, "style": body.style,
                                      "music_track": body.music_track}.items() if v}
         if body.at is not None:  # a comment on the timeline: changes only that moment (cutmind/moment.py)
-            from .moment import moment_options
+            from .moment import moment_options, read_comment
 
             job = db.last_job(pid, "done")
             if not job or not job["plan"]:
                 raise ApiError(400, "no_plan", "Pehle ek edit banao — comment us edit ke kisi moment pe lagta hai.")
+            plan = EditPlan.model_validate(json.loads(job["plan"]))
+            if not read_comment(prompt)["understood"]:
+                # the comment reader knows a few kinds of edit; everything else goes to the skill resolver (never a
+                # dead end: apply when sure, else tap-able choices — docs/INTENT_FAILURE_REVIEW.md)
+                return _resolve_or_ask(pid, prompt, plan, body.at)
             try:
-                options["moment"] = moment_options(prompt, body.at, EditPlan.model_validate(json.loads(job["plan"])))
+                options["moment"] = moment_options(prompt, body.at, plan)
             except ValueError as exc:
                 raise ApiError(422, "not_understood", str(exc)) from exc
         else:
+            if _only_auto_guess(prompt, options):
+                # "yaha screen white kar do" used to read as "auto edit" (from "kar do") and re-edit everything
+                from .tools.resolve import CHOOSE_MIN, resolve
+
+                if (res := resolve(prompt, {"comment": False})).choices and res.choices[0]["score"] >= CHOOSE_MIN:
+                    last = db.last_job(pid, "done")
+                    plan = EditPlan.model_validate(json.loads(last["plan"])) if last and last["plan"] else None
+                    return _resolve_or_ask(pid, prompt, plan, None)
             _must_understand(prompt, options)
         job_id = jobs.submit(pid, prompt, options)
         return {"job_id": job_id, "status": "queued"}
+
+    auto_ask = re.compile(r"(edit|auto|reel|reels|short|shorts|montage|vlog|video|bana|banao|banado|bana do)", re.I)
+
+    def _only_auto_guess(prompt: str, options: dict[str, Any]) -> bool:
+        """The old reader saw no edit in the words and fell back to "auto edit" although nobody asked for one."""
+        from .memory import wants_my_style, wants_repeat
+
+        if options or settings.planner_mode == "local" or wants_repeat(prompt) or wants_my_style(prompt):
+            return False
+        rec = parse_intent(prompt).recognized
+        return bool(rec) and all(r.startswith("auto edit") for r in rec) and not auto_ask.search(prompt)
+
+    def _resolve_or_ask(pid: str, prompt: str, plan: EditPlan | None, at: float | None) -> dict[str, Any]:
+        """Apply the resolver's reading when it is clearly ahead; otherwise 422 "choose" with up to 3 choices (each
+        is ready-to-run tool calls for POST /projects/{pid}/tools) and a request id for POST /tools/resolve/pick."""
+        from .tools.resolve import context_from_plan, resolve
+        from .unmet import UnmetLog
+
+        ctx = context_from_plan(plan, at) if plan is not None else {}
+        if at is None:
+            ctx["comment"] = False
+        log = UnmetLog(db)
+        ctx["learned"] = log.learned(prompt)
+        res = resolve(prompt, ctx)
+        if res.decision == "apply":
+            best = res.choices[0]
+            try:
+                job_id = jobs.submit_tools(pid, best["calls"], prompt)
+            except ManualError as exc:
+                raise ApiError(422, "bad_tools", str(exc)) from exc
+            return {"job_id": job_id, "status": "queued", "did": best["label"]}
+        rid = log.log(pid, prompt, ctx, res.decision, res.choices)
+        where = f" ({at:.1f}s)" if at is not None else ""
+        msg = (f'"{prompt[:60]}"{where} ke ek se zyada matlab ho sakte hain — jo chahiye us pe tap karo:'
+               if res.decision == "choose" else
+               f'"{prompt[:60]}"{where} pakka samajh nahi aaya. Shayad aap inme se kuch chahte ho:')
+        chips = [{"id": c["id"], "label": c["label"], "calls": c["calls"]} for c in res.choices]
+        raise ApiError(422, "choose", msg, {"choices": chips, "request_id": rid, "decision": res.decision})
 
     def _must_understand(prompt: str, options: dict[str, Any]) -> None:
         """Never turn a message the agent did not understand into a "default edit" the user did not ask for: say

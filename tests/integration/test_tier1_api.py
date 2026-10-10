@@ -53,7 +53,7 @@ def test_parse_endpoint_and_refusal(env):
     assert [x["id"] for x in r["calls"]] == ["grayscale"] and "zoom_in" in r["negated"]
     bad = c.post(f"/projects/{pid}/tools", json={"prompt": "4k upscale kar do"})
     assert bad.status_code == 422 and "not available yet" in bad.text and "Closest" in bad.text
-    assert len(c.get("/tools").json()["tools"]) == 105
+    assert len(c.get("/tools").json()["tools"]) == 108
 
 
 def test_prompt_makes_a_version_and_undo_restores(env):

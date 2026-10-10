@@ -22,8 +22,8 @@ variant_axes:
   aggressiveness: [gentle_1s, normal_0.6s, tight_0.3s]
   keep_padding: [0.05, 0.15, 0.3]
 synonyms:
-  en: [remove silence, cut silences, remove pauses, cut the dead air, no silence, remove quiet parts, cut gaps]
-  hinglish: [silence hatao, khamoshi hatao, chup wala hissa hatao, chup hissa kaato, dead air hatao, ruk ruk ke bolna hatao, gap hatao]
+  en: [remove silence, cut silences, remove pauses, cut the dead air, no silence, remove quiet parts, cut gaps, remove silent parts]
+  hinglish: [silence hatao, khamoshi hatao, chup wala hissa hatao, chup hissa kaato, dead air hatao, ruk ruk ke bolna hatao, gap hatao, koi nahi bol raha wo hatao, pause hatao]
   hi: [चुप वाले हिस्से हटाओ, खामोशी हटाओ, साइलेंस हटाओ]
   slang: [bakwas pause uda do, khali gap nikalo, cut pause]
   typos: [silense hatao, remov silence, silnce]

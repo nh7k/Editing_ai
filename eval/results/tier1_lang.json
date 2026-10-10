@@ -1,14 +1,14 @@
 {
- "prompts": 840,
- "correct": 763,
- "accuracy": 0.908,
+ "prompts": 864,
+ "correct": 782,
+ "accuracy": 0.905,
  "by_lang": {
-  "en": "209/210",
-  "hi": "105/105",
-  "hinglish": "209/210",
-  "typo": "105/105",
-  "vague": "30/105",
-  "multi": "105/105"
+  "en": "214/216",
+  "hi": "108/108",
+  "hinglish": "214/216",
+  "typo": "108/108",
+  "vague": "30/108",
+  "multi": "108/108"
  },
  "per_skill": {
   "add_music": "7/8",
@@ -24,6 +24,7 @@
   "blur": "7/8",
   "blur_background_fill": "7/8",
   "blur_box_censor": "7/8",
+  "brighten_to_white": "7/8",
   "brightness": "7/8",
   "caption_style": "8/8",
   "cinematic_look": "7/8",
@@ -76,6 +77,7 @@
   "remove_silence": "8/8",
   "reorder_clips": "8/8",
   "replace_audio": "7/8",
+  "restore_normal": "5/8",
   "reverse": "7/8",
   "rgb_split": "7/8",
   "rotate_flip": "8/8",
@@ -112,6 +114,7 @@
   "warm": "7/8",
   "watermark_logo": "7/8",
   "whip_pan": "7/8",
+  "white_screen_card": "7/8",
   "wipe": "7/8",
   "zoom_in": "7/8",
   "zoom_out": "7/8",
@@ -228,6 +231,13 @@
   {
    "skill": "blur_box_censor",
    "prompt": "ye dikhna nahi chahiye",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "brighten_to_white",
+   "prompt": "sapne wali roshni chahiye",
    "lang": "vague",
    "why": "skill not found",
    "got": []
@@ -502,6 +512,45 @@
    "got": []
   },
   {
+   "skill": "restore_normal",
+   "prompt": "remove the effect from 2 to 4 sec",
+   "lang": "en",
+   "why": "skill not found",
+   "got": [
+    [
+     "delete_segment",
+     {
+      "start": 2.0,
+      "end": 4.0
+     },
+     null
+    ]
+   ]
+  },
+  {
+   "skill": "restore_normal",
+   "prompt": "3 se 5 sec effect hata do",
+   "lang": "hinglish",
+   "why": "skill not found",
+   "got": [
+    [
+     "delete_segment",
+     {
+      "start": 3.0,
+      "end": 5.0
+     },
+     null
+    ]
+   ]
+  },
+  {
+   "skill": "restore_normal",
+   "prompt": "ye ajeeb lag raha hai theek karo",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
    "skill": "reverse",
    "prompt": "waqt ko peeche le jao",
    "lang": "vague",
@@ -722,6 +771,13 @@
   {
    "skill": "whip_pan",
    "prompt": "energetic travel cut",
+   "lang": "vague",
+   "why": "skill not found",
+   "got": []
+  },
+  {
+   "skill": "white_screen_card",
+   "prompt": "beech me thoda saans lene do safed",
    "lang": "vague",
    "why": "skill not found",
    "got": []

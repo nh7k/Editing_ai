@@ -1,0 +1,90 @@
+# added for the "yaha screen white kar do" failure (docs/INTENT_FAILURE_REVIEW.md)
+id: white_screen_card
+seed: 108
+category: cutting
+name: White screen
+name_hi: Safed screen
+description: A plain white screen for a moment at a point of the video; the video waits and then continues
+  (the video gets that much longer).
+params:
+  duration:
+    type: number
+    default: 1.0
+    min: 0.2
+    max: 5.0
+    unit: s
+    extract: seconds
+    desc: how long
+time_modes:
+- at_time
+builder: restore.white_screen_card
+graph: a generated white card clip inserted at the moment (split + insert)
+media3:
+  status: mapped
+  how: a generated white image EditedMediaItem (setDurationUs) between two clippings — NOT TESTED
+stage: structure
+conflicts: []
+cost: cheap
+licence: own code; card generated with FFmpeg color source
+changes_duration: true
+needs: []
+variant_axes:
+  duration:
+  - 0.5s
+  - 1s
+  - 2s
+synonyms:
+  en:
+  - white screen
+  - white card
+  - blank white screen
+  - white frame
+  - plain white slide
+  - full white screen
+  - white background for a moment
+  hinglish:
+  - safed screen dikhao
+  - khali safed screen
+  - white screen daal do
+  - safed parda
+  - white card lagao
+  - safed slide daalo
+  - beech me white screen
+  hi:
+  - सफ़ेद स्क्रीन
+  - खाली सफ़ेद स्क्रीन
+  - सफ़ेद पर्दा
+  slang:
+  - whiteout
+  typos:
+  - wite screen
+  - white scren
+  - safed scrin
+negations:
+- white screen mat daalo
+examples:
+- prompt: white screen at 2 sec
+  lang: en
+- prompt: a blank white screen for 1 second at 3 sec
+  lang: en
+- prompt: 2 सेकंड पर सफ़ेद स्क्रीन
+  lang: hi
+- prompt: 3 sec pe safed screen dikhao
+  lang: hinglish
+- prompt: 1 sec pe khali safed screen
+  lang: hinglish
+- prompt: wite screen at 2 sec
+  lang: typo
+- prompt: beech me thoda saans lene do safed
+  lang: vague
+- prompt: 2 sec pe white screen aur music lagao
+  lang: multi
+  also:
+  - add_music
+test:
+  check: white_card
+  params:
+    duration: 1.0
+  time:
+    mode: at_time
+    at: 2.0

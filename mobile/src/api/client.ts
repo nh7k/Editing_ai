@@ -33,6 +33,7 @@ import type {
   TextStylesResponse,
   Understood,
   VersionInfo,
+  ToolCall,
   UploadClipsResponse,
   UploadFile,
   Waveform,
@@ -47,12 +48,15 @@ export const UPLOAD_TIMEOUT_MS = 10 * 60_000;
 export class ApiError extends Error {
   readonly code: string;
   readonly status: number;
+  /** The rest of the backend's error object (e.g. `choices` + `request_id` of a 422 "choose"). */
+  readonly details: Record<string, unknown>;
 
-  constructor(code: string, message: string, status = 0) {
+  constructor(code: string, message: string, status = 0, details: Record<string, unknown> = {}) {
     super(message);
     this.name = 'ApiError';
     this.code = code;
     this.status = status;
+    this.details = details;
   }
 }
 
@@ -85,11 +89,12 @@ export function parseErrorBody(status: number, bodyText: string): ApiError {
     const obj = parsed as Record<string, unknown>;
     const err = obj.error;
     if (err && typeof err === 'object') {
-      const { code, message } = err as Record<string, unknown>;
+      const { code, message, ...details } = err as Record<string, unknown>;
       return new ApiError(
         typeof code === 'string' ? code : `http_${status}`,
         typeof message === 'string' ? message : `Request failed (${status})`,
         status,
+        details,
       );
     }
     if (typeof obj.detail === 'string') {
@@ -376,6 +381,12 @@ export const api = {
   startEdit: (projectId: string, body: EditRequest) =>
     request<EditResponse>(`/projects/${enc(projectId)}/edit`, { method: 'POST', body, timeoutMs: EDIT_TIMEOUT_MS }),
   getJob: (jobId: string) => request<Job>(`/jobs/${enc(jobId)}`),
+  /** Run Tier 1 tool calls on the latest version (a tapped choice of an unclear request). */
+  runTools: (projectId: string, calls: ToolCall[], prompt = '') =>
+    request<EditResponse>(`/projects/${enc(projectId)}/tools`, { method: 'POST', body: { calls, prompt } }),
+  /** Remember which reading the user tapped (local memory for the same words next time). */
+  pickChoice: (requestId: string, choiceId: string) =>
+    request<{ ok: boolean }>('/tools/resolve/pick', { method: 'POST', body: { request_id: requestId, choice_id: choiceId } }),
   getPlan: (projectId: string) => request<EditPlan>(`/projects/${enc(projectId)}/plan`),
   /**
    * URL of the rendered video (or its gif / mp3 extra); `version` busts caches after a new render.
