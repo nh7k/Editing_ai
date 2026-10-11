@@ -259,10 +259,20 @@ def test_studio_three_versions_choose_filmstrip_waveform(env):
     assert len({len(f) for f in files}) == 3  # three genuinely different renders
     plan = client.get(f"/projects/{pid}/plan").json()
     assert plan["style"] == vs[0]["style"] and len(plan["overlays"]) >= 2
-    # pick the last-ranked version: it becomes the project's output
-    assert client.post(f"/jobs/{job['id']}/choose", json={"variant": 2}).json() == {"ok": True, "chosen": 2}
+    # pick the last-ranked version: it becomes the project's output AND its plan (timeline, next edit, undo follow
+    # the chosen look — before, only the video bytes were swapped and the plan stayed version 0)
+    chose = client.post(f"/jobs/{job['id']}/choose", json={"variant": 2}).json()
+    assert chose["ok"] and chose["chosen"] == 2 and chose["job_id"] and chose["job_id"] != job["id"]
     assert client.get(f"/projects/{pid}/output").content == files[2]
     assert [v["chosen"] for v in client.get(f"/jobs/{job['id']}").json()["variations"]] == [False, False, True]
+    chosen_plan = client.get(f"/projects/{pid}/plan").json()
+    assert chosen_plan["style"] == vs[2]["style"] != plan["style"]
+    # undo: back to the version that was current before the choice (rank 0 look, its own video)
+    assert client.post(f"/projects/{pid}/undo").status_code == 200
+    assert client.get(f"/projects/{pid}/plan").json()["style"] == vs[0]["style"]
+    assert client.get(f"/projects/{pid}/output").content == files[0]
+    assert client.post(f"/projects/{pid}/redo").status_code == 200
+    assert client.get(f"/projects/{pid}/plan").json()["style"] == vs[2]["style"]
     assert client.post(f"/jobs/{job['id']}/choose", json={"variant": 5}).status_code == 422
     # timeline helpers
     cid = env["c_id"]

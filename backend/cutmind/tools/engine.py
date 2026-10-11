@@ -80,10 +80,12 @@ class Applied:
     where: str
     notes: list[str]
     adjust: list[dict[str, Any]]
+    span: tuple[float, float] | None = None  # output seconds it changed (None: the whole video) — for the verifier
 
     def to_dict(self) -> dict[str, Any]:
         return {"skill": self.skill, "name": self.name, "params": self.params, "assumed": self.assumed,
-                "where": self.where, "notes": self.notes, "adjust": self.adjust, "undo": True}
+                "where": self.where, "notes": self.notes, "adjust": self.adjust, "undo": True,
+                "span": list(self.span) if self.span else None}
 
 
 def fill_params(s: dict[str, Any], given: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
@@ -143,6 +145,18 @@ def adjust_options(s: dict[str, Any], params: dict[str, Any], time: dict[str, An
     return opts[:4]
 
 
+def _span(when: Any) -> tuple[float, float] | None:
+    if getattr(when, "whole", False):
+        return None
+    if getattr(when, "windows", None):
+        a, b = when.windows[0]
+        return (round(float(a), 3), round(float(b), 3))
+    if getattr(when, "instants", None):
+        t = float(when.instants[0])
+        return (round(t, 3), round(t + 0.5, 3))
+    return None
+
+
 def run(plan: EditPlan, calls: list[dict[str, Any]], ctx: ToolCtx) -> tuple[EditPlan, list[Applied]]:
     """Apply the calls in order (atomically). Raises ToolError with a user-facing reason."""
     _load_builders()
@@ -181,7 +195,7 @@ def run(plan: EditPlan, calls: list[dict[str, Any]], ctx: ToolCtx) -> tuple[Edit
         cur = new
         applied.append(Applied(sid, s["name"], params, assumed + when.assumed, when.describe(),
                                ctx.notes + [n for n in stack_notes if not n.startswith("effects ordered")],
-                               adjust_options(s, params, call.get("time"))))
+                               adjust_options(s, params, call.get("time")), _span(when)))
     return cur, applied
 
 

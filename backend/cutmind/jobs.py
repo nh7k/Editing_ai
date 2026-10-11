@@ -398,6 +398,7 @@ class JobManager:
         t0 = time.perf_counter()
         try:
             clips = self.clip_refs(project_id, state.log)
+            prev = self.db.last_job(project_id, "done")  # the version this edit changes (its video is the "before")
             base = self.tool_base(project_id, clips)
             ctx = self.tool_ctx(project_id, clips, state.log)
             state.event("node_started", node="tools")
@@ -418,9 +419,22 @@ class JobManager:
             ok, err = decode_check(output, timeout=300)
             if not ok or abs(info.duration - plan.total_duration()) > 0.5 or not info.has_audio:
                 raise JobError(f"the render failed the quality gate ({err or 'duration / audio mismatch'})")
+            # the verifier: every skill MEASURED on the new video against the version before (same moment)
+            from .verify import summary as verify_summary
+            from .verify import verify
+
+            prev_video = Path(prev["output_path"]) if prev and prev.get("output_path") else None
+            checks = verify(base, prev_video, plan, output, [a.to_dict() for a in applied])
+            lines, warns = verify_summary(checks)
+            for c in checks:
+                state.log("reviewer", "warn" if c.status == "failed" else "info",
+                          f"verify {c.skill}: {c.status} — {c.detail}")
             with state.lock:
                 state.data["explain"] = {"tools": [a.to_dict() for a in applied],
-                                         "summary": [f"{a.name}: {a.where}" for a in applied]}
+                                         # one string (the app shows it as text; a list ran together before)
+                                         "summary": "; ".join(f"{a.name}: {a.where}" for a in applied),
+                                         "changed": lines, "kept": [], "warnings": warns, "suggestions": [],
+                                         "verify": [c.to_dict() for c in checks]}
             self.db.update_job(job_id, plan=plan.to_json(), output_path=str(output))
             with state.lock:
                 state.data.update({
@@ -522,8 +536,11 @@ class JobManager:
                 if a["status"] in ("running", "retrying"):
                     a["status"] = "failed"
 
-    def choose(self, job_id: str, variant: int) -> int:
-        """User picked another version: copy it over the main output and remember the choice."""
+    def choose(self, job_id: str, variant: int) -> dict[str, Any]:
+        """User picked another styled version ("Use this"): it becomes a NEW current version with that version's
+        plan and video (timeline, next edit and undo follow it), and the choice is remembered."""
+        from .versions import use_variant
+
         snap = self.get(job_id)
         if not snap:
             raise KeyError(f"Job {job_id} does not exist.")
@@ -533,8 +550,13 @@ class JobManager:
             raise KeyError(f"Job {job_id} has no version {variant}.")
         row = self.db.get_job(job_id)
         assert row is not None and row["output_path"]
-        _swap_in_variant(Path(row["output_path"]), variant)
-        self.memory.remember_choice(job_id, next(v["style"] for v in snap["variations"] if v["index"] == variant))
+        var = next(v for v in snap["variations"] if v["index"] == variant)
+        made = use_variant(self.db, self.project_dir(row["project_id"]), row["project_id"], job_id, variant,
+                           var.get("style"), self.memory, f"Use this: {var.get('name') or var.get('style')}")
+        if made is None:
+            # an edit made before versions kept their plans: only the video can be swapped (old behaviour)
+            _swap_in_variant(Path(row["output_path"]), variant)
+        self.memory.remember_choice(job_id, var.get("style"))
         for v in snap["variations"]:
             v["chosen"] = v["index"] == variant
         if job_id in self.states:
@@ -543,7 +565,8 @@ class JobManager:
             self.states[job_id].persist(force=True)
         else:
             self.db.update_job(job_id, state=snap)
-        return variant
+        return {"chosen": variant, "job_id": made["job_id"] if made else None,
+                "version": made["version"] if made else None}
 
     def wait(self, job_id: str, timeout: float = 900) -> dict[str, Any]:
         """Block until a job finishes (tests / CLI)."""

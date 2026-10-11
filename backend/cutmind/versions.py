@@ -38,7 +38,8 @@ def versions(db: Database, project_id: str) -> list[dict[str, Any]]:
             dur = round(EditPlan.model_validate(json.loads(r["plan"])).total_duration(), 2)
         except Exception:  # noqa: BLE001 — an old plan from an earlier schema still lists
             dur = None
-        kind = "restore" if opts.get("restored_from") else "manual" if opts.get("manual") else "ai"
+        kind = ("restore" if opts.get("restored_from") else "manual" if opts.get("manual") else
+                "variant" if opts.get("variant_of") else "ai")
         out.append({"n": n, "job_id": r["id"], "prompt": r["prompt"], "created_at": r["created_at"],
                     "duration": dur, "match_percent": r["match_percent"], "kind": kind,
                     "restored_from": opts.get("restored_from"), "replaced": opts.get("replaced")})
@@ -84,6 +85,52 @@ def restore(db: Database, project_dir: Path, project_id: str, job_id: str, memor
     return {"job_id": new, "restored": job_id, "version": len(cur) + 1, "replaced": replaced}
 
 
+def variant_plan_path(video: Path) -> Path:
+    """Where a styled version's plan is kept, next to its video (`job_v2.mp4` → `job_v2.plan.json`)."""
+    return video.with_name(f"{video.stem}.plan.json")
+
+
+def use_variant(db: Database, project_dir: Path, project_id: str, job_id: str, variant: int, style: str | None,
+                memory: Any, label: str) -> dict[str, Any] | None:
+    """"Use this" on one of a job's styled versions: a NEW version whose plan AND video are that version's, so the
+    timeline, the next edit and undo all follow the chosen look (before, only the main mp4 was swapped and the plan
+    stayed the first-ranked look). Undo goes back to the version that was current before. None: an old job whose
+    versions' plans were not kept."""
+    src = db.one("SELECT * FROM jobs WHERE id=? AND project_id=? AND status='done'", (job_id, project_id))
+    if not src or not src.get("output_path"):
+        return None
+    main = Path(src["output_path"])
+    video = main.with_name(f"{main.stem}_v{variant}.mp4")
+    plan_file = variant_plan_path(video)
+    if not (video.exists() and plan_file.exists()):
+        return None
+    plan_json = plan_file.read_text(encoding="utf-8")
+    EditPlan.model_validate(json.loads(plan_json))  # never store a plan that does not load
+    cur = versions(db, project_id)
+    new = new_id("job")
+    new_file = project_dir / "output" / f"{new}.mp4"
+    new_file.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(video, new_file)
+    state = json.loads(src["state"] or "{}") if src.get("state") else {}
+    match = next((v.get("match_percent") for v in state.get("variations") or [] if v.get("index") == variant),
+                 src.get("match_percent"))
+    state.update({"id": new, "prompt": label, "status": "done", "events": [], "thoughts": [], "timeline": {},
+                  "variations": [], "finished_at": now_iso(), "match_percent": match,
+                  "explain": {"summary": f"{label} — the look, the timeline and your next edits now use it.",
+                              "changed": [], "kept": [], "warnings": [], "suggestions": []}})
+    options = {"variant_of": job_id, "variant": variant}
+    db.execute("INSERT INTO jobs(id, project_id, prompt, options, status, created_at, plan, output_path, state, "
+               "match_percent, finished_at) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+               (new, project_id, label, json.dumps(options), "done", now_iso(), plan_json, str(new_file),
+                json.dumps(state), match, now_iso()))
+    if memory is not None:
+        row = db.one("SELECT intent, delivered FROM edit_memory WHERE job_id=?", (job_id,))
+        if row:  # the next message continues from the CHOSEN look, and asks for one version again
+            intent = {**json.loads(row["intent"]), "style": style, "variations": 1}
+            memory.remember_edit(project_id, new, label, intent, json.loads(row["delivered"]))
+    return {"job_id": new, "version": len(cur) + 1}
+
+
 def undo(db: Database, project_dir: Path, project_id: str, memory: Any) -> dict[str, Any]:
     cur = versions(db, project_id)
     if len(cur) < 2:
@@ -120,6 +167,9 @@ def _texts(p: EditPlan) -> list[str]:
     return [t.text for t in p.text if t.kind in ("title", "text", "watermark")][:6]
 
 
+GRADE_KEYS = ("brightness", "contrast", "saturation", "warmth", "gamma")
+
+
 def diff(a: EditPlan, b: EditPlan) -> dict[str, Any]:
     """Plain-language differences between two plans (a = before, b = after)."""
     changed, kept = [], []
@@ -140,6 +190,14 @@ def diff(a: EditPlan, b: EditPlan) -> dict[str, Any]:
     else:
         kept.append(f"cut ({len(cut_b)} shots)")
     item("colour", a.color.preset, b.color.preset, opt)
+    if a.color.preset == b.color.preset:  # same preset name, other numbers (a style's own grade, "normal karo")
+        moved = [f"{k} {getattr(a.color, k):g} → {getattr(b.color, k):g}" for k in GRADE_KEYS
+                 if abs(getattr(a.color, k) - getattr(b.color, k)) > 1e-3]
+        if moved:
+            changed.append("colour grade: " + ", ".join(moved))
+    item("look", a.style, b.style, opt)
+    item("graphic tracks", [o.label for o in a.overlays], [o.label for o in b.overlays], opt)
+    item("graphics", len(a.graphics), len(b.graphics))
     item("music", a.audio.music, b.audio.music, opt)
     if a.audio.music and b.audio.music and a.audio.music == b.audio.music and a.audio.music_volume != b.audio.music_volume:
         changed.append(f"music level: {a.audio.music_volume:.2f} → {b.audio.music_volume:.2f}")
@@ -172,14 +230,42 @@ def next_suggestions(plan: EditPlan) -> list[str]:
     return s[:3]
 
 
-def _already(prompt: str) -> str:
-    """Nothing changed and nothing was impossible: what was asked is already in the edit ("captions laga do" twice)."""
+def _in_plan(it: Any, plan: EditPlan) -> tuple[list[str], list[str]]:
+    """What a message asked, checked against the PLAN: (already there, asked but not there). Only asks that can be
+    checked on a plan are listed — never "already in your edit" from the prompt's words alone."""
+    there, missing = [], []
+
+    def check(asked: bool, name: str, ok: bool) -> None:
+        if asked:
+            (there if ok else missing).append(name)
+
+    check(bool(it.style), f"{(it.style or '').replace('_', ' ')} look", plan.style == it.style)
+    check(it.color_preset not in (None, "none"), f"{it.color_preset} colour", plan.color.preset == it.color_preset)
+    check(it.captions, "captions", any(t.kind == "caption" for t in plan.text))
+    check(it.music, "music", bool(plan.audio.music))
+    check(it.mute, "video's own sound off", bool(plan.audio.mute))
+    check(bool(it.aspect_ratio), f"{it.aspect_ratio} shape", plan.canvas.aspect_ratio == it.aspect_ratio)
+    have = {e.type for e in plan.effects}
+    for e in it.effects:
+        check(True, str(e).replace("_", " "), e in have)
+    return there, missing
+
+
+def _already(prompt: str, plan: EditPlan | None = None) -> str:
+    """Nothing changed and nothing was impossible: say which asks are REALLY in the edit already (checked on the
+    plan) and which are not — before, it re-read the prompt and claimed "Already in your edit: violet authority
+    look" while the edit had Midnight Drift."""
     from .intent import parse_intent
 
-    asked = [r for r in parse_intent(prompt).recognized if not r.startswith(("auto edit", "travel/vlog"))] if prompt else []
-    if asked:
-        return "Already in your edit: " + ", ".join(asked[:4]) + " — so there was nothing to change."
-    return "This ask did not change anything in this video."
+    if not prompt or plan is None:
+        return "This ask did not change anything in this video."
+    there, missing = _in_plan(parse_intent(prompt), plan)
+    parts = []
+    if there:
+        parts.append("Already in your edit: " + ", ".join(there[:4]) + ".")
+    if missing:
+        parts.append("Asked but NOT in the edit: " + ", ".join(missing[:4]) + " — it did not get applied.")
+    return " ".join(parts) or "This ask did not change anything in this video."
 
 
 def explain(before: EditPlan | None, after: EditPlan, intent: dict[str, Any] | None,
@@ -204,7 +290,7 @@ def explain(before: EditPlan | None, after: EditPlan, intent: dict[str, Any] | N
         why = [f"{x.decision}: {x.reason}" for x in after.decisions
                if x.skill in CANT_SKILLS and re.search(CANT_SKILLS[x.skill], prompt, re.I)]
         warnings.append("Nothing changed. " + (" ".join(dict.fromkeys(why)) if why else
-                                              _already(prompt)))
+                                              _already(prompt, after)))
     ch = "; ".join(d["changed"]) if d["changed"] else "nothing visible"
     same = ", ".join(d["kept"][:5])
     summary = f"Changed: {ch}. Same as before: {same}. Length {d['duration_after']:.1f}s."

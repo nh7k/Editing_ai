@@ -22,6 +22,7 @@ from ..plan import Decision, EditPlan
 from ..proxy import PROXY_SHORT_SIDE
 from ..renderer import extra_path, render
 from ..styles import DEFAULT_ORDER, STYLES, apply_style
+from ..versions import variant_plan_path
 from .analyzer import AnalyzerAgent
 from .audio import AUDIO_DECISIONS, AudioAgent
 from .base import AgentContext, BaseAgent, Feedback
@@ -466,12 +467,16 @@ class DirectorAgent(BaseAgent):
         if not results:
             raise JobError("None of the styled versions could be rendered.")
         disliked = set(prefs.get("disliked_styles") or [])
-        # best match first; on a tie the remembered favourite wins and disliked looks go last
-        results.sort(key=lambda r: (r[0] - (5 if r[2] in disliked else 0), r[1]), reverse=True)
+        # the look the user ASKED for is the edit (rank 0) whatever it scores — it shipped Midnight Drift for a
+        # "violet" ask before; the other looks are ranked best match first (a tie: the favourite wins, disliked last)
+        asked = intent.style
+        results.sort(key=lambda r: (r[2] == asked, r[0] - (5 if r[2] in disliked else 0), r[1]), reverse=True)
         variations: list[dict[str, Any]] = []
-        for rank, (match, _neg, sid, _vplan, _rev, out_v) in enumerate(results):
+        for rank, (match, _neg, sid, vplan, _rev, out_v) in enumerate(results):
             dest = output.with_name(f"{output.stem}_v{rank}.mp4")
             shutil.copyfile(out_v, dest)
+            # the plan goes with its video: "Use this" makes THIS plan the current edit (timeline, next edit, undo)
+            variant_plan_path(dest).write_text(json.dumps(vplan.to_json()), encoding="utf-8")
             for kind in ("gif", "mp3"):
                 if extra_path(out_v, kind).exists():
                     shutil.copyfile(extra_path(out_v, kind), extra_path(dest, kind))

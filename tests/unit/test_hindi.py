@@ -24,5 +24,22 @@ def test_romanized_words_find_stickers():
         assert stickers.emoji_for(romanize(dev)), dev
 
 
-def test_already_in_edit_answer():
-    assert _already("captions laga do").startswith("Already in your edit: captions")
+def _plan(**extra):
+    from cutmind.plan import EditPlan
+
+    return EditPlan.model_validate({"clips": [{"source": "c1", "in": 0.0, "out": 5.0, "order": 0}], **extra})
+
+
+def test_already_in_edit_answer_is_checked_on_the_plan():
+    caps = _plan(text=[{"kind": "caption", "text": "hello", "start": 0.0, "end": 1.0}])
+    assert _already("captions laga do", caps).startswith("Already in your edit: captions")
+    # the opposite: no captions in the edit -> never "already" (it used to re-read the prompt and claim it)
+    msg = _already("captions laga do", _plan())
+    assert "Already" not in msg and "NOT in the edit: captions" in msg
+
+
+def test_already_never_claims_a_look_the_edit_does_not_have():
+    # the real failure: "purple…" asked violet_authority, the edit had midnight_drift, the message said "already"
+    msg = _already("violet authority look lagao", _plan(style="midnight_drift"))
+    assert "Already" not in msg and "violet authority look" in msg
+    assert _already("violet authority look lagao", _plan(style="violet_authority")).startswith("Already")

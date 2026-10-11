@@ -303,6 +303,9 @@ export interface JobVariation {
 export interface ChooseVariantResponse {
   ok: boolean;
   chosen: number;
+  /** The new current version made from the chosen look (null for an old edit whose versions kept no plan). */
+  job_id?: string | null;
+  version?: number | null;
 }
 
 export interface StyleInfo {

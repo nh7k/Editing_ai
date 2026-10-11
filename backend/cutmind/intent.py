@@ -1075,14 +1075,40 @@ def _parse_extra_ops(p: str, raw: str, it: Intent, rec: list[str]) -> None:
         rec.append("export MP3")
 
 
+STYLE_WORDS = {
+    "midnight_drift": (r"midnight", r"premium", r"\bminimal", r"dark blue", r"elegant"),
+    "violet_authority": (r"violet", r"authority", r"blue.?purple", r"purple", r"bold gradient"),
+    "cyan_kinetic": (r"kinetic", r"\bglow", r"neon", r"cyan", r"indigo", r"motion accent"),
+}
+# a look named and then taken off: "violet authority hata do", "purple wala mat lagao", "purple video ko normal karo"
+STYLE_OFF_AFTER = re.compile(
+    r"^[^,.;!?]{0,28}?\b(hata|hatao|hatado|hta|htao|hatana|nikal|nikalo|remove|mat|nahi|nhi|band|off|"
+    r"normal|pehle jaisa|pehle jaise)\b")
+STYLE_OFF_BEFORE = re.compile(r"\b(no|without|bina|not|remove|hatao|hata do)\s+(the\s+)?(\w+\s+)?$")
+
+
 def _parse_style(p: str, it: Intent, rec: list[str]) -> None:
-    """Named pro looks and "give me N versions"."""
-    if _has(p, r"midnight", r"premium", r"\bminimal", r"dark blue", r"elegant"):
-        it.style = "midnight_drift"
-    elif _has(p, r"violet", r"authority", r"blue.?purple", r"purple", r"bold gradient"):
-        it.style = "violet_authority"
-    elif _has(p, r"kinetic", r"\bglow", r"neon", r"cyan", r"indigo", r"motion accent"):
-        it.style = "cyan_kinetic"
+    """Named pro looks and "give me N versions". A look named with "hata do / mat / nahi / normal" is taken OFF, not
+    put on ("cyan kinetic lagao, violet authority hata do" used to give violet); with two looks named, the one the
+    user wants is the one not taken off (before, a fixed order decided)."""
+    wanted: list[tuple[int, str]] = []
+    dropped: list[str] = []
+    for sid, pats in STYLE_WORDS.items():
+        for pat in pats:
+            for m in re.finditer(pat, p):
+                after, before = p[m.end():m.end() + 40], p[max(0, m.start() - 16):m.start()]
+                if STYLE_OFF_AFTER.search(after) or STYLE_OFF_BEFORE.search(before):
+                    dropped.append(sid)
+                else:
+                    wanted.append((m.start(), sid))
+    wanted = [w for w in wanted if w[1] not in dropped]
+    if wanted:
+        it.style = min(wanted)[1]
+    elif dropped:
+        it.style = None
+        if "style" not in it.remove:
+            it.remove.append("style")
+        rec.append("remove the " + " / ".join(dict.fromkeys(d.replace("_", " ") for d in dropped)) + " look")
     if it.style:
         rec.append(f"{it.style.replace('_', ' ')} look")
     m = re.search(r"\b([23]|two|three)\s+(versions|variations|options|styles|looks|variants)", p)

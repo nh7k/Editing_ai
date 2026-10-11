@@ -1103,7 +1103,16 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             # "normal kar do" / "pehle jaisa karo" is always the restore skill: the director re-styled the video
             # instead ("purple video ko normal kar do" → "violet authority look", nothing changed)
             restoring = quick.decision == "apply" and [c["id"] for c in quick.apply] == ["restore_normal"]
-            precise = ((tool_mode or restoring) and not options and not new_edit_words.search(prompt)
+            # ONE path for clear changes: once an edit exists, a message the skills read clearly ("warm karo",
+            # "captions laga do") changes exactly that on the current version — also after a director edit (before,
+            # the director re-made the whole edit and its "from memory" merge re-added old asks). Looks / "3
+            # versions" only the director makes, so those still go to it.
+            from .intent import parse_intent as _pi
+
+            _it = _pi(prompt)
+            director_only = bool(_it.style or _it.variations > 1 or "style" in _it.remove)
+            clear_change = bool(last_done) and quick.decision == "apply" and not director_only
+            precise = ((tool_mode or restoring or clear_change) and not options and not new_edit_words.search(prompt)
                        and quick.decision in ("apply", "act", "partial"))
             if precise or quick.decision in ("non_edit", "undo") or str(quick.trace.get("turn", "")).startswith("relative"):
                 # a greeting / question, or "aur thoda" / "kam karo" / "isko hata do" about the last edit
@@ -1427,12 +1436,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @app.post("/jobs/{job_id}/choose", tags=["edit"])
     def choose_variant(job_id: str, body: ChooseIn) -> dict[str, Any]:
         try:
-            chosen = jobs.choose(job_id, body.variant)
+            made = jobs.choose(job_id, body.variant)
         except KeyError as exc:
             raise ApiError(404, "no_variant", str(exc).strip("'\"")) from exc
         except ValueError as exc:
             raise ApiError(409, "job_not_finished", str(exc)) from exc
-        return {"ok": True, "chosen": chosen}
+        return {"ok": True, **made}
 
     def _clip_media(pid: str, clip_id: str) -> tuple[Path, Path]:
         project_or_404(pid)

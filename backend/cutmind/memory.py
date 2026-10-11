@@ -78,7 +78,8 @@ def merge_with_last(it: Any, last: dict[str, Any], defaults: dict[str, Any], rep
         asked.discard("auto")  # "bana do" alone reads as "auto edit": the remembered edit decides instead
         data["auto"] = defaults["auto"]
     for k, v in last.items():
-        if k in defaults and k not in ("recognized", "remove", "avoid") and k not in asked:
+        # "3 versions" is a one-time ask: carried over, every later chat message rendered 3 looks again
+        if k in defaults and k not in ("recognized", "remove", "avoid", "variations") and k not in asked:
             data[k] = v
     # timeline comments add up: every earlier comment's text / sticker / cut stays, this one's comes on top
     data["from_comment"] = it.from_comment

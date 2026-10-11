@@ -269,6 +269,8 @@ export function StudioEditor({ navigation, route }: Props) {
       if (extra.at === undefined && currentTime > 0) body.playhead = Math.round(currentTime * 100) / 100;
       if (aspect) body.aspect_ratio = aspect;
       const res = await api.startEdit(projectId, body);
+      // "3 variations" is for THIS message only: left on, every later chat message rendered 3 looks again
+      if (body.variations === 3) setThreeVariations(false);
       // act / partial: the edit runs, and the other readings (or the parts not done) wait as one-tap chips
       const alts = res.alternatives?.length ? res.alternatives : undefined;
       const adds = res.unclear?.flatMap((u) => u.choices.slice(0, 2)) ?? [];
@@ -577,8 +579,10 @@ export function StudioEditor({ navigation, route }: Props) {
           onChosen={(job, index) => {
             setChosenOverride((m) => ({ ...m, [job.id]: index }));
             setPlayingVariant(index);
-            setToast('Version saved as the project output.');
+            setToast('Ye look ab current edit hai — timeline aur agla edit isi se chalega.');
             void reloadProject(true);
+            void reloadPlan(true);
+            void reloadMemory(true);
           }}
         />
       </View>
