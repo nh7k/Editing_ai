@@ -480,14 +480,17 @@ def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
     trace["unexplained"] = round(unexplained(words, said), 3) if exact_ids else None
     # a reading this user undid / rephrased for these same words is not applied blindly again
     disliked = any(float((ctx.get("learned") or {}).get(i, 0.0)) < 0 for i in exact_ids)
-    clear = (bool(exact["calls"]) and not exact["unknown"] and unexplained(words, said) < UNEXPLAINED_MAX
+    # "purple video ko normal kar do" with a look on the video: the other words only say WHICH thing to take off
+    restore_only = exact_ids == ["restore_normal"] and bool(present) and not exact["unknown"] and not disliked
+    clear = restore_only or (bool(exact["calls"]) and not exact["unknown"] and unexplained(words, said) < UNEXPLAINED_MAX
              and not disliked
              and not (restore_said and "restore_normal" not in exact_ids))
     # partial: some parts are clear, some are not ("warm karo, captions lagao aur mere chehre ko jawan dikhao") — each
     # clause is judged on its own: the clear ones run, every unclear one gets its own choices. One unknown part never
     # sinks the whole message (before: the whole message became one "pick one" question)
-    whole_clear = (bool(exact["calls"]) and not exact["unknown"] and not (restore_said and "restore_normal" not in exact_ids)
-                   and unexplained(words, exact_ids + list(exact["negated"])) < UNEXPLAINED_MAX)
+    whole_clear = restore_only or (
+        bool(exact["calls"]) and not exact["unknown"] and not (restore_said and "restore_normal" not in exact_ids)
+        and unexplained(words, exact_ids + list(exact["negated"])) < UNEXPLAINED_MAX)
     # the whole message clearly understood ("blak and wite kro" = black and white) is never cut into clauses —
     # splitting on "and" turned it into "blak" + "wite kro" → a white flash
     if not whole_clear and not (restore_said and "restore_normal" not in exact_ids):
@@ -536,8 +539,20 @@ def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
 def context_from_plan(plan: Any, t: float | None) -> dict[str, Any]:
     """What is on screen at output second t of a saved plan: effects (with their shot's span), graphics, stickers,
     the whole-video colour grade — the evidence for "normal jaisa tha" (sent by the API, so the app need not)."""
-    ctx: dict[str, Any] = {"duration": round(plan.total_duration(), 3)}
+    total = round(plan.total_duration(), 3)
+    ctx: dict[str, Any] = {"duration": total}
     if t is None:
+        # no moment: what covers the WHOLE video ("purple video ko normal kar do" on a styled edit) — without this
+        # the chat saw nothing to restore and the words "purple video" sank the clear "normal kar do"
+        whole: list[dict[str, Any]] = [{"type": e.type, "label": e.type.replace("_", " "), "start": 0.0, "end": total}
+                                       for e in plan.effects if e.target == -1]
+        c = plan.color
+        if c.preset != "none" or (c.contrast, c.saturation, c.warmth, c.brightness) != (1.0, 1.0, 0.0, 0.0):
+            whole.append({"type": "color_preset", "label": f"{c.preset} colour" if c.preset != "none" else "colour grade",
+                          "start": 0.0, "end": total})
+        if plan.style or plan.overlays:
+            whole.append({"type": "style", "label": f"{plan.style or 'graphic'} look", "start": 0.0, "end": total})
+        ctx["effects_present_at_time"] = whole
         return ctx
     ctx["marker_time"] = round(float(t), 3)
     tl = plan.timeline()

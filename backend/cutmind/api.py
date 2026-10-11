@@ -1090,13 +1090,20 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         else:
             from .tools.resolve import resolve as quick_resolve
 
-            quick = quick_resolve(prompt, {"comment": False, "recent_edits": _recent_edits(pid)})
+            from .tools.resolve import context_from_plan as _ctx_of
             last_done = db.last_job(pid, "done")
+            whole_ctx: dict[str, Any] = {}
+            if last_done and last_done["plan"]:
+                whole_ctx = _ctx_of(EditPlan.model_validate(json.loads(last_done["plan"])), None)
+            quick = quick_resolve(prompt, {**whole_ctx, "comment": False, "recent_edits": _recent_edits(pid)})
             # the current version was made by the skills (a chip, a comment, "aur thoda"…): a clear message keeps
             # changing exactly that version. Otherwise the director stays the chat's editor (it re-thinks the
             # whole edit and keeps earlier changes); "new edit" / "make a … reel" always go to the director.
             tool_mode = _made_by_tools(last_done)
-            precise = (tool_mode and not options and not new_edit_words.search(prompt)
+            # "normal kar do" / "pehle jaisa karo" is always the restore skill: the director re-styled the video
+            # instead ("purple video ko normal kar do" → "violet authority look", nothing changed)
+            restoring = quick.decision == "apply" and [c["id"] for c in quick.apply] == ["restore_normal"]
+            precise = ((tool_mode or restoring) and not options and not new_edit_words.search(prompt)
                        and quick.decision in ("apply", "act", "partial"))
             if precise or quick.decision in ("non_edit", "undo") or str(quick.trace.get("turn", "")).startswith("relative"):
                 # a greeting / question, or "aur thoda" / "kam karo" / "isko hata do" about the last edit

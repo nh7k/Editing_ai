@@ -24,6 +24,7 @@ FAMILIES: dict[str, set[str]] = {
     "style": set(GLITCH) | set(TEXTURE) | set(FLASH) | set(TIME_BLEND),
 }
 WORDS = {"color": "colour", "motion": "zoom / motion", "style": "effects", "overlays": "graphics / stickers"}
+NEUTRAL_COLOR = {"brightness": 0.0, "contrast": 1.0, "saturation": 1.0, "warmth": 0.0, "gamma": 1.0, "preset": "none"}
 
 
 def _family(kind: str) -> str:
@@ -73,14 +74,25 @@ def restore_normal(plan: EditPlan, p: dict[str, Any], when: When, ctx: ToolCtx) 
         keep = [e for e in data["effects"] if _family(e["type"]) not in fams]
         removed += sorted({e["type"] for e in data["effects"] if e not in keep})
         data["effects"] = keep
-        if "color" in fams and plan.color.preset != "none":
-            removed.append(f"colour grade '{plan.color.preset}'")
-            data["color"] = {**data["color"], "preset": "none"}
+        if "color" in fams:
+            # the whole grade back to neutral, not only the preset name: a style's own contrast / tint counts too
+            # ("purple video ko normal kar do" on a Midnight Drift edit changed nothing before)
+            neutral = {k: v for k, v in NEUTRAL_COLOR.items() if data["color"].get(k) != v}
+            if neutral:
+                removed.append(f"colour grade '{plan.color.preset}'" if plan.color.preset != "none" else "colour grade")
+                data["color"] = {**data["color"], **NEUTRAL_COLOR}
+            washes = [o for o in data.get("overlays", []) if o["kind"] == "wash"]
+            if washes:  # a style's colour wash tints the whole picture: it is colour, not a graphic
+                removed.append("colour wash")
+                data["overlays"] = [o for o in data["overlays"] if o["kind"] != "wash"]
         if "overlays" in fams:
-            n = len(data.get("graphics", [])) + len(data.get("stickers", []))
+            n = len(data.get("graphics", [])) + len(data.get("stickers", [])) + len(data.get("overlays", []))
             if n:
                 removed.append(f"{n} graphic(s) / sticker(s)")
-            data["graphics"], data["stickers"] = [], []
+            data["graphics"], data["stickers"], data["overlays"] = [], [], []
+        if what == "all" and data.get("style"):
+            removed.append(f"style '{data['style']}'")
+            data["style"] = None
         if not removed:
             raise ToolError("there is no effect on this video to take off — it already looks normal")
         ctx.notes.append("back to normal everywhere: " + ", ".join(removed))
@@ -107,14 +119,26 @@ def restore_normal(plan: EditPlan, p: dict[str, Any], when: When, ctx: ToolCtx) 
         if "overlays" in fams:
             data["graphics"], g = _cut_items(data.get("graphics", []), lo, hi)
             data["stickers"], s = _cut_items(data.get("stickers", []), lo, hi)
-            if g + s:
-                removed.append(f"{g + s} graphic(s) / sticker(s)")
+            data["overlays"], o = _cut_items(data.get("overlays", []), lo, hi)
+            if g + s + o:
+                removed.append(f"{g + s + o} graphic(s) / sticker(s)")
+        elif "color" in fams:  # a style's colour wash, only here
+            keep = [x for x in data.get("overlays", []) if x["kind"] != "wash"]
+            washes, w = _cut_items([x for x in data.get("overlays", []) if x["kind"] == "wash"], lo, hi)
+            if w:
+                removed.append("colour wash")
+                data["overlays"] = keep + washes
         grade = _preset_as_grade(plan.color.preset) if "color" in fams else None
+        # the whole-video numbers too (a "bw" edit also has saturation 0 — left alone, this moment stayed grey)
+        numbers = {k: v for k in ("brightness", "contrast", "saturation", "warmth")
+                   if (v := data["color"].get(k)) != NEUTRAL_COLOR[k]} if "color" in fams else {}
+        if numbers:
+            grade = {**numbers, **(grade or {})}
         if grade is not None:
             # a whole-video colour preset (the director's "black and white") becomes the same grade on every OTHER
             # shot, so only this moment goes back to normal
-            removed.append(f"colour '{plan.color.preset}'")
-            data["color"] = {**data["color"], "preset": "none"}
+            removed.append(f"colour '{plan.color.preset}'" if plan.color.preset != "none" else "colour grade")
+            data["color"] = {**data["color"], **NEUTRAL_COLOR}
             for x in tl:
                 if x.index in idx:
                     continue
