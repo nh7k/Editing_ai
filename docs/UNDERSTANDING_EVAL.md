@@ -80,6 +80,18 @@ built does not improve accuracy** (it is ~2× faster); the flat scorer degrades 
 already-shipped multilingual embedding model as a second signal, or per-skill discriminative synonyms) — measured
 here, not built.
 
+## Which messages go where (and what that costs)
+
+- **Timeline comments** that the skills read clearly → the skills (exactly that, at that moment).
+- **Chat**: the director stays the editor (it re-thinks the whole edit and keeps earlier changes), EXCEPT when the
+  current version was made by the skills (a chip, a comment, a relative turn — followed through undo / restore)
+  and the message is clear; greetings / questions, "aur thoda" / "kam karo" / "isko hata do", and "yaha …" with a
+  playhead always go to the skills. "new edit", "make a … reel", "naya edit" always go to the director.
+- Why not all chat to the skills: tried first; 20+ director end-to-end tests broke (they create whole edits from
+  "Make a 9:16 reel with warm color"), and a change that big to the product's main path needs your call, not mine.
+- **Cost (honest):** right after a DIRECTOR edit, "aur thoda" has no recorded last skill edit, so it answers with
+  choices instead of acting. Fixing that needs a map from the director's plan changes to skills — not built.
+
 ## Gates
 
 - `eval/regression_gate.py`: per-skill first-try hits (dev + generated) must not drop; baseline 1,213 hits over 108

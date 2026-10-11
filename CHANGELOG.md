@@ -339,9 +339,11 @@
     "fillers" matched "flash" (same phonetic key, far spelling), verb-only synonyms ("30 sec ka bana do") made any
     "bana do" a duration request. Dev hand-written: multi-instruction all-applied 5/23 → 18/23, relative 0/30 →
     29/30, non-edit 18 → 19/19, unsupported acted-on 4 → 1, single top-1 90.8 → 91.6 %, dead ends 0.
-61. **Understanding v2, checkpoint 2** (docs/UNDERSTANDING_EVAL.md) — chat and timeline comments that an edit
-    already exists for now go through the skills when they are clearly understood (each message changes exactly
-    that on the current version, so "aur thoda" can follow it); learning loop (picked / kept / undone / rephrased,
+61. **Understanding v2, checkpoint 2** (docs/UNDERSTANDING_EVAL.md) — timeline comments that the skills read
+    clearly, and chat messages when the current version was itself made by the skills (a chip, a comment, "aur
+    thoda", followed through undo / restore), now change exactly that on the current version, so "aur thoda" can
+    follow; otherwise the director stays the chat's editor, and "new edit / make a … reel" always goes to it (a
+    first try that sent every clear chat message to the skills broke 20+ director tests and was narrowed); learning loop (picked / kept / undone / rephrased,
     30-day half-life, `DELETE /me/understanding-data`); context sanitised (corrupt fields dropped), prompts cut to
     1,000 characters; honest "ye exact kaam abhi nahi aata" for unsupported requests (the fixed example list is
     gone from the chat too); a `tilt` primitive ("thoda ghumao": rotate + zoom to cover, no black corners);
