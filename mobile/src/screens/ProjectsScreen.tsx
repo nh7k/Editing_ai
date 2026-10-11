@@ -110,6 +110,10 @@ export function ProjectsScreen({ navigation }: Props) {
             project={item}
             onOpen={() => navigation.navigate('Editor', { projectId: item.id, projectName: item.name })}
             onClips={() => navigation.navigate('Import', { projectId: item.id, projectName: item.name })}
+            onDelete={async () => {
+              await api.deleteProject(item.id);
+              projects.setData((prev) => (prev ?? []).filter((p) => p.id !== item.id));
+            }}
           />
         )}
         ItemSeparatorComponent={() => <View style={styles.sep} />}
@@ -125,8 +129,33 @@ export function ProjectsScreen({ navigation }: Props) {
   );
 }
 
-function ProjectRow({ project, onOpen, onClips }: { project: Project; onOpen: () => void; onClips: () => void }) {
+function ProjectRow({
+  project,
+  onOpen,
+  onClips,
+  onDelete,
+}: {
+  project: Project;
+  onOpen: () => void;
+  onClips: () => void;
+  onDelete: () => Promise<void>;
+}) {
   const total = project.clips.reduce((s, c) => s + (c.duration || 0), 0);
+  // Two taps: "Delete" asks first (works the same on web and phone, no native alert needed).
+  const [confirming, setConfirming] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const remove = async () => {
+    setDeleting(true);
+    setDeleteError(null);
+    try {
+      await onDelete();
+    } catch (e) {
+      setDeleteError(errorMessage(e));
+      setDeleting(false);
+      setConfirming(false);
+    }
+  };
   return (
     // Not pressable itself: on web a pressable card would nest <button>s (invalid HTML).
     <Card testID={`project-${project.id}`}>
@@ -142,7 +171,35 @@ function ProjectRow({ project, onOpen, onClips }: { project: Project; onOpen: ()
       <View style={styles.actions}>
         <Button title="Open editor" small onPress={onOpen} testID={`open-${project.id}`} />
         <Button title="Clips" small variant="secondary" onPress={onClips} />
+        <View style={styles.flex} />
+        {confirming ? (
+          <>
+            <Button title="Cancel" small variant="ghost" onPress={() => setConfirming(false)} disabled={deleting} />
+            <Button
+              title="Yes, delete"
+              small
+              variant="danger"
+              onPress={remove}
+              loading={deleting}
+              testID={`confirm-delete-${project.id}`}
+            />
+          </>
+        ) : (
+          <Button
+            title="Delete"
+            small
+            variant="secondary"
+            onPress={() => setConfirming(true)}
+            testID={`delete-${project.id}`}
+          />
+        )}
       </View>
+      {confirming ? (
+        <AppText size="sm" muted style={styles.meta}>
+          Project, clips and edited videos will be deleted for good.
+        </AppText>
+      ) : null}
+      {deleteError ? <InlineError message={deleteError} /> : null}
     </Card>
   );
 }
