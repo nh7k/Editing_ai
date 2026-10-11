@@ -502,7 +502,13 @@ export function StudioEditor({ navigation, route }: Props) {
                 <TemplatesPanel onSend={(p) => void startEdit(p)} busy={sending} style={styles.fill} />
               </View>
             ) : rail === 'overlays' ? (
-              <OverlaysPanel overlays={overlays} activeStyle={plan.data?.style ?? null} onApplyStyle={applyStyle} busy={sending} />
+              <OverlaysPanel
+                overlays={overlays}
+                activeStyle={plan.data?.style ?? null}
+                onApplyStyle={applyStyle}
+                onRemoveStyle={() => void manual([{ op: 'set_style', style: null }], 'Look hataya (gradient tracks)')}
+                busy={sending}
+              />
             ) : (
               <ComingSoonPanel title={RAIL_ITEMS.find((r) => r.key === rail)?.label ?? ''} />
             )}

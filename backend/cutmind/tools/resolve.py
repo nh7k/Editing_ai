@@ -226,7 +226,8 @@ def label(sid: str, when: dict[str, Any] | None, ctx: dict[str, Any], params: di
     if sid == "restore_normal":
         names = sorted({str(f.get("label") or f.get("type")) for f in _effects_at(ctx, ctx.get("_t"))})
         what = f" ({', '.join(names[:2])} hatega)" if names else ""
-        return f"Yaha ka effect hata ke normal karo{what}"[:68]
+        where = "Yaha ka" if ctx.get("_t") is not None else "Poori video ka"
+        return f"{where} effect hata ke normal karo{what}"[:68]
     fixed = {
         "flash": f"{at}white flash (0.3 sec)",
         "fade_white": f"{at}white me fade",

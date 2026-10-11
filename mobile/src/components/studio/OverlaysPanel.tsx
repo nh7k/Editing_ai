@@ -13,10 +13,12 @@ export interface OverlaysPanelProps {
   /** Currently applied plan style id. */
   activeStyle?: string | null;
   onApplyStyle: (style: StyleInfo) => void;
+  /** Take the look off: its gradient graphic tracks and the style name (no AI, undo brings it back). */
+  onRemoveStyle?: () => void;
   busy?: boolean;
 }
 
-export function OverlaysPanel({ overlays, activeStyle, onApplyStyle, busy }: OverlaysPanelProps) {
+export function OverlaysPanel({ overlays, activeStyle, onApplyStyle, onRemoveStyle, busy }: OverlaysPanelProps) {
   const [styles_, setStyles] = useState<StyleInfo[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -89,6 +91,23 @@ export function OverlaysPanel({ overlays, activeStyle, onApplyStyle, busy }: Ove
             No overlays yet.
           </AppText>
         ) : null}
+        {onRemoveStyle && (overlays.length > 0 || activeStyle) ? (
+          <Pressable
+            onPress={onRemoveStyle}
+            disabled={busy}
+            accessibilityRole="button"
+            accessibilityLabel="Remove the look and its gradient tracks"
+            testID="remove-style"
+            style={({ pressed }) => [styles.removeBtn, (pressed || busy) && styles.pressed]}
+          >
+            <AppText size="sm" weight="semibold" color={studio.red}>
+              ✕ Look hatao (gradient tracks)
+            </AppText>
+            <AppText size="xs" color={studio.muted}>
+              Saare gradient / colour wash tracks hat jayenge. Galti ho to ↶ Undo.
+            </AppText>
+          </Pressable>
+        ) : null}
       </ScrollView>
     </View>
   );
@@ -133,6 +152,15 @@ const styles = StyleSheet.create({
   styleCardOn: { borderColor: studio.blue },
   styleText: { flex: 1, gap: 2 },
   pressed: { opacity: 0.75 },
+  removeBtn: {
+    marginTop: 4,
+    padding: 10,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: studio.red,
+    backgroundColor: studio.card,
+    gap: 2,
+  },
   section: { marginTop: 6 },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 12 },
 });
