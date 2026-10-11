@@ -52,12 +52,14 @@ def test_a_comment_effect_changes_only_that_moment(env):
 
 def test_skill_edits_survive_a_later_director_edit_and_restore_clears_memory(env):
     c, pid = env
-    body, _job, p = edit(c, pid, "captions laga do")
-    assert body.get("decision") == "apply" and any(t.kind == "caption" for t in p.text), body
-    # a director message (a look): the captions made by the skill are kept (replayed), not lost
+    edit(c, pid, "naya edit, warm reel bana do")  # a director version first (the test also runs on its own)
+    # (the clip is a tone, no speech: a vignette is the skill edit here — captions need speech)
+    body, _job, p = edit(c, pid, "halka vignette lagao")
+    assert body.get("decision") in ("apply", "act") and any(e.type == "vignette" for e in p.effects), body
+    # a director message (a look): the vignette made by the skill is kept (replayed), not lost
     _, job, p2 = edit(c, pid, "midnight drift look lagao")
     assert p2.style == "midnight_drift"
-    assert any(t.kind == "caption" for t in p2.text), [t.kind for t in p2.text]
+    assert any(e.type == "vignette" for e in p2.effects), [e.type for e in p2.effects]
     # "everything normal", then another director message: the old look does not come back from memory
     edit(c, pid, "sab effect aur gradient hata do normal kar do")
     _, _job, p3 = edit(c, pid, "3 second ka title 'GOA' daalo shuru me")

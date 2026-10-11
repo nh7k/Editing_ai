@@ -693,7 +693,10 @@ def parse_intent(prompt: str) -> Intent:
                                        r"sentimental", r"romantic", r"\bdard\w*", r"\bdukh\w*", r"\bshaant", r"yaadgaar",
                                        r"nostalgi") else "upbeat"
         rec.append(f"{it.music_mood} music")
-    if _has(p, r"beat.?sync", r"on the beat", r"to the beat", r"\bbeats?\b", r"rhythm"):
+    # "music / gaane ke base pe edit", "song ke hisaab se edit": editing TO the music is a beat edit too
+    to_music = _has(p, r"\b(music|song|gaa?n[ae]|track|audio)\w*\s+(ke|ki|ka)?\s*(base|hisaab|hisab|according|"
+                       r"rhythm|taal|beat)\w*\s*(pe|par|se|me|mein)?\s*(edit|cut|kaat|bana)")
+    if _has(p, r"beat.?sync", r"on the beat", r"to the beat", r"\bbeats?\b", r"rhythm") or to_music:
         it.beat_sync = True
         it.music = True
         it.music_mood = it.music_mood or "upbeat"
@@ -701,6 +704,16 @@ def parse_intent(prompt: str) -> Intent:
         if not it.fast_cuts and _has(p, r"\bcuts?\b"):
             it.fast_cuts = True  # "beat sync cuts" = cut on the beat, i.e. short beat-length segments
             rec.append("fast cuts")
+        # "beat pe EDIT karo" asks for the whole beat edit: shots cut on the music AND hits on the beat. Before,
+        # it only set beat_sync, which alone changes nothing (song cuts need fast_cuts, hits need "pulse") — a
+        # first message "is gaane ki beat pe edit karo" gave one untouched shot with music (any song, measured).
+        if _has(p, r"\b(edit|edt|banao|bana do|banado|kar do|karo)\b") and not _has(p, r"\b(sirf|only|just)\s+cuts?\b"):
+            if not it.fast_cuts:
+                it.fast_cuts = True
+                rec.append("cuts on the music")
+            if "pulse" not in it.effects and not _has(p, *[r"\b(no|bina|without)\s+(effects?|zoom|punch)"]):
+                it.effects = [*it.effects, "pulse"]
+                rec.append("hits on the beat")
 
     # "fade the audio / music" is an audio fade, not a video transition
     audio_fade_pat = r"fade (in |out |in and out |in/out )?(the )?(audio|music|sound|song)|(audio|music|sound) fade"
@@ -799,7 +812,8 @@ def parse_intent(prompt: str) -> Intent:
         it.timed_effects = timed
         effects = [e for e in effects if e not in {t.effect for t in timed}]
         rec.extend(describe_timed(t) for t in timed)
-    it.effects = effects
+    # keep what was decided earlier from the WHOLE sentence (the beat edit's hits), after the named effects
+    it.effects = [*effects, *(e for e in it.effects if e not in effects)]
     rec.extend(f"{e} effect" for e in effects)
     if tlook["preset"]:
         it.text_style = tlook["preset"]

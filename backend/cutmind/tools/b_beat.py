@@ -21,6 +21,26 @@ from .timewin import When
 MARK = "beat_edit"  # params marker on the effects this skill places
 
 
+def _keep_length(plan: EditPlan, total: float, ctx: ToolCtx) -> EditPlan | None:
+    """The plan with its last shot trimmed / extended so the edit is `total` long again (None: the footage has no
+    room for that)."""
+    from .invariants import source_duration
+
+    diff = plan.total_duration() - total
+    if abs(diff) < 0.01:
+        return plan
+    data = plan.to_json()
+    last = max(data["clips"], key=lambda c: c["order"])
+    new_out = last["out"] - diff * float(last.get("speed", 1.0) or 1.0)
+    src = ctx.sources.get(last["source"])
+    limit = source_duration(src) if src is not None else last["out"]
+    if not last["in"] + 0.2 <= new_out <= limit + 1e-3:
+        return None
+    last["out"] = round(new_out, 3)
+    out = EditPlan.model_validate(data)
+    return out if abs(out.total_duration() - total) < 0.02 else None
+
+
 @tool("beat_edit")
 def beat_edit(plan: EditPlan, p: dict[str, Any], when: When, ctx: ToolCtx) -> EditPlan:
     from ..song import analyze_song
@@ -61,11 +81,17 @@ def beat_edit(plan: EditPlan, p: dict[str, Any], when: When, ctx: ToolCtx) -> Ed
         if made:
             ctx.notes.append(f"{made} scene change(s) of the footage became shots")
     if p["cuts"] and len(plan.timeline()) > 1:
-        before = ctx.notes[:]
+        before, unsynced = ctx.notes[:], plan
         plan = beat_sync(plan, {"every": 1, "max_shift": 0.35}, when, ctx)
         ctx.beats = None
-        if len(ctx.notes) > len(before):
-            ctx.notes[-1] = "cuts moved onto the beat: " + ctx.notes[-1]
+        # moving cuts makes shots a little longer / shorter: the length must stay (it failed with "changed the
+        # length 15.00 → 15.12 s") — the last shot takes up the difference, else the cuts stay where they were
+        plan = _keep_length(plan, total, ctx)
+        if plan is None:
+            plan = unsynced
+            ctx.notes[len(before):] = ["cuts kept where they were (moving them onto the beat would change the length)"]
+        elif len(ctx.notes) > len(before):
+            ctx.notes[len(before)] = "cuts moved onto the beat: " + ctx.notes[len(before)]
     total = plan.total_duration()
 
     # 3. hits

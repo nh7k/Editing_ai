@@ -18,7 +18,7 @@ import numpy as np
 
 from .ffmpeg_utils import extract_audio_wav
 
-SONG_VERSION = 3
+SONG_VERSION = 4  # 4: the beat grid is moved onto the kick drum (beatmap.kick_phase)
 Feel = Literal["slow", "medium", "fast"]
 STEP = 0.5  # seconds per energy value
 
@@ -154,6 +154,11 @@ def analyze_song(track: Path, work: Path, cache_dir: Path | None = None, only_ca
         tempo, frames = librosa.beat.beat_track(y=y, sr=sr)
         prof.tempo = round(float(np.atleast_1d(tempo)[0]), 1)
         prof.beats = [round(float(b), 3) for b in librosa.frames_to_time(frames, sr=sr)]
+        from .beatmap import kick_phase
+
+        off = kick_phase(y, sr, prof.beats, prof.duration)
+        if off:  # the tracker sat on the off-beat: the beats (and everything placed on them) move onto the kick
+            prof.beats = [round(b + off, 3) for b in prof.beats if b + off < prof.duration]
         hop = int(sr * STEP)
         rms = np.array([float(np.sqrt(np.mean(y[i:i + hop] ** 2))) for i in range(0, len(y), hop)]) + 1e-9
         db = 20 * np.log10(rms / rms.max())

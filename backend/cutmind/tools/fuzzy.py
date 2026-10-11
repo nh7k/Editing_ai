@@ -21,6 +21,8 @@ VARIANTS: dict[str, str] = {
     "yahan": "yaha", "yhn": "yaha", "yha": "yaha", "yahaan": "yaha", "yahaa": "yaha", "idhar": "yaha", "idhr": "yaha",
     "yahi": "yaha", "yahin": "yaha", "yhi": "yaha", "here": "yaha", "ithe": "yaha", "is jagah": "yaha",
     "isi jagah": "yaha", "is jgh": "yaha", "is moment": "yaha", "is point": "yaha", "is waqt": "yaha",
+    # common Hinglish spellings of English words
+    "foto": "photo", "fotu": "photo", "photu": "photo", "fotos": "photos",
     # do it
     "krdo": "kar do", "kardo": "kar do", "karde": "kar do", "krde": "kar do", "kar de": "kar do", "kardena": "kar do",
     "krna": "karo", "karna": "karo", "kro": "karo", "krdena": "kar do", "kariye": "karo", "kijiye": "karo", "kr": "kar",

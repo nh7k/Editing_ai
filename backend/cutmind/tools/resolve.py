@@ -498,14 +498,18 @@ def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
     disliked = any(float((ctx.get("learned") or {}).get(i, 0.0)) < 0 for i in exact_ids)
     # "purple video ko normal kar do" with a look on the video: the other words only say WHICH thing to take off
     restore_only = exact_ids == ["restore_normal"] and bool(present) and not exact["unknown"] and not disliked
-    clear = restore_only or (bool(exact["calls"]) and not exact["unknown"] and unexplained(words, said) < UNEXPLAINED_MAX
+    # a clause the exact matcher left "unknown" whose words the matched skills explain anyway ("beat ke based pe
+    # animation AND motion add karo": "motion add karo" alone matched nothing, but motion IS the beat edit) is no
+    # unknown part — before, it was answered "ye nahi ho paaya" with unrelated chips
+    no_unknown = not exact["unknown"] or (bool(exact["calls"]) and unexplained(words, said) < 0.1)
+    clear = restore_only or (bool(exact["calls"]) and no_unknown and unexplained(words, said) < UNEXPLAINED_MAX
              and not disliked
              and not (restore_said and "restore_normal" not in exact_ids))
     # partial: some parts are clear, some are not ("warm karo, captions lagao aur mere chehre ko jawan dikhao") — each
     # clause is judged on its own: the clear ones run, every unclear one gets its own choices. One unknown part never
     # sinks the whole message (before: the whole message became one "pick one" question)
     whole_clear = restore_only or (
-        bool(exact["calls"]) and not exact["unknown"] and not (restore_said and "restore_normal" not in exact_ids)
+        bool(exact["calls"]) and no_unknown and not (restore_said and "restore_normal" not in exact_ids)
         and unexplained(words, exact_ids + list(exact["negated"])) < UNEXPLAINED_MAX)
     # the whole message clearly understood ("blak and wite kro" = black and white) is never cut into clauses —
     # splitting on "and" turned it into "blak" + "wite kro" → a white flash

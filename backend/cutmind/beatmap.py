@@ -65,6 +65,37 @@ def kick_strength(y: np.ndarray, sr: int, beats: list[float], win: float = 0.08)
     return [round(float(x), 3) for x in k]
 
 
+def kick_energy(y: np.ndarray, sr: int, times: list[float], win: float = 0.08) -> float:
+    """Mean raw low-band (40-120 Hz) energy just after the given times (comparable between calls)."""
+    n, vals = int(sr * win), []
+    for b in times:
+        i = int(max(0.0, b) * sr)
+        seg = y[i:i + n]
+        if len(seg) < 64:
+            continue
+        spec = np.abs(np.fft.rfft(seg * np.hanning(len(seg)))) ** 2
+        fr = np.fft.rfftfreq(len(seg), 1 / sr)
+        vals.append(float(spec[(fr >= 40) & (fr < 120)].sum()))
+    return float(np.mean(vals)) if vals else 0.0
+
+
+def kick_phase(y: np.ndarray, sr: int, beats: list[float], duration: float) -> float:
+    """How far to move a tracked beat grid so it sits on the KICK drum: 0, or ¼ / ½ / ¾ of a beat when the kick
+    is clearly (> 1.25x) stronger there. A beat tracker often locks onto off-beat hi-hats or a drum-less intro
+    (measured: a 100 bpm song tracked half a beat off — every punch landed between the kicks)."""
+    if len(beats) < 4:
+        return 0.0
+    period = float(np.median(np.diff(beats)))
+    base = kick_energy(y, sr, beats)
+    best_off, best = 0.0, base
+    for frac in (0.25, 0.5, 0.75):
+        off = frac * period
+        e = kick_energy(y, sr, [b + off for b in beats if b + off < duration])
+        if e > best:
+            best_off, best = off, e
+    return round(best_off, 3) if best > 1.25 * max(base, 1e-12) else 0.0
+
+
 def load_mono(path: Path, sr: int = 22050) -> np.ndarray:
     import subprocess
 
