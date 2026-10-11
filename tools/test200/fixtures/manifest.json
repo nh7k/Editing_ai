@@ -1,0 +1,282 @@
+{
+ "speech_pauses": {
+  "path": "tools/test200/fixtures/speech_pauses.mp4",
+  "duration": 17.8,
+  "width": 640,
+  "height": 360,
+  "fps": 30.0,
+  "has_audio": true,
+  "has_video": true,
+  "speech_segments": [
+   [
+    0.0,
+    3.06
+   ],
+   [
+    5.39,
+    7.46
+   ],
+   [
+    9.98,
+    12.16
+   ],
+   [
+    14.28,
+    15.68
+   ]
+  ],
+  "words": [
+   "hello",
+   "welcome",
+   "travel",
+   "vlog",
+   "mountains",
+   "weather",
+   "lake"
+  ],
+  "filler_words": [
+   "um"
+  ]
+ },
+ "speech_music": {
+  "path": "tools/test200/fixtures/speech_music.mp4",
+  "duration": 17.567,
+  "width": 640,
+  "height": 360,
+  "fps": 30.0,
+  "has_audio": true,
+  "has_video": true,
+  "speech_segments": [
+   [
+    0.0,
+    3.06
+   ],
+   [
+    5.39,
+    7.46
+   ],
+   [
+    9.98,
+    12.16
+   ],
+   [
+    14.28,
+    15.68
+   ]
+  ]
+ },
+ "music_beats": {
+  "path": "tools/test200/fixtures/music_beats.mp4",
+  "duration": 10.0,
+  "width": 640,
+  "height": 360,
+  "fps": 30.0,
+  "has_audio": true,
+  "has_video": true,
+  "bpm": 120,
+  "beats": [
+   0.0,
+   0.5,
+   1.0,
+   1.5,
+   2.0,
+   2.5,
+   3.0,
+   3.5,
+   4.0,
+   4.5,
+   5.0,
+   5.5,
+   6.0,
+   6.5,
+   7.0,
+   7.5,
+   8.0,
+   8.5,
+   9.0,
+   9.5
+  ]
+ },
+ "multishot": {
+  "path": "tools/test200/fixtures/multishot.mp4",
+  "duration": 10.0,
+  "width": 640,
+  "height": 360,
+  "fps": 30.0,
+  "has_audio": true,
+  "has_video": true,
+  "cuts": [
+   2.5,
+   5.0,
+   7.5
+  ]
+ },
+ "silent_single": {
+  "path": "tools/test200/fixtures/silent_single.mp4",
+  "duration": 6.0,
+  "width": 640,
+  "height": 360,
+  "fps": 30.0,
+  "has_audio": true,
+  "has_video": true,
+  "speech_segments": []
+ },
+ "noisy_speech": {
+  "path": "tools/test200/fixtures/noisy_speech.mp4",
+  "duration": 17.6,
+  "width": 640,
+  "height": 360,
+  "fps": 30.0,
+  "has_audio": true,
+  "has_video": true,
+  "speech_segments": [
+   [
+    0.0,
+    3.06
+   ],
+   [
+    5.39,
+    7.46
+   ],
+   [
+    9.98,
+    12.16
+   ],
+   [
+    14.28,
+    15.68
+   ]
+  ]
+ },
+ "dark": {
+  "path": "tools/test200/fixtures/dark.mp4",
+  "duration": 6.0,
+  "width": 640,
+  "height": 360,
+  "fps": 30.0,
+  "has_audio": true,
+  "has_video": true
+ },
+ "bright": {
+  "path": "tools/test200/fixtures/bright.mp4",
+  "duration": 6.0,
+  "width": 640,
+  "height": 360,
+  "fps": 30.0,
+  "has_audio": true,
+  "has_video": true
+ },
+ "shaky": {
+  "path": "tools/test200/fixtures/shaky.mp4",
+  "duration": 6.0,
+  "width": 640,
+  "height": 360,
+  "fps": 30.0,
+  "has_audio": true,
+  "has_video": true
+ },
+ "portrait": {
+  "path": "tools/test200/fixtures/portrait.mp4",
+  "duration": 17.533,
+  "width": 360,
+  "height": 640,
+  "fps": 30.0,
+  "has_audio": true,
+  "has_video": true,
+  "speech_segments": [
+   [
+    0.0,
+    3.06
+   ],
+   [
+    5.39,
+    7.46
+   ],
+   [
+    9.98,
+    12.16
+   ],
+   [
+    14.28,
+    15.68
+   ]
+  ]
+ },
+ "square": {
+  "path": "tools/test200/fixtures/square.mp4",
+  "duration": 6.0,
+  "width": 480,
+  "height": 480,
+  "fps": 30.0,
+  "has_audio": true,
+  "has_video": true
+ },
+ "rotated": {
+  "path": "tools/test200/fixtures/rotated.mp4",
+  "duration": 6.0,
+  "width": 640,
+  "height": 360,
+  "fps": 30.0,
+  "has_audio": true,
+  "has_video": true,
+  "rotation": 90
+ },
+ "vfr": {
+  "path": "tools/test200/fixtures/vfr.mp4",
+  "duration": 9.533,
+  "width": 640,
+  "height": 360,
+  "fps": 18.88,
+  "has_audio": true,
+  "has_video": true
+ },
+ "k4": {
+  "path": "tools/test200/fixtures/k4.mp4",
+  "duration": 3.0,
+  "width": 3840,
+  "height": 2160,
+  "fps": 30.0,
+  "has_audio": true,
+  "has_video": true
+ },
+ "fps60": {
+  "path": "tools/test200/fixtures/fps60.mp4",
+  "duration": 5.0,
+  "width": 640,
+  "height": 360,
+  "fps": 60.0,
+  "has_audio": true,
+  "has_video": true
+ },
+ "no_audio": {
+  "path": "tools/test200/fixtures/no_audio.mp4",
+  "duration": 6.0,
+  "width": 640,
+  "height": 360,
+  "fps": 30.0,
+  "has_audio": false,
+  "has_video": true
+ },
+ "audio_only": {
+  "path": "tools/test200/fixtures/audio_only.mp4",
+  "duration": 16.503,
+  "width": 0,
+  "height": 0,
+  "fps": 0.0,
+  "has_audio": true,
+  "has_video": false
+ },
+ "corrupt": {
+  "path": "tools/test200/fixtures/corrupt.mp4",
+  "probe_error": "ffprobe could not read the file: [mov,mp4,m4a,3gp,3g2,mj2 @ 000001dec6ff4080] moov atom not found\nC:\\Users\\itanm\\OneDriv"
+ },
+ "short1s": {
+  "path": "tools/test200/fixtures/short1s.mp4",
+  "duration": 1.0,
+  "width": 640,
+  "height": 360,
+  "fps": 30.0,
+  "has_audio": true,
+  "has_video": true
+ }
+}

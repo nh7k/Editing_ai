@@ -1,0 +1,3429 @@
+cases:
+- id: S001
+  cat: S
+  skill: add_music
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: isme koi gaana laga do background me
+  expect:
+  - instr: add_music
+    any:
+    - kind: music_added
+    - kind: sound_changed
+    states:
+    - APPLIED
+  wave: 1
+  compare: prev
+- id: S002
+  cat: S
+  skill: aspect_16_9
+  fixture: portrait
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: make it landscape 16:9 for youtube
+  expect:
+  - instr: aspect_16_9
+    any:
+    - kind: aspect
+      ratio: 1.7777777777777777
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S003
+  cat: S
+  skill: aspect_1_1
+  fixture: multishot
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: square bana do insta post ke liye
+  expect:
+  - instr: aspect_1_1
+    any:
+    - kind: aspect
+      ratio: 1.0
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S004
+  cat: S
+  skill: aspect_4_5
+  fixture: multishot
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: 4:5 portrait size chahiye
+  expect:
+  - instr: aspect_4_5
+    any:
+    - kind: aspect
+      ratio: 0.8
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S005
+  cat: S
+  skill: aspect_9_16
+  fixture: multishot
+  extra_fixtures: []
+  base: none
+  first_message: true
+  turns:
+  - say: reel ke liye vertical kar do 9:16
+  expect:
+  - instr: aspect_9_16
+    any:
+    - kind: aspect
+      ratio: 0.5625
+    states:
+    - APPLIED
+  wave: 1
+  compare: source
+- id: S006
+  cat: S
+  skill: audio_fade
+  fixture: speech_music
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: end me awaaz dheere dheere band ho
+  expect:
+  - instr: audio_fade
+    any:
+    - kind: quieter
+      at: -0.3
+      min: 3
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S007
+  cat: S
+  skill: auto_captions
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: none
+  first_message: true
+  turns:
+  - say: jo bol raha hu uske subtitles daal do
+  expect:
+  - instr: auto_captions
+    any:
+    - kind: captions
+    states:
+    - APPLIED
+  wave: 1
+  compare: source
+- id: S008
+  cat: S
+  skill: auto_enhance
+  fixture: dark
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: video bahut dull hai, isko thik se enhance kar do
+  expect:
+  - instr: auto_enhance
+    any:
+    - kind: brighter
+    - kind: more_contrast
+    - kind: changed
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S009
+  cat: S
+  skill: auto_reframe
+  fixture: multishot
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: vertical me reframe karo aur subject ko follow karo
+  expect:
+  - instr: auto_reframe
+    any:
+    - kind: aspect
+      ratio: 0.5625
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S010
+  cat: S
+  skill: beat_sync
+  fixture: music_beats
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: gaane ki beat pe cut karo
+  expect:
+  - instr: beat_sync
+    any:
+    - kind: changed
+    - kind: shorter
+    states: &id001
+    - APPLIED
+    - NOT_NEEDED
+    - COULD_NOT
+  wave: 3
+  compare: prev
+- id: S011
+  cat: S
+  skill: blur
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: poori video thodi blur kar do
+  expect:
+  - instr: blur
+    any:
+    - kind: blurrier
+    states:
+    - APPLIED
+  wave: 1
+  compare: prev
+- id: S012
+  cat: S
+  skill: blur_background_fill
+  fixture: portrait
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: side ki kaali patti ki jagah blur background bhar do
+  expect:
+  - instr: blur_background_fill
+    any:
+    - kind: changed
+    states: *id001
+  wave: 3
+  compare: prev
+- id: S013
+  cat: S
+  skill: blur_box_censor
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: beech me ek blur box laga do jaise face chupana ho
+  expect:
+  - instr: blur_box_censor
+    any:
+    - kind: changed
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S014
+  cat: S
+  skill: brighten_to_white
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: screen ekdum safed sa white kar do
+  expect:
+  - instr: brighten_to_white
+    any:
+    - kind: brighter
+      k: 4
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S015
+  cat: S
+  skill: brightness
+  fixture: dark
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: थोड़ा ब्राइट करो
+  expect:
+  - instr: brightness
+    any:
+    - kind: brighter
+    states:
+    - APPLIED
+  wave: 1
+  compare: prev
+- id: S016
+  cat: S
+  skill: caption_style
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: captions laga do
+  - say: captions ka colour peela kar do
+  expect:
+  - instr: caption_style
+    any:
+    - kind: changed
+      at: 1.5
+    states:
+    - APPLIED
+  wave: 3
+  compare: base
+- id: S017
+  cat: S
+  skill: cinematic_look
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: filmy cinematic look de do
+  expect:
+  - instr: cinematic_look
+    any:
+    - kind: changed
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S018
+  cat: S
+  skill: color_pop
+  fixture: multishot
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: sirf laal rang rakho baaki sab black and white
+  expect:
+  - instr: color_pop
+    any:
+    - kind: less_sat
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S019
+  cat: S
+  skill: contrast
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: contrast bdhao thoda
+  expect:
+  - instr: contrast
+    any:
+    - kind: more_contrast
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S020
+  cat: S
+  skill: cool
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: thoda thanda neela tone do
+  expect:
+  - instr: cool
+    any:
+    - kind: cooler
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S021
+  cat: S
+  skill: countdown_timer
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: shuru me 3 2 1 countdown dikhao
+  expect:
+  - instr: countdown_timer
+    any:
+    - kind: changed
+      at: 1.0
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S022
+  cat: S
+  skill: crop
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: video ko crop karo beech wala hissa rakho
+  expect:
+  - instr: crop
+    any:
+    - kind: zoomed
+    - kind: changed
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S023
+  cat: S
+  skill: crossfade
+  fixture: dark
+  extra_fixtures:
+  - bright
+  base: chip
+  first_message: false
+  turns:
+  - say: dono clips ke beech smooth crossfade daalo
+  expect:
+  - instr: crossfade
+    any:
+    - kind: blend_at_cut
+    states:
+    - APPLIED
+  wave: 1
+  compare: prev
+- id: S024
+  cat: S
+  skill: delete_segment
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: 2 se 4 second wala part nikal do
+  expect:
+  - instr: delete_segment
+    any:
+    - kind: shorter
+      min: 1.5
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S025
+  cat: S
+  skill: denoise
+  fixture: noisy_speech
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: background ka shor kam karo awaaz saaf karo
+  expect:
+  - instr: denoise
+    any:
+    - kind: sound_changed
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S026
+  cat: S
+  skill: duck_music
+  fixture: speech_music
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: jab main bolu tab music dheema ho jaye
+  expect:
+  - instr: duck_music
+    any:
+    - kind: ducked
+    - kind: sound_changed
+    states: *id001
+  wave: 3
+  compare: prev
+- id: S027
+  cat: S
+  skill: echo_reverb
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: awaaz me echo daal do jaise hall me
+  expect:
+  - instr: echo_reverb
+    any:
+    - kind: sound_changed
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S028
+  cat: S
+  skill: export_preset
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: youtube ke liye export settings laga do
+  expect:
+  - instr: export_preset
+    any:
+    - kind: decodes
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S029
+  cat: S
+  skill: extract_audio
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: is video ka mp3 nikal ke do
+  expect:
+  - instr: extract_audio
+    any:
+    - kind: decodes
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S030
+  cat: S
+  skill: extract_highlights
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: best moments ki highlights bana do
+  expect:
+  - instr: extract_highlights
+    any:
+    - kind: shorter
+    states: *id001
+  wave: 3
+  compare: prev
+- id: S031
+  cat: S
+  skill: fade_black
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: none
+  first_message: true
+  turns:
+  - say: end me fade to black kar do
+  expect:
+  - instr: fade_black
+    any:
+    - kind: fade_end
+    states:
+    - APPLIED
+  wave: 1
+  compare: source
+- id: S032
+  cat: S
+  skill: fade_white
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: fade to white karo end pe
+  expect:
+  - instr: fade_white
+    any:
+    - kind: brighter
+      at: -0.1
+      k: 4
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S033
+  cat: S
+  skill: film_grain
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: purani film jaisa grain daalo
+  expect:
+  - instr: film_grain
+    any:
+    - kind: changed
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S034
+  cat: S
+  skill: fit_to_duration
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: isko exactly 10 second ka kar do
+  expect:
+  - instr: fit_to_duration
+    any:
+    - kind: duration
+      target: 10
+      tol: 0.6
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S035
+  cat: S
+  skill: flash
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: beech me ek white flash daalo
+  expect:
+  - instr: flash
+    any:
+    - kind: changed
+    - kind: brighter
+    states: *id001
+  wave: 2
+  compare: prev
+- id: S036
+  cat: S
+  skill: freeze_frame
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: 3 second pe frame freeze kar do 2 second ke liye
+  expect:
+  - instr: freeze_frame
+    any:
+    - kind: longer
+      min: 1.0
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S037
+  cat: S
+  skill: glitch
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: glitch effect lagao
+  expect:
+  - instr: glitch
+    any:
+    - kind: changed
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S038
+  cat: S
+  skill: glitch_transition
+  fixture: dark
+  extra_fixtures:
+  - bright
+  base: chip
+  first_message: false
+  turns:
+  - say: clips ke beech glitch wala transition
+  expect:
+  - instr: glitch_transition
+    any:
+    - kind: blend_at_cut
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S039
+  cat: S
+  skill: grayscale
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: none
+  first_message: true
+  turns:
+  - say: blak and wite kro
+  expect:
+  - instr: grayscale
+    any:
+    - kind: grey
+    states:
+    - APPLIED
+  wave: 1
+  compare: source
+- id: S040
+  cat: S
+  skill: hook_first
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: sabse accha part shuru me rakho
+  expect:
+  - instr: hook_first
+    any:
+    - kind: starts_differently
+    states: *id001
+  wave: 3
+  compare: prev
+- id: S041
+  cat: S
+  skill: insert_broll
+  fixture: speech_pauses
+  extra_fixtures:
+  - multishot
+  base: chip
+  first_message: false
+  turns:
+  - say: beech me doosri clip b-roll ki tarah daalo
+  expect:
+  - instr: insert_broll
+    any:
+    - kind: changed
+      at: 4.0
+    states: *id001
+  wave: 2
+  compare: prev
+- id: S042
+  cat: S
+  skill: intro_outro
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: shuru me ek intro card lagao
+  expect:
+  - instr: intro_outro
+    any:
+    - kind: longer
+    - kind: changed
+      at: 0.5
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S043
+  cat: S
+  skill: iris_circle
+  fixture: dark
+  extra_fixtures:
+  - bright
+  base: chip
+  first_message: false
+  turns:
+  - say: circle wala transition do clips ke beech
+  expect:
+  - instr: iris_circle
+    any:
+    - kind: blend_at_cut
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S044
+  cat: S
+  skill: j_cut
+  fixture: dark
+  extra_fixtures:
+  - bright
+  base: chip
+  first_message: false
+  turns:
+  - say: agli clip ki awaaz pehle shuru ho j cut
+  expect:
+  - instr: j_cut
+    any:
+    - kind: sound_changed
+      at: 5.5
+    states: *id001
+  wave: 3
+  compare: prev
+- id: S045
+  cat: S
+  skill: jump_cut_tighten
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: jump cuts tight karo saare gap hata do
+  expect:
+  - instr: jump_cut_tighten
+    any:
+    - kind: shorter
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S046
+  cat: S
+  skill: karaoke_captions
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: karaoke style captions jo word by word highlight ho
+  expect:
+  - instr: karaoke_captions
+    any:
+    - kind: captions
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S047
+  cat: S
+  skill: ken_burns
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: photo jaisa slow zoom ken burns effect
+  expect:
+  - instr: ken_burns
+    any:
+    - kind: zoomed
+      at: -1.0
+    - kind: changed
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S048
+  cat: S
+  skill: l_cut
+  fixture: dark
+  extra_fixtures:
+  - bright
+  base: chip
+  first_message: false
+  turns:
+  - say: pichli clip ki awaaz thodi der aur chale l cut
+  expect:
+  - instr: l_cut
+    any:
+    - kind: sound_changed
+      at: 6.3
+    states: *id001
+  wave: 3
+  compare: prev
+- id: S049
+  cat: S
+  skill: letterbox
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: upar neeche kaali patti cinematic bars
+  expect:
+  - instr: letterbox
+    any:
+    - kind: darker
+    - kind: changed
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S050
+  cat: S
+  skill: light_leak
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: light leak wala warm glow effect
+  expect:
+  - instr: light_leak
+    any:
+    - kind: changed
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S051
+  cat: S
+  skill: loop_boomerang
+  fixture: short1s
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: boomerang bana do aage peeche
+  expect:
+  - instr: loop_boomerang
+    any:
+    - kind: longer
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S052
+  cat: S
+  skill: lower_third
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: neeche naam ki patti lagao 'Anmol'
+  expect:
+  - instr: lower_third
+    any:
+    - kind: text
+      text: anmol
+    - kind: changed
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S053
+  cat: S
+  skill: merge_clips
+  fixture: dark
+  extra_fixtures:
+  - bright
+  base: chip
+  first_message: false
+  turns:
+  - say: saari clips ek saath jod do
+  expect:
+  - instr: merge_clips
+    any:
+    - kind: decodes
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S054
+  cat: S
+  skill: mirror_effect
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: mirror effect do
+  expect:
+  - instr: mirror_effect
+    any:
+    - kind: changed
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S055
+  cat: S
+  skill: montage_builder
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: fast montage bana do chhote chhote shots ka
+  expect:
+  - instr: montage_builder
+    any:
+    - kind: shorter
+    - kind: changed
+    states: *id001
+  wave: 2
+  compare: prev
+- id: S056
+  cat: S
+  skill: mute
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: none
+  first_message: true
+  turns:
+  - say: video ki awaaz band kar do
+  expect:
+  - instr: mute
+    any:
+    - kind: muted
+    states:
+    - APPLIED
+  wave: 1
+  compare: source
+- id: S057
+  cat: S
+  skill: normalize_loudness
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: awaaz ka level normal karo sab barabar
+  expect:
+  - instr: normalize_loudness
+    any:
+    - kind: sound_changed
+    states: *id001
+  wave: 2
+  compare: prev
+- id: S058
+  cat: S
+  skill: pan
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: camera left se right pan karo
+  expect:
+  - instr: pan
+    any:
+    - kind: changed
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S059
+  cat: S
+  skill: picture_in_picture
+  fixture: speech_pauses
+  extra_fixtures:
+  - multishot
+  base: chip
+  first_message: false
+  turns:
+  - say: doosri clip chhoti corner me dikhao
+  expect:
+  - instr: picture_in_picture
+    any:
+    - kind: changed
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S060
+  cat: S
+  skill: pixelate_censor
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: beech wala hissa pixelate kar do
+  expect:
+  - instr: pixelate_censor
+    any:
+    - kind: changed
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S061
+  cat: S
+  skill: progress_bar
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: neeche progress bar dikhao
+  expect:
+  - instr: progress_bar
+    any:
+    - kind: changed
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S062
+  cat: S
+  skill: punch_in
+  fixture: music_beats
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: beat pe punch in zoom karo
+  expect:
+  - instr: punch_in
+    any:
+    - kind: changed
+    - kind: zoomed
+    states: *id001
+  wave: 3
+  compare: prev
+- id: S063
+  cat: S
+  skill: remove_fillers
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: um aa jaise filler words hata do
+  expect:
+  - instr: remove_fillers
+    any:
+    - kind: shorter
+      min: 0.1
+    states: *id001
+  wave: 2
+  compare: prev
+- id: S064
+  cat: S
+  skill: remove_silence
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: none
+  first_message: true
+  turns:
+  - say: silence hata do
+  expect:
+  - instr: remove_silence
+    any:
+    - kind: silence_removed
+    - kind: shorter
+      min: 1.0
+    states:
+    - APPLIED
+  wave: 1
+  compare: source
+- id: S065
+  cat: S
+  skill: reorder_clips
+  fixture: dark
+  extra_fixtures:
+  - bright
+  base: chip
+  first_message: false
+  turns:
+  - say: doosri clip pehle chalao
+  expect:
+  - instr: reorder_clips
+    any:
+    - kind: starts_differently
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S066
+  cat: S
+  skill: replace_audio
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: original awaaz hata ke sirf music rakho
+  expect:
+  - instr: replace_audio
+    any:
+    - kind: sound_changed
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S067
+  cat: S
+  skill: restore_normal
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: black and white kar do
+  - say: normal kar do jaisa pehle tha
+  expect:
+  - instr: restore_normal
+    any:
+    - kind: unchanged
+    states:
+    - APPLIED
+  wave: 1
+  compare: base
+- id: S068
+  cat: S
+  skill: reverse
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: video ulta chala do reverse
+  expect:
+  - instr: reverse
+    any:
+    - kind: reversed
+    states:
+    - APPLIED
+  wave: 1
+  compare: prev
+- id: S069
+  cat: S
+  skill: rgb_split
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: rgb split chromatic effect
+  expect:
+  - instr: rgb_split
+    any:
+    - kind: changed
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S070
+  cat: S
+  skill: rotate_flip
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: video ko 90 degree ghuma do
+  expect:
+  - instr: rotate_flip
+    any:
+    - kind: aspect
+      ratio: 0.5625
+    - kind: changed
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S071
+  cat: S
+  skill: saturation
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: rang zyada gehre karo saturation badhao
+  expect:
+  - instr: saturation
+    any:
+    - kind: more_sat
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S072
+  cat: S
+  skill: scene_detect
+  fixture: multishot
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: scenes detect karke alag alag shots bana do
+  expect:
+  - instr: scene_detect
+    any:
+    - kind: decodes
+    states: *id001
+  wave: 3
+  compare: prev
+- id: S073
+  cat: S
+  skill: sepia
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: sepia tone purana sa
+  expect:
+  - instr: sepia
+    any:
+    - kind: sepia
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S074
+  cat: S
+  skill: sfx_whoosh
+  fixture: dark
+  extra_fixtures:
+  - bright
+  base: chip
+  first_message: false
+  turns:
+  - say: cut pe whoosh sound daalo
+  expect:
+  - instr: sfx_whoosh
+    any:
+    - kind: sound_changed
+      at: 5.9
+    states: *id001
+  wave: 3
+  compare: prev
+- id: S075
+  cat: S
+  skill: shake
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: camera shake effect lagao
+  expect:
+  - instr: shake
+    any:
+    - kind: changed
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S076
+  cat: S
+  skill: shape_highlight
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: beech me ek circle bana ke highlight karo
+  expect:
+  - instr: shape_highlight
+    any:
+    - kind: changed
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S077
+  cat: S
+  skill: sharpen
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: video thodi sharp karo
+  expect:
+  - instr: sharpen
+    any:
+    - kind: sharper
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S078
+  cat: S
+  skill: slide
+  fixture: dark
+  extra_fixtures:
+  - bright
+  base: chip
+  first_message: false
+  turns:
+  - say: slide transition daalo clips ke beech
+  expect:
+  - instr: slide
+    any:
+    - kind: blend_at_cut
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S079
+  cat: S
+  skill: slow_motion
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: none
+  first_message: true
+  turns:
+  - say: slow motion kar do
+  expect:
+  - instr: slow_motion
+    any:
+    - kind: longer
+      min: 2.0
+    states:
+    - APPLIED
+  wave: 2
+  compare: source
+- id: S080
+  cat: S
+  skill: speed_ramp
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: speed ramp karo beech me tez phir normal
+  expect:
+  - instr: speed_ramp
+    any:
+    - kind: shorter
+    - kind: changed
+    states: *id001
+  wave: 3
+  compare: prev
+- id: S081
+  cat: S
+  skill: speed_up
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: video 2x fast kar do
+  expect:
+  - instr: speed_up
+    any:
+    - kind: shorter
+      min: 5.0
+    states:
+    - APPLIED
+  wave: 1
+  compare: prev
+- id: S082
+  cat: S
+  skill: split
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: 5 second pe cut laga do
+  expect:
+  - instr: split
+    any:
+    - kind: same_length
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S083
+  cat: S
+  skill: split_screen
+  fixture: speech_pauses
+  extra_fixtures:
+  - multishot
+  base: chip
+  first_message: false
+  turns:
+  - say: dono clips side by side split screen
+  expect:
+  - instr: split_screen
+    any:
+    - kind: changed
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S084
+  cat: S
+  skill: srt_export
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: subtitles ki srt file bana do
+  expect:
+  - instr: srt_export
+    any:
+    - kind: decodes
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S085
+  cat: S
+  skill: stabilize
+  fixture: shaky
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: hilti hui video stable karo
+  expect:
+  - instr: stabilize
+    any:
+    - kind: changed
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S086
+  cat: S
+  skill: sticker_lottie
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: ek dil wala sticker lagao
+  expect:
+  - instr: sticker_lottie
+    any:
+    - kind: changed
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S087
+  cat: S
+  skill: teal_orange
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: teal orange look do hollywood jaisa
+  expect:
+  - instr: teal_orange
+    any:
+    - kind: changed
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S088
+  cat: S
+  skill: text_glow_neon
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: neon glow wala text 'PARTY' likho
+  expect:
+  - instr: text_glow_neon
+    any:
+    - kind: text
+      text: party
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S089
+  cat: S
+  skill: text_overlay
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: screen pe 'Hello Goa' likh do
+  expect:
+  - instr: text_overlay
+    any:
+    - kind: text
+      text: hello goa
+    states:
+    - APPLIED
+  wave: 1
+  compare: prev
+- id: S090
+  cat: S
+  skill: text_pop_in
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: '''WOW'' text pop karke aaye'
+  expect:
+  - instr: text_pop_in
+    any:
+    - kind: text
+      text: wow
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S091
+  cat: S
+  skill: text_slide
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: '''Day 1'' text slide hoke aaye'
+  expect:
+  - instr: text_slide
+    any:
+    - kind: text
+      text: day 1
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S092
+  cat: S
+  skill: text_typewriter
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: typewriter jaisa text 'Loading' likho
+  expect:
+  - instr: text_typewriter
+    any:
+    - kind: text
+      text: loading
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S093
+  cat: S
+  skill: thumbnail
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: is video ka thumbnail bana do
+  expect:
+  - instr: thumbnail
+    any:
+    - kind: decodes
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S094
+  cat: S
+  skill: tilt
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: video thoda tircha kar do
+  expect:
+  - instr: tilt
+    any:
+    - kind: changed
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S095
+  cat: S
+  skill: title_card
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: shuru me title card 'My Trip' daalo
+  expect:
+  - instr: title_card
+    any:
+    - kind: longer
+    - kind: text
+      text: my trip
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S096
+  cat: S
+  skill: trim
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: pehle 8 second hi rakho baaki kaat do
+  expect:
+  - instr: trim
+    any:
+    - kind: duration
+      target: 8
+      tol: 0.5
+    states:
+    - APPLIED
+  wave: 1
+  compare: prev
+- id: S097
+  cat: S
+  skill: vhs_retro
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: vhs retro look do 90s wala
+  expect:
+  - instr: vhs_retro
+    any:
+    - kind: changed
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S098
+  cat: S
+  skill: vignette
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: none
+  first_message: true
+  turns:
+  - say: halka vignette lagao
+  expect:
+  - instr: vignette
+    any:
+    - kind: vignette
+    states:
+    - APPLIED
+  wave: 1
+  compare: source
+- id: S099
+  cat: S
+  skill: vintage_faded
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: vintage faded look
+  expect:
+  - instr: vintage_faded
+    any:
+    - kind: changed
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S100
+  cat: S
+  skill: voice_clarity
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: meri awaaz thodi clear aur saaf karo
+  expect:
+  - instr: voice_clarity
+    any:
+    - kind: sound_changed
+    states: *id001
+  wave: 3
+  compare: prev
+- id: S101
+  cat: S
+  skill: volume
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: awaaz bahut zyada badha do
+  expect:
+  - instr: volume
+    any:
+    - kind: louder
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S102
+  cat: S
+  skill: warm
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: none
+  first_message: true
+  turns:
+  - say: thoda warm color karo
+  expect:
+  - instr: warm
+    any:
+    - kind: warmer
+    states:
+    - APPLIED
+  wave: 1
+  compare: source
+- id: S103
+  cat: S
+  skill: watermark_logo
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: corner me mera logo watermark lagao
+  expect:
+  - instr: watermark_logo
+    any:
+    - kind: changed
+    states: *id001
+  wave: 2
+  compare: prev
+- id: S104
+  cat: S
+  skill: whip_pan
+  fixture: dark
+  extra_fixtures:
+  - bright
+  base: chip
+  first_message: false
+  turns:
+  - say: whip pan transition daalo
+  expect:
+  - instr: whip_pan
+    any:
+    - kind: blend_at_cut
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S105
+  cat: S
+  skill: white_screen_card
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: 3 second pe 1 second ki safed screen daalo
+  expect:
+  - instr: white_screen_card
+    any:
+    - kind: longer
+      min: 0.7
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: S106
+  cat: S
+  skill: wipe
+  fixture: dark
+  extra_fixtures:
+  - bright
+  base: chip
+  first_message: false
+  turns:
+  - say: wipe transition clips ke beech
+  expect:
+  - instr: wipe
+    any:
+    - kind: blend_at_cut
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S107
+  cat: S
+  skill: zoom_in
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: none
+  first_message: true
+  turns:
+  - say: thoda zoom in karo
+  expect:
+  - instr: zoom_in
+    any:
+    - kind: zoomed
+      at: -0.5
+    states:
+    - APPLIED
+  wave: 1
+  compare: source
+- id: S108
+  cat: S
+  skill: zoom_out
+  fixture: speech_pauses
+  extra_fixtures: []
+  base: chip
+  first_message: false
+  turns:
+  - say: zoom out effect do
+  expect:
+  - instr: zoom_out
+    any:
+    - kind: zoomed
+      at: 0.3
+    - kind: changed
+      at: 0.3
+    states:
+    - APPLIED
+  wave: 3
+  compare: prev
+- id: S109
+  cat: S
+  skill: zoom_transition
+  fixture: dark
+  extra_fixtures:
+  - bright
+  base: chip
+  first_message: false
+  turns:
+  - say: zoom wala transition clips ke beech
+  expect:
+  - instr: zoom_transition
+    any:
+    - kind: blend_at_cut
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: M001
+  cat: M
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: Is video ko 15 second ka 9:16 reel bana do. Silence hata do, pehle 3 second me sabse achha part rakho, thoda zoom in lagao, captions
+      lagao, warm filmy color do, halka vignette lagao, calm music lagao jo meri awaaz ke neeche dheema ho jaye, aur end me fade to black kar
+      do.
+  expect: &id002
+  - instr: 15 sec
+    any:
+    - kind: duration
+      target: 15
+      tol: 1.5
+  - instr: '9:16'
+    any:
+    - kind: aspect
+      ratio: 0.5625
+  - instr: silence
+    any:
+    - kind: silence_removed
+    - kind: shorter
+      min: 1.0
+    states:
+    - APPLIED
+    - NOT_NEEDED
+  - instr: captions
+    any:
+    - kind: captions
+  - instr: warm
+    any:
+    - kind: warmer
+  - instr: vignette
+    any:
+    - kind: vignette
+  - instr: music
+    any:
+    - kind: music_added
+    - kind: sound_changed
+  - instr: fade end
+    any:
+    - kind: fade_end
+  wave: 1
+  compare: prev
+- id: M002
+  cat: M
+  fixture: speech_music
+  base: chip
+  turns:
+  - say: Is video ko 15 second ka 9:16 reel bana do. Silence hata do, pehle 3 second me sabse achha part rakho, thoda zoom in lagao, captions
+      lagao, warm filmy color do, halka vignette lagao, calm music lagao jo meri awaaz ke neeche dheema ho jaye, aur end me fade to black kar
+      do.
+  expect: *id002
+  wave: 3
+  compare: prev
+- id: M003
+  cat: M
+  fixture: portrait
+  base: chip
+  turns:
+  - say: Is video ko 15 second ka 9:16 reel bana do. Silence hata do, pehle 3 second me sabse achha part rakho, thoda zoom in lagao, captions
+      lagao, warm filmy color do, halka vignette lagao, calm music lagao jo meri awaaz ke neeche dheema ho jaye, aur end me fade to black kar
+      do.
+  expect: *id002
+  wave: 2
+  compare: prev
+- id: M004
+  cat: M
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: warm karo, vignette lagao aur end me fade to black
+  expect:
+  - instr: warm
+    any:
+    - kind: warmer
+  - instr: vignette
+    any:
+    - kind: vignette
+  - instr: fade
+    any:
+    - kind: fade_end
+  wave: 1
+  compare: prev
+- id: M005
+  cat: M
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: captions lagao, silence hatao aur thoda zoom in karo
+  expect:
+  - instr: captions
+    any:
+    - kind: captions
+  - instr: silence
+    any:
+    - kind: shorter
+      min: 1.0
+  - instr: zoom
+    any:
+    - kind: zoomed
+      at: -0.5
+    - kind: changed
+  wave: 2
+  compare: prev
+- id: M006
+  cat: M
+  fixture: multishot
+  base: chip
+  turns:
+  - say: square bana do, black and white karo, aur awaaz band kar do
+  expect:
+  - instr: square
+    any:
+    - kind: aspect
+      ratio: 1.0
+  - instr: bw
+    any:
+    - kind: grey
+  - instr: mute
+    any:
+    - kind: muted
+  wave: 3
+  compare: prev
+- id: M007
+  cat: M
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: warm karo, vignette lagao aur mere chehre ko jawan dikhao
+  expect:
+  - instr: warm
+    any:
+    - kind: warmer
+  - instr: vignette
+    any:
+    - kind: vignette
+  - instr: younger face (unsupported)
+    any: []
+    states:
+    - NOT_UNDERSTOOD
+    - COULD_NOT
+    - NOT_NEEDED
+  wave: 1
+  compare: prev
+- id: M008
+  cat: M
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: 4k upscale karo, sepia do aur 10 second ka bana do
+  expect:
+  - instr: 4k (unsupported)
+    any: []
+    states:
+    - NOT_UNDERSTOOD
+    - COULD_NOT
+    - NOT_NEEDED
+  - instr: sepia
+    any:
+    - kind: sepia
+  - instr: 10 s
+    any:
+    - kind: duration
+      target: 10
+      tol: 0.8
+  wave: 3
+  compare: prev
+- id: M009
+  cat: M
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: slow motion karo, contrast badhao, 'GOA' likho, face swap karo aur music lagao
+  expect:
+  - instr: slow
+    any:
+    - kind: longer
+  - instr: contrast
+    any:
+    - kind: more_contrast
+  - instr: text
+    any:
+    - kind: text
+      text: goa
+  - instr: face swap (unsupported)
+    any: []
+    states:
+    - NOT_UNDERSTOOD
+    - COULD_NOT
+    - NOT_NEEDED
+  - instr: music
+    any:
+    - kind: music_added
+    - kind: sound_changed
+  wave: 2
+  compare: prev
+- id: M010
+  cat: M
+  fixture: dark
+  base: chip
+  turns:
+  - say: bright karo aur saturation badhao aur sharpen karo
+  expect:
+  - instr: bright
+    any:
+    - kind: brighter
+  - instr: sat
+    any:
+    - kind: more_sat
+  - instr: sharp
+    any:
+    - kind: sharper
+  wave: 3
+  compare: prev
+- id: M011
+  cat: M
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: 9:16 karo, captions lagao, warm karo, music lagao
+  expect:
+  - instr: '9:16'
+    any:
+    - kind: aspect
+      ratio: 0.5625
+  - instr: captions
+    any:
+    - kind: captions
+  - instr: warm
+    any:
+    - kind: warmer
+  - instr: music
+    any:
+    - kind: music_added
+    - kind: sound_changed
+  wave: 2
+  compare: prev
+- id: M012
+  cat: M
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: मुझे 9:16 चाहिए, कैप्शन लगाओ और वीडियो थोड़ा ब्राइट करो
+  expect:
+  - instr: '9:16'
+    any:
+    - kind: aspect
+      ratio: 0.5625
+  - instr: captions
+    any:
+    - kind: captions
+  - instr: bright
+    any:
+    - kind: brighter
+  wave: 1
+  compare: prev
+- id: M013
+  cat: M
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: bhai isko ekdum black n white kr de aur thoda blur bhi aur awaz kam
+  expect:
+  - instr: bw
+    any:
+    - kind: grey
+  - instr: blur
+    any:
+    - kind: blurrier
+  - instr: quieter
+    any:
+    - kind: quieter
+  wave: 2
+  compare: prev
+- id: M014
+  cat: M
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: trim to 8 seconds, add a vignette, make it cooler
+  expect:
+  - instr: 8 s
+    any:
+    - kind: duration
+      target: 8
+      tol: 0.6
+  - instr: vignette
+    any:
+    - kind: vignette
+  - instr: cool
+    any:
+    - kind: cooler
+  wave: 3
+  compare: prev
+- id: M015
+  cat: M
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: zoom in karo lekin black and white mat karna, aur warm karo
+  expect:
+  - instr: zoom
+    any:
+    - kind: zoomed
+      at: -0.5
+    - kind: changed
+  - instr: warm
+    any:
+    - kind: warmer
+  - instr: NOT bw
+    any:
+    - kind: more_sat
+      k: -1
+    states:
+    - APPLIED
+  wave: 2
+  compare: prev
+- id: M016
+  cat: M
+  fixture: dark
+  base: chip
+  turns:
+  - say: pehle bright karo, phir contrast badhao, phir end me fade karo
+  expect:
+  - instr: bright
+    any:
+    - kind: brighter
+  - instr: contrast
+    any:
+    - kind: more_contrast
+  - instr: fade
+    any:
+    - kind: fade_end
+  wave: 3
+  compare: prev
+- id: M017
+  cat: M
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: subtitles daalo, sepia karo, 'Hello' likho, aur reverse mat karna
+  expect:
+  - instr: captions
+    any:
+    - kind: captions
+  - instr: sepia
+    any:
+    - kind: sepia
+  - instr: text
+    any:
+    - kind: text
+      text: hello
+  wave: 2
+  compare: prev
+- id: M018
+  cat: M
+  fixture: music_beats
+  base: chip
+  turns:
+  - say: beat pe cut karo, fast karo aur glitch lagao
+  expect:
+  - instr: fast
+    any:
+    - kind: shorter
+  - instr: glitch
+    any:
+    - kind: changed
+  wave: 3
+  compare: prev
+- id: M019
+  cat: M
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: mute karo, gaana lagao, aur 12 second ka bana do
+  expect:
+  - instr: mute
+    any:
+    - kind: sound_changed
+  - instr: music
+    any:
+    - kind: music_added
+  - instr: 12 s
+    any:
+    - kind: duration
+      target: 12
+      tol: 0.8
+  wave: 2
+  compare: prev
+- id: M020
+  cat: M
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: make it vertical, add captions, AI generate a new background video
+  expect:
+  - instr: vertical
+    any:
+    - kind: aspect
+      ratio: 0.5625
+  - instr: captions
+    any:
+    - kind: captions
+  - instr: AI video gen (unsupported)
+    any: []
+    states:
+    - NOT_UNDERSTOOD
+    - COULD_NOT
+    - NOT_NEEDED
+  wave: 3
+  compare: prev
+- id: M021
+  cat: M
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: vignette halka sa, warm thoda sa, aur zoom bahut zyada
+  expect:
+  - instr: vignette
+    any:
+    - kind: vignette
+  - instr: warm
+    any:
+    - kind: warmer
+  - instr: zoom
+    any:
+    - kind: zoomed
+      at: -0.5
+      min: 1.1
+    - kind: changed
+  wave: 2
+  compare: prev
+- id: M022
+  cat: M
+  fixture: noisy_speech
+  base: chip
+  turns:
+  - say: awaaz saaf karo, captions lagao aur silence hatao
+  expect:
+  - instr: clean
+    any:
+    - kind: sound_changed
+  - instr: captions
+    any:
+    - kind: captions
+  - instr: silence
+    any:
+    - kind: shorter
+      min: 1.0
+  wave: 3
+  compare: prev
+- id: M023
+  cat: M
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: warm karo aur vignette lagao aur fade in shuru me aur fade out end me
+  expect:
+  - instr: warm
+    any:
+    - kind: warmer
+  - instr: vignette
+    any:
+    - kind: vignette
+  - instr: fade in
+    any:
+    - kind: fade_start
+  - instr: fade out
+    any:
+    - kind: fade_end
+  wave: 2
+  compare: prev
+- id: M024
+  cat: M
+  fixture: multishot
+  base: chip
+  turns:
+  - say: 4:5 karo, cool tone do, aur 'SALE' likho
+  expect:
+  - instr: '4:5'
+    any:
+    - kind: aspect
+      ratio: 0.8
+  - instr: cool
+    any:
+    - kind: cooler
+  - instr: text
+    any:
+    - kind: text
+      text: sale
+  wave: 3
+  compare: prev
+- id: M025
+  cat: M
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: isko 20 second ka kar do aur 5 second ka bhi
+  expect:
+  - instr: contradiction 20 vs 5
+    any:
+    - kind: duration
+      target: 20
+      tol: 1.0
+    - kind: duration
+      target: 5
+      tol: 0.8
+    states:
+    - APPLIED
+    - NOT_UNDERSTOOD
+    - COULD_NOT
+  wave: 1
+  compare: prev
+- id: T001
+  cat: T
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: thoda warm karo
+  - say: aur thoda
+  expect:
+  - instr: warm
+    any:
+    - kind: warmer
+  compare: prev
+  must: []
+  wave: 1
+- id: T002
+  cat: T
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: bahut warm karo
+  - say: zyada ho gaya thoda kam karo
+  expect:
+  - instr: less warm
+    any:
+    - kind: cooler
+      k: 0.5
+  compare: prev
+  must: []
+  wave: 3
+- id: T003
+  cat: T
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: zoom in karo
+  - say: isko hata do
+  expect:
+  - instr: undo zoom
+    any:
+    - kind: unchanged
+  compare: base
+  must: []
+  wave: 2
+- id: T004
+  cat: T
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: black and white kar do
+  - say: pehle jaisa kar do
+  expect:
+  - instr: restore
+    any:
+    - kind: unchanged
+  compare: base
+  must: []
+  wave: 1
+- id: T005
+  cat: T
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: sepia karo
+  - undo: true
+  expect:
+  - instr: undo
+    any:
+    - kind: unchanged
+  compare: base
+  must: []
+  wave: 2
+- id: T006
+  cat: T
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: sepia karo
+  - undo: true
+  - redo: true
+  expect:
+  - instr: redo
+    any:
+    - kind: sepia
+  compare: base
+  must: []
+  wave: 3
+- id: T007
+  cat: T
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: violet authority look lagao
+    style: violet_authority
+  - say: violet authority hata do
+  expect:
+  - instr: no violet
+    any:
+    - kind: no_overlays
+  compare: prev
+  must:
+  - kind: plan_style
+    style: null
+  wave: 1
+- id: T008
+  cat: T
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: reel bana do
+    variations: 3
+  - say: captions laga do
+  expect:
+  - instr: captions
+    any:
+    - kind: captions
+  compare: prev
+  must: []
+  wave: 3
+- id: T009
+  cat: T
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: reel bana do
+    variations: 3
+  - choose: 2
+  - say: warm karo
+  expect:
+  - instr: warm on chosen look
+    any:
+    - kind: warmer
+  compare: prev
+  must: []
+  wave: 1
+- id: T010
+  cat: T
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: grain daalo
+  - say: naya edit, 9:16 reel bana do warm color me
+  expect:
+  - instr: '9:16'
+    any:
+    - kind: aspect
+      ratio: 0.5625
+  compare: prev
+  must: []
+  wave: 3
+- id: T011
+  cat: T
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: warm karo
+  - say: vignette lagao
+  - say: captions lagao
+  - say: thoda zoom
+  - say: contrast badhao
+  - say: sharpen karo
+  expect:
+  - instr: 6 edits stack
+    any:
+    - kind: warmer
+  compare: base
+  must:
+  - kind: same_length
+    tol: 0.3
+  wave: 2
+- id: T012
+  cat: T
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: blur karo
+  - say: dobara
+  expect:
+  - instr: again
+    any:
+    - kind: blurrier
+  compare: prev
+  must: []
+  wave: 3
+- id: T013
+  cat: T
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: 2 sec pe zoom karo
+    at: 2.0
+  - say: wahi yahan bhi
+    at: 8.0
+  expect:
+  - instr: same here
+    any:
+    - kind: changed
+      at: 8.6
+  compare: prev
+  must: []
+  wave: 2
+- id: T014
+  cat: T
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: captions laga do
+  - say: captions hata do
+  expect:
+  - instr: no captions
+    any:
+    - kind: unchanged
+      at: 1.5
+  compare: base
+  must: []
+  wave: 3
+- id: T015
+  cat: T
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: music lagao
+  - say: music ki awaaz kam karo
+  expect:
+  - instr: music lower
+    any:
+    - kind: quieter
+      at: 1.0
+      min: 1.0
+    - kind: sound_changed
+  compare: prev
+  must: []
+  wave: 2
+- id: T016
+  cat: T
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: cool karo
+  - say: nahi warm karo
+  expect:
+  - instr: warm wins
+    any:
+    - kind: warmer
+  compare: prev
+  must: []
+  wave: 3
+- id: T017
+  cat: T
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: speed 2x
+  - say: slow karo thoda
+  expect:
+  - instr: slower
+    any:
+    - kind: longer
+  compare: prev
+  must: []
+  wave: 2
+- id: T018
+  cat: T
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: warm karo
+  - say: warm karo
+  - say: warm karo
+  - say: warm karo
+  - say: warm karo
+  - say: warm karo
+  - say: warm karo
+  - say: warm karo
+  - say: warm karo
+  - say: warm karo
+  expect:
+  - instr: 10 edits, no shrink
+    any:
+    - kind: same_length
+      tol: 0.3
+  compare: base
+  must:
+  - kind: decodes
+  wave: 3
+- id: T019
+  cat: T
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: purple look lagao
+    style: violet_authority
+  - say: purple video ko normal kar do
+  expect:
+  - instr: normal
+    any:
+    - kind: no_overlays
+  compare: prev
+  must:
+  - kind: plan_style
+    style: null
+  wave: 1
+- id: T020
+  cat: T
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: zoom in karo
+  - say: aur zyada
+  expect:
+  - instr: more zoom
+    any:
+    - kind: zoomed
+      at: -0.5
+      min: 1.0
+    - kind: changed
+      at: -0.5
+  compare: prev
+  must: []
+  wave: 3
+- id: X001
+  cat: X
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: yaha zoom karo
+    at: 3.0
+  expect:
+  - instr: zoom at 3
+    any:
+    - kind: changed
+      at: 3.8
+  must:
+  - kind: unchanged
+    at: 12.0
+  wave: 1
+  compare: prev
+- id: X002
+  cat: X
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: black and white kar do
+  - say: yaha normal kar do
+    at: 5.0
+  expect:
+  - instr: colour back at 5
+    any:
+    - kind: more_sat
+      at: 5.5
+  must: []
+  wave: 1
+  compare: prev
+- id: X003
+  cat: X
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: yaha WOW likh do
+    at: 4.0
+  expect:
+  - instr: text at 4
+    any:
+    - kind: text
+      text: wow
+  must: []
+  wave: 2
+  compare: prev
+- id: X004
+  cat: X
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: yahan blur karo
+    playhead: 6.0
+  expect:
+  - instr: blur at playhead
+    any:
+    - kind: blurrier
+      at: 6.5
+  must: []
+  wave: 3
+  compare: prev
+- id: X005
+  cat: X
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: is jagah flash daalo
+    at: 2.0
+  expect:
+  - instr: flash
+    any:
+    - kind: changed
+      at: 2.1
+  must: []
+  wave: 2
+  compare: prev
+- id: X006
+  cat: X
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: ye part hata do
+    at: 4.0
+  expect:
+  - instr: cut
+    any:
+    - kind: shorter
+      min: 0.5
+  must: []
+  wave: 1
+  compare: prev
+- id: X007
+  cat: X
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: yaha screen white kar do nomal jasia tha
+    at: 4.3
+  expect:
+  - instr: white/restore
+    any:
+    - kind: changed
+      at: 4.4
+    - kind: brighter
+      at: 4.4
+    states:
+    - APPLIED
+    - NOT_UNDERSTOOD
+  must: []
+  wave: 2
+  compare: prev
+- id: X008
+  cat: X
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: yaha slow motion
+    at: 3.0
+  expect:
+  - instr: slow
+    any:
+    - kind: longer
+  must: []
+  wave: 3
+  compare: prev
+- id: X009
+  cat: X
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: sepia karo
+  - say: yaha se hata do
+    at: 6.0
+  expect:
+  - instr: sepia off at 6
+    any:
+    - kind: more_sat
+      at: 6.5
+  must: []
+  wave: 2
+  compare: prev
+- id: X010
+  cat: X
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: yaha 1 sec ki white screen daalo
+    at: 5.0
+  expect:
+  - instr: card
+    any:
+    - kind: longer
+      min: 0.7
+  must: []
+  wave: 3
+  compare: prev
+- id: X011
+  cat: X
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: zoom karo yaha
+    playhead: 2.0
+  expect:
+  - instr: zoom
+    any:
+    - kind: changed
+      at: 2.6
+  must: []
+  wave: 2
+  compare: prev
+- id: X012
+  cat: X
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: yaha rose
+    at: 1.0
+  expect:
+  - instr: sticker
+    any:
+    - kind: changed
+      at: 1.5
+  must: []
+  wave: 3
+  compare: prev
+- id: A001
+  cat: A
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: viral bana do
+  expect:
+  - instr: vague
+    any:
+    - kind: changed
+    states: &id003
+    - NOT_UNDERSTOOD
+    - APPLIED
+    - COULD_NOT
+    need_chips: true
+  must: []
+  wave: 2
+  compare: prev
+  decodes: false
+- id: A002
+  cat: A
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: 5 sec ka bhi aur 60 sec ka bhi bana do
+  expect:
+  - instr: contradiction
+    any:
+    - kind: duration
+      target: 5
+      tol: 0.8
+    states: *id003
+  must: []
+  wave: 1
+  compare: prev
+  decodes: false
+- id: A003
+  cat: A
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: isme se ek nayi AI video generate karo
+  expect:
+  - instr: unsupported
+    any: []
+    states:
+    - NOT_UNDERSTOOD
+    - COULD_NOT
+  must:
+  - kind: no_new_version
+  wave: 1
+  compare: prev
+  decodes: false
+- id: A004
+  cat: A
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: 4k upscale kar do
+  expect:
+  - instr: unsupported
+    any: []
+    states:
+    - NOT_UNDERSTOOD
+    - COULD_NOT
+  must:
+  - kind: no_new_version
+  wave: 3
+  compare: prev
+  decodes: false
+- id: A005
+  cat: A
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: ''
+  expect:
+  - instr: empty
+    any: []
+    states:
+    - NOT_UNDERSTOOD
+    - COULD_NOT
+    - NO_EDIT
+    need_chips: false
+  must:
+  - kind: no_new_version
+  wave: 2
+  compare: prev
+  decodes: false
+- id: A006
+  cat: A
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: 🔥🔥😂
+  expect:
+  - instr: emoji
+    any: []
+    states:
+    - NO_EDIT
+    - NOT_UNDERSTOOD
+    need_chips: false
+  must:
+  - kind: no_new_version
+  wave: 3
+  compare: prev
+  decodes: false
+- id: A007
+  cat: A
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: 'warm karo bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar video hai mera bahut sundar
+      video hai mera '
+  expect:
+  - instr: 5000 chars
+    any:
+    - kind: warmer
+    states:
+    - APPLIED
+    - NOT_UNDERSTOOD
+  must: []
+  wave: 2
+  compare: prev
+  decodes: false
+- id: A008
+  cat: A
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: aaj mausam kaisa hai?
+  expect:
+  - instr: off-topic
+    any: []
+    states:
+    - NO_EDIT
+    - NOT_UNDERSTOOD
+    need_chips: false
+  must:
+  - kind: no_new_version
+  wave: 3
+  compare: prev
+  decodes: false
+- id: A009
+  cat: A
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: bakwas app hai tum log kuch nahi kar sakte
+  expect:
+  - instr: rude
+    any: []
+    states:
+    - NO_EDIT
+    - NOT_UNDERSTOOD
+    need_chips: false
+  must:
+  - kind: no_new_version
+  wave: 2
+  compare: prev
+  decodes: false
+- id: A010
+  cat: A
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: asdf qwerty zxcv
+  expect:
+  - instr: gibberish
+    any: []
+    states:
+    - NOT_UNDERSTOOD
+  must:
+  - kind: no_new_version
+  wave: 1
+  compare: prev
+  decodes: false
+- id: A011
+  cat: A
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: hello bhai
+  expect:
+  - instr: greeting
+    any: []
+    states:
+    - NO_EDIT
+    need_chips: false
+  must:
+  - kind: no_new_version
+  wave: 1
+  compare: prev
+  decodes: false
+- id: A012
+  cat: A
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: meri height badha do
+  expect:
+  - instr: impossible
+    any: []
+    states:
+    - NOT_UNDERSTOOD
+    - COULD_NOT
+  must:
+  - kind: no_new_version
+  wave: 3
+  compare: prev
+  decodes: false
+- id: U001
+  cat: U
+  fixture: speech_pauses
+  driver: browser
+  turns:
+  - say: every one-tap chip (Auto edit, Arrange clips, Captions) runs and shows an answer
+  expect:
+  - instr: every one-tap chip (Auto edit, Arrange clips, Captions) runs and shows an answer
+    any: []
+  wave: 2
+- id: U002
+  cat: U
+  fixture: speech_pauses
+  driver: browser
+  turns:
+  - say: '3 variations then Use this on card 1: plan, timeline and the next edit follow card 1'
+  expect:
+  - instr: '3 variations then Use this on card 1: plan, timeline and the next edit follow card 1'
+    any: []
+  wave: 1
+- id: U003
+  cat: U
+  fixture: speech_pauses
+  driver: browser
+  turns:
+  - say: '3 variations then Use this on card 2: plan, timeline and the next edit follow card 2'
+  expect:
+  - instr: '3 variations then Use this on card 2: plan, timeline and the next edit follow card 2'
+    any: []
+  wave: 2
+- id: U004
+  cat: U
+  fixture: speech_pauses
+  driver: browser
+  turns:
+  - say: '3 variations then Use this on card 3: plan, timeline and the next edit follow card 3'
+  expect:
+  - instr: '3 variations then Use this on card 3: plan, timeline and the next edit follow card 3'
+    any: []
+  wave: 3
+- id: U005
+  cat: U
+  fixture: speech_pauses
+  driver: browser
+  turns:
+  - say: Effects panel Apply now (vignette) changes the video
+  expect:
+  - instr: Effects panel Apply now (vignette) changes the video
+    any: []
+  wave: 2
+- id: U006
+  cat: U
+  fixture: speech_pauses
+  driver: browser
+  turns:
+  - say: Effects panel Add to prompt (a transition) is understood as that transition
+  expect:
+  - instr: Effects panel Add to prompt (a transition) is understood as that transition
+    any: []
+  wave: 3
+- id: U007
+  cat: U
+  fixture: speech_pauses
+  driver: browser
+  turns:
+  - say: Undo and redo buttons give back the exact versions
+  expect:
+  - instr: Undo and redo buttons give back the exact versions
+    any: []
+  wave: 2
+- id: U008
+  cat: U
+  fixture: speech_pauses
+  driver: browser
+  turns:
+  - say: Export downloads the current version
+  expect:
+  - instr: Export downloads the current version
+    any: []
+  wave: 3
+- id: U009
+  cat: U
+  fixture: speech_pauses
+  driver: browser
+  turns:
+  - say: 'Narrow phone width (375 px): a 422 choice shows chips; panels reachable'
+  expect:
+  - instr: 'Narrow phone width (375 px): a 422 choice shows chips; panels reachable'
+    any: []
+  wave: 1
+- id: U010
+  cat: U
+  fixture: speech_pauses
+  driver: browser
+  turns:
+  - say: A skill job's answer renders as readable text (not run-together)
+  expect:
+  - instr: A skill job's answer renders as readable text (not run-together)
+    any: []
+  wave: 3
+- id: U011
+  cat: U
+  fixture: speech_pauses
+  driver: browser
+  turns:
+  - say: After Use this, the player does not show a stale cached video
+  expect:
+  - instr: After Use this, the player does not show a stale cached video
+    any: []
+  wave: 2
+- id: U012
+  cat: U
+  fixture: speech_pauses
+  driver: browser
+  turns:
+  - say: 'Overlays panel: Look hatao removes the gradient tracks'
+  expect:
+  - instr: 'Overlays panel: Look hatao removes the gradient tracks'
+    any: []
+  wave: 1
+- id: R001
+  cat: R
+  fixture: corrupt
+  base: none
+  turns:
+  - say: ''
+  expect: []
+  wave: 1
+  compare: prev
+  upload_expect:
+  - 400
+  - 415
+  - 422
+- id: R002
+  cat: R
+  fixture: no_audio
+  base: chip
+  turns:
+  - say: warm karo
+  expect:
+  - instr: warm
+    any:
+    - kind: warmer
+  wave: 3
+  compare: prev
+- id: R003
+  cat: R
+  fixture: audio_only
+  base: none
+  turns:
+  - say: ''
+  expect: []
+  wave: 3
+  compare: prev
+  upload_expect:
+  - 400
+  - 415
+  - 422
+  - 201
+- id: R004
+  cat: R
+  fixture: vfr
+  base: chip
+  turns:
+  - say: warm karo
+  expect:
+  - instr: warm
+    any:
+    - kind: warmer
+  wave: 3
+  compare: prev
+- id: R005
+  cat: R
+  fixture: rotated
+  base: chip
+  turns:
+  - say: 9:16 reel bana do
+  expect:
+  - instr: '9:16'
+    any:
+    - kind: aspect
+      ratio: 0.5625
+  wave: 1
+  compare: prev
+- id: R006
+  cat: R
+  fixture: k4
+  base: chip
+  turns:
+  - say: warm karo
+  expect:
+  - instr: warm
+    any:
+    - kind: warmer
+  wave: 3
+  compare: prev
+- id: R007
+  cat: R
+  fixture: fps60
+  base: chip
+  turns:
+  - say: slow motion karo
+  expect:
+  - instr: slow
+    any:
+    - kind: longer
+  wave: 3
+  compare: prev
+- id: R008
+  cat: R
+  fixture: short1s
+  base: chip
+  turns:
+  - say: zoom in karo
+  expect:
+  - instr: zoom
+    any:
+    - kind: changed
+    - kind: zoomed
+  wave: 3
+  compare: prev
+- id: R009
+  cat: R
+  fixture: long5min
+  base: chip
+  turns:
+  - say: warm karo
+  expect:
+  - instr: warm
+    any:
+    - kind: warmer
+  wave: 3
+  compare: prev
+  long: true
+- id: R010
+  cat: R
+  fixture: speech_pauses
+  base: chip
+  turns:
+  - say: warm karo
+  expect:
+  - instr: warm
+    any:
+    - kind: warmer
+  wave: 3
+  compare: prev
+  extra_fixtures:
+  - speech_pauses

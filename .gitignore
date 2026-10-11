@@ -36,3 +36,9 @@ backend/assets/models/
 
 # local tool settings
 .claude/settings.local.json
+
+# test200 campaign: generated media and per-case workspaces
+tools/test200/work/
+tools/test200/fixtures/*.mp4
+tools/test200/fixtures/*.wav
+tools/test200/fixtures/*.m4a
