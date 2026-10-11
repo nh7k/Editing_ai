@@ -436,6 +436,7 @@ class JobManager:
                                          "changed": lines, "kept": [], "warnings": warns, "suggestions": [],
                                          "verify": [c.to_dict() for c in checks]}
             self.db.update_job(job_id, plan=plan.to_json(), output_path=str(output))
+            self._remember_tools(project_id, job_id, state.data.get("prompt", ""), list(options["tools"]))
             with state.lock:
                 state.data.update({
                     "status": "done", "progress": 100.0, "stage": "done", "finished_at": now_iso(),
@@ -453,6 +454,36 @@ class JobManager:
             state.persist(force=True)
             if not self.settings.keep_work_dirs:
                 shutil.rmtree(work, ignore_errors=True)
+
+    # what a "normal karo" takes out of the remembered edit, per family (restore_normal's `what`)
+    RESTORE_RESETS = {
+        "color": {"color_preset": None, "brightness": 0.0, "gamma": 1.0, "style": None},
+        "motion": {"effects": [], "timed_effects": []},
+        "style": {"effects": [], "timed_effects": []},
+        "overlays": {"moment_stickers": [], "style": None},
+    }
+
+    def _remember_tools(self, project_id: str, job_id: str, prompt: str, calls: list[dict[str, Any]]) -> None:
+        """A skill edit is part of the current edit: a later DIRECTOR message re-plans from memory, so the skill calls
+        are replayed on its new plan (like hand-made changes) — before, they were lost and the stale remembered intent
+        came back (a comment after "sab effect hata do" re-added the old look). A restore instead clears what it took
+        off from the remembered intent and drops the earlier skill changes."""
+        restore = [c for c in calls if c.get("id") == "restore_normal"]
+        if restore:
+            what = str((restore[0].get("params") or {}).get("what") or "all")
+            if what == "all":
+                self.memory.forget_manual(project_id)
+            else:
+                self.memory.forget_tool_calls(project_id)
+            rows = self.memory.history(project_id, 1)
+            if rows:
+                intent = dict(rows[0]["intent"])
+                resets = {k: v for fam, r in self.RESTORE_RESETS.items() if what in ("all", fam) for k, v in r.items()}
+                intent.update(resets)
+                delivered = {**(rows[0].get("delivered") or {}), **({"style": None} if "style" in resets else {})}
+                self.memory.remember_edit(project_id, job_id, prompt, intent, delivered)
+            return
+        self.memory.remember_manual(project_id, job_id, [{"op": "tool_call", "call": c} for c in calls])
 
     def _run_manual(self, state: JobState, job_id: str, project_id: str, options: dict[str, Any], work: Path) -> None:
         t0 = time.perf_counter()

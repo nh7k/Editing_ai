@@ -1082,8 +1082,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             # "undo" (the relative reading of "isko hata do") only when the comment reader does not know the words: a
             # comment names a thing AT that moment ("ye text hata do" takes that text off, it does not undo the last
             # edit — that undid a colour change and left the text)
-            knows = read_comment(prompt)["understood"]
-            if quick.decision in ("apply", "act", "partial") or (quick.decision == "undo" and not knows) or not knows:
+            rc = read_comment(prompt)
+            knows = rc["understood"]
+            # the comment reader only for what ONLY it does (text typed at the moment, a sticker by name, restyling
+            # the text there): its effects / cuts went to the director, whose "from memory" merge re-made the whole
+            # edit (a black-and-white comment changed the look, colour, cut and 7 effects)
+            only_reader = bool(rc.get("text") or rc.get("emoji") or rc.get("restyle"))
+            if (quick.decision in ("apply", "act", "partial") or (quick.decision == "undo" and not knows) or not knows
+                    or not only_reader):
                 # the comment reader knows a few kinds of edit; everything else goes to the skill resolver (never a
                 # dead end: apply when sure, else tap-able choices — docs/INTENT_FAILURE_REVIEW.md)
                 return _resolve_or_ask(pid, prompt, plan, body.at)
@@ -1115,7 +1121,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
             _it = _pi(prompt)
             director_only = bool(_it.style or _it.variations > 1 or "style" in _it.remove)
-            clear_change = bool(last_done) and quick.decision == "apply" and not director_only
+            # a SINGLE clear change; several asks in one message stay a director brief (it plans them together and
+            # the reviewer checks the whole edit)
+            clear_change = (bool(last_done) and quick.decision == "apply" and len(quick.apply) == 1
+                            and not director_only)
             precise = ((tool_mode or restoring or clear_change) and not options and not new_edit_words.search(prompt)
                        and quick.decision in ("apply", "act", "partial"))
             if precise or quick.decision in ("non_edit", "undo") or str(quick.trace.get("turn", "")).startswith("relative"):

@@ -20,7 +20,7 @@ from .timewin import When, resolve
 
 Builder = Callable[[EditPlan, dict[str, Any], When, "ToolCtx"], EditPlan]
 _BUILDERS: dict[str, Builder] = {}
-MODULES = ("b_cutting", "b_layout", "b_color", "b_motion", "b_transitions", "b_audio", "b_text", "b_stylize",
+MODULES = ("b_beat", "b_cutting", "b_layout", "b_color", "b_motion", "b_transitions", "b_audio", "b_text", "b_stylize",
            "b_delivery", "b_restore")
 
 

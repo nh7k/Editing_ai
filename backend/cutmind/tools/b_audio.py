@@ -7,6 +7,7 @@ the mix and corrects it — renderer.correct_loudness), "-14 LUFS" is checked on
 
 from __future__ import annotations
 
+import json
 import math
 from pathlib import Path
 from typing import Any
@@ -45,6 +46,22 @@ def _track(ctx: ToolCtx, name: str | None, mood: str | None) -> Path:
         if p is None:
             raise ToolError(f"no song called '{name}' — upload it in Sounds first")
         return p
+    # the user's own song first (the one picked in Sounds, else the newest upload) — like the director; before, the
+    # skill took a library track and ignored the uploaded song
+    for d in ctx.music_dirs:
+        sel = d / "selected.json"
+        if sel.exists():
+            try:
+                chosen = resolve(json.loads(sel.read_text(encoding="utf-8")).get("name") or "", ctx.music_dirs)
+            except ValueError:
+                chosen = None
+            if chosen is not None:
+                return chosen
+        if d.name == "music" and d.parent.parent.name == "projects":
+            own = sorted((x for x in d.iterdir() if x.suffix.lower() in (".mp3", ".m4a", ".wav", ".aac", ".ogg", ".flac")),
+                         key=lambda x: x.stat().st_mtime, reverse=True)
+            if own:
+                return own[0]
     p = pick_track(_library(ctx), mood)
     if p is None:
         raise ToolError("there is no music in the library yet — upload a song in Sounds")

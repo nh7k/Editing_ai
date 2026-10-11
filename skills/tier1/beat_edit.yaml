@@ -1,0 +1,99 @@
+id: beat_edit
+seed: 110
+category: audio
+name: Beat edit
+name_hi: Gaane ki beat pe edit
+description: Edit the whole video on the song's beat — cuts moved onto beats, zoom punches whose density follows the
+  song's energy (calm every 4th beat, loud every beat), the drop with the strongest punch, a flash and a shake.
+params:
+  intensity:
+    type: enum
+    values: [low, medium, high]
+    default: medium
+    extract: magnitude_word
+    desc: how hard the hits are
+  cuts:
+    type: boolean
+    default: true
+    desc: also move the cuts onto the beats
+time_modes:
+- whole
+builder: beat.beat_edit
+graph: song analysis (librosa beats + energy, numpy kick band) → beatmap hits → pulse / flash / beat_shake times
+media3:
+  status: server_only
+  how: the server computes the hit times; the phone path is NOT TESTED
+stage: audio
+conflicts: []
+cost: medium
+licence: own code; librosa (ISC) for beats; FFmpeg filters
+changes_duration: false
+needs: []
+variant_axes:
+  intensity:
+  - low
+  - medium
+  - high
+synonyms:
+  en:
+  - beat edit
+  - edit on the beat
+  - edit to the beat
+  - edit it to the music
+  - sync the edit to the song
+  - make it hit on the beat
+  - zoom on the beat
+  - effects on the beat
+  - beat synced edit
+  - music video edit
+  - edit with the rhythm
+  hinglish:
+  - beat pe edit karo
+  - gaane ki beat pe edit karo
+  - music ke hisaab se edit karo
+  - beat ke hisaab se edit
+  - gaane ke saath edit karo
+  - beat pe zoom karo
+  - beat pe effects lagao
+  - beat pe animation
+  - beat pe jhatka
+  - music ke base pe edit
+  - song ke beat pe
+  - taal pe edit
+  - beat drop pe effect
+  hi:
+  - बीट पर एडिट करो
+  - गाने की बीट पर एडिट
+  - म्यूज़िक के हिसाब से एडिट
+  slang:
+  - beat pe nachao video ko
+  - full beat sync edit maar do
+  typos:
+  - beet pe edit
+  - bit pe edit karo
+  - beat pe edt karo
+negations:
+- beat pe edit mat karo
+examples:
+- prompt: is gaane ki beat pe edit karo
+  lang: hinglish
+- prompt: edit it on the beat
+  lang: en
+- prompt: beat pe zoom aur effects lagao
+  lang: hinglish
+- prompt: music ke base pe edit karo
+  lang: hinglish
+- prompt: गाने की बीट पर एडिट करो
+  lang: hi
+- prompt: beet pe edit
+  lang: typo
+- prompt: beat pe jhatka do
+  lang: slang
+- prompt: song ke beat pe effects chahiye
+  lang: vague
+test:
+  check: hits_on_beats
+  setup:
+  - id: add_music
+    params:
+      volume: 0.8

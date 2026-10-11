@@ -34,7 +34,11 @@ REPEAT_PATTERNS = (r"same as (before|last time|last|previous)", r"like (last tim
 # over and drop both (stability probe, 2026-10-08).
 FRESH_PATTERNS = (r"\b(naya|nayi|new|fresh|alag|dusra|doosra)\b.{0,15}\b(edit|video|bana|banao|style|version)",
                   r"\bshuru se\b", r"\bfrom scratch\b", r"\bstart (over|again|fresh)\b", r"\bsab (hata|reset)\w*",
-                  r"\breset\b", r"\bphir se (shuru|bana)\w*")
+                  r"\breset\b", r"\bphir se (shuru|bana)\w*",
+                  # a whole-edit brief ("pro editor jaisa poora edit karo") starts from the footage, not from the
+                  # remembered edit: merged, its old effects (fisheye, scanlines…) came back unasked
+                  r"\b(poora|pura|puri|poori|full|whole|complete)\b.{0,12}\b(edit|video)\b.{0,12}\b(karo|kar do|bana\w*|edit)",
+                  r"\bpro (editor|edit)\w*")
 # words that mark a message as a change to the current edit ("bhi", "ab", "hata do", "thoda", "mat")
 CHANGE_WORDS = r"\b(bhi|ab|aur|bas|thoda|thodi|zara|hata\w*|nikal\w*|mat|nahi|nhi|instead|also|now|change|badal\w*|kar do|karo)\b"
 
@@ -186,6 +190,11 @@ class Memory:
         """A new edit from scratch ("shuru se", "naya edit"): hand-made changes of the old edit no longer apply."""
         self._ops_table()
         self.db.execute("DELETE FROM manual_ops WHERE project_id=?", (project_id,))
+
+    def forget_tool_calls(self, project_id: str) -> None:
+        """A restore ("normal karo"): the skill changes made before it no longer belong to the current edit."""
+        self._ops_table()
+        self.db.execute("DELETE FROM manual_ops WHERE project_id=? AND op LIKE '%\"op\": \"tool_call\"%'", (project_id,))
 
     def remember_choice(self, job_id: str, style: str | None) -> None:
         self.db.execute("UPDATE edit_memory SET chosen_style=? WHERE job_id=?", (style, job_id))

@@ -185,11 +185,20 @@ def _family_of(s: dict[str, Any]) -> str | None:
     return FAMILY_OF_CATEGORY.get(s.get("category", ""))
 
 
+# words that name WHERE / WHAT KIND without saying which change ("ye effect daal do", "screen pe", "video ko"): they
+# never make a clear reading unclear ("yaha pe screen black and white ke effect daal do" became 3 choices and went
+# to the director, which re-made the whole edit). Not used for scoring.
+GENERIC = {"effect", "effects", "filter", "filters", "video", "clip", "clips", "wala", "wali", "type"}
+# … but with "hata do / remove" the effect IS the meaning ("ye effect hata do" must not read as "delete this part")
+GENERIC_WHEN_REMOVING = {"video", "clip", "clips", "wala", "wali", "type"}
+
+
 def unexplained(words: list[str], skill_ids: list[str]) -> float:
     """Share (by weight) of the prompt's meaning words that none of these skills' synonyms explain."""
     phrases, weights = _index()
     vocab = {t for sid in skill_ids for p in phrases.get(sid, []) for t in p}
-    ws = [w for w in words if w not in FILLER and not NUMERIC.fullmatch(w)]
+    generic = GENERIC_WHEN_REMOVING if set(words) & REMOVE_VERBS else GENERIC
+    ws = [w for w in words if w not in FILLER and not NUMERIC.fullmatch(w) and (w not in generic or w in vocab)]
     total = sum(_weight(w, weights) for w in ws)
     if total <= 0:
         return 0.0

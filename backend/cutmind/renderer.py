@@ -322,6 +322,18 @@ def build_ass(items: list[TextItem], w: int, h: int) -> str:
 # ---------------------------------------------------------------------------------------------
 # render stages
 # ---------------------------------------------------------------------------------------------
+def frame_time(t: float, fps: float) -> float:
+    """t on the output frame grid."""
+    return round(t * fps) / fps
+
+
+def segment_frames(entry: TimelineEntry, fps: float) -> tuple[int, float]:
+    """(frames, seconds) of a segment on the timeline's frame grid — the cuts stay within half a frame of the plan
+    and never drift."""
+    n = max(1, round(entry.end * fps) - round(entry.start * fps))
+    return n, n / fps
+
+
 def render_segment(plan: EditPlan, entry: TimelineEntry, src: Path, out: Path) -> Path:
     """Trim + speed + reframe + color + motion effects for one segment → uniform intermediate."""
     seg = entry.segment
@@ -392,13 +404,19 @@ def render_segment(plan: EditPlan, entry: TimelineEntry, src: Path, out: Path) -
     graph.append("[vfr]" + ",".join(vchain) + "[vout]")
     # 30 ms fades at both edges of every segment: no clicks/pops at the cuts — except where the next piece
     # continues the same sound (a split): a fade there would be an audible dip
-    edge = min(0.03, entry.duration / 4)
+    # frame-exact length: every segment ends on the output frame grid of the WHOLE timeline (its frames =
+    # round(end·fps) − round(start·fps)), picture and sound alike. Before, "-t 0.650" at 30 fps wrote 20 frames
+    # (0.667 s) while the sound stayed 0.650 s: every cut came a little later than the music, the error added up
+    # (measured +0.21 s after 25 beat cuts — the beat edit looked "off the beat", tools/beatcheck.py)
+    n_frames, dur_q = segment_frames(entry, fps)
+    edge = min(0.03, dur_q / 4)
     fin = "" if continues(plan, entry.index - 1) else f"afade=t=in:st=0:d={edge:.3f},"
-    fout = "" if continues(plan, entry.index) else f",afade=t=out:st={max(0.0, entry.duration - edge):.3f}:d={edge:.3f}"
+    fout = "" if continues(plan, entry.index) else f",afade=t=out:st={max(0.0, dur_q - edge):.4f}:d={edge:.3f}"
     graph.append(f"[asp]volume={seg.volume:.3f},aresample=48000,aformat=sample_fmts=fltp:channel_layouts=stereo,"
-                 f"{fin}apad{fout}[aout]")
+                 f"{fin}apad{fout},atrim=0:{dur_q:.6f}[aout]")
     args += ["-filter_complex", ";".join(graph), "-map", "[vout]", "-map", "[aout]",
-             "-t", f"{entry.duration:.3f}", "-r", str(fps), *INTERMEDIATE_V, *INTERMEDIATE_A, str(out.resolve())]
+             "-frames:v", str(n_frames), "-t", f"{dur_q:.6f}", "-r", str(fps), *INTERMEDIATE_V, *INTERMEDIATE_A,
+             str(out.resolve())]
     # cwd = LUT folder so `lut3d=file=<look>.cube` needs no Windows drive-letter escaping
     uses_lut = plan.color.preset in LOOKS or any(e.type == "grade" and e.params.get("look") and e.target in (-1, entry.index)
                                                   for e in plan.effects)
@@ -431,7 +449,7 @@ def join_segments(plan: EditPlan, parts: list[Path], out: Path) -> Path:
         v_out, a_out = f"v{k}", f"a{k}"
         if t is not None:
             # offset = when segment k starts in the output timeline
-            offset = timeline[k].start
+            offset = frame_time(timeline[k].start, plan.canvas.fps)  # the same frame grid as the segments
             graph.append(f"[{v_prev}][s{k}]xfade=transition={xfade_name(t.type)}:duration={t.duration:.3f}:offset={offset:.3f}[{v_out}]")
             graph.append(f"[{a_prev}][{k}:a]acrossfade=d={t.duration:.3f}:c1=tri:c2=tri[{a_out}]")
         else:
@@ -797,7 +815,8 @@ def picture_key(plan: EditPlan, sources: dict[str, Path]) -> str:
     src = {k: f"{p.resolve()}|{p.stat().st_size}|{p.stat().st_mtime_ns}" for k, p in sorted(sources.items()) if p.exists()}
     data = {"canvas": plan.canvas.model_dump(), "clips": [c.model_dump(by_alias=True) for c in plan.clips],
             "effects": [e.model_dump() for e in plan.effects], "color": plan.color.model_dump(),
-            "transitions": [t.model_dump() for t in plan.transitions if t.after >= 0], "sources": src, "v": 1}
+            "transitions": [t.model_dump() for t in plan.transitions if t.after >= 0], "sources": src,
+            "v": 2}  # 2: frame-exact segment lengths + the sharper beat punch
     return hashlib.sha1(json.dumps(data, sort_keys=True, default=str).encode()).hexdigest()[:20]
 
 

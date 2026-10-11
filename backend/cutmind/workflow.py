@@ -247,6 +247,20 @@ REPLAYABLE_OPS = {"add_effect", "remove_effect", "set_look", "set_style", "style
                   "update_text", "remove_text", "remove_captions", "set_transition"}
 
 
+def _replay_tool(ctx: AgentContext, plan: EditPlan, call: dict[str, Any]) -> EditPlan:
+    from .music_library import music_dirs
+    from .tools.engine import ToolCtx, run
+
+    pdir = ctx.settings.projects_dir / str(ctx.project_id)
+    sources = {c.id: c.path for c in ctx.clips}
+    sources.update({p.stem: p for p in (pdir / "generated").glob("gen_*.mp4")})
+    tctx = ToolCtx(sources=sources, gen_dir=pdir / "generated",
+                   clip_ids=[c.id for c in sorted(ctx.clips, key=lambda c: c.position)],
+                   music_dirs=music_dirs(ctx.settings, ctx.project_id))
+    new, _applied = run(plan, [call], tctx)
+    return new
+
+
 def _with_manual(ctx: AgentContext, plan: EditPlan) -> EditPlan:
     """A chat change keeps what the user did by hand (an effect from the Effects panel, a text they typed): those ops
     are applied again on the agents' new plan. Ops that no longer fit are skipped and said so — never a crash."""
@@ -257,6 +271,13 @@ def _with_manual(ctx: AgentContext, plan: EditPlan) -> EditPlan:
     kept, skipped = 0, []
     for raw in ctx.memory.manual_ops(ctx.project_id):
         kind = raw.get("op", "?")
+        if kind == "tool_call":  # a skill edit made between director edits ("captions laga do" by the skills)
+            try:
+                plan = _replay_tool(ctx, plan, raw["call"])
+                kept += 1
+            except Exception:  # noqa: BLE001 — a skill change that no longer fits is said, never a crash
+                skipped.append(str(raw.get("call", {}).get("id", "skill")))
+            continue
         if kind not in REPLAYABLE_OPS:
             skipped.append(kind)
             continue

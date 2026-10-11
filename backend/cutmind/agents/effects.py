@@ -385,6 +385,9 @@ class EffectsAgent(BaseAgent):
         if not any(e.type == "pulse" for e in out):
             return out
         music = sorted(ctx.music_beats)
+        track = getattr(ctx, "song_track", None)
+        if music and ctx.song is not None and ctx.song.energy and track is not None and not it.bass_boost:
+            return self._beatmap_hits(ctx, out, timeline, music, track)
         expanded: list[Effect] = []
         for e in out:
             if e.type != "pulse":
@@ -409,6 +412,43 @@ class EffectsAgent(BaseAgent):
                                          * ensure_choice(ctx).get("punch", 1.0)), 2)
                 expanded.append(Effect(type="pulse", target=entry.index, strength=strength, times=local))
         return expanded
+
+    def _beatmap_hits(self, ctx: AgentContext, effects: list[Effect], timeline: list[TimelineEntry], music: list[float],
+                      track: Any) -> list[Effect]:
+        """Beat punches like a pro edit (beatmap.py): density follows the song's energy (calm: every 4th beat on the
+        bar's downbeat, medium: every 2nd, loud / after the drop: every beat), a frame before the beat, bigger on hard
+        kicks, the drop with the strongest punch + a flash + a shake. Before: a soft punch on every beat and none in
+        calm parts — measured on a real edit as 2 of 23 beats hit (tools/beatcheck.py)."""
+        from ..beatmap import kick_strength, load_mono, plan_hits
+
+        song = ctx.song
+        assert song is not None
+        start = float(getattr(ctx, "music_start", 0.0) or 0.0)
+        total = timeline[-1].end if timeline else 0.0
+        pulses = [e for e in effects if e.type == "pulse"]
+        strength = max((e.strength for e in pulses), default=1.0) * float(ensure_choice(ctx).get("punch", 1.0))
+        try:
+            kicks = kick_strength(load_mono(track), 22050, [b + start for b in music])
+        except Exception:  # noqa: BLE001 — no kick reading: energy alone decides
+            kicks = [0.0] * len(music)
+        bm = plan_hits(music, song.energy_at, kicks, total, song.drop, intensity=min(1.4, strength))
+        out = [e for e in effects if e.type != "pulse"]
+        for entry in timeline:
+            hits = [h for h in bm.hits if entry.start <= h.t < entry.end]
+            if hits:
+                out.append(Effect(type="pulse", target=entry.index, strength=1.0,
+                                  times=[round(h.t - entry.start, 3) for h in hits],
+                                  params={"amps": ",".join(f"{h.strength:g}" for h in hits)}))
+            fl = [round(x - entry.start, 3) for x in bm.flashes if entry.start <= x < entry.end]
+            if fl:
+                out.append(Effect(type="flash", target=entry.index, strength=0.55, times=fl))
+            sh = [round(x - entry.start, 3) for x in bm.shakes if entry.start <= x < entry.end]
+            if sh:
+                out.append(Effect(type="beat_shake", target=entry.index, strength=1.0, times=sh))
+        ctx.decide("beat punches", f"{len(bm.hits)} hits, {len(bm.flashes)} flash(es)",
+                   "density follows the song: calm every 4th beat, medium every 2nd, loud every beat; the drop hits "
+                   "hardest; each hit a frame before the beat", "song_driven")
+        return out
 
     def _song_motion(self, ctx: AgentContext, effects: list[Effect], timeline: list[TimelineEntry]) -> list[Effect]:
         """Calm parts of the song: long shots drift slowly in (no punches there)."""

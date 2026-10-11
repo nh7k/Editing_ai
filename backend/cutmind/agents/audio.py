@@ -131,6 +131,7 @@ class AudioAgent(BaseAgent):
                 settings.ducking = bool((ducking or intent.voice_boost or intent.ducking) and speech and not intent.mute)
                 work = (ctx.work_dir or Path(".")) / "song"
                 cache = ctx.settings.data_dir / "cache"
+                ctx.song_track = track  # the effects agent reads its kick drum (beatmap.py)
                 try:
                     ctx.song = analyze_song(track, work, cache)
                     ctx.music_beats = list(ctx.song.beats)

@@ -79,9 +79,16 @@ def restore(db: Database, project_dir: Path, project_id: str, job_id: str, memor
         memory.forget_manual(project_id)
         for m in db.all("SELECT id, options FROM jobs WHERE project_id=? AND status='done' AND created_at<=? "
                         "ORDER BY created_at", (project_id, src["created_at"])):
-            ops = (json.loads(m["options"] or "{}") or {}).get("manual")
+            opts = json.loads(m["options"] or "{}") or {}
+            ops = opts.get("manual")
             if ops:
                 memory.remember_manual(project_id, m["id"], ops)
+            calls = opts.get("tools")
+            if calls:  # skill edits up to the restored version stay part of it (a restore clears the ones before)
+                if any(c.get("id") == "restore_normal" for c in calls):
+                    memory.forget_tool_calls(project_id)
+                else:
+                    memory.remember_manual(project_id, m["id"], [{"op": "tool_call", "call": c} for c in calls])
     return {"job_id": new, "restored": job_id, "version": len(cur) + 1, "replaced": replaced}
 
 

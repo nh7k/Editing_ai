@@ -75,6 +75,16 @@ def _shake(c: FxContext) -> list[str]:
     return [f"crop={c.w - 2 * a}:{c.h - 2 * a}:x='{a}+{a}*sin(t*23)':y='{a}+{a}*cos(t*17)'", f"scale={c.w}:{c.h}"]
 
 
+def _beat_shake(c: FxContext) -> list[str]:
+    """Short camera-shake bursts at given times (the drop): ±a px, decaying over ~0.35 s."""
+    if not c.times:
+        return _shake(c)
+    a = max(3, int(round(min(c.w, c.h) * 0.025 * c.strength)))
+    env = "+".join(f"if(between(t,{_f(b)},{_f(b + 0.4)}),exp(-(t-{_f(b)})/0.12),0)" for b in c.times[:20])
+    return [f"crop={c.w - 2 * a}:{c.h - 2 * a}:x='{a}+{a}*min(1,{env})*sin(t*61)':y='{a}+{a}*min(1,{env})*cos(t*47)'",
+            f"scale={c.w}:{c.h}"]
+
+
 def _swing(c: FxContext) -> list[str]:
     ang = 0.035 * c.strength
     return [f"scale=w={int(c.w * 1.08) // 2 * 2}:h={int(c.h * 1.08) // 2 * 2}",
@@ -84,12 +94,23 @@ def _swing(c: FxContext) -> list[str]:
 PULSE_DECAY = 0.18  # s: how long each beat "punch" takes to settle
 
 
+PUNCH_ATTACK, PUNCH_TAU = 0.04, 0.13  # s: a 1-frame snap to the peak, then a fast exponential settle
+
+
 def _pulse(c: FxContext) -> list[str]:
     if c.times:
-        # punch in on every real beat of the music, then ease back ("bass" / beat-drop feel)
-        z = 0.07 * c.strength
-        bumps = "+".join(f"max(0,1-abs(t-{_f(b)})/{_f(PULSE_DECAY)})" for b in c.times[:120])
-        f = f"(1+{_f(z)}*min(1,{bumps}))"
+        # a beat PUNCH: snaps to the peak in ~1 frame (the time given is already a frame before the beat), then
+        # settles fast — a slow 0.36 s triangle of 7 % was invisible on real footage (2 of 23 beats measured as
+        # hits, tools/beatcheck.py). params["amps"]: one size per hit (bigger on the drop / hard kicks)
+        raw = c.params.get("amps") or ""
+        amps = [float(x) for x in str(raw).split(",") if x.strip()] if raw else []
+        z = 0.11 * c.strength
+        parts = []
+        for k, b in enumerate(c.times[:120]):
+            a = float(amps[k]) if k < len(amps) else 1.0
+            parts.append(f"{_f(a)}*if(between(t,{_f(b - PUNCH_ATTACK)},{_f(b + 0.6)}),"
+                         f"if(lt(t,{_f(b)}),(t-{_f(b - PUNCH_ATTACK)})/{_f(PUNCH_ATTACK)},exp(-(t-{_f(b)})/{_f(PUNCH_TAU)})),0)")
+        f = f"(1+{_f(z)}*min(1.6,{'+'.join(parts)}))"
     else:
         z = 0.05 * c.strength
         f = f"(1+{_f(z)}*(0.5+0.5*sin(2*PI*t*2)))"  # no beat grid: 2 pulses per second
@@ -220,8 +241,10 @@ _REGISTRY: list[FX] = [
     FX("pan_down", "Pan Down", "motion", "tilt down", (r"pan down", r"tilt down"), _pan(0, +1)),
     FX("shake", "Camera Shake", "motion", "handheld shake", (r"shake", r"handheld", r"jhatk"), _shake),
     FX("swing", "Swing", "motion", "gentle left-right tilt", (r"swing", r"sway", r"jhool"), _swing),
+    FX("beat_shake", "Beat Shake", "motion", "short shake bursts on chosen beats (the drop)", (), _beat_shake),
     FX("pulse", "Beat Pulse", "motion", "zoom punch on every music beat", (
         r"pulse", r"beat (zoom|punch|bounce|shake|drop)", r"bounce zoom", r"(zoom|punch|jhatka|shake|bounce) (on|with|pe|par) (the |har )?beats?",
+        r"\bbeats? (ke |ki )?(pe|par|on|saath|sath|hisaab se) (\w+ ){0,2}(zoom|punch|jhatka|shake|bounce|effects?|animations?|motion)",
         r"\bbass\b", r"\bba(s|se)\s+(ki tarah|jaisa|jaise|wala|wali|effect|boost|drop|heavy)", r"dhamak", r"\bthump",
         r"(sound|music|gaana|video) (bhi )?beat (kare|pe)", r"beat ke saath (hil|naach|jump)"), _pulse),
     FX("tilt", "Tilt", "motion", "a still tilted frame (dutch angle)", (r"\btilt", r"dutch angle"), _tilt),
