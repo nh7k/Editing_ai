@@ -331,6 +331,20 @@ def sepia_tone(r: Run) -> tuple[bool, str]:
     return hue_ok and toned < 20, f"R {rr:.0f} > G {gg:.0f} > B {bb:.0f}; R-B spread {toned:.1f} (a tone, not colours)"
 
 
+def tilted_no_corners(r: Run) -> tuple[bool, str]:
+    """Inside 1-3 s the picture is rotated (differs from plain) but no corner is black (it was zoomed to cover);
+    outside it is untouched."""
+    f, g = frame(r.out, 2.0), frame(r.plain, 2.0)
+    i = diff(f, g)
+    o = diff(frame(r.out, 4.5), frame(r.plain, 4.5))
+    h, w = f.shape[:2]
+    corners = [f[:6, :6], f[:6, w - 6:], f[h - 6:, :6], f[h - 6:, w - 6:]]
+    darkest = min(float(c.mean()) for c in corners)
+    plain_dark = min(float(c.mean()) for c in [g[:6, :6], g[:6, w - 6:], g[h - 6:, :6], g[h - 6:, w - 6:]])
+    ok = i > 8 and o < 2 and (darkest > 12 or darkest >= plain_dark - 5)
+    return ok, f"picture changed {i:.1f} inside, {o:.1f} outside; darkest corner {darkest:.0f} (plain {plain_dark:.0f})"
+
+
 def restored_look(r: Run) -> tuple[bool, str]:
     """The setup made 1-3 s black and white; restore takes it off: colour is back inside, outside untouched, and
     inside matches the never-edited source picture (the plain render's own outside frames show the same clip)."""

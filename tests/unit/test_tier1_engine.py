@@ -25,7 +25,7 @@ def plan2(text: list[dict] | None = None) -> EditPlan:
 
 def test_specs_are_valid_and_complete():
     s = spec.load()
-    assert len(s) == 108, len(s)
+    assert len(s) == 109, len(s)
     assert spec.problems() == []
     for sid, x in s.items():
         assert sum(len(v) for v in x["synonyms"].values()) >= 15, sid
@@ -156,3 +156,26 @@ def test_a_split_next_to_a_transition_never_changes_the_length():
         split_at(p, 5.0)
     q, idx = isolate(p, 1.0, 5.0)
     assert abs(q.total_duration() - p.total_duration()) < 1e-6 and idx
+
+
+def test_restore_at_a_moment_keeps_a_whole_video_preset_elsewhere(tmp_path):
+    """The director puts black and white on the whole video as a colour PRESET. "yaha normal karo" must take it off
+    only there: the preset becomes the same grade on every other shot (found by the 30-message API test)."""
+    data = plan2().to_json()
+    data["color"]["preset"] = "bw"
+    p = EditPlan.model_validate(data)
+    q, applied = engine.run(p, [{"id": "restore_normal", "time": {"mode": "between_times", "start": 1.0, "end": 3.0}}],
+                            _ctx(tmp_path))
+    assert q.color.preset == "none"
+    tl = q.timeline()
+    inside = next(e for e in tl if e.start <= 2.0 < e.end).index
+    greys = {e.target for e in q.effects if e.type == "grade" and e.params.get("look") == "grayscale"}
+    assert inside not in greys and greys == {e.index for e in tl} - {inside}
+    assert abs(q.total_duration() - p.total_duration()) < 1e-6
+
+
+def test_restore_everywhere_takes_off_a_colour_preset(tmp_path):
+    data = plan2().to_json()
+    data["color"]["preset"] = "bw"
+    q, _ = engine.run(EditPlan.model_validate(data), [{"id": "restore_normal"}], _ctx(tmp_path))
+    assert q.color.preset == "none" and not any(e.type == "vignette" for e in q.effects)

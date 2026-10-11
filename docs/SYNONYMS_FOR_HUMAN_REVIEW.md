@@ -459,6 +459,10 @@ Removed: aa, aaa, aah, umm, hmm, हम्म, आ, अ. **Not** removed (often 
 | `white_screen_card` | खाली सफ़ेद स्क्रीन | synonym (hi) |
 | `white_screen_card` | सफ़ेद पर्दा | synonym (hi) |
 | `white_screen_card` | 2 सेकंड पर सफ़ेद स्क्रीन | example |
+| `tilt` | थोड़ा घुमाओ | synonym (hi) |
+| `tilt` | तिरछा करो | synonym (hi) |
+| `tilt` | टेढ़ा करो | synonym (hi) |
+| `tilt` | थोड़ा घुमाओ | example |
 
 ## 4. Hinglish synonyms I am least sure about
 

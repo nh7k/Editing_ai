@@ -1,0 +1,56 @@
+{
+ "bins": {
+  "0.0-0.3": {
+   "n": 1,
+   "right": 0,
+   "accuracy": 0.0
+  },
+  "0.3-0.5": {
+   "n": 2,
+   "right": 2,
+   "accuracy": 1.0
+  },
+  "0.5-0.7": {
+   "n": 12,
+   "right": 10,
+   "accuracy": 0.833
+  },
+  "0.7-0.8": {
+   "n": 8,
+   "right": 6,
+   "accuracy": 0.75
+  },
+  "0.8-0.9": {
+   "n": 9,
+   "right": 4,
+   "accuracy": 0.444
+  },
+  "0.9-1.0": {
+   "n": 336,
+   "right": 315,
+   "accuracy": 0.938
+  }
+ },
+ "decisions": {
+  "act": {
+   "n": 41,
+   "right": 34,
+   "accuracy": 0.829
+  },
+  "choose": {
+   "n": 61,
+   "right": 43,
+   "accuracy": 0.705
+  },
+  "apply": {
+   "n": 265,
+   "right": 260,
+   "accuracy": 0.981
+  },
+  "unknown": {
+   "n": 1,
+   "right": 0,
+   "accuracy": 0.0
+  }
+ }
+}

@@ -8,7 +8,7 @@
    "mood": "calm"
   },
   "status": "ready",
-  "why": "vs plain: sound differs by 27.3 dB"
+  "why": "vs plain: sound differs by 27.2 dB"
  },
  "add_music.mood=upbeat": {
   "assumed": [
@@ -129,7 +129,7 @@
    "target": "face"
   },
   "status": "rejected-duplicate",
-  "why": "picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 0.0 dB (< 1.5), same length"
+  "why": "picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 0.1 dB (< 1.5), same length"
  },
  "auto_reframe.target=person": {
   "assumed": [],
@@ -210,6 +210,30 @@
   "status": "planned",
   "why": "not testable on the test media — the skill says: no face found there — give the area instead (e.g. 'top right')"
  },
+ "brighten_to_white.amount=light": {
+  "assumed": [],
+  "params": {
+   "amount": 0.45
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 47.1"
+ },
+ "brighten_to_white.amount=normal": {
+  "assumed": [],
+  "params": {
+   "amount": 0.7
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 72.2"
+ },
+ "brighten_to_white.amount=strong": {
+  "assumed": [],
+  "params": {
+   "amount": 0.94
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 96.0"
+ },
  "brightness.amount=+0.1": {
   "assumed": [],
   "params": {
@@ -265,7 +289,7 @@
    "preset": "bold_pop"
   },
   "status": "rejected-duplicate",
-  "why": "picture 0.8 (< 3.0), part 7.3 (< 10.0), sound 0.1 dB (< 1.5), same length"
+  "why": "picture 0.8 (< 3.0), part 7.3 (< 10.0), sound 0.0 dB (< 1.5), same length"
  },
  "caption_style.preset=desi": {
   "assumed": [],
@@ -283,7 +307,7 @@
    "preset": "hormozi"
   },
   "status": "ready",
-  "why": "vs plain: one part of the picture differs by 111.9"
+  "why": "vs plain: one part of the picture differs by 111.8"
  },
  "caption_style.preset=minimal": {
   "assumed": [],
@@ -292,7 +316,7 @@
    "preset": "minimal"
   },
   "status": "ready",
-  "why": "vs plain: one part of the picture differs by 106.7"
+  "why": "vs plain: one part of the picture differs by 106.6"
  },
  "caption_style.preset=neon": {
   "assumed": [],
@@ -301,7 +325,7 @@
    "preset": "neon"
   },
   "status": "ready",
-  "why": "vs plain: one part of the picture differs by 84.6"
+  "why": "vs plain: one part of the picture differs by 84.4"
  },
  "cinematic_look.strength=0.5": {
   "assumed": [],
@@ -473,7 +497,7 @@
    "amount": "light"
   },
   "status": "ready",
-  "why": "vs plain: sound differs by 21.8 dB"
+  "why": "vs plain: sound differs by 21.9 dB"
  },
  "denoise.amount=strong": {
   "duplicate_of": "denoise.amount=light",
@@ -489,7 +513,7 @@
    "amount": 12.0
   },
   "status": "ready",
-  "why": "vs plain: sound differs by 7.2 dB"
+  "why": "vs plain: sound differs by 7.3 dB"
  },
  "duck_music.amount=20 dB": {
   "assumed": [],
@@ -750,7 +774,7 @@
    "amount": 2.6
   },
   "status": "ready",
-  "why": "vs plain: picture differs by 10.1"
+  "why": "vs plain: picture differs by 10.2"
  },
  "film_grain.amount=light": {
   "assumed": [],
@@ -766,7 +790,7 @@
    "amount": 1.0
   },
   "status": "ready",
-  "why": "vs plain: picture differs by 4.1"
+  "why": "vs plain: picture differs by 3.9"
  },
  "freeze_frame.duration=0.5s": {
   "assumed": [],
@@ -1021,7 +1045,7 @@
    "color": "#FFD60A"
   },
   "status": "ready",
-  "why": "vs plain: one part of the picture differs by 48.4"
+  "why": "vs plain: one part of the picture differs by 48.6"
  },
  "ken_burns.amount=0.1": {
   "assumed": [],
@@ -1428,6 +1452,29 @@
   "status": "ready",
   "why": "vs plain: sound differs by 18.7 dB"
  },
+ "restore_normal.what=all": {
+  "assumed": [],
+  "params": {
+   "what": "all"
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 106.7"
+ },
+ "restore_normal.what=color": {
+  "duplicate_of": "restore_normal.what=all",
+  "params": {
+   "what": "color"
+  },
+  "status": "rejected-duplicate",
+  "why": "picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 0.0 dB (< 1.5), same length"
+ },
+ "restore_normal.what=motion": {
+  "params": {
+   "what": "motion"
+  },
+  "status": "planned",
+  "why": "not testable on the test media — the skill says: there is no zoom / motion here to take off (1.0-3.0s)"
+ },
  "rgb_split.amount=heavy": {
   "assumed": [],
   "params": {
@@ -1523,12 +1570,12 @@
   "why": "vs plain: picture differs by 24.4"
  },
  "sfx_whoosh.volume=loud": {
-  "duplicate_of": "sfx_whoosh.volume=normal",
+  "assumed": [],
   "params": {
    "volume": 1.32
   },
-  "status": "rejected-duplicate",
-  "why": "picture 0.0 (< 3.0), part 0.0 (< 10.0), sound 1.5 dB (< 1.5), same length"
+  "status": "ready",
+  "why": "vs plain: sound differs by 3.3 dB"
  },
  "sfx_whoosh.volume=normal": {
   "assumed": [],
@@ -1536,7 +1583,7 @@
    "volume": 0.6
   },
   "status": "ready",
-  "why": "vs plain: sound differs by 4.2 dB"
+  "why": "vs plain: sound differs by 3.8 dB"
  },
  "sfx_whoosh.volume=soft": {
   "assumed": [],
@@ -1636,7 +1683,7 @@
   },
   "reason": "on soft footage a light sharpen only shows at full size; this test looks at 256 px",
   "status": "rejected-no-effect",
-  "why": "same as the plain video: picture 1.0 (< 3.0), part 9.1 (< 10.0), sound 0.1 dB (< 1.5), same length"
+  "why": "same as the plain video: picture 1.0 (< 3.0), part 9.1 (< 10.0), sound 0.0 dB (< 1.5), same length"
  },
  "sharpen.amount=normal": {
   "assumed": [],
@@ -2043,6 +2090,30 @@
   "status": "ready",
   "why": "vs plain: one part of the picture differs by 34.3"
  },
+ "tilt.angle=12": {
+  "assumed": [],
+  "params": {
+   "angle": 12.0
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 71.1"
+ },
+ "tilt.angle=3": {
+  "assumed": [],
+  "params": {
+   "angle": 3.0
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 27.8"
+ },
+ "tilt.angle=6": {
+  "assumed": [],
+  "params": {
+   "angle": 6.0
+  },
+  "status": "ready",
+  "why": "vs plain: picture differs by 44.2"
+ },
  "title_card.at=middle": {
   "status": "planned",
   "why": "'middle' is a word, not a number for this parameter"
@@ -2275,6 +2346,30 @@
   },
   "status": "ready",
   "why": "vs plain: length 11.50s vs 12.00s"
+ },
+ "white_screen_card.duration=0.5s": {
+  "assumed": [],
+  "params": {
+   "duration": 0.5
+  },
+  "status": "ready",
+  "why": "vs plain: length 12.50s vs 12.00s"
+ },
+ "white_screen_card.duration=1s": {
+  "assumed": [],
+  "params": {
+   "duration": 1.0
+  },
+  "status": "ready",
+  "why": "vs plain: length 13.00s vs 12.00s"
+ },
+ "white_screen_card.duration=2s": {
+  "assumed": [],
+  "params": {
+   "duration": 2.0
+  },
+  "status": "ready",
+  "why": "vs plain: length 14.00s vs 12.00s"
  },
  "wipe.direction=down": {
   "assumed": [],

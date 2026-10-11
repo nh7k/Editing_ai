@@ -46,6 +46,23 @@ def _cut_items(items: list[dict[str, Any]], a: float, b: float) -> tuple[list[di
     return out, hit
 
 
+def _preset_as_grade(preset: str) -> dict[str, Any] | None:
+    """The per-shot grade that looks like a whole-video colour preset (None when there is no such grade)."""
+    from ..luts import ALL_LOOKS
+
+    if preset in ("none", ""):
+        return None
+    if preset in ("bw", "noir"):
+        return {"look": "grayscale"}
+    if preset == "warm":
+        return {"warmth": 0.5}
+    if preset == "cool":
+        return {"warmth": -0.5}
+    if preset in ALL_LOOKS:
+        return {"look": preset}
+    return None
+
+
 @tool("restore_normal")
 def restore_normal(plan: EditPlan, p: dict[str, Any], when: When, ctx: ToolCtx) -> EditPlan:
     what = str(p.get("what") or "all")
@@ -58,7 +75,7 @@ def restore_normal(plan: EditPlan, p: dict[str, Any], when: When, ctx: ToolCtx) 
         data["effects"] = keep
         if "color" in fams and plan.color.preset != "none":
             removed.append(f"colour grade '{plan.color.preset}'")
-            data["color"] = {**data["color"], "preset": "none", "lut": None}
+            data["color"] = {**data["color"], "preset": "none"}
         if "overlays" in fams:
             n = len(data.get("graphics", [])) + len(data.get("stickers", []))
             if n:
@@ -92,6 +109,20 @@ def restore_normal(plan: EditPlan, p: dict[str, Any], when: When, ctx: ToolCtx) 
             data["stickers"], s = _cut_items(data.get("stickers", []), lo, hi)
             if g + s:
                 removed.append(f"{g + s} graphic(s) / sticker(s)")
+        grade = _preset_as_grade(plan.color.preset) if "color" in fams else None
+        if grade is not None:
+            # a whole-video colour preset (the director's "black and white") becomes the same grade on every OTHER
+            # shot, so only this moment goes back to normal
+            removed.append(f"colour '{plan.color.preset}'")
+            data["color"] = {**data["color"], "preset": "none"}
+            for x in tl:
+                if x.index in idx:
+                    continue
+                cur = next((e for e in data["effects"] if e["type"] == "grade" and e["target"] == x.index), None)
+                if cur is None:
+                    data["effects"].append(Effect(type="grade", target=x.index, params=dict(grade)).model_dump())
+                else:
+                    cur["params"] = {**grade, **cur["params"]}
         plan = EditPlan.model_validate(data)
     if "color" in fams and plan.color.preset != "none":
         ctx.notes.append(f"the colour grade '{plan.color.preset}' covers the whole video, so it stays here too — "

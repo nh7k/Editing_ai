@@ -118,37 +118,61 @@ def _near(word: str) -> dict[str, float]:
     return out
 
 
-def _best(t: str, near: list[dict[str, float]]) -> float:
-    return max((m.get(t, 0.0) for m in near), default=0.0)
+@lru_cache(maxsize=1)
+def _phrase_table() -> dict[str, list[tuple[list[tuple[str, float]], float, bool, str]]]:
+    """skill → [(meaning words with weights, total weight, says WHAT, text)] — computed once, not per prompt."""
+    phrases, weights = _index()
+    table: dict[str, list[tuple[list[tuple[str, float]], float, bool, str]]] = {}
+    for sid, ps in phrases.items():
+        rows = []
+        for p in ps:
+            ws = [(t, x) for t in p if (x := _weight(t, weights)) > 0]
+            total = sum(x for _, x in ws)
+            if total > 0:
+                rows.append((ws, total, any(t not in VERBS and t not in REMOVE_VERBS for t, _ in ws), " ".join(p)))
+        table[sid] = rows
+    return table
 
 
 def score_skills(words: list[str]) -> dict[str, tuple[float, str]]:
     """Every skill's best synonym coverage of the prompt words: {skill: (score 0..1, the synonym that matched)}."""
-    phrases, weights = _index()
     prompt = [w for w in words if w not in FILLER and not NUMERIC.fullmatch(w)]  # numbers are read by the parser
     out: dict[str, tuple[float, str]] = {}
     if not prompt:
         return out
-    near = [_near(q) for q in prompt]
-    for sid, ps in phrases.items():
+    best_of: dict[str, float] = {}  # synonym word → how well some prompt word matches it
+    for q in prompt:
+        for t, v in _near(q).items():
+            if v > best_of.get(t, 0.0):
+                best_of[t] = v
+    for sid, rows in _phrase_table().items():
         best, best_p = 0.0, ""
-        for p in ps:
-            ws = [(t, _weight(t, weights)) for t in p]
-            total = sum(x for _, x in ws)
-            if total <= 0:
+        for ws, total, says_what, text in rows:
+            got = sum(x * best_of.get(t, 0.0) for t, x in ws)
+            if got <= 0:
                 continue
-            got = sum(x * _best(t, near) for t, x in ws if x > 0)
             cov = got / total
-            if not any(x > 0 and t not in VERBS and t not in REMOVE_VERBS for t, x in ws):
+            if not says_what:
                 cov *= WEAK_SYNONYM  # "anime style bana do" matched "30 sec ka bana do" on "bana" alone
             # a synonym that says more (more meaning words) is a slightly better witness than a one-word one
             # (a stronger length penalty was tried and lost: dev top-1 0.887 vs 0.913 — docs/INTENT_EVAL.md)
             sc = cov * (0.85 + 0.15 * min(1.0, total / 6.0))
             if sc > best:
-                best, best_p = sc, " ".join(p)
+                best, best_p = sc, text
         if best > 0:
             out[sid] = (round(best, 4), best_p)
     return out
+
+
+def _names_a_present_effect(words: list[str], present: list[dict[str, Any]], specs: dict[str, Any]) -> bool:
+    """The words name an effect skill of the same family as an effect on screen ("black white" + a colour grade
+    there) — so "hatao" means take THAT off, whatever label the effect carries."""
+    from .b_restore import _family
+
+    fams = {_family(str(f.get("type", ""))) for f in present}
+    sc = score_skills(words)
+    return any(v[0] >= 0.8 and specs[k]["category"] in EFFECT_CATEGORIES and _family_of(specs[k]) in fams
+               for k, v in sc.items() if k in specs)
 
 
 def _family_of(s: dict[str, Any]) -> str | None:
@@ -222,8 +246,9 @@ def _ranked(prompt: str, words: list[str], exact: dict[str, Any], ctx: dict[str,
     specs = spec.load()
     exact_ids = [c["id"] for c in exact["calls"]]
     # weighted token scores
-    scores = {k: v[0] for k, v in score_skills(words).items()}
-    trace["matched"] = {k: v for k, v in sorted(score_skills(words).items(), key=lambda kv: -kv[1][0])[:6]}
+    scored = score_skills(words)
+    scores = {k: v[0] for k, v in scored.items()}
+    trace["matched"] = {k: v for k, v in sorted(scored.items(), key=lambda kv: -kv[1][0])[:6]}
     for sid in exact_ids:  # what the exact matcher read is a strong candidate
         scores[sid] = max(scores.get(sid, 0.0), 0.75)
     for neg in exact["negated"]:
@@ -249,9 +274,10 @@ def _ranked(prompt: str, words: list[str], exact: dict[str, Any], ctx: dict[str,
     for k, sid in enumerate(WHITE_FAMILY):
         if sid in scores:
             scores[sid] = scores[sid] + 0.01 * (len(WHITE_FAMILY) - k)
-    for sid, n in (ctx.get("learned") or {}).items():  # this user picked it for these same words before
-        if sid in scores or sid in specs:
-            scores[sid] = scores.get(sid, 0.3) + 0.12 * min(int(n), 3)
+    for sid, n in (ctx.get("learned") or {}).items():  # this user's reactions to these same words (signed, decayed)
+        w = max(-3.0, min(3.0, float(n)))
+        if sid in scores or (sid in specs and w > 0):
+            scores[sid] = scores.get(sid, 0.3) + 0.12 * w
     if restore_said and present and "restore_normal" in scores:
         # "…normal jaisa tha" while an effect IS there: taking it off is the likeliest reading; the other readings
         # stay as choices (a close margin → the user picks with one tap)
@@ -302,8 +328,15 @@ def _partial(prompt: str, exact: dict[str, Any], ctx: dict[str, Any], point: flo
              present: list[dict[str, Any]], trace: dict[str, Any]) -> Resolution | None:
     from .parse import clauses, parse
 
-    parts = clauses(prompt)
+    # split the spelling-fixed text: "blak and wite" must meet "black and white" (kept together by the splitter)
+    # (commas survive: each comma-separated piece is fixed on its own, then joined again)
+    fixed = ", ".join(" ".join(canonical_words(piece)) for piece in re.split(r"[,;]", prompt) if piece.strip())
+    parts = clauses(fixed if not QUOTED.search(prompt) else prompt)
     if len(parts) < 2:
+        return None
+    # one skill whose own name has an "and" in it ("forward and backward" = boomerang, "black and white"): one clause
+    best = max(score_skills(canonical_words(prompt)).values(), default=(0.0, ""))
+    if best[0] >= 0.85 and re.search(r"\b(and|aur|n)\b", best[1]):
         return None
     known: list[str] = []
     unclear: list[dict[str, Any]] = []
@@ -341,8 +374,50 @@ def _partial(prompt: str, exact: dict[str, Any], ctx: dict[str, Any], point: flo
                       reply=f"Kiya: {choice['label']}. Ye nahi ho paaya: {undone} — neeche ke options dekho.")
 
 
+MAX_CHARS = 1000  # a 5,000-character message took 8.5 s to read; the first 1,000 characters are understood
+
+
+def _num(v: Any) -> float | None:
+    try:
+        f = float(v)
+    except (TypeError, ValueError):
+        return None
+    return f if math.isfinite(f) else None
+
+
+def clean_context(context: Any) -> dict[str, Any]:
+    """The context is data from the app: wrong types are dropped, never trusted (a corrupt field must not crash)."""
+    raw = context if isinstance(context, dict) else {}
+    specs = spec.load()
+    ctx: dict[str, Any] = {}
+    for k in ("marker_time", "playhead", "duration"):
+        if (v := _num(raw.get(k))) is not None and v >= 0:
+            ctx[k] = v
+    if "comment" in raw:
+        ctx["comment"] = bool(raw["comment"])
+    fx = raw.get("effects_present_at_time")
+    if isinstance(fx, list):
+        ctx["effects_present_at_time"] = [
+            {"type": str(f.get("type", ""))[:40], "label": str(f.get("label", f.get("type", "")))[:60],
+             **({"start": _num(f["start"])} if _num(f.get("start")) is not None else {}),
+             **({"end": _num(f["end"])} if _num(f.get("end")) is not None else {})}
+            for f in fx[:50] if isinstance(f, dict)]
+    rec = raw.get("recent_edits")
+    if isinstance(rec, list):
+        ctx["recent_edits"] = [{"id": r["id"], "params": r.get("params") if isinstance(r.get("params"), dict) else {},
+                                "time": r.get("time") if isinstance(r.get("time"), dict) else None}
+                               for r in rec[-10:] if isinstance(r, dict) and r.get("id") in specs]
+    learned = raw.get("learned")
+    if isinstance(learned, dict):
+        ctx["learned"] = {str(k): v for k, v in ((k, _num(v)) for k, v in learned.items()) if v is not None}
+    return ctx
+
+
 def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
-    ctx = dict(context or {})
+    ctx = clean_context(context)
+    prompt = str(prompt or "")
+    clipped = len(prompt) > MAX_CHARS
+    prompt = prompt[:MAX_CHARS]
     specs = spec.load()
     words = canonical_words(prompt)
     t = ctx.get("marker_time", ctx.get("playhead"))
@@ -351,6 +426,8 @@ def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
     point = t if (t is not None and (deictic or ctx.get("comment", True))) else None
     ctx["_t"] = point
     trace: dict[str, Any] = {"words": words, "time": point}
+    if clipped:
+        trace["clipped_to_chars"] = MAX_CHARS  # said to the user by the API
 
     # 1. the exact matcher: a clear request stays exactly what it was
     from .parse import parse
@@ -390,21 +467,30 @@ def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
         return Resolution([choice], "undo" if rel["kind"] == "remove" else "apply", trace, apply=[c], reply=rel["said"])
     # "ye black white hatao yaha se" with that effect on screen: take it off (restore), not add it again
     on_screen = {w for f in present for w in canonical_words(f"{f.get('label', '')} {f.get('type', '')}")} - FILLER
+    # "ye black white HATAO" — the parser reads "hatao" as "not", so the named effect may sit in `negated`
     removing = bool(REMOVE_WORDS & set(words)) and bool(present) and (
-        any(specs[x]["category"] in EFFECT_CATEGORIES for x in exact_ids)
-        or bool(on_screen & set(words)) or bool({"effect", "filter"} & set(words)))
+        any(specs[x]["category"] in EFFECT_CATEGORIES for x in exact_ids + list(exact["negated"]))
+        or bool(on_screen & set(words)) or bool({"effect", "filter"} & set(words))
+        or _names_a_present_effect(words, present, specs))
     restore_said = bool(RESTORE_WORDS & set(words)) or "jaisa tha" in " ".join(words) or removing
     # a clear request is applied as it is — unless it also says "like it was / normal" and the matcher did not read
     # that part, or leaves too many of the prompt's meaning words unexplained: then the readings are ranked
     # words of a skill the user said NOT to use ("zoom mat lagao") are understood too
     said = exact_ids + list(exact["negated"])
     trace["unexplained"] = round(unexplained(words, said), 3) if exact_ids else None
+    # a reading this user undid / rephrased for these same words is not applied blindly again
+    disliked = any(float((ctx.get("learned") or {}).get(i, 0.0)) < 0 for i in exact_ids)
     clear = (bool(exact["calls"]) and not exact["unknown"] and unexplained(words, said) < UNEXPLAINED_MAX
+             and not disliked
              and not (restore_said and "restore_normal" not in exact_ids))
     # partial: some parts are clear, some are not ("warm karo, captions lagao aur mere chehre ko jawan dikhao") — each
     # clause is judged on its own: the clear ones run, every unclear one gets its own choices. One unknown part never
     # sinks the whole message (before: the whole message became one "pick one" question)
-    if not (restore_said and "restore_normal" not in exact_ids):
+    whole_clear = (bool(exact["calls"]) and not exact["unknown"] and not (restore_said and "restore_normal" not in exact_ids)
+                   and unexplained(words, exact_ids + list(exact["negated"])) < UNEXPLAINED_MAX)
+    # the whole message clearly understood ("blak and wite kro" = black and white) is never cut into clauses —
+    # splitting on "and" turned it into "blak" + "wite kro" → a white flash
+    if not whole_clear and not (restore_said and "restore_normal" not in exact_ids):
         part = _partial(prompt, exact, ctx, point, present, trace)
         if part is not None:
             return part
@@ -417,12 +503,14 @@ def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
         first = calls[0]
         choice = {"id": first["id"], "params": first.get("params", {}), "time": first.get("time"), "score": 1.0,
                   "calls": calls, "label": " + ".join(label(c["id"], c.get("time"), ctx) for c in calls)[:68]}
-        return Resolution([choice], "apply", trace)
+        return Resolution([choice], "apply", trace, apply=calls)
 
     choices, scores = _ranked(prompt, words, exact, ctx, point, restore_said, present, trace)
     top = choices[0]["score"] if choices else 0.0
     second = choices[1]["score"] if len(choices) > 1 else 0.0
     top_unexplained = unexplained(words, [choices[0]["id"]]) if choices else 1.0
+    if choices and choices[0]["id"] == "restore_normal" and restore_said and present:
+        top_unexplained = 0.0  # the effect on screen explains the words ("ye black white hatao" + a grade there)
     later = _not_available(prompt)
     trace.update({"margin": round(top - second, 3), "top_unexplained": round(top_unexplained, 3),
                   "not_available": later})
@@ -437,7 +525,10 @@ def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
         return Resolution(choices, "act", trace, apply=list(choices[0]["calls"]),
                           reply=f"Maine ye kiya: {choices[0]['label']}. Galat ho to neeche se badlo ya ↶ Undo.")
     if top >= CHOOSE_MIN:
-        return Resolution(choices, "choose", trace)
+        # not "this is not supported": the share of unknown words overlaps completely between unsupported requests and
+        # oddly worded supported ones (dev: 0.45-0.88 for both — docs/UNDERSTANDING_EVAL.md), so say only the truth
+        return Resolution(choices, "choose", trace,
+                          reply="Pakka nahi samjha — inme se koi chahiye? Na ho to apne shabdon me dobara likho:")
     return Resolution(choices, "unknown", trace,
                       reply="Exact skill nahi mila — ye sabse paas wale hain (aapke shabdon se):")
 
@@ -452,11 +543,21 @@ def context_from_plan(plan: Any, t: float | None) -> dict[str, Any]:
     tl = plan.timeline()
     shot = next((e for e in tl if e.start - 1e-3 <= t < e.end + 1e-3), None)
     present: list[dict[str, Any]] = []
+
+    def name(e: Any) -> str:  # the words a user would use for it ("black and white", not "grade")
+        look = str((e.params or {}).get("look") or "")
+        if look in ("grayscale", "bw", "mono", "noir", "film_bw") or e.type in ("mono", "film_bw"):
+            return "black and white"
+        if e.type == "grade":
+            p = e.params or {}
+            return ("warm colour" if float(p.get("warmth", 0) or 0) > 0 else "cool colour" if float(p.get("warmth", 0) or 0) < 0
+                    else f"{look} look" if look else "colour grade")
+        return e.type.replace("_", " ")
     for e in plan.effects:
         if e.target == -1 and shot is not None:
-            present.append({"type": e.type, "label": e.type, "start": round(shot.start, 3), "end": round(shot.end, 3)})
+            present.append({"type": e.type, "label": name(e), "start": round(shot.start, 3), "end": round(shot.end, 3)})
         elif shot is not None and e.target == shot.index:
-            present.append({"type": e.type, "label": e.type, "start": round(shot.start, 3), "end": round(shot.end, 3)})
+            present.append({"type": e.type, "label": name(e), "start": round(shot.start, 3), "end": round(shot.end, 3)})
     for g in plan.graphics:
         if g.start - 0.05 <= t <= g.end + 0.05:
             present.append({"type": g.kind, "label": f"{g.kind} graphic", "start": g.start, "end": g.end})
@@ -474,4 +575,8 @@ def warm() -> None:
     """Build the index once (about 2 s on a laptop) — called in the background when the server starts."""
     _index()
     _vocab_by_len()
+    _phrase_table()
+    from .variants import variant_map
+
+    variant_map()
     resolve("zoom karo", {})

@@ -109,3 +109,12 @@ conditions; RED = must not ship in the closed-source app; BLOCKED = needs a huma
 | YOLOX-nano person detector (auto_reframe, face censor) | Apache-2.0 | GREEN | optional model, server only |
 | Test media | generated with FFmpeg sources + local Windows TTS | GREEN | no copyrighted media in tests |
 | Platform specs (export_preset) | facts from public guides, checked 2026-10-09 | — | Instagram / YouTube / WhatsApp change them: re-check before launch |
+
+## Understanding engine v2 (2026-10-11) — no new dependency
+
+| item | licence | status | note |
+|---|---|---|---|
+| Skill resolver, Hinglish normaliser, phonetic key, spelling-variant generator, relative / non-edit turns, learning loop (`backend/cutmind/tools/{fuzzy,variants,resolve,turns}.py`, `unmet.py`) | own code | GREEN | ideas from papers (noisy-form rules: arXiv 1804.05868; CALCS 2021 normalisation) — no code copied |
+| `paraphrase-multilingual-MiniLM-L12-v2` (already used by the phrasebook) | Apache-2.0 | GREEN | unchanged; requests no longer wait for it to load |
+| `tilt` skill: FFmpeg `rotate` + `scale` | LGPL-2.1+ | GREEN | checked 2026-10-11 in FFmpeg master `configure`: the filter-deps section has `boxblur_filter_deps="gpl"` and `eq_filter_deps="gpl"` but no gpl line for `rotate_filter` (it only appears in `ffmpeg_select` / `ffplay_select`) |
+| `dhvani` (PyPI, Hinglish phonetic library) | — | NOT USED | came up in research; brand-new package already treated as untrusted in this project |

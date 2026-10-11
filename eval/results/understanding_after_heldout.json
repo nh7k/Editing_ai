@@ -1,0 +1,532 @@
+{
+ "tag": "after",
+ "split": "heldout",
+ "all": {
+  "n": 125,
+  "dead_end": 0,
+  "single": {
+   "n": 96,
+   "top1": 0.865,
+   "top3": 0.938,
+   "silent_wrong": 3,
+   "wrong_applied": 6
+  },
+  "multi": {
+   "n": 7,
+   "all_applied": 5,
+   "mean_share_applied": 0.917,
+   "unsupported_flagged": 5
+  },
+  "relative": {
+   "n": 10,
+   "right": 10
+  },
+  "non_edit": {
+   "n": 6,
+   "right": 6
+  },
+  "unsupported": {
+   "n": 6,
+   "right": 6
+  },
+  "latency_ms": {
+   "p50": 68.1,
+   "p95": 184.6,
+   "max": 1748.0
+  }
+ },
+ "handwritten": {
+  "n": 125,
+  "dead_end": 0,
+  "single": {
+   "n": 96,
+   "top1": 0.865,
+   "top3": 0.938,
+   "silent_wrong": 3,
+   "wrong_applied": 6
+  },
+  "multi": {
+   "n": 7,
+   "all_applied": 5,
+   "mean_share_applied": 0.917,
+   "unsupported_flagged": 5
+  },
+  "relative": {
+   "n": 10,
+   "right": 10
+  },
+  "non_edit": {
+   "n": 6,
+   "right": 6
+  },
+  "unsupported": {
+   "n": 6,
+   "right": 6
+  },
+  "latency_ms": {
+   "p50": 68.1,
+   "p95": 184.6,
+   "max": 1748.0
+  }
+ },
+ "generated": null,
+ "by_group": {
+  "devanagari": {
+   "n": 7,
+   "dead_end": 0,
+   "single": {
+    "n": 7,
+    "top1": 1.0,
+    "top3": 1.0,
+    "silent_wrong": 0,
+    "wrong_applied": 0
+   },
+   "latency_ms": {
+    "p50": 55.0,
+    "p95": 114.4,
+    "max": 114.4
+   }
+  },
+  "intent_v1": {
+   "n": 85,
+   "dead_end": 0,
+   "single": {
+    "n": 85,
+    "top1": 0.847,
+    "top3": 0.929,
+    "silent_wrong": 3,
+    "wrong_applied": 6
+   },
+   "latency_ms": {
+    "p50": 71.0,
+    "p95": 138.8,
+    "max": 1748.0
+   }
+  },
+  "multi": {
+   "n": 7,
+   "dead_end": 0,
+   "multi": {
+    "n": 7,
+    "all_applied": 5,
+    "mean_share_applied": 0.917,
+    "unsupported_flagged": 5
+   },
+   "latency_ms": {
+    "p50": 184.6,
+    "p95": 461.3,
+    "max": 461.3
+   }
+  },
+  "non_edit": {
+   "n": 6,
+   "dead_end": 0,
+   "non_edit": {
+    "n": 6,
+    "right": 6
+   },
+   "latency_ms": {
+    "p50": 63.2,
+    "p95": 75.3,
+    "max": 75.3
+   }
+  },
+  "relative": {
+   "n": 10,
+   "dead_end": 0,
+   "relative": {
+    "n": 10,
+    "right": 10
+   },
+   "latency_ms": {
+    "p50": 60.0,
+    "p95": 125.3,
+    "max": 125.3
+   }
+  },
+  "runon": {
+   "n": 4,
+   "dead_end": 0,
+   "single": {
+    "n": 4,
+    "top1": 1.0,
+    "top3": 1.0,
+    "silent_wrong": 0,
+    "wrong_applied": 0
+   },
+   "latency_ms": {
+    "p50": 111.1,
+    "p95": 146.3,
+    "max": 146.3
+   }
+  },
+  "unsupported": {
+   "n": 6,
+   "dead_end": 0,
+   "unsupported": {
+    "n": 6,
+    "right": 6
+   },
+   "latency_ms": {
+    "p50": 78.5,
+    "p95": 105.3,
+    "max": 105.3
+   }
+  }
+ },
+ "fails": [
+  {
+   "kind": "single",
+   "group": "intent_v1",
+   "split": "heldout",
+   "prompt": "sirf 5 se 15 sec wala part chahiye",
+   "expect": "trim",
+   "decision": "choose",
+   "applied": [],
+   "shown": [
+    "split",
+    "trim",
+    "denoise"
+   ],
+   "ms": 1748.0,
+   "res": {
+    "dead_end": false,
+    "top1": false,
+    "top3": true,
+    "silent_wrong": false,
+    "wrong_applied": false
+   }
+  },
+  {
+   "kind": "single",
+   "group": "intent_v1",
+   "split": "heldout",
+   "prompt": "cut it down to 3-10 sec",
+   "expect": "trim",
+   "decision": "apply",
+   "applied": [
+    "fit_to_duration"
+   ],
+   "shown": [
+    "fit_to_duration"
+   ],
+   "ms": 56.3,
+   "res": {
+    "dead_end": false,
+    "top1": false,
+    "top3": false,
+    "silent_wrong": true,
+    "wrong_applied": true
+   }
+  },
+  {
+   "kind": "single",
+   "group": "intent_v1",
+   "split": "heldout",
+   "prompt": "remove 1 to 3 sec",
+   "expect": "delete_segment",
+   "decision": "choose",
+   "applied": [],
+   "shown": [
+    "mute",
+    "delete_segment",
+    "remove_silence"
+   ],
+   "ms": 80.8,
+   "res": {
+    "dead_end": false,
+    "top1": false,
+    "top3": true,
+    "silent_wrong": false,
+    "wrong_applied": false
+   }
+  },
+  {
+   "kind": "single",
+   "group": "intent_v1",
+   "split": "heldout",
+   "prompt": "khamoshi wale hisse kaat do",
+   "expect": "remove_silence",
+   "decision": "act",
+   "applied": [
+    "split"
+   ],
+   "shown": [
+    "split",
+    "delete_segment",
+    "remove_silence"
+   ],
+   "ms": 82.0,
+   "res": {
+    "dead_end": false,
+    "top1": false,
+    "top3": true,
+    "silent_wrong": false,
+    "wrong_applied": true
+   }
+  },
+  {
+   "kind": "single",
+   "group": "intent_v1",
+   "split": "heldout",
+   "prompt": "10 sec ka chota version",
+   "expect": "fit_to_duration",
+   "decision": "choose",
+   "applied": [],
+   "shown": [
+    "montage_builder",
+    "fit_to_duration",
+    "crop"
+   ],
+   "ms": 97.2,
+   "res": {
+    "dead_end": false,
+    "top1": false,
+    "top3": true,
+    "silent_wrong": false,
+    "wrong_applied": false
+   }
+  },
+  {
+   "kind": "single",
+   "group": "intent_v1",
+   "split": "heldout",
+   "prompt": "jhatka do video ko",
+   "expect": "shake",
+   "decision": "choose",
+   "applied": [],
+   "shown": [
+    "fit_to_duration",
+    "shake",
+    "punch_in"
+   ],
+   "ms": 130.2,
+   "res": {
+    "dead_end": false,
+    "top1": false,
+    "top3": true,
+    "silent_wrong": false,
+    "wrong_applied": false
+   }
+  },
+  {
+   "kind": "single",
+   "group": "intent_v1",
+   "split": "heldout",
+   "prompt": "purani film jaisa black white",
+   "expect": "grayscale",
+   "decision": "act",
+   "applied": [
+    "vintage_faded"
+   ],
+   "shown": [
+    "vintage_faded",
+    "grayscale",
+    "flash"
+   ],
+   "ms": 138.8,
+   "res": {
+    "dead_end": false,
+    "top1": false,
+    "top3": true,
+    "silent_wrong": false,
+    "wrong_applied": true
+   }
+  },
+  {
+   "kind": "single",
+   "group": "intent_v1",
+   "split": "heldout",
+   "prompt": "text me bolna dikhao",
+   "expect": "auto_captions",
+   "decision": "choose",
+   "applied": [],
+   "shown": [
+    "text_overlay",
+    "caption_style",
+    "auto_captions"
+   ],
+   "ms": 187.2,
+   "res": {
+    "dead_end": false,
+    "top1": false,
+    "top3": true,
+    "silent_wrong": false,
+    "wrong_applied": false
+   }
+  },
+  {
+   "kind": "single",
+   "group": "intent_v1",
+   "split": "heldout",
+   "prompt": "baat ke beech music neeche",
+   "expect": "duck_music",
+   "decision": "act",
+   "applied": [
+    "add_music"
+   ],
+   "shown": [
+    "add_music",
+    "pixelate_censor",
+    "beat_sync"
+   ],
+   "ms": 108.5,
+   "res": {
+    "dead_end": false,
+    "top1": false,
+    "top3": false,
+    "silent_wrong": false,
+    "wrong_applied": true
+   }
+  },
+  {
+   "kind": "single",
+   "group": "intent_v1",
+   "split": "heldout",
+   "prompt": "audio fad out",
+   "expect": "audio_fade",
+   "decision": "apply",
+   "applied": [
+    "fade_black"
+   ],
+   "shown": [
+    "fade_black"
+   ],
+   "ms": 57.7,
+   "res": {
+    "dead_end": false,
+    "top1": false,
+    "top3": false,
+    "silent_wrong": true,
+    "wrong_applied": true
+   }
+  },
+  {
+   "kind": "single",
+   "group": "intent_v1",
+   "split": "heldout",
+   "prompt": "9 by 16",
+   "expect": "aspect_9_16",
+   "decision": "apply",
+   "applied": [
+    "aspect_4_5"
+   ],
+   "shown": [
+    "aspect_4_5"
+   ],
+   "ms": 40.0,
+   "res": {
+    "dead_end": false,
+    "top1": false,
+    "top3": false,
+    "silent_wrong": true,
+    "wrong_applied": true
+   }
+  },
+  {
+   "kind": "single",
+   "group": "intent_v1",
+   "split": "heldout",
+   "prompt": "chokor video",
+   "expect": "aspect_1_1",
+   "decision": "choose",
+   "applied": [],
+   "shown": [
+    "fit_to_duration",
+    "merge_clips",
+    "picture_in_picture"
+   ],
+   "ms": 104.7,
+   "res": {
+    "dead_end": false,
+    "top1": false,
+    "top3": false,
+    "silent_wrong": false,
+    "wrong_applied": false
+   }
+  },
+  {
+   "kind": "single",
+   "group": "intent_v1",
+   "split": "heldout",
+   "prompt": "yaha whitish kar do",
+   "expect": "brighten_to_white",
+   "decision": "unknown",
+   "applied": [],
+   "shown": [
+    "zoom_in",
+    "add_music",
+    "auto_captions"
+   ],
+   "ms": 78.1,
+   "res": {
+    "dead_end": false,
+    "top1": false,
+    "top3": false,
+    "silent_wrong": false,
+    "wrong_applied": false
+   }
+  },
+  {
+   "kind": "multi",
+   "group": "multi",
+   "split": "heldout",
+   "prompt": "vertical, captions, music, 15 sec",
+   "expect": [
+    "aspect_9_16",
+    "auto_captions",
+    "add_music",
+    "fit_to_duration"
+   ],
+   "decision": "apply",
+   "applied": [
+    "aspect_9_16",
+    "auto_captions",
+    "add_music"
+   ],
+   "shown": [
+    "aspect_9_16",
+    "auto_captions",
+    "add_music"
+   ],
+   "ms": 102.3,
+   "res": {
+    "dead_end": false,
+    "all_applied": false,
+    "share_applied": 0.75,
+    "unsupported_flagged": true
+   }
+  },
+  {
+   "kind": "multi",
+   "group": "multi",
+   "split": "heldout",
+   "prompt": "reel bana do vertical, flash har cut pe, music aur ek AI host jo bole",
+   "expect": [
+    "aspect_9_16",
+    "flash",
+    "add_music"
+   ],
+   "decision": "partial",
+   "applied": [
+    "aspect_9_16",
+    "add_music"
+   ],
+   "shown": [
+    "aspect_9_16",
+    "add_music",
+    "aspect_9_16",
+    "flash",
+    "fade_white",
+    "trim"
+   ],
+   "ms": 461.3,
+   "res": {
+    "dead_end": false,
+    "all_applied": false,
+    "share_applied": 0.6666666666666666,
+    "unsupported_flagged": true
+   }
+  }
+ ]
+}

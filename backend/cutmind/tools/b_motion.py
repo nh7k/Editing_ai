@@ -138,6 +138,19 @@ def shake(plan: EditPlan, p: dict[str, Any], when: When, ctx: ToolCtx) -> EditPl
     return _effect(plan, when, ctx, "shake", float(p["intensity"]), f"camera shake x{p['intensity']:g}")
 
 
+@tool("tilt")
+def tilt(plan: EditPlan, p: dict[str, Any], when: When, ctx: ToolCtx) -> EditPlan:
+    """A small still rotation, zoomed so no black corner shows (a primitive for "thoda ghumao")."""
+    ang = float(p["angle"])
+    plan, targets = _targets(plan, when)
+    data = plan.to_json()
+    for t in targets:
+        data["effects"] = [e for e in data["effects"] if not (e["type"] == "tilt" and e["target"] == t)]
+        data["effects"].append(Effect(type="tilt", target=t, params={"angle": ang}).model_dump())
+    ctx.notes.append(f"tilted {ang:+g}° (zoomed in a little so no black corner shows; {when.describe()})")
+    return EditPlan.model_validate(data)
+
+
 def _speed(plan: EditPlan, when: When, ctx: ToolCtx, factor: float, what: str) -> EditPlan:
     plan, targets = _targets(plan, when)
     data = plan.to_json()

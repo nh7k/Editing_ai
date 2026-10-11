@@ -1,0 +1,437 @@
+{
+ "dead_end": 0,
+ "skills": {
+  "add_music": {
+   "first": 19,
+   "n": 19
+  },
+  "aspect_16_9": {
+   "first": 9,
+   "n": 9
+  },
+  "aspect_1_1": {
+   "first": 15,
+   "n": 17
+  },
+  "aspect_4_5": {
+   "first": 9,
+   "n": 9
+  },
+  "aspect_9_16": {
+   "first": 16,
+   "n": 19
+  },
+  "audio_fade": {
+   "first": 14,
+   "n": 17
+  },
+  "auto_captions": {
+   "first": 19,
+   "n": 19
+  },
+  "auto_enhance": {
+   "first": 9,
+   "n": 9
+  },
+  "auto_reframe": {
+   "first": 7,
+   "n": 9
+  },
+  "beat_sync": {
+   "first": 8,
+   "n": 9
+  },
+  "blur": {
+   "first": 16,
+   "n": 18
+  },
+  "blur_background_fill": {
+   "first": 5,
+   "n": 9
+  },
+  "blur_box_censor": {
+   "first": 6,
+   "n": 9
+  },
+  "brighten_to_white": {
+   "first": 11,
+   "n": 15
+  },
+  "brightness": {
+   "first": 16,
+   "n": 17
+  },
+  "caption_style": {
+   "first": 16,
+   "n": 17
+  },
+  "cinematic_look": {
+   "first": 17,
+   "n": 19
+  },
+  "color_pop": {
+   "first": 9,
+   "n": 9
+  },
+  "contrast": {
+   "first": 17,
+   "n": 18
+  },
+  "cool": {
+   "first": 17,
+   "n": 18
+  },
+  "countdown_timer": {
+   "first": 9,
+   "n": 9
+  },
+  "crop": {
+   "first": 7,
+   "n": 9
+  },
+  "crossfade": {
+   "first": 18,
+   "n": 18
+  },
+  "delete_segment": {
+   "first": 15,
+   "n": 17
+  },
+  "denoise": {
+   "first": 18,
+   "n": 18
+  },
+  "duck_music": {
+   "first": 13,
+   "n": 18
+  },
+  "echo_reverb": {
+   "first": 7,
+   "n": 9
+  },
+  "export_preset": {
+   "first": 13,
+   "n": 17
+  },
+  "extract_audio": {
+   "first": 8,
+   "n": 9
+  },
+  "extract_highlights": {
+   "first": 8,
+   "n": 9
+  },
+  "fade_black": {
+   "first": 16,
+   "n": 18
+  },
+  "fade_white": {
+   "first": 12,
+   "n": 17
+  },
+  "film_grain": {
+   "first": 8,
+   "n": 9
+  },
+  "fit_to_duration": {
+   "first": 15,
+   "n": 17
+  },
+  "flash": {
+   "first": 19,
+   "n": 19
+  },
+  "freeze_frame": {
+   "first": 9,
+   "n": 9
+  },
+  "glitch": {
+   "first": 17,
+   "n": 17
+  },
+  "glitch_transition": {
+   "first": 7,
+   "n": 9
+  },
+  "grayscale": {
+   "first": 17,
+   "n": 18
+  },
+  "hook_first": {
+   "first": 9,
+   "n": 9
+  },
+  "insert_broll": {
+   "first": 9,
+   "n": 9
+  },
+  "intro_outro": {
+   "first": 9,
+   "n": 9
+  },
+  "iris_circle": {
+   "first": 7,
+   "n": 9
+  },
+  "j_cut": {
+   "first": 8,
+   "n": 9
+  },
+  "jump_cut_tighten": {
+   "first": 9,
+   "n": 9
+  },
+  "karaoke_captions": {
+   "first": 9,
+   "n": 9
+  },
+  "ken_burns": {
+   "first": 9,
+   "n": 9
+  },
+  "l_cut": {
+   "first": 9,
+   "n": 9
+  },
+  "letterbox": {
+   "first": 9,
+   "n": 9
+  },
+  "light_leak": {
+   "first": 8,
+   "n": 9
+  },
+  "loop_boomerang": {
+   "first": 8,
+   "n": 9
+  },
+  "lower_third": {
+   "first": 9,
+   "n": 9
+  },
+  "merge_clips": {
+   "first": 9,
+   "n": 9
+  },
+  "mirror_effect": {
+   "first": 8,
+   "n": 9
+  },
+  "montage_builder": {
+   "first": 9,
+   "n": 9
+  },
+  "mute": {
+   "first": 18,
+   "n": 18
+  },
+  "normalize_loudness": {
+   "first": 9,
+   "n": 9
+  },
+  "pan": {
+   "first": 9,
+   "n": 9
+  },
+  "picture_in_picture": {
+   "first": 7,
+   "n": 9
+  },
+  "pixelate_censor": {
+   "first": 9,
+   "n": 9
+  },
+  "progress_bar": {
+   "first": 9,
+   "n": 9
+  },
+  "punch_in": {
+   "first": 6,
+   "n": 9
+  },
+  "remove_fillers": {
+   "first": 9,
+   "n": 9
+  },
+  "remove_silence": {
+   "first": 17,
+   "n": 18
+  },
+  "reorder_clips": {
+   "first": 9,
+   "n": 9
+  },
+  "replace_audio": {
+   "first": 9,
+   "n": 9
+  },
+  "restore_normal": {
+   "first": 17,
+   "n": 20
+  },
+  "reverse": {
+   "first": 9,
+   "n": 9
+  },
+  "rgb_split": {
+   "first": 8,
+   "n": 9
+  },
+  "rotate_flip": {
+   "first": 8,
+   "n": 9
+  },
+  "saturation": {
+   "first": 15,
+   "n": 18
+  },
+  "scene_detect": {
+   "first": 8,
+   "n": 9
+  },
+  "sepia": {
+   "first": 17,
+   "n": 18
+  },
+  "sfx_whoosh": {
+   "first": 9,
+   "n": 9
+  },
+  "shake": {
+   "first": 17,
+   "n": 17
+  },
+  "shape_highlight": {
+   "first": 8,
+   "n": 9
+  },
+  "sharpen": {
+   "first": 9,
+   "n": 9
+  },
+  "slide": {
+   "first": 8,
+   "n": 9
+  },
+  "slow_motion": {
+   "first": 15,
+   "n": 18
+  },
+  "speed_ramp": {
+   "first": 5,
+   "n": 9
+  },
+  "speed_up": {
+   "first": 18,
+   "n": 19
+  },
+  "split": {
+   "first": 9,
+   "n": 9
+  },
+  "split_screen": {
+   "first": 8,
+   "n": 9
+  },
+  "srt_export": {
+   "first": 9,
+   "n": 9
+  },
+  "stabilize": {
+   "first": 8,
+   "n": 10
+  },
+  "sticker_lottie": {
+   "first": 9,
+   "n": 9
+  },
+  "teal_orange": {
+   "first": 8,
+   "n": 9
+  },
+  "text_glow_neon": {
+   "first": 8,
+   "n": 9
+  },
+  "text_overlay": {
+   "first": 17,
+   "n": 17
+  },
+  "text_pop_in": {
+   "first": 9,
+   "n": 9
+  },
+  "text_slide": {
+   "first": 9,
+   "n": 9
+  },
+  "text_typewriter": {
+   "first": 8,
+   "n": 9
+  },
+  "thumbnail": {
+   "first": 9,
+   "n": 9
+  },
+  "title_card": {
+   "first": 14,
+   "n": 17
+  },
+  "trim": {
+   "first": 13,
+   "n": 17
+  },
+  "vhs_retro": {
+   "first": 15,
+   "n": 17
+  },
+  "vignette": {
+   "first": 7,
+   "n": 9
+  },
+  "vintage_faded": {
+   "first": 15,
+   "n": 18
+  },
+  "voice_clarity": {
+   "first": 8,
+   "n": 9
+  },
+  "volume": {
+   "first": 16,
+   "n": 17
+  },
+  "warm": {
+   "first": 17,
+   "n": 19
+  },
+  "watermark_logo": {
+   "first": 18,
+   "n": 18
+  },
+  "whip_pan": {
+   "first": 8,
+   "n": 9
+  },
+  "white_screen_card": {
+   "first": 11,
+   "n": 16
+  },
+  "wipe": {
+   "first": 8,
+   "n": 9
+  },
+  "zoom_in": {
+   "first": 18,
+   "n": 19
+  },
+  "zoom_out": {
+   "first": 15,
+   "n": 17
+  },
+  "zoom_transition": {
+   "first": 8,
+   "n": 9
+  }
+ }
+}

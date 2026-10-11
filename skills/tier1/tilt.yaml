@@ -1,0 +1,92 @@
+# added as a primitive of the understanding engine v2 ("thoda ghumao") — docs/UNDERSTANDING_REVIEW.md
+id: tilt
+seed: 109
+category: motion
+name: Tilt
+name_hi: Thoda ghumao
+description: A small still rotation of the picture (a "dutch angle"), zoomed in just enough that no black corner
+  shows. For a 90 / 180 degree turn use rotate_flip; for a slow spin use the spin effect.
+params:
+  angle:
+    type: number
+    default: 6.0
+    min: -45.0
+    max: 45.0
+    unit: deg
+    desc: degrees (positive = anticlockwise)
+time_modes:
+- whole
+- segment
+- between_times
+builder: motion.tilt
+graph: scale (cover) + rotate=a:ow:oh (fixed angle)
+media3:
+  status: mapped
+  how: ScaleAndRotateTransformation(rotationDegrees) + scale to cover — NOT TESTED
+stage: geometry
+conflicts: []
+cost: cheap
+licence: own code; FFmpeg rotate / scale (server process)
+changes_duration: false
+needs: []
+variant_axes:
+  angle:
+  - '3'
+  - '6'
+  - '12'
+synonyms:
+  en:
+  - tilt the video
+  - dutch angle
+  - slightly rotated
+  - rotate a little
+  - tilted frame
+  - skew the angle
+  - lean the picture
+  hinglish:
+  - thoda ghumao
+  - halka sa ghumao
+  - tircha karo
+  - tedha karo
+  - thoda jhuka do
+  - angle tircha karo
+  - side me jhukao
+  hi:
+  - थोड़ा घुमाओ
+  - तिरछा करो
+  - टेढ़ा करो
+  slang:
+  - tedha mast look
+  typos:
+  - tlt karo
+  - thoda ghumaao
+  - tircha kro
+negations:
+- tircha mat karo
+examples:
+- prompt: tilt the video a little
+  lang: en
+- prompt: give it a dutch angle from 1 to 3 sec
+  lang: en
+- prompt: थोड़ा घुमाओ
+  lang: hi
+- prompt: video thoda ghumao
+  lang: hinglish
+- prompt: 2 se 4 sec tircha karo
+  lang: hinglish
+- prompt: tircha kro
+  lang: typo
+- prompt: thoda dramatic angle chahiye
+  lang: vague
+- prompt: thoda ghumao aur zoom in karo
+  lang: multi
+  also:
+  - zoom_in
+test:
+  check: tilted_no_corners
+  params:
+    angle: 8.0
+  time:
+    mode: between_times
+    start: 1.0
+    end: 3.0

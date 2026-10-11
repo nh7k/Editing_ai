@@ -63,3 +63,15 @@ def test_never_an_empty_answer(prompt):
     """Found on the held-out set: 'yaha whitish kar do' returned no choice at all."""
     r = resolve(prompt, {"marker_time": 1.0})
     assert len(r.choices) == 3 and all(c["label"] for c in r.choices)
+
+
+@pytest.mark.parametrize("prompt,ctx", [
+    ("warm karo", {}), ("zoom karo aur music lagao", {}), ("yaha screen white kar do nomal jasia tha", {"marker_time": 4.3,
+     "effects_present_at_time": [{"type": "grade", "start": 3, "end": 5.5}]}), ("warm karo, vignette lagao aur chehra jawan", {}),
+    ("aur thoda", {"recent_edits": [{"id": "warm", "params": {"amount": 0.5}}]}),
+])
+def test_every_decision_that_edits_carries_its_calls(prompt, ctx):
+    """Found by the live API test: the clear path returned no calls, the job ran with none and failed."""
+    r = resolve(prompt, ctx)
+    if r.decision in ("apply", "act", "partial"):
+        assert r.apply and all(c.get("id") for c in r.apply), r

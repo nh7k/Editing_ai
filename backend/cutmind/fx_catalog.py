@@ -96,6 +96,18 @@ def _pulse(c: FxContext) -> list[str]:
     return [f"scale=w='trunc({c.w}*{f}/2)*2':h='trunc({c.h}*{f}/2)*2':eval=frame", f"crop={c.w}:{c.h}"]
 
 
+def _tilt(c: FxContext) -> list[str]:
+    """A still tilt ("thoda ghumao", dutch angle): rotate by params["angle"] degrees and zoom just enough that no
+    black corner shows (a frame rotated by θ is covered when scaled by cos θ + sin θ · long/short side)."""
+    import math
+
+    ang = max(-45.0, min(45.0, float(c.params.get("angle", 5.0 * c.strength))))
+    a = math.radians(abs(ang))
+    s = math.cos(a) + math.sin(a) * max(c.w / c.h, c.h / c.w)
+    sw, sh = int(c.w * s + 2) // 2 * 2, int(c.h * s + 2) // 2 * 2
+    return [f"scale=w={sw}:h={sh}", f"rotate=a={_f(math.radians(ang))}:ow={c.w}:oh={c.h}:c=black"]
+
+
 def _slow_rotate(c: FxContext) -> list[str]:
     return [f"scale=w={int(c.w * 1.15) // 2 * 2}:h={int(c.h * 1.15) // 2 * 2}",
             f"rotate=a='{_f(0.02 * c.strength)}*t':ow={c.w}:oh={c.h}:c=black"]
@@ -212,6 +224,7 @@ _REGISTRY: list[FX] = [
         r"pulse", r"beat (zoom|punch|bounce|shake|drop)", r"bounce zoom", r"(zoom|punch|jhatka|shake|bounce) (on|with|pe|par) (the |har )?beats?",
         r"\bbass\b", r"\bba(s|se)\s+(ki tarah|jaisa|jaise|wala|wali|effect|boost|drop|heavy)", r"dhamak", r"\bthump",
         r"(sound|music|gaana|video) (bhi )?beat (kare|pe)", r"beat ke saath (hil|naach|jump)"), _pulse),
+    FX("tilt", "Tilt", "motion", "a still tilted frame (dutch angle)", (r"\btilt", r"dutch angle"), _tilt),
     FX("rotate_slow", "Slow Spin", "motion", "slowly rotating frame", (r"\bspin(ning)?\b(?! (text|title|in\b))", r"slow(ly)? rotat"), _slow_rotate),
     # --- video effects ---
     FX("vignette", "Vignette", "video_effect", "darker edges", (r"vignette", r"dark (edges|corners)"),

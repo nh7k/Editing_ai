@@ -339,3 +339,18 @@
     "fillers" matched "flash" (same phonetic key, far spelling), verb-only synonyms ("30 sec ka bana do") made any
     "bana do" a duration request. Dev hand-written: multi-instruction all-applied 5/23 → 18/23, relative 0/30 →
     29/30, non-edit 18 → 19/19, unsupported acted-on 4 → 1, single top-1 90.8 → 91.6 %, dead ends 0.
+61. **Understanding v2, checkpoint 2** (docs/UNDERSTANDING_EVAL.md) — chat and timeline comments that an edit
+    already exists for now go through the skills when they are clearly understood (each message changes exactly
+    that on the current version, so "aur thoda" can follow it); learning loop (picked / kept / undone / rephrased,
+    30-day half-life, `DELETE /me/understanding-data`); context sanitised (corrupt fields dropped), prompts cut to
+    1,000 characters; honest "ye exact kaam abhi nahi aata" for unsupported requests (the fixed example list is
+    gone from the chat too); a `tilt` primitive ("thoda ghumao": rotate + zoom to cover, no black corners);
+    regression gate + confusability lint in CI; catalog-size scaling test. Bugs found by the 30-message real-API
+    test and fixed: (1) a clearly understood message submitted a job with no calls (it failed); (2) after a white
+    screen card the next edit failed ("unknown clip gen_card_…"); (3) "blak and wite" was split on "and" into a
+    white flash; (4) the clause splitter lost commas; (5) any message within 30 s counted as a rephrase (wrong
+    negative signal); (6) "ye black white hatao" — "hatao" read as "not" hid the effect's name; (7) comments the
+    old reader knew bypassed the skills, so "thoda kam" had no last edit. Also: three regexes had a real backspace
+    character instead of `\b` (shell heredoc), incl. the chat's auto-edit check — fixed, and a test now fails on any
+    control character in a source file. Held-out: multi-instruction share applied 54 → 92 %, relative 0 → 10/10,
+    unsupported 4 → 6/6, top-3 92.7 → 93.8 %, top-1 87.5 → 86.5 % (−1), dead ends 0.

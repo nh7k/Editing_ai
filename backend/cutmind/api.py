@@ -1016,9 +1016,20 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     @app.post("/projects/{pid}/undo", tags=["versions"])
     def undo_edit(pid: str) -> dict[str, Any]:
+        from .unmet import UnmetLog
         from .versions import undo
 
-        return _version_op(pid, undo)
+        out = _version_op(pid, undo)
+        if out.get("replaced"):  # the reading that made that version missed: a negative signal for those words
+            UnmetLog(db).undone(str(out["replaced"]))
+        return out
+
+    @app.delete("/me/understanding-data", tags=["edit"])
+    def forget_understanding() -> dict[str, Any]:
+        """Reset my data: the stored unclear messages, readings and reactions are deleted (local server only)."""
+        from .unmet import UnmetLog
+
+        return {"deleted": UnmetLog(db).forget()}
 
     @app.post("/projects/{pid}/redo", tags=["versions"])
     def redo_edit(pid: str) -> dict[str, Any]:
@@ -1062,9 +1073,13 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             if not job or not job["plan"]:
                 raise ApiError(400, "no_plan", "Pehle ek edit banao — comment us edit ke kisi moment pe lagta hai.")
             plan = EditPlan.model_validate(json.loads(job["plan"]))
+            from .tools.resolve import context_from_plan
             from .tools.resolve import resolve as quick_resolve
 
-            if not read_comment(prompt)["understood"] or quick_resolve(prompt, {"marker_time": body.at}).decision == "partial":
+            quick = quick_resolve(prompt, {**context_from_plan(plan, body.at), "recent_edits": _recent_edits(pid)})
+            # the skills first when they clearly read the comment (the change is exactly that, at that moment, and
+            # "thoda kam" can follow it); the comment reader keeps what only it knows (a sticker by name, free text)
+            if quick.decision in ("apply", "act", "partial", "undo") or not read_comment(prompt)["understood"]:
                 # the comment reader knows a few kinds of edit; everything else goes to the skill resolver (never a
                 # dead end: apply when sure, else tap-able choices — docs/INTENT_FAILURE_REVIEW.md)
                 return _resolve_or_ask(pid, prompt, plan, body.at)
@@ -1076,7 +1091,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             from .tools.resolve import resolve as quick_resolve
 
             quick = quick_resolve(prompt, {"comment": False, "recent_edits": _recent_edits(pid)})
-            if quick.decision in ("non_edit", "undo") or str(quick.trace.get("turn", "")).startswith("relative"):
+            last_done = db.last_job(pid, "done")
+            # the current version was made by the skills (a chip, a comment, "aur thoda"…): a clear message keeps
+            # changing exactly that version. Otherwise the director stays the chat's editor (it re-thinks the
+            # whole edit and keeps earlier changes); "new edit" / "make a … reel" always go to the director.
+            tool_mode = _made_by_tools(last_done)
+            precise = (tool_mode and not options and not new_edit_words.search(prompt)
+                       and quick.decision in ("apply", "act", "partial"))
+            if precise or quick.decision in ("non_edit", "undo") or str(quick.trace.get("turn", "")).startswith("relative"):
                 # a greeting / question, or "aur thoda" / "kam karo" / "isko hata do" about the last edit
                 last = db.last_job(pid, "done")
                 plan = EditPlan.model_validate(json.loads(last["plan"])) if last and last["plan"] else None
@@ -1095,11 +1117,22 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                     last = db.last_job(pid, "done")
                     plan = EditPlan.model_validate(json.loads(last["plan"])) if last and last["plan"] else None
                     return _resolve_or_ask(pid, prompt, plan, None)
-            _must_understand(prompt, options)
+            try:
+                _must_understand(prompt, options)
+            except ApiError as exc:
+                if exc.code not in ("not_understood",):
+                    raise
+                # never the fixed example list: the closest skills computed from the user's own words, as chips
+                last = db.last_job(pid, "done")
+                plan = EditPlan.model_validate(json.loads(last["plan"])) if last and last["plan"] else None
+                return _resolve_or_ask(pid, prompt, plan, None, playhead=body.playhead)
         job_id = jobs.submit(pid, prompt, options)
         return {"job_id": job_id, "status": "queued"}
 
-    auto_ask = re.compile(r"(edit|auto|reel|reels|short|shorts|montage|vlog|video|bana|banao|banado|bana do)", re.I)
+    # asking for a (new) whole edit, not a change to the current one
+    new_edit_words = re.compile(r"\b(new edit|naya edit|nayi edit|fresh edit|from scratch|shuru se|start over|edit like|"
+                                r"make (a|an|me a)|banao (ek|naya)|ek (reel|video|short) banao)\b", re.I)
+    auto_ask = re.compile(r"\b(edit|auto|reel|reels|short|shorts|montage|vlog|video|bana|banao|banado|bana do)\b", re.I)
 
     def _only_auto_guess(prompt: str, options: dict[str, Any]) -> bool:
         """The old reader saw no edit in the words and fell back to "auto edit" although nobody asked for one."""
@@ -1109,6 +1142,20 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             return False
         rec = parse_intent(prompt).recognized
         return bool(rec) and all(r.startswith("auto edit") for r in rec) and not auto_ask.search(prompt)
+
+    def _made_by_tools(job: dict[str, Any] | None) -> bool:
+        """Was this version made by the skills? An undo / restore copies a version: follow it to the original."""
+        for _ in range(8):
+            if not job:
+                return False
+            opts = json.loads(job["options"] or "{}")
+            if opts.get("tools"):
+                return True
+            src = opts.get("restored_from")
+            if not src:
+                return False
+            job = db.one("SELECT * FROM jobs WHERE id=?", (src,))
+        return False
 
     def _recent_edits(pid: str) -> list[dict[str, Any]]:
         """The tool calls of the latest version (with the values they were applied with) — what "aur thoda",
@@ -1158,24 +1205,28 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
             out = _version_op(pid, undo)
             return {**out, "did": res.reply, "decision": "undo"}
-        if res.decision in ("apply", "act", "partial"):
+        calls = res.apply or (res.choices[0]["calls"] if res.choices else [])
+        if res.decision in ("apply", "act", "partial") and calls:  # never a job with no calls (it fails, silently)
             try:
-                job_id = jobs.submit_tools(pid, res.apply, prompt)
+                job_id = jobs.submit_tools(pid, calls, prompt)
             except ManualError as exc:
                 raise ApiError(422, "bad_tools", str(exc)) from exc
             alts = chips(res.choices[1:]) if res.decision == "act" else []
             unclear = [{"text": u["text"], "supported": u["supported"], "not_available": u.get("not_available", []),
                         "choices": chips(u["choices"])} for u in res.unclear]
-            rid = log.log(pid, prompt, ctx, res.decision, res.choices) if (alts or unclear) else None
+            # every reading that ran is remembered with what happened next (kept / undone / rephrased / chip picked)
+            rid = log.log(pid, prompt, ctx, res.decision, res.choices, applied=[c["id"] for c in calls],
+                          job_id=job_id)
             return {"job_id": job_id, "status": "queued", "did": res.reply or res.choices[0]["label"],
                     "decision": res.decision, "alternatives": alts, "unclear": unclear, "request_id": rid}
         rid = log.log(pid, prompt, ctx, res.decision, res.choices)
         here = at if at is not None else playhead
         where = f" ({here:.1f}s)" if here is not None else ""
-        msg = (f'"{prompt[:60]}"{where} ke ek se zyada matlab ho sakte hain — jo chahiye us pe tap karo:'
+        msg = (f'"{prompt[:60]}"{where}: {res.reply}' if res.reply else
+               f'"{prompt[:60]}"{where} ke ek se zyada matlab ho sakte hain — jo chahiye us pe tap karo:'
                if res.decision == "choose" else
                f'"{prompt[:60]}"{where} pakka samajh nahi aaya. Shayad aap inme se kuch chahte ho:')
-        raise ApiError(422, "choose", (res.reply + " " if res.reply else "") + msg,
+        raise ApiError(422, "choose", msg,
                        {"choices": chips(res.choices), "request_id": rid, "decision": res.decision})
 
     def _must_understand(prompt: str, options: dict[str, Any]) -> None:

@@ -359,7 +359,11 @@ class JobManager:
             return analysis_cache["a"]
 
         logo = next((pdir / n for n in ("logo.png", "logo.webp", "logo.jpg") if (pdir / n).exists()), None)
-        return ToolCtx(sources={c.id: c.path for c in clips}, gen_dir=pdir / "generated",
+        sources = {c.id: c.path for c in clips}
+        # clips made by earlier edits (a white screen, an intro card) are part of the current version: without them
+        # the next edit failed with "unknown clip gen_card_…" (found by tests/integration/test_understanding_e2e.py)
+        sources.update({p.stem: p for p in (pdir / "generated").glob("gen_*.mp4")})
+        return ToolCtx(sources=sources, gen_dir=pdir / "generated",
                        clip_ids=[c.id for c in sorted(clips, key=lambda c: c.position)], analysis=analysis,
                        music_dirs=music_dirs(self.settings, project_id), logo=logo)
 

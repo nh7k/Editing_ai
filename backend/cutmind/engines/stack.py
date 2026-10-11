@@ -19,7 +19,7 @@ from __future__ import annotations
 
 from typing import Any
 
-GEOMETRY = {"stabilize", "crop", "zoom", "zoom_out", "pan_left", "pan_right", "pan_up", "pan_down", "shake", "swing", "pulse", "rotate_slow",
+GEOMETRY = {"stabilize", "crop", "zoom", "zoom_out", "pan_left", "pan_right", "pan_up", "pan_down", "shake", "swing", "pulse", "rotate_slow", "tilt",
             "follow", "person_zoom", "spotlight", "camera_move", "keyframes", "punch", "punch_static", "drift", "mirror",
             "kaleidoscope", "fisheye", "speed_ramp", "blur_background"}
 TIME_BLEND = {"ghost_trail", "echo"}

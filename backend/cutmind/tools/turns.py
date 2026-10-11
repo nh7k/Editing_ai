@@ -70,6 +70,8 @@ def relative(prompt: str, recent: list[dict[str, Any]] | None, exact_ids: list[s
     pointing = bool(REMOVE & set(words)) and bool(POINTERS & set(words)) and not re.search(r"\d", prompt)
     if pointing and exact_ids == ["delete_segment"]:
         exact_ids = []  # "isko hata do" with no times: the last edit, not "cut a part" (which needs a when)
+    if meaning and all(w in UP | DOWN | SAME | REMOVE | POINTERS for w in meaning):
+        exact_ids = []  # only "how much" words ("thoda kam"): about the last edit, even if "kam" matched a skill
     if exact_ids and exact_ids != [last["id"]]:
         return None  # a new skill was named: not about the last edit
     if len(meaning) > 5:

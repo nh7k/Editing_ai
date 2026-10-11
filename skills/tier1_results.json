@@ -757,6 +757,13 @@
   "explain": "whole video",
   "ok": true
  },
+ "tilt": {
+  "assumed": [],
+  "check": "tilted_no_corners",
+  "detail": "picture changed 49.9 inside, 1.1 outside; darkest corner 84 (plain 57)",
+  "explain": "1.0-3.0s",
+  "ok": true
+ },
  "title_card": {
   "assumed": [
    "at = 0s (default)",

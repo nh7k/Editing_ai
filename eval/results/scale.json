@@ -1,0 +1,146 @@
+[
+ {
+  "distractors": "hard",
+  "skills": 108,
+  "ranker": "flat",
+  "top1": 0.858,
+  "top3": 0.962,
+  "ms_per_prompt": 44.8,
+  "index_build_s": 0.2
+ },
+ {
+  "distractors": "hard",
+  "skills": 108,
+  "ranker": "category-first",
+  "top1": 0.849,
+  "top3": 0.945,
+  "ms_per_prompt": 10.8,
+  "index_build_s": 0.2
+ },
+ {
+  "distractors": "hard",
+  "skills": 500,
+  "ranker": "flat",
+  "top1": 0.794,
+  "top3": 0.913,
+  "ms_per_prompt": 82.7,
+  "index_build_s": 0.6
+ },
+ {
+  "distractors": "hard",
+  "skills": 500,
+  "ranker": "category-first",
+  "top1": 0.783,
+  "top3": 0.901,
+  "ms_per_prompt": 30.9,
+  "index_build_s": 0.6
+ },
+ {
+  "distractors": "hard",
+  "skills": 2000,
+  "ranker": "flat",
+  "top1": 0.661,
+  "top3": 0.838,
+  "ms_per_prompt": 196.6,
+  "index_build_s": 1.8
+ },
+ {
+  "distractors": "hard",
+  "skills": 2000,
+  "ranker": "category-first",
+  "top1": 0.67,
+  "top3": 0.826,
+  "ms_per_prompt": 85.5,
+  "index_build_s": 1.8
+ },
+ {
+  "distractors": "hard",
+  "skills": 10000,
+  "ranker": "flat",
+  "top1": 0.536,
+  "top3": 0.655,
+  "ms_per_prompt": 833.5,
+  "index_build_s": 9.3
+ },
+ {
+  "distractors": "hard",
+  "skills": 10000,
+  "ranker": "category-first",
+  "top1": 0.542,
+  "top3": 0.67,
+  "ms_per_prompt": 481.8,
+  "index_build_s": 9.3
+ },
+ {
+  "distractors": "random",
+  "skills": 108,
+  "ranker": "flat",
+  "top1": 0.858,
+  "top3": 0.962,
+  "ms_per_prompt": 63.8,
+  "index_build_s": 0.2
+ },
+ {
+  "distractors": "random",
+  "skills": 108,
+  "ranker": "category-first",
+  "top1": 0.849,
+  "top3": 0.945,
+  "ms_per_prompt": 14.3,
+  "index_build_s": 0.2
+ },
+ {
+  "distractors": "random",
+  "skills": 500,
+  "ranker": "flat",
+  "top1": 0.817,
+  "top3": 0.93,
+  "ms_per_prompt": 99.1,
+  "index_build_s": 0.5
+ },
+ {
+  "distractors": "random",
+  "skills": 500,
+  "ranker": "category-first",
+  "top1": 0.823,
+  "top3": 0.901,
+  "ms_per_prompt": 35.4,
+  "index_build_s": 0.5
+ },
+ {
+  "distractors": "random",
+  "skills": 2000,
+  "ranker": "flat",
+  "top1": 0.754,
+  "top3": 0.881,
+  "ms_per_prompt": 238.7,
+  "index_build_s": 3.2
+ },
+ {
+  "distractors": "random",
+  "skills": 2000,
+  "ranker": "category-first",
+  "top1": 0.69,
+  "top3": 0.762,
+  "ms_per_prompt": 142.0,
+  "index_build_s": 3.2
+ },
+ {
+  "distractors": "random",
+  "skills": 10000,
+  "ranker": "flat",
+  "top1": 0.623,
+  "top3": 0.759,
+  "ms_per_prompt": 973.8,
+  "index_build_s": 9.0
+ },
+ {
+  "distractors": "random",
+  "skills": 10000,
+  "ranker": "category-first",
+  "top1": 0.388,
+  "top3": 0.458,
+  "ms_per_prompt": 648.1,
+  "index_build_s": 9.0
+ }
+]
