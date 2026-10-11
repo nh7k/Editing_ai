@@ -204,7 +204,7 @@ Columns: **Chat** = resolver top-1 on the skill's own examples [CLAIMED eval/res
 
 `POST /projects/{id}/edit` (`api.py` ~1053) decides who gets a chat message: skills only when the current version was made by the skills, for greetings/undo/"aur thoda", "yaha" + playhead, timeline comments, restore ("normal karo", new), or when the old parser understands nothing. Otherwise the director.
 
-**What works for real (run today):** skill renders (109 PASS in tier1_results, merged across runs); understanding eval held-out top-3 93.8 %, 0 dead ends; 30-message real-API test; restore / white screen / tilt renders; undo/redo; timeline comments; manual effects panel; project delete button; 3 variations really render 3 different looks; Jest 251/251.
+**What works for real (run in this session):** understanding eval held-out top-3 93.8 %, 0 dead ends; 30-message real-API test, intent API tests incl. timeline comments + undo (48 passed); restore / white screen / tilt renders; project delete button (browser); 3 variations really render 3 different looks; Jest 251/251. **Only recorded, not re-run today:** 109/109 skill renders PASS (tier1_results.json merges runs); manual effects panel (code + older tests).
 
 **Only listed, not real:** video / image / B-roll generation, AI upscale, frame interpolation (GPU). Phone Media3 render path: not tested. `planned.yaml` still calls 17 working skills "not available yet".
 
