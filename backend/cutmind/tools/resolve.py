@@ -175,7 +175,13 @@ def _names_a_present_effect(words: list[str], present: list[dict[str, Any]], spe
                for k, v in sc.items() if k in specs)
 
 
+# things put ON the picture (restore family "overlays"), whatever their catalogue category
+OVERLAY_SKILLS = {"sticker_lottie", "shape_highlight", "progress_bar", "countdown_timer"}
+
+
 def _family_of(s: dict[str, Any]) -> str | None:
+    if s.get("id") in OVERLAY_SKILLS:
+        return "overlays"
     return FAMILY_OF_CATEGORY.get(s.get("category", ""))
 
 
@@ -510,6 +516,18 @@ def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
         return Resolution([choice], "apply", trace, apply=calls)
 
     choices, scores = _ranked(prompt, words, exact, ctx, point, restore_said, present, trace)
+    # "stickers hata do": the restore takes off THAT family only (stickers), not the colour and effects too
+    named_fams = {_family_of(specs[x]) for x in exact_ids + list(exact["negated"]) if x in specs} - {None}
+    from .b_restore import _family as _fx_family
+
+    there = {_fx_family(str(f.get("type", ""))) if f.get("type") not in ("sticker", "style", "color_preset")
+             else {"sticker": "overlays", "style": "all", "color_preset": "color"}[f["type"]] for f in present}
+    if removing and len(named_fams) == 1 and (named_fams & there or "overlays" in named_fams and there):
+        fam = next(iter(named_fams))
+        for ch in choices:
+            if ch["id"] == "restore_normal":
+                ch["params"] = {**ch["params"], "what": fam}
+                ch["calls"] = [{**c, "params": {**c.get("params", {}), "what": fam}} for c in ch["calls"]]
     top = choices[0]["score"] if choices else 0.0
     second = choices[1]["score"] if len(choices) > 1 else 0.0
     top_unexplained = unexplained(words, [choices[0]["id"]]) if choices else 1.0
@@ -553,6 +571,11 @@ def context_from_plan(plan: Any, t: float | None) -> dict[str, Any]:
                           "start": 0.0, "end": total})
         if plan.style or plan.overlays:
             whole.append({"type": "style", "label": f"{plan.style or 'graphic'} look", "start": 0.0, "end": total})
+        # things anywhere on the video ("stickers hata do" must find the stickers — it ADDED one before)
+        for g in plan.graphics:
+            whole.append({"type": g.kind, "label": f"{g.kind} graphic", "start": g.start, "end": g.end})
+        for st in plan.stickers:
+            whole.append({"type": "sticker", "label": f"sticker {st.emoji}", "start": st.start, "end": st.end})
         ctx["effects_present_at_time"] = whole
         return ctx
     ctx["marker_time"] = round(float(t), 3)

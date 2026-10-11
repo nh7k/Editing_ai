@@ -294,7 +294,7 @@ export function StudioEditor({ navigation, route }: Props) {
       // an unclear request comes with readings to tap (never a dead end)
       const msg = errorMessage(e);
       const choices =
-        isApiError(e) && e.code === 'choose' && Array.isArray(e.details.choices) ? (e.details.choices as IntentChoice[]) : undefined;
+        isApiError(e) && (e.code === 'choose' || e.code === 'not_understood') && Array.isArray(e.details.choices) ? (e.details.choices as IntentChoice[]) : undefined;
       const requestId = isApiError(e) && typeof e.details.request_id === 'string' ? e.details.request_id : undefined;
       // a greeting / a question about the app: an answer, not an error
       const answer = isApiError(e) && e.code === 'non_edit';

@@ -86,10 +86,14 @@ def restore_normal(plan: EditPlan, p: dict[str, Any], when: When, ctx: ToolCtx) 
                 removed.append("colour wash")
                 data["overlays"] = [o for o in data["overlays"] if o["kind"] != "wash"]
         if "overlays" in fams:
-            n = len(data.get("graphics", [])) + len(data.get("stickers", [])) + len(data.get("overlays", []))
+            # a look's gradient tracks go only with "everything normal" ("stickers hata do" keeps the look)
+            tracks = len(data.get("overlays", [])) if what == "all" else 0
+            n = len(data.get("graphics", [])) + len(data.get("stickers", [])) + tracks
             if n:
                 removed.append(f"{n} graphic(s) / sticker(s)")
-            data["graphics"], data["stickers"], data["overlays"] = [], [], []
+            data["graphics"], data["stickers"] = [], []
+            if what == "all":
+                data["overlays"] = []
         if what == "all" and data.get("style"):
             removed.append(f"style '{data['style']}'")
             data["style"] = None
@@ -119,7 +123,9 @@ def restore_normal(plan: EditPlan, p: dict[str, Any], when: When, ctx: ToolCtx) 
         if "overlays" in fams:
             data["graphics"], g = _cut_items(data.get("graphics", []), lo, hi)
             data["stickers"], s = _cut_items(data.get("stickers", []), lo, hi)
-            data["overlays"], o = _cut_items(data.get("overlays", []), lo, hi)
+            o = 0
+            if what == "all":
+                data["overlays"], o = _cut_items(data.get("overlays", []), lo, hi)
             if g + s + o:
                 removed.append(f"{g + s + o} graphic(s) / sticker(s)")
         elif "color" in fams:  # a style's colour wash, only here

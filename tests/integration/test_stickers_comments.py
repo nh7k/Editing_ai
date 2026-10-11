@@ -46,7 +46,7 @@ def edit(c, pid, prompt, **extra):
     r = c.post(f"/projects/{pid}/edit", json={"prompt": prompt, **extra})
     assert r.status_code == 202, r.text
     job = wait_job(c, r.json()["job_id"])
-    assert job["status"] == "done", job["error"]
+    assert job["status"] == "done", (job["error"], [x["msg"][-900:] for x in job.get("logs", []) if x["level"] == "error"])
     return job, EditPlan.model_validate(c.get(f"/projects/{pid}/plan").json())
 
 
@@ -81,7 +81,9 @@ def test_timeline_comments_change_only_their_moment_and_add_up(env):
     # 2) "zoom" at 1 s: an effect only on the shot(s) there, the WOW text stays
     _job, p2 = edit(c, pid, "yaha zoom karo", at=1.0)
     tl = p2.timeline()
-    zoomed = [e.target for e in p2.effects if e.type == "zoom"]
+    # the zoom skill (comments go to the skills since the understanding engine) writes a keyframed zoom; the
+    # requirement is unchanged: a zoom only on the shot(s) at that moment, never the whole video
+    zoomed = [e.target for e in p2.effects if e.type in ("zoom", "keyframes")]
     assert zoomed and -1 not in zoomed
     assert all(tl[i].start < 1.0 + 2.6 and tl[i].end > 1.0 - 0.05 for i in zoomed)
     assert any(t.text == "WOW" for t in p2.text), "an earlier comment was lost"

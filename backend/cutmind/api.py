@@ -1079,7 +1079,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             quick = quick_resolve(prompt, {**context_from_plan(plan, body.at), "recent_edits": _recent_edits(pid)})
             # the skills first when they clearly read the comment (the change is exactly that, at that moment, and
             # "thoda kam" can follow it); the comment reader keeps what only it knows (a sticker by name, free text)
-            if quick.decision in ("apply", "act", "partial", "undo") or not read_comment(prompt)["understood"]:
+            # "undo" (the relative reading of "isko hata do") only when the comment reader does not know the words: a
+            # comment names a thing AT that moment ("ye text hata do" takes that text off, it does not undo the last
+            # edit — that undid a colour change and left the text)
+            knows = read_comment(prompt)["understood"]
+            if quick.decision in ("apply", "act", "partial") or (quick.decision == "undo" and not knows) or not knows:
                 # the comment reader knows a few kinds of edit; everything else goes to the skill resolver (never a
                 # dead end: apply when sure, else tap-able choices — docs/INTENT_FAILURE_REVIEW.md)
                 return _resolve_or_ask(pid, prompt, plan, body.at)
@@ -1242,6 +1246,13 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                f'"{prompt[:60]}"{where} ke ek se zyada matlab ho sakte hain — jo chahiye us pe tap karo:'
                if res.decision == "choose" else
                f'"{prompt[:60]}"{where} pakka samajh nahi aaya. Shayad aap inme se kuch chahte ho:')
+        if res.decision == "unknown":
+            # nothing close at all ("asdf qwerty"): say it honestly — "samajh nahi aaya" — and still never a dead
+            # end (the closest skills to the words stay one tap away)
+            msg = (f'"{prompt[:60]}"{where} samajh nahi aaya. ' + (res.reply or "Apne shabdon me dobara likho.")
+                   + (" Ya inme se koi:" if res.choices else ""))
+            raise ApiError(422, "not_understood", msg,
+                           {"choices": chips(res.choices), "request_id": rid, "decision": res.decision})
         raise ApiError(422, "choose", msg,
                        {"choices": chips(res.choices), "request_id": rid, "decision": res.decision})
 

@@ -85,8 +85,21 @@ def delete_segment(plan: EditPlan, p: dict[str, Any], when: When, ctx: ToolCtx) 
         if not 0 <= i < len(tl):
             raise ToolError(f"there is no shot {i + 1} (the edit has {len(tl)})")
         a, b = tl[i].start, tl[i].end - plan.overlap_after(i)
-    else:
+    elif p.get("start") is not None and p.get("end") is not None:
         a, b = float(p["start"]), float(p["end"])
+    elif when.windows or when.instants:
+        # "ye part hata do" on a timeline comment / "yaha": the shot at that moment (the params had no times —
+        # it crashed with KeyError 'start' before)
+        t = when.windows[0][0] if when.windows else when.instants[0]
+        tl = plan.timeline()
+        shot = next((x for x in tl if x.start - 1e-3 <= t < x.end), tl[-1])
+        a, b = shot.start, shot.end - plan.overlap_after(shot.index)
+        if b - a > 0.5 * plan.total_duration() and when.windows:
+            # one long shot is most of the video: "ye part" is the moment pointed at, not the whole shot
+            a, b = when.windows[0]
+        ctx.notes.append(f"took out {a:.1f}-{b:.1f}s (the part at {t:.1f}s)")
+    else:
+        raise ToolError("which part should go? say the seconds (\"3 se 5 sec hatao\") or point at it on the timeline")
     return remove_range(plan, a, b)
 
 

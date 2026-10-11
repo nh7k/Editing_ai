@@ -8,7 +8,7 @@ params:
   start: {type: number, min: 0, max: 36000, unit: s, extract: time_range_start, desc: start of the part}
   end: {type: number, min: 0.1, max: 36000, unit: s, extract: time_range_end, desc: end of the part}
   shot: {type: integer, min: 1, max: 500, extract: shot_number, desc: shot number instead of times}
-time_modes: [whole]
+time_modes: [whole, between_times]
 builder: cutting.delete_segment
 graph: segments either side of the range (no filter)
 media3: {status: mapped, how: "ClippingConfiguration on the two remaining pieces"}
