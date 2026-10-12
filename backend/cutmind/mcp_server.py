@@ -654,14 +654,52 @@ def test_mode_app() -> httpx.AsyncBaseTransport:
     return httpx.ASGITransport(app=create_app(s))
 
 
+def http_token() -> str:
+    """The secret part of the HTTP URL (claude.ai custom connectors have no static-key field): made once, kept in
+    ~/CutMind/mcp_http_token.txt; CUTMIND_MCP_TOKEN overrides. Anyone with the full URL can use the tools."""
+    tok = os.environ.get("CUTMIND_MCP_TOKEN", "").strip()
+    if tok:
+        return tok
+    f = local_dir() / "mcp_http_token.txt"
+    if f.exists() and len(f.read_text().strip()) >= 24:
+        return f.read_text().strip()
+    import secrets
+
+    f.parent.mkdir(parents=True, exist_ok=True)
+    tok = secrets.token_urlsafe(32)
+    f.write_text(tok)
+    return tok
+
+
+def serve_http(server: MCPServer, port: int) -> None:
+    """Streamable HTTP on 127.0.0.1 only, at /<secret>/mcp. A public https tunnel (for claude.ai) forwards to it;
+    its host name must be listed in CUTMIND_MCP_PUBLIC_HOST, other Host headers are refused (DNS rebinding)."""
+    import uvicorn
+    from mcp.server.transport_security import TransportSecuritySettings
+
+    hosts = [f"127.0.0.1:{port}", f"localhost:{port}"]
+    hosts += [h.strip() for h in os.environ.get("CUTMIND_MCP_PUBLIC_HOST", "").split(",") if h.strip()]
+    sec = TransportSecuritySettings(allowed_hosts=hosts, allowed_origins=["https://claude.ai", "https://claude.com"])
+    app = server.streamable_http_app(streamable_http_path=f"/{http_token()}/mcp", transport_security=sec,
+                                     stateless_http=True)
+    print(f"cutmind-mcp HTTP on http://127.0.0.1:{port}/<token>/mcp  (token in {local_dir() / 'mcp_http_token.txt'})",
+          file=sys.stderr)
+    uvicorn.run(app, host="127.0.0.1", port=port, log_level="warning")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--mode", choices=["edit", "test"], default=os.environ.get("CUTMIND_MCP_MODE", "edit"))
+    ap.add_argument("--http", type=int, default=0, metavar="PORT", help="serve over HTTP on 127.0.0.1:PORT")
     a = ap.parse_args()
     if a.mode == "test":
-        build_server("http://cutmind-test", api_key="", transport=test_mode_app(), mode="test").run()
+        server = build_server("http://cutmind-test", api_key="", transport=test_mode_app(), mode="test")
     else:
-        build_server(mode="edit").run()
+        server = build_server(mode="edit")
+    if a.http:
+        serve_http(server, a.http)
+    else:
+        server.run()
 
 
 if __name__ == "__main__":

@@ -8,6 +8,12 @@
       "port": 8000
     },
     {
+      "name": "backend-8010",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "set PLANNER_MODE=mock&& set LLM_PROVIDER=llamacpp&& set CUTMIND_TRANSLATOR=off&& backend\\.venv\\Scripts\\python.exe -m uvicorn cutmind.api:create_app --factory --app-dir backend --host 127.0.0.1 --port 8010"],
+      "port": 8010
+    },
+    {
       "name": "web",
       "runtimeExecutable": "cmd",
       "runtimeArgs": ["/c", "cd mobile&& set CI=1&& npx expo start --web --port 8081"],

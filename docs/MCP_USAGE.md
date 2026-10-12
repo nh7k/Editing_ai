@@ -23,7 +23,7 @@ ke baad ek comma aur ye block jodo (baaki kuch mat chhedo):
 +      "args": ["-m", "cutmind.mcp_server", "--mode", "edit"],
 +      "env": {
 +        "PYTHONPATH": "C:\\Users\\itanm\\OneDrive\\Desktop\\video editing\\backend",
-+        "CUTMIND_URL": "http://localhost:8000"
++        "CUTMIND_URL": "http://localhost:8010"
 +      }
 +    },
 +    "cutmind-test": {
@@ -44,7 +44,7 @@ karne se pehle editor me check karo.
 
 **Phir:**
 1. CutMind backend chalu karo (EDIT MODE ke liye; TEST MODE ka apna andar hai).
-   ⚠️ Aapke laptop pe port 8000 pe "pre6" project chal raha tha — CutMind ko 8000 chahiye, ya `CUTMIND_URL` badlo.
+   Port 8000 pe aapka "pre6" chalta hai, isliye CutMind 8010 pe: `backend\.venv\Scripts\python.exe -m uvicorn cutmind.api:create_app --factory --app-dir backend --host 127.0.0.1 --port 8010`
 2. Claude Desktop **poora band karo**: system tray (ghadi ke paas) me Claude icon → Quit. Sirf window band karna kaafi nahi.
 3. Claude Desktop kholo → chat box me tools / hammer icon → "cutmind" aur "cutmind-test" dikhne chahiye.
 4. **Smoke test** (ek line, Claude ko type karo): `cutmind ka health_check chalao aur batao api_ok kya hai`
@@ -89,7 +89,7 @@ Bade test (200 cases) Python runner chalata hai (`tools/test200`), Claude Deskto
 | dikkat | kya karo |
 |---|---|
 | tools icon me cutmind nahi | JSON check karo (comma!), Claude Desktop tray se Quit karke kholo |
-| "api_ok": false | CutMind backend chalu nahi / port 8000 pe koi aur app; `CUTMIND_URL` sahi karo |
+| "api_ok": false | CutMind backend chalu nahi / ya port galat; CutMind 8010 pe chalao aur `CUTMIND_URL` = http://localhost:8010 |
 | "folder is not allowed" | file `C:\Users\itanm\CutMind\inbox` me rakho, ya `CUTMIND_MCP_ALLOW` me folder jodo |
 | python / module error | `command` me venv ka python.exe ka poora path ho, `PYTHONPATH` = backend folder |
 | Claude Desktop ke logs | `%APPDATA%\Claude\logs\mcp-server-cutmind.log` (Claude Desktop ka) |
