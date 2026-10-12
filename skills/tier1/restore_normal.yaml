@@ -18,6 +18,10 @@ params:
     - style
     - overlays
     desc: which kind of effect to take off
+  only:
+    type: string
+    default: ''
+    desc: the effect skills the user named (comma-separated ids) — only those come off
 time_modes:
 - whole
 - segment

@@ -56,6 +56,7 @@ class ToolCtx:
     logo: Path | None = None
     notes: list[str] = field(default_factory=list)
     plan: EditPlan | None = None                              # the plan the current call works on
+    where: tuple[str, tuple[float, float] | None] | None = None  # a skill's own "where it went" (overrides the time)
 
     def words(self) -> list[tuple[str, float, float]]:
         """Words in OUTPUT time (only those still in the edit), from the analysis' source-time words."""
@@ -181,6 +182,7 @@ def run(plan: EditPlan, calls: list[dict[str, Any]], ctx: ToolCtx) -> tuple[Edit
             beats = (lambda plan=cur: song_beats(plan, ctx))
         when = resolve(call.get("time"), s["time_modes"], cur, beats, ctx.words)
         ctx.notes = []
+        ctx.where = None
         before = cur
         try:
             new = fn(cur, params, when, ctx)
@@ -193,9 +195,10 @@ def run(plan: EditPlan, calls: list[dict[str, Any]], ctx: ToolCtx) -> tuple[Edit
 
         new, stack_notes = stack(new)
         cur = new
-        applied.append(Applied(sid, s["name"], params, assumed + when.assumed, when.describe(),
+        said, span = ctx.where if ctx.where else (when.describe(), _span(when))
+        applied.append(Applied(sid, s["name"], params, assumed + when.assumed, said,
                                ctx.notes + [n for n in stack_notes if not n.startswith("effects ordered")],
-                               adjust_options(s, params, call.get("time")), _span(when)))
+                               adjust_options(s, params, call.get("time")), span))
     return cur, applied
 
 

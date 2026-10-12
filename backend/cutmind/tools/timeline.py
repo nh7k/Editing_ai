@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from ..plan import EditPlan, TimelineEntry
+from ..plan import FADE_IN, EditPlan, TimelineEntry
 
 EPS = 0.05          # snap to an existing cut when this close (s)
 MIN_SRC = 0.2       # ClipSegment minimum source length (plan.py)
@@ -120,9 +120,9 @@ def split_at(plan: EditPlan, t: float) -> EditPlan:
         else:
             new_fx.append(fx)
     data["effects"] = new_fx
-    before = [(t["after"], t["duration"]) for t in data["transitions"]]
+    before = [(t["after"], t["duration"]) for t in data["transitions"] if t["after"] >= 0]
     _fit_transitions(data)
-    if [(t["after"], t["duration"]) for t in data["transitions"]] != before:
+    if [(t["after"], t["duration"]) for t in data["transitions"] if t["after"] >= 0] != before:
         # a shorter transition would make the video LONGER: a split must never change the length
         raise ToolError(f"{t:.2f}s is too close to a transition to cut there")
     return EditPlan.model_validate(data)
@@ -135,8 +135,10 @@ def _fit_transitions(data: dict[str, Any]) -> None:
     tl = tmp.timeline()
     keep = []
     for t in data["transitions"]:
-        if t["after"] < 0:
-            keep.append(t)
+        if t["after"] < 0:  # fade from / to black: it must fit in the first / last shot (it never changes the length)
+            room = (tl[0] if t["after"] == FADE_IN else tl[-1]).duration - 0.01 if tl else 0.0
+            if room >= 0.12:
+                keep.append(dict(t, duration=round(min(t["duration"], room), 3)))
             continue
         i = t["after"]
         if i + 1 >= len(tl):

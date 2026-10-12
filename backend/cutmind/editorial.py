@@ -73,8 +73,18 @@ class EditSpec:
 
 
 # ---- 1. language ---------------------------------------------------------------------------------------------
+# "colour ko cinematic teal orange karo": cinematic says how the COLOUR looks, not how the video is paced — it made a
+# slow 4 s-shot piece of 9 s out of 16 s of football (the cinematic genre)
+COLOUR_ADJ = re.compile(r"\b(?:colou?r|rang|grade|grading|lut|tone)(?:\s+(?:ko|me|mein|to|in))?\s+(?:cinematic|filmy)\b|"
+                        r"\b(?:cinematic|filmy)\s+(?:colou?r|rang|grade|grading|look|lut|tone|teal|orange)\b")
+
+
+def _colour_said_out(prompt: str) -> str:
+    return COLOUR_ADJ.sub(" ", prompt.lower())
+
+
 def concepts_in(prompt: str) -> list[str]:
-    p = prompt.lower()
+    p = _colour_said_out(prompt)
     out: list[str] = []
     for entry in knowledge()["language"]["phrases"]:
         if any(re.search(x, p) for x in entry["patterns"]):
@@ -125,7 +135,7 @@ def _footage_fits(rule: dict[str, Any], prof: dict[str, Any]) -> bool:
 
 
 def classify(prompt: str, analysis: Any = None) -> list[dict[str, str]]:
-    p = prompt.lower()
+    p = _colour_said_out(prompt)
     kn = knowledge()["genres"]
     found = [{"id": g["id"], "name": g["name"], "why": "you said it"} for g in kn.values()
              if any(re.search(x, p) for x in g.get("prompt", []))]
@@ -250,7 +260,15 @@ def compile_spec(prompt: str, it: Intent, analysis: Any = None) -> EditSpec:
     if (it.kinetic_text or any(d.field == "kinetic_text" for d in spec.inferred)) and not it.kinetic_words:
         # also when words were asked for directly ("lyrics on screen"): the subject's name still hits the drop
         words = kinetic_words_from(prompt, it)
-        spec.inferred.append(Decision("kinetic_words", words, "the subject of the edit, one word per beat", "kinetic_words"))
+        if words:
+            spec.inferred.append(Decision("kinetic_words", words, "the subject of the edit, one word per beat",
+                                          "kinetic_words"))
+        elif it.kinetic_text:  # text was asked for and no name was said
+            spec.inferred.append(Decision("kinetic_words", ["LET'S", "GO"], "text was asked for, no name was said",
+                                          "kinetic_words"))
+        else:  # only inferred, and no name to show: no words at all beats random words from the prompt
+            spec.inferred = [d for d in spec.inferred if d.field != "kinetic_text"]
+            spec.unknown.append("kinetic text: no name to show (say it in quotes: 'RONALDO')")
     spec.limits = limits
     spec.structure = " | ".join(knowledge()["genres"][g["id"]]["structure"] for g in genres[:2])
     if not genres:
@@ -264,6 +282,15 @@ _STOP = {"bhai", "isko", "iska", "a", "an", "the", "me", "my", "make", "edit", "
          "that", "is", "very", "super", "mast", "sa", "ek", "ka", "ki", "bana", "do", "de", "please", "video", "reel"}
 
 
+# words that say what KIND of edit, never a name to put on screen ("make it look like a pro football edit" showed
+# IT / LOOK / LIKE / PRO / FOOTBALL on a Ronaldo edit)
+_KIND = {"it", "look", "looks", "like", "feel", "feels", "seem", "pro", "professional", "football", "soccer", "cricket",
+         "sports", "sport", "travel", "wedding", "gym", "car", "bike", "anime", "fan", "cinematic", "velocity", "beat",
+         "beats", "sigma", "hype", "epic", "viral", "flash", "flashes", "edits", "style", "type", "wala", "wali", "jaisa",
+         "jaisi", "on", "in", "to", "proper", "good", "best", "high", "quality", "level", "montage", "highlight",
+         "highlights", "music", "song", "transition", "transitions", "effect", "effects", "phonk", "slowmo", "shake"}
+
+
 def kinetic_words_from(prompt: str, it: Intent) -> list[str]:
     """Words for kinetic text: what is quoted, else the subject of "make a <subject> edit", else the title."""
     m = re.search(r"[\"“']([^\"”']{2,40})[\"”']", prompt)
@@ -274,8 +301,8 @@ def kinetic_words_from(prompt: str, it: Intent) -> list[str]:
         if not m:  # Hinglish: "virat kohli ka edit bana do"
             m = re.search(r"(?:bhai\s+|isko\s+|ek\s+)?([a-z][\w .'-]{1,40}?)\s+(?:ka|ki|ke)\s+edit\b", prompt.lower())
         src = m.group(1) if m else (it.title or "")
-    words = [w.upper() for w in re.findall(r"[\w']+", src) if w.lower() not in _STOP]
-    return words[:6] or ["LET'S", "GO"]
+    words = [w.upper() for w in re.findall(r"[\w']+", src) if w.lower() not in _STOP | _KIND]
+    return words[:6]
 
 
 # "X mat karo" → the inferred fields that would bring X back

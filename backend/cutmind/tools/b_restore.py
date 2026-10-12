@@ -31,6 +31,43 @@ def _family(kind: str) -> str:
     return next((f for f, types in FAMILIES.items() if kind in types), "style")
 
 
+# words that say nothing about WHICH effect ("warm colour" and "black and white" are both "colour")
+_VAGUE = {"colour", "color", "look", "effect", "effects", "grade", "and", "the", "to", "of", "on", "in", "a", "video",
+          "add", "make"}
+
+
+def _words(text: str) -> set[str]:
+    import re
+
+    return {w for w in re.split(r"[^a-z0-9]+", text.lower()) if len(w) > 1 and w not in _VAGUE}
+
+
+def _only_words(only: str) -> set[str]:
+    """The skills the user named ("black and white hata do" → grayscale): their id and name words."""
+    from . import spec
+
+    specs = spec.load()
+    out: set[str] = set()
+    for sid in [x.strip() for x in only.split(",") if x.strip()]:  # a skill id, or a word seen on the video
+        s = specs.get(sid) or {}
+        out |= _words(f"{sid.replace('_', ' ')} {s.get('name', '')}")
+    return out
+
+
+# what users call these plan effects ("zoom hata do" must find the zoom a "thoda zoom karo" made: 'keyframes')
+ALIAS = {"keyframes": "zoom", "punch_static": "zoom punch", "pulse": "zoom pulse", "ken_burns": "zoom",
+         "film_bw": "black white", "mono": "black white", "noir": "black white", "beat_shake": "shake"}
+
+
+def _named(e: dict[str, Any], words: set[str]) -> bool:
+    """Is this plan effect the one the user named? (by its type and by what it does: a 'grade' with a grayscale
+    look is "black and white", one with warmth is "warm colour")."""
+    from ..versions import _fx_name
+
+    said = f"{e['type'].replace('_', ' ')} {_fx_name(Effect.model_validate(e))} {ALIAS.get(e['type'], '')}"
+    return bool(words & _words(said))
+
+
 def _cut_items(items: list[dict[str, Any]], a: float, b: float) -> tuple[list[dict[str, Any]], int]:
     """Timed items (graphics / stickers) without the part inside [a, b]: before / after pieces stay."""
     out, hit = [], 0
@@ -69,12 +106,25 @@ def restore_normal(plan: EditPlan, p: dict[str, Any], when: When, ctx: ToolCtx) 
     what = str(p.get("what") or "all")
     fams = set(FAMILIES) | {"overlays"} if what == "all" else {what}
     removed: list[str] = []
+    # "black and white hata do" on a warm + black-and-white edit: only the effect the user NAMED goes (before, the
+    # whole colour family went and the warm colour was lost too); nothing named on the video → the family, as before
+    # stickers / graphics are not plan effects: "stickers hata do" takes the overlays family off as before
+    only = _only_words(str(p.get("only") or "")) if what not in ("all", "overlays") else set()
+    if only and not any(_named(e.model_dump(), only) for e in plan.effects) and not (
+            "color" in fams and _words(plan.color.preset.replace("_", " ")) & only):
+        # "shake hatao" with no shake on the video: say so — before, the whole zoom family (zoom, pulse) went instead
+        raise ToolError(f"there is no {' / '.join(sorted(only)[:3])} on this video to take off — nothing changed")
+    if only:  # the named effect decides the family ("black and white" can be a 'film_bw' style effect too)
+        fams = fams | {_family(e.type) for e in plan.effects if _named(e.model_dump(), only)}
+    hit = (lambda e: _family(e["type"]) in fams and _named(e, only)) if only else (lambda e: _family(e["type"]) in fams)
+    # "warm colour hata do" with the director's whole-video 'warm' preset: that preset is the named thing too
+    preset_named = bool(only) and "color" in fams and bool(_words(plan.color.preset.replace("_", " ")) & only)
     if when.whole:
         data = plan.to_json()
-        keep = [e for e in data["effects"] if _family(e["type"]) not in fams]
+        keep = [e for e in data["effects"] if not hit(e)]
         removed += sorted({e["type"] for e in data["effects"] if e not in keep})
         data["effects"] = keep
-        if "color" in fams:
+        if "color" in fams and (not only or preset_named):
             # the whole grade back to neutral, not only the preset name: a style's own contrast / tint counts too
             # ("purple video ko normal kar do" on a Midnight Drift edit changed nothing before)
             neutral = {k: v for k, v in NEUTRAL_COLOR.items() if data["color"].get(k) != v}
@@ -109,7 +159,7 @@ def restore_normal(plan: EditPlan, p: dict[str, Any], when: When, ctx: ToolCtx) 
         data = plan.to_json()
         new_fx = []
         for e in data["effects"]:
-            if _family(e["type"]) not in fams:
+            if not hit(e):
                 new_fx.append(e)
             elif e["target"] in idx:
                 removed.append(e["type"])
@@ -134,10 +184,10 @@ def restore_normal(plan: EditPlan, p: dict[str, Any], when: When, ctx: ToolCtx) 
             if w:
                 removed.append("colour wash")
                 data["overlays"] = keep + washes
-        grade = _preset_as_grade(plan.color.preset) if "color" in fams else None
+        grade = _preset_as_grade(plan.color.preset) if "color" in fams and (not only or preset_named) else None
         # the whole-video numbers too (a "bw" edit also has saturation 0 — left alone, this moment stayed grey)
         numbers = {k: v for k in ("brightness", "contrast", "saturation", "warmth")
-                   if (v := data["color"].get(k)) != NEUTRAL_COLOR[k]} if "color" in fams else {}
+                   if (v := data["color"].get(k)) != NEUTRAL_COLOR[k]} if "color" in fams and (not only or preset_named) else {}
         if numbers:
             grade = {**numbers, **(grade or {})}
         if grade is not None:
@@ -154,7 +204,7 @@ def restore_normal(plan: EditPlan, p: dict[str, Any], when: When, ctx: ToolCtx) 
                 else:
                     cur["params"] = {**grade, **cur["params"]}
         plan = EditPlan.model_validate(data)
-    if "color" in fams and plan.color.preset != "none":
+    if "color" in fams and plan.color.preset != "none" and (not only or preset_named):
         ctx.notes.append(f"the colour grade '{plan.color.preset}' covers the whole video, so it stays here too — "
                          "say 'poori video ka colour normal karo' to take it off everywhere")
     if not removed:

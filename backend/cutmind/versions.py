@@ -229,6 +229,21 @@ def diff(a: EditPlan, b: EditPlan) -> dict[str, Any]:
                                                 ["moved"]) + " at a moment")
     else:
         item("effects", _effects(a), _effects(b), opt)
+    if _fx_spots(a) == _fx_spots(b):
+        # same effects at the same places, other settings: "make it brighter" on a vintage grade adds brightness to
+        # THAT grade (before: "Changed: nothing visible" while the video was clearly brighter)
+        pa = {(e.type, e.target, _fx_name(e)): e.params or {} for e in a.effects}
+        tuned = []
+        for e in b.effects:
+            before = pa.get((e.type, e.target, _fx_name(e)))
+            if before is None or before == (e.params or {}):
+                continue
+            moved = [f"{k} {float(before.get(k, 0 if k in ('brightness', 'warmth') else 1)):g} → {float(v):g}"
+                     for k, v in (e.params or {}).items() if k in GRADE_KEYS and isinstance(v, (int, float))
+                     and abs(float(v) - float(before.get(k, 0 if k in ("brightness", "warmth") else 1))) > 1e-3]
+            tuned.append(f"{_fx_name(e)} ({', '.join(moved)})" if moved else f"{_fx_name(e)} adjusted")
+        if tuned:
+            changed.append("effects tuned: " + ", ".join(sorted(set(tuned))[:3]))
     item("text", _texts(a), _texts(b), opt)
     caps_a, caps_b = sum(t.kind == "caption" for t in a.text), sum(t.kind == "caption" for t in b.text)
     item("captions", caps_a > 0, caps_b > 0, lambda x: "on" if x else "off")

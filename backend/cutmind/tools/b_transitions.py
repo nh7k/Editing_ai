@@ -66,11 +66,17 @@ def _edge_fades(plan: EditPlan, where: str, duration: float, ctx: ToolCtx) -> Ed
     tl = plan.timeline()
     wanted = {"start": [FADE_IN], "end": [FADE_OUT], "start_end": [FADE_IN, FADE_OUT]}[where]
     data["transitions"] = [t for t in data["transitions"] if t["after"] not in wanted]
+    total = plan.total_duration()
+    got = []
     for w in wanted:
-        d = min(duration, (tl[0] if w == FADE_IN else tl[-1]).duration * 0.9)
-        data["transitions"].append({"type": "fade", "after": w, "duration": round(d, 3)})
+        d = round(min(duration, (tl[0] if w == FADE_IN else tl[-1]).duration * 0.9), 3)
+        data["transitions"].append({"type": "fade", "after": w, "duration": d})
+        got.append((0.0, d) if w == FADE_IN else (round(total - d, 2), round(total, 2)))
     ctx.notes.append({"start": "fade in from black", "end": "fade out to black",
-                      "start_end": "fade in and fade out"}[where] + f" ({duration:g}s)")
+                      "start_end": "fade in and fade out"}[where] + f" ({', '.join(f'{b - a:.1f}s' for a, b in got)})")
+    if any(b - a < duration - 0.05 for a, b in got):
+        ctx.notes.append(f"shorter than {duration:g}s: a fade stays inside the first / last shot, which is short here")
+    ctx.where = (" and ".join(f"{a:.1f}-{b:.1f}s" for a, b in got), got[0] if len(got) == 1 else None)
     return EditPlan.model_validate(data)
 
 

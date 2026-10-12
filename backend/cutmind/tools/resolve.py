@@ -39,6 +39,7 @@ ACT_MIN, ACT_UNEXPLAINED, LONG_VIDEO_S = 0.70, 0.5, 120.0
 NUMERIC = re.compile(r"\d+(?:\.\d+)?|sec|second|seconds|s|se|to|tak|x|min|minute|qtk\d+")
 DEICTIC = {"yaha", "idhar"}  # not "abhi" / "now": in a command they mean "right away", not "at this second"
 RESTORE_WORDS = {"normal", "original", "wapas", "pehle"}
+REMOVER_SKILLS = {"stabilize", "denoise", "remove_silence", "remove_fillers"}  # "X hatao" = these skills themselves
 REMOVE_WORDS = {"hatao", "hata", "nikal", "nikalo", "remove", "hatana", "band", "uda"}
 EFFECT_CATEGORIES = {"color", "motion", "stylize", "transitions"}
 FAMILY_OF_CATEGORY = {"color": "color", "motion": "motion", "stylize": "style", "transitions": "style"}
@@ -51,6 +52,10 @@ VERB_WEIGHT = 0.5  # dev sweep: 0.25 → 10 silent wrong edits, 0.5 → 8
 # "take away" verbs: meaningful (remove, not add) but they do not say WHAT
 REMOVE_VERBS = {"hatao", "hata", "remove", "delete", "nikal", "kaat", "kaato", "kat", "cut", "uda"}
 WEAK_SYNONYM = 0.55  # a synonym with no word saying WHAT ("hatao do", "30 sec ka bana do") is weak evidence
+# "shake hatao LEKIN COLOUR REHNE DO": a clause that only says what to leave alone (read with a removal)
+KEEP = re.compile(r"(?:,|\b(?:lekin|par|but|aur|and)\b)?\s*((?:[a-z]+\s+)?[a-z]+)\s+(?:ko\s+)?"
+                  r"(?:rehne\s+(?:do|dena|de)|mat\s+(?:chhedo|chhedna|chedo|chhed)|as\s+it\s+is|"
+                  r"(?:waisa|waise|same)\s+(?:hi\s+)?(?:rakho|rehne\s+do)|leave\s+(?:it|the\s+\w+))\b", re.I)
 QUOTED = re.compile(r"['\"‘“][^'\"’”]{1,80}['\"’”]")
 
 
@@ -243,6 +248,23 @@ def _when(sid: str, t: float | None, ctx: dict[str, Any], s: dict[str, Any]) -> 
             end = min(end, float(ctx["duration"]))
         return {"mode": "between_times", "start": round(t, 3), "end": round(end, 3)}
     return None
+
+
+FAMILY_WORDS = {"colour": "color", "color": "color", "colours": "color", "colors": "color", "grade": "color",
+                "motion": "motion", "sticker": "overlays", "stickers": "overlays", "graphics": "overlays",
+                "graphic": "overlays"}
+FAMILY_SAID = {"color": "colour", "motion": "zoom / motion", "style": "effects", "overlays": "stickers / graphics"}
+
+
+def restore_label(fam: str, only: str, when: dict[str, Any] | None, ctx: dict[str, Any], as_said: bool = False) -> str:
+    """What the narrowed restore really takes off ("2.0-4.0s ka black and white hatao"), not every effect there."""
+    specs = spec.load()
+    ids = [x for x in only.split(",") if x]
+    names = ([str(specs[x].get("name") or x).lower() for x in ids] if not as_said
+             else [" ".join(ids)]) if ids else [FAMILY_SAID[fam]]  # words seen on the video: as the user said them
+    where = (f"{when['start']:.1f}-{when['end']:.1f}s ka " if when and "end" in when else
+             "Yaha ka " if ctx.get("_t") is not None else "Poori video se ")
+    return f"{where}{' + '.join(names[:2])} hatao (baaki waisa hi)"[:68]
 
 
 def label(sid: str, when: dict[str, Any] | None, ctx: dict[str, Any], params: dict[str, Any] | None = None) -> str:
@@ -451,12 +473,19 @@ def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
 
     # "@cutmind" is a name and 'GOA' (in quotes) is text to show — neither is an unexplained word
     words = canonical_words(QUOTED.sub(" ", strip_handles(prompt)[0]))
+    kept = KEEP.search(prompt)
+    if kept and REMOVE_WORDS & set(canonical_words(prompt[:kept.start()] + " " + prompt[kept.end():])):
+        # the removal is the request; "colour rehne do" only says what must stay (it is never a new effect)
+        prompt = (prompt[:kept.start()] + " " + prompt[kept.end():]).strip()
+        words = canonical_words(QUOTED.sub(" ", strip_handles(prompt)[0]))
     t = ctx.get("marker_time", ctx.get("playhead"))
     t = float(t) if t is not None else None
     deictic = bool(DEICTIC & set(words)) or "is jagah" in " ".join(words)
     point = t if (t is not None and (deictic or ctx.get("comment", True))) else None
     ctx["_t"] = point
     trace: dict[str, Any] = {"words": words, "time": point}
+    if kept and kept.group(0) not in prompt:
+        trace["kept"] = kept.group(1)
     if clipped:
         trace["clipped_to_chars"] = MAX_CHARS  # said to the user by the API
 
@@ -477,8 +506,10 @@ def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
         named = [c["id"] for c in exact["calls"] if c["id"] != "restore_normal"]
         fams = {_family_of(specs[x]) for x in named} - {None}
         rc = next(c for c in exact["calls"] if c["id"] == "restore_normal")
-        if len(fams) == 1:
-            rc = {**rc, "params": {**rc.get("params", {}), "what": fams.pop()}}
+        if len(fams) == 1:  # ... and only the named effects of that family ("black and white hata do" keeps warm)
+            rc = {**rc, "params": {**rc.get("params", {}), "what": fams.pop(), "only": ",".join(named)}}
+        if not rc.get("time"):  # "2 se 4 sec black and white hatao normal karo": the time was read on the named skill
+            rc = {**rc, "time": next((c["time"] for c in exact["calls"] if c.get("time")), None)}
         if ALL_WORDS & set(canonical_words(prompt)):  # "SAB effect hata do, normal kar do": everything, not one family
             rc = {**rc, "params": {**rc.get("params", {}), "what": "all"}}
         # a clause the matcher could not place ("sab effect") is part of WHAT to take off, not an unknown request
@@ -500,12 +531,19 @@ def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
                   "label": rel["said"][:68]}
         return Resolution([choice], "undo" if rel["kind"] == "remove" else "apply", trace, apply=[c], reply=rel["said"])
     # "ye black white hatao yaha se" with that effect on screen: take it off (restore), not add it again
-    on_screen = {w for f in present for w in canonical_words(f"{f.get('label', '')} {f.get('type', '')}")} - FILLER
+    def fx_words(f: dict[str, Any]) -> set[str]:  # "beat_shake" is also "beat" and "shake"
+        return set(canonical_words(f"{f.get('label', '')} {f.get('type', '')} {str(f.get('type', '')).replace('_', ' ')}"))
+
+    on_screen = {w for f in present for w in fx_words(f)} - FILLER - GENERIC_WHEN_REMOVING - {"effect", "effects"}
     # "ye black white HATAO" — the parser reads "hatao" as "not", so the named effect may sit in `negated`
     removing = bool(REMOVE_WORDS & set(words)) and bool(present) and (
         any(specs[x]["category"] in EFFECT_CATEGORIES for x in exact_ids + list(exact["negated"]))
         or bool(on_screen & set(words)) or bool({"effect", "filter"} & set(words))
         or _names_a_present_effect(words, present, specs))
+    if removing and set(exact_ids) <= REMOVER_SKILLS and exact_ids and not (on_screen & set(words) - {"and", "aur"}):
+        # "shake hatao" with no shake effect on the video: take the shake OUT OF THE FOOTAGE (stabilize) — these skills
+        # are themselves the removal; nothing on the video was named
+        removing = False
     restore_said = bool(RESTORE_WORDS & set(words)) or "jaisa tha" in " ".join(words) or removing
     # a clear request is applied as it is — unless it also says "like it was / normal" and the matcher did not read
     # that part, or leaves too many of the prompt's meaning words unexplained: then the readings are ranked
@@ -549,12 +587,31 @@ def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
     choices, scores = _ranked(prompt, words, exact, ctx, point, restore_said, present, trace)
     # "stickers hata do": the restore takes off THAT family only (stickers), not the colour and effects too
     named_fams = {_family_of(specs[x]) for x in exact_ids + list(exact["negated"]) if x in specs} - {None}
-    if removing and len(named_fams) == 1 and not ALL_WORDS & set(words):  # "zoom hata do": the zoom family only
-        fam = next(iter(named_fams))
+    # "colour hata do": the word names the family itself (the matcher read it as something else, e.g. delete a shot)
+    fam_said = {FAMILY_WORDS[w] for w in words if w in FAMILY_WORDS}
+    # "shake hatao" with a beat shake on the video: THAT effect (the matcher read "remove shake" as stabilize)
+    from .b_restore import _family
+
+    seen = [w for w in dict.fromkeys(words) if w in on_screen and w not in FAMILY_WORDS and w not in {"and", "aur", "the"}]
+    seen_fams = {_family(str(f.get("type", ""))) for f in present if set(seen) & fx_words(f)}
+    if removing and seen and len(seen_fams) == 1:
+        named_fams, only_seen = seen_fams, ",".join(seen)
+    else:
+        only_seen = ""
+    if removing and not ALL_WORDS & set(words) and (len(named_fams) == 1 or (not named_fams and len(fam_said) == 1)):
+        fam = next(iter(named_fams or fam_said))  # "zoom hata do": the zoom family only
+        # ... and only the named effect in it ("black and white hata do" on a warm + b/w edit keeps the warm colour)
+        only = only_seen or ",".join(x for x in exact_ids + list(exact["negated"])
+                                     if named_fams and x in specs and x != "restore_normal")
+        # "2 se 4 sec black and white hata do": the time was read on the named skill — it is where to take it off
+        at = next((c["time"] for c in exact["calls"] if c.get("time")), None)
         for ch in choices:
             if ch["id"] == "restore_normal":
-                ch["params"] = {**ch["params"], "what": fam}
-                ch["calls"] = [{**c, "params": {**c.get("params", {}), "what": fam}} for c in ch["calls"]]
+                ch["params"] = {**ch["params"], "what": fam, "only": only}
+                ch["calls"] = [{**c, "params": {**c.get("params", {}), "what": fam, "only": only},
+                                "time": c.get("time") or at} for c in ch["calls"]]
+                ch["time"] = ch.get("time") or at
+                ch["label"] = restore_label(fam, only, ch["time"], ctx, as_said=bool(only_seen))
     top = choices[0]["score"] if choices else 0.0
     second = choices[1]["score"] if len(choices) > 1 else 0.0
     top_unexplained = unexplained(words, [choices[0]["id"]]) if choices else 1.0
@@ -582,6 +639,18 @@ def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
                       reply="Exact skill nahi mila — ye sabse paas wale hain (aapke shabdon se):")
 
 
+def _effect_name(e: Any) -> str:
+    """The words a user would use for a plan effect ("black and white", not "grade")."""
+    look = str((e.params or {}).get("look") or "")
+    if look in ("grayscale", "bw", "mono", "noir", "film_bw") or e.type in ("mono", "film_bw"):
+        return "black and white"
+    if e.type == "grade":
+        p = e.params or {}
+        return ("warm colour" if float(p.get("warmth", 0) or 0) > 0 else "cool colour" if float(p.get("warmth", 0) or 0) < 0
+                else f"{look} look" if look else "colour grade")
+    return e.type.replace("_", " ")
+
+
 def context_from_plan(plan: Any, t: float | None) -> dict[str, Any]:
     """What is on screen at output second t of a saved plan: effects (with their shot's span), graphics, stickers,
     the whole-video colour grade — the evidence for "normal jaisa tha" (sent by the API, so the app need not)."""
@@ -598,6 +667,15 @@ def context_from_plan(plan: Any, t: float | None) -> dict[str, Any]:
                           "start": 0.0, "end": total})
         if plan.style or plan.overlays:
             whole.append({"type": "style", "label": f"{plan.style or 'graphic'} look", "start": 0.0, "end": total})
+        # effects on some shots ("flash hata do" on a beat edit ADDED a flash before: the flashes are per shot)
+        tl = plan.timeline()
+        spans: dict[tuple[str, str], list[float]] = {}
+        for e in plan.effects:
+            if 0 <= e.target < len(tl):
+                k = (e.type, _effect_name(e))
+                lo, hi = spans.get(k, [tl[e.target].start, tl[e.target].end])
+                spans[k] = [min(lo, tl[e.target].start), max(hi, tl[e.target].end)]
+        whole += [{"type": k[0], "label": k[1], "start": round(v[0], 3), "end": round(v[1], 3)} for k, v in spans.items()]
         # things anywhere on the video ("stickers hata do" must find the stickers — it ADDED one before)
         for g in plan.graphics:
             whole.append({"type": g.kind, "label": f"{g.kind} graphic", "start": g.start, "end": g.end})
@@ -610,15 +688,7 @@ def context_from_plan(plan: Any, t: float | None) -> dict[str, Any]:
     shot = next((e for e in tl if e.start - 1e-3 <= t < e.end + 1e-3), None)
     present: list[dict[str, Any]] = []
 
-    def name(e: Any) -> str:  # the words a user would use for it ("black and white", not "grade")
-        look = str((e.params or {}).get("look") or "")
-        if look in ("grayscale", "bw", "mono", "noir", "film_bw") or e.type in ("mono", "film_bw"):
-            return "black and white"
-        if e.type == "grade":
-            p = e.params or {}
-            return ("warm colour" if float(p.get("warmth", 0) or 0) > 0 else "cool colour" if float(p.get("warmth", 0) or 0) < 0
-                    else f"{look} look" if look else "colour grade")
-        return e.type.replace("_", " ")
+    name = _effect_name
     for e in plan.effects:
         if e.target == -1 and shot is not None:
             present.append({"type": e.type, "label": name(e), "start": round(shot.start, 3), "end": round(shot.end, 3)})

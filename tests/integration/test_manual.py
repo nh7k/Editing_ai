@@ -86,6 +86,9 @@ def test_manual_errors_are_clear(env):
 
 def test_apply_ops_timeline_operations(env):
     c, pid = env
+    if c.get(f"/projects/{pid}/plan").status_code != 200:  # run on its own: make the first edit here
+        r = c.post(f"/projects/{pid}/edit", json={"prompt": "trim to 8 seconds"})
+        assert wait_job(c, r.json()["job_id"])["status"] == "done"
     plan = EditPlan.model_validate(c.get(f"/projects/{pid}/plan").json())
     if len(plan.clips) < 2:
         pytest.skip("needs at least two segments")

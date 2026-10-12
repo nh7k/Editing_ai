@@ -91,7 +91,10 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--only", default="")
     ap.add_argument("--fresh", action="store_true")
+    ap.add_argument("--seq", default="", help="'prompt 1|prompt 2|...' in one project (ids S01..)")
     a = ap.parse_args()
+    if a.seq:
+        PROMPTS[:] = [(f"S{i + 1:02d}", t.strip(), "base" if i == 0 else "keep") for i, t in enumerate(a.seq.split("|"))]
     FIX.mkdir(parents=True, exist_ok=True)
     src = FIX / "ronaldo.mp4"
     song = FIX / "montagem.m4a"
@@ -103,7 +106,7 @@ def main() -> None:
     LAB.mkdir(parents=True, exist_ok=True)
     only = set(a.only.split(",")) if a.only else None
     app = McpApp(LAB / "data")
-    res_f = LAB / "results.jsonl"
+    res_f = LAB / ("seq.jsonl" if a.seq else "results.jsonl")
     pid = None
     base = {"src": M.stats(M.frame(str(src), 8.0))}
     print("source", base, flush=True)
@@ -111,7 +114,7 @@ def main() -> None:
         for cid, text, chain in PROMPTS:
             if only and cid not in only:
                 continue
-            if chain == "base" or pid is None or only:
+            if chain == "base" or pid is None or (only and not a.seq):
                 ok, p = app.tool("create_project", {"name": f"ronaldo lab {cid}"})
                 pid = p["project_id"]
                 app.tool("import_clip", {"project_id": pid, "path": str(src)})
@@ -143,7 +146,10 @@ def main() -> None:
             print(f"{cid} [{dt}s] {text!r} -> route={rec['route']} st={rec['status']} msg={str(msg)[:160]!r}\n"
                   f"     measure={m}", flush=True)
     finally:
-        app.close()
+        try:
+            app.close()
+        except RuntimeError:  # anyio cancel-scope noise on exit; results are already written
+            pass
 
 
 if __name__ == "__main__":

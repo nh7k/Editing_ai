@@ -226,7 +226,8 @@ def _flash(c: FxContext) -> list[str]:
     if c.times:  # Tier 1: a white flash at each given time (beats, cuts, moments), 0.25 s each
         bumps = "+".join(f"max(0,1-abs(t-{_f(b)})/0.12)" for b in c.times[:40])
         return [f"eq=brightness='min(0.9,{_f(0.9 * c.strength)}*({bumps}))':eval=frame"]
-    return ["fade=t=in:st=0:d=0.3:color=white"]
+    # a cut flash is 2-4 frames: 0.3 s on every shot of a fast edit (0.7 s shots) washed ~40 % of the video white
+    return ["fade=t=in:st=0:d=0.15:color=white"]
 
 
 def _strobe(c: FxContext) -> list[str]:
