@@ -6,59 +6,53 @@ Pairs over the limit (6) and not a documented decision: **0**.
 
 | skill | taken by | times | of | examples | note |
 |---|---|---|---|---|---|
-| `split` | `crop` | 6 | 62 | yahan se kaato; yahan se kaat; yaha se kaato |  |
-| `blur_background_fill` | `blur` | 4 | 63 | khali jagah blr karo; side blr karo; peeche blurr |  |
-| `blur_box_censor` | `blur` | 4 | 63 | blr out; blr out; hide with blurr |  |
-| `remove_silence` | `delete_segment` | 4 | 78 | remove silent part; chhup wala hissa hatao; koi nahi bol rha wo hatao |  |
-| `text_glow_neon` | `text_overlay` | 4 | 69 | gow karta text; neon likhho; clu wala text |  |
+| `blur_background_fill` | `blur` | 6 | 63 | blurr bars; blr wala background; khali jagah blr karo |  |
+| `split` | `crop` | 6 | 63 | yahan se kaato; yahan se kaatto; yahan se kato |  |
+| `blur` | `cool` | 5 | 63 | blu; blu; blu lagao |  |
+| `blur_box_censor` | `blur` | 5 | 63 | blurr box; blr box; blurr out |  |
+| `speed_ramp` | `speed_up` | 5 | 63 | speed rap; tez phir slo; slo phir tez |  |
+| `fade_black` | `delete_segment` | 4 | 75 | fae out; fae out; fae out |  |
+| `stabilize` | `shake` | 4 | 69 | anti shak; hilna bad karo; shak hatao |  |
+| `vintage_faded` | `saturation` | 4 | 69 | faded fil; faded fil; faded prn look |  |
 | `audio_fade` | `extract_audio` | 3 | 96 | fae the audio; fae the audio; fae audio |  |
-| `auto_captions` | `text_overlay` | 3 | 69 | jo bol rha hai wo likho; niche likh do jo bola; sus add karo |  |
-| `duck_music` | `volume` | 3 | 78 | awaaz ke neeche msc kam; bolte wqt music kam; boln pe music kam |  |
-| `fade_black` | `saturation` | 3 | 75 | fade through back; kal fade; kal fade |  |
-| `fade_white` | `brighten_to_white` | 3 | 78 | fae to white; white trnstn do; dheee se white karo |  |
-| `fit_to_duration` | `mute` | 3 | 69 | minute ka bana do; meenute ka bana do; minnute ka bana do |  |
-| `loop_boomerang` | `j_cut` | 3 | 63 | lup it; lup it; lup karo |  |
-| `speed_ramp` | `speed_up` | 3 | 62 | fast the slow; slo then fast; slo phir tez |  |
-| `speed_up` | `slow_motion` | 3 | 65 | tei se chalao; slow lag rha hai; slow lag rha hai |  |
-| `text_slide` | `slide` | 3 | 69 | tet slide; tex khisak ke aaye; tet slid |  |
-| `text_slide` | `text_overlay` | 3 | 69 | text from the let; text from the lef; text from the lef |  |
-| `volume` | `speed_up` | 3 | 81 | muic tez; muic tez; awa tez |  |
-| `add_music` | `text_overlay` | 2 | 72 | add a sog; gaa dalo |  |
+| `beat_sync` | `add_music` | 3 | 66 | beat syc; beat syc; music ke sth cut |  |
+| `delete_segment` | `crop` | 3 | 64 | ye wala kaat do; ye waala kaat do; ye wala caat do |  |
+| `fit_to_duration` | `mute` | 3 | 70 | minute ka bana do; minute ka bna do; minnute ka bana do |  |
+| `glitch_transition` | `glitch` | 3 | 60 | glitchh cut; digital trnstn; gltch transition do |  |
+| `merge_clips` | `split_screen` | 3 | 62 | sab ek me daal do; sab ek me daaal do; sab ek me daaal do |  |
 | `aspect_1_1` | `picture_in_picture` | 2 | 63 | insta pot; insta pos |  |
-| `blur` | `progress_bar` | 2 | 63 | bur; bur lagao |  |
-| `blur_background_fill` | `remove_fillers` | 2 | 63 | bur fill; bur fill |  |
-| `blur_background_fill` | `slide` | 2 | 63 | side me bur; side blu karo |  |
-| `color_pop` | `l_cut` | 2 | 63 | ek hi ran; ek hi ran |  |
-| `delete_segment` | `restore_normal` | 2 | 65 | remove fro; remove sho |  |
-| `delete_segment` | `crop` | 2 | 65 | ye wala kaat do; ye wla kaat do |  |
-| `fade_black` | `brighten_to_white` | 2 | 75 | fae to black; black fae |  |
-| `fade_white` | `flash` | 2 | 78 | drm flash; flash between shot | documented decision |
-| `fit_to_duration` | `trim` | 2 | 69 | cut don to; total length rakhho |  |
-| `freeze_frame` | `delete_segment` | 2 | 63 | hod the frame; hod the frame |  |
-| `glitch_transition` | `glitch` | 2 | 60 | data glitchh; gltch transition do |  |
-| `grayscale` | `brighten_to_white` | 2 | 69 | back and white kar do; bak and white |  |
-| `grayscale` | `delete_segment` | 2 | 69 | ran hata do; rang hta do |  |
-| `insert_broll` | `remove_fillers` | 2 | 66 | filler shot daa do; filler shot daa do |  |
-| `intro_outro` | `title_card` | 2 | 66 | lat me card; las me card |  |
-| `jump_cut_tighten` | `trim` | 2 | 63 | jum cut; jum cut |  |
-| `ken_burns` | `pan` | 2 | 63 | pan and zoo; pan and zoo |  |
-| `letterbox` | `aspect_16_9` | 2 | 63 | widescreen brs; widescreen bar |  |
-| `merge_clips` | `split_screen` | 2 | 62 | sab ek me daal do; sab ek me daall do |  |
-| `normalize_loudness` | `volume` | 2 | 63 | even out the volum; consistent volum |  |
-| `reorder_clips` | `replace_audio` | 2 | 69 | ord badlo; orr badlo |  |
-| `replace_audio` | `add_music` | 2 | 66 | rplc sound with music; full gaana moe |  |
-| `slow_motion` | `export_preset` | 2 | 69 | sow mo; sow motin |  |
-| `srt_export` | `auto_captions` | 2 | 63 | caption fie; caption fie |  |
-| `srt_export` | `stabilize` | 2 | 63 | str fie; str fie |  |
-| `stabilize` | `shake` | 2 | 68 | ati shake; hilna ban karo |  |
-| `text_typewriter` | `delete_segment` | 2 | 72 | tye it out; tye it out |  |
-| `vhs_retro` | `vintage_faded` | 2 | 69 | retro tap look; retro tpe look |  |
-| `warm` | `cool` | 2 | 64 | war tone; orange tin |  |
-| `wipe` | `pan` | 2 | 62 | wie left; wie left |  |
+| `auto_captions` | `text_overlay` | 2 | 69 | jo bol rha hai wo likho; niche likh do jo bola |  |
+| `beat_edit` | `beat_sync` | 2 | 105 | eit on the beat; taal pe edi |  |
+| `beat_edit` | `add_music` | 2 | 105 | beat pe zoo karo; beet pe eit |  |
+| `brightness` | `punch_in` | 2 | 63 | too dak; dak hai |  |
+| `caption_style` | `cool` | 2 | 93 | tex color; tex color |  |
+| `color_pop` | `trim` | 2 | 63 | sirf laa rakho; baaki sab gey |  |
+| `delete_segment` | `shake` | 2 | 64 | haa do; haa do |  |
+| `duck_music` | `volume` | 2 | 78 | aaaz ke neeche music kam; bole waqt music kam |  |
+| `grayscale` | `brighten_to_white` | 2 | 69 | kaa safed; bla and white |  |
+| `grayscale` | `delete_segment` | 2 | 69 | rang hta do; rag hata do |  |
+| `intro_outro` | `reorder_clips` | 2 | 66 | last me car; last me car |  |
+| `iris_circle` | `auto_captions` | 2 | 63 | iri lagao; iri lagao |  |
+| `j_cut` | `trim` | 2 | 69 | hea the next clip first; agle clip ki awaaz phl |  |
+| `j_cut` | `reorder_clips` | 2 | 69 | pehle sunai de pir dikhe; awa pehle |  |
+| `ken_burns` | `pan` | 2 | 63 | slow pan and zum; pan and zoo |  |
+| `ken_burns` | `slow_motion` | 2 | 63 | pht motion; pht me motion |  |
+| `mirror_effect` | `split_screen` | 2 | 60 | don taraf same; dono taraf sae |  |
+| `normalize_loudness` | `volume` | 2 | 62 | een out the volume; even out the vlm |  |
+| `punch_in` | `shake` | 2 | 63 | jhatke se zoo; zum ka jhatka |  |
+| `slide` | `slow_motion` | 2 | 63 | sli; sli |  |
+| `text_glow_neon` | `text_overlay` | 2 | 69 | gow text; gow txt |  |
+| `text_pop_in` | `picture_in_picture` | 2 | 69 | pop tex; pop up tex |  |
+| `text_pop_in` | `zoom_in` | 2 | 69 | zum in text; zum in text |  |
+| `text_typewriter` | `delete_segment` | 2 | 72 | tye it out; tye hota |  |
+| `vhs_retro` | `vintage_faded` | 2 | 69 | retro tpe; retro tae |  |
+| `vhs_retro` | `fit_to_duration` | 2 | 69 | old video loo; old video loo |  |
+| `watermark_logo` | `zoom_in` | 2 | 63 | looo; looo |  |
+| `zoom_in` | `slow_motion` | 2 | 64 | dheere zum; dheere zoo |  |
 | `zoom_out` | `delete_segment` | 2 | 72 | zoo out; zoo out karo |  |
-| `zoom_out` | `zoom_in` | 2 | 72 | zoom bak; rvrs zoom |  |
-| `zoom_out` | `split_screen` | 2 | 72 | baar ki taraf zoom; pichhe ki taraf zoo |  |
+| `zoom_transition` | `zoom_in` | 2 | 60 | zoom ito the next; zum kat |  |
 | `add_music` | `merge_clips` | 1 | 72 | bea daalo |  |
+| `add_music` | `text_overlay` | 1 | 72 | gaa dalo |  |
 | `aspect_16_9` | `export_preset` | 1 | 59 | ytb ke liye |  |
 | `aspect_16_9` | `aspect_9_16` | 1 | 59 | ytb size me |  |
 | `aspect_4_5` | `aspect_9_16` | 1 | 54 | fee ke liye lamba |  |
@@ -66,3 +60,9 @@ Pairs over the limit (6) and not a documented decision: **0**.
 | `audio_fade` | `volume` | 1 | 96 | awaaz dheee kam |  |
 | `audio_fade` | `slow_motion` | 1 | 96 | dheere se ban ho awaaz |  |
 | `audio_fade` | `fade_black` | 1 | 96 | fad audio in and out |  |
+| `audio_fade` | `saturation` | 1 | 96 | aaz fade |  |
+| `auto_captions` | `jump_cut_tighten` | 1 | 69 | sub tite chahiye |  |
+| `auto_captions` | `add_music` | 1 | 69 | sus add karo |  |
+| `auto_reframe` | `add_music` | 1 | 72 | track the fae |  |
+| `auto_reframe` | `trim` | 1 | 72 | center me rakhho |  |
+| `beat_edit` | `sticker_lottie` | 1 | 105 | bea pe animation |  |

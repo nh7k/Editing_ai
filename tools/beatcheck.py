@@ -52,6 +52,31 @@ def beats(path: str) -> tuple[float, np.ndarray]:
     return float(np.atleast_1d(tempo)[0]), np.asarray(b)
 
 
+def kicks(path: str) -> np.ndarray:
+    """Kick-drum onsets straight from the audio (no beat tracker): rises of the 40-120 Hz energy, 10 ms hops,
+    adaptive threshold, ≥ 0.2 s apart. Independent of the app's beat grid AND of librosa's beat phase (a tracker
+    can sit on the off-beat; measured on 3 of 8 songs)."""
+    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", path, "-vn", "-ac", "1", "-ar", "8000", "-f", "s16le", "-"],
+                         capture_output=True).stdout
+    y = np.frombuffer(raw, dtype=np.int16).astype(np.float64) / 32768.0
+    hop, n = 80, 512
+    fr = np.fft.rfftfreq(n, 1 / 8000)
+    band = (fr >= 40) & (fr < 120)
+    e = np.array([np.sum(np.abs(np.fft.rfft(y[i:i + n] * np.hanning(n)))[band] ** 2) for i in range(0, len(y) - n, hop)])
+    if e.size == 0:
+        return np.array([])
+    le = np.log10(e + e.max() * 1e-6)
+    flux = np.maximum(0, np.diff(le, prepend=le[0]))
+    thr = np.median(flux) + 3 * np.median(np.abs(flux - np.median(flux))) + 0.05
+    out, last = [], -9.0
+    for i in range(1, len(flux) - 1):
+        t = i * hop / 8000
+        if flux[i] > thr and flux[i] >= flux[i - 1] and flux[i] >= flux[i + 1] and t - last >= 0.2:
+            out.append(t)
+            last = t
+    return np.array(out)
+
+
 def report(path: str, plain: str | None = None) -> dict:
     tempo, bt = beats(path)
     acc, _d, fps = accents(path)
@@ -66,6 +91,9 @@ def report(path: str, plain: str | None = None) -> dict:
            "accents": len(acc), "beats_hit": f"{len(hit)}/{len(bt)}",
            "hit_rate": round(len(hit) / max(1, len(bt)), 2), "on_beat_share": round(len(on) / max(1, len(acc)), 2),
            "chance_on_beat": round(chance, 2)}
+    kk = kicks(path)
+    khit = [k for k in kk if np.any(np.abs(acc - k) <= tol)]
+    out.update(kicks=len(kk), kicks_hit=f"{len(khit)}/{len(kk)}", kick_hit_rate=round(len(khit) / max(1, len(kk)), 2))
     if plain:
         pacc, _, _ = accents(plain)
         extra = [a for a in acc if not np.any(np.abs(pacc - a) <= 0.05)]

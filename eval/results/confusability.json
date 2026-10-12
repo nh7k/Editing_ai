@@ -1,66 +1,105 @@
 [
  {
+  "skill": "blur_background_fill",
+  "taken_by": "blur",
+  "count": 6,
+  "of": 63,
+  "examples": [
+   "blurr bars",
+   "blr wala background",
+   "khali jagah blr karo",
+   "sie blur karo"
+  ],
+  "known": false
+ },
+ {
   "skill": "split",
   "taken_by": "crop",
   "count": 6,
-  "of": 62,
+  "of": 63,
   "examples": [
    "yahan se kaato",
-   "yahan se kaat",
-   "yaha se kaato",
+   "yahan se kaatto",
+   "yahan se kato",
    "यहाँ से काटो"
   ],
   "known": false
  },
  {
-  "skill": "blur_background_fill",
-  "taken_by": "blur",
-  "count": 4,
+  "skill": "blur",
+  "taken_by": "cool",
+  "count": 5,
   "of": 63,
   "examples": [
-   "khali jagah blr karo",
-   "side blr karo",
-   "peeche blurr",
-   "blr se bharo"
+   "blu",
+   "blu",
+   "blu lagao",
+   "blu kar do"
   ],
   "known": false
  },
  {
   "skill": "blur_box_censor",
   "taken_by": "blur",
-  "count": 4,
+  "count": 5,
   "of": 63,
   "examples": [
-   "blr out",
-   "blr out",
-   "hide with blurr",
-   "dhundhla dbb"
+   "blurr box",
+   "blr box",
+   "blurr out",
+   "hide with blurr"
   ],
   "known": false
  },
  {
-  "skill": "remove_silence",
+  "skill": "speed_ramp",
+  "taken_by": "speed_up",
+  "count": 5,
+  "of": 63,
+  "examples": [
+   "speed rap",
+   "tez phir slo",
+   "slo phir tez",
+   "sped rap"
+  ],
+  "known": false
+ },
+ {
+  "skill": "fade_black",
   "taken_by": "delete_segment",
   "count": 4,
-  "of": 78,
+  "of": 75,
   "examples": [
-   "remove silent part",
-   "chhup wala hissa hatao",
-   "koi nahi bol rha wo hatao",
-   "koi nhi bol raha wo hatao"
+   "fae out",
+   "fae out",
+   "fae out",
+   "fae out"
   ],
   "known": false
  },
  {
-  "skill": "text_glow_neon",
-  "taken_by": "text_overlay",
+  "skill": "stabilize",
+  "taken_by": "shake",
   "count": 4,
   "of": 69,
   "examples": [
-   "gow karta text",
-   "neon likhho",
-   "clu wala text",
-   "glo txt"
+   "anti shak",
+   "hilna bad karo",
+   "shak hatao",
+   "remov camera shake"
+  ],
+  "known": false
+ },
+ {
+  "skill": "vintage_faded",
+  "taken_by": "saturation",
+  "count": 4,
+  "of": 69,
+  "examples": [
+   "faded fil",
+   "faded fil",
+   "faded prn look",
+   "faded purana luk"
   ],
   "known": false
  },
@@ -77,50 +116,26 @@
   "known": false
  },
  {
-  "skill": "auto_captions",
-  "taken_by": "text_overlay",
+  "skill": "beat_sync",
+  "taken_by": "add_music",
   "count": 3,
-  "of": 69,
+  "of": 66,
   "examples": [
-   "jo bol rha hai wo likho",
-   "niche likh do jo bola",
-   "sus add karo"
+   "beat syc",
+   "beat syc",
+   "music ke sth cut"
   ],
   "known": false
  },
  {
-  "skill": "duck_music",
-  "taken_by": "volume",
+  "skill": "delete_segment",
+  "taken_by": "crop",
   "count": 3,
-  "of": 78,
+  "of": 64,
   "examples": [
-   "awaaz ke neeche msc kam",
-   "bolte wqt music kam",
-   "boln pe music kam"
-  ],
-  "known": false
- },
- {
-  "skill": "fade_black",
-  "taken_by": "saturation",
-  "count": 3,
-  "of": 75,
-  "examples": [
-   "fade through back",
-   "kal fade",
-   "kal fade"
-  ],
-  "known": false
- },
- {
-  "skill": "fade_white",
-  "taken_by": "brighten_to_white",
-  "count": 3,
-  "of": 78,
-  "examples": [
-   "fae to white",
-   "white trnstn do",
-   "dheee se white karo"
+   "ye wala kaat do",
+   "ye waala kaat do",
+   "ye wala caat do"
   ],
   "known": false
  },
@@ -128,94 +143,35 @@
   "skill": "fit_to_duration",
   "taken_by": "mute",
   "count": 3,
-  "of": 69,
+  "of": 70,
   "examples": [
    "minute ka bana do",
-   "meenute ka bana do",
+   "minute ka bna do",
    "minnute ka bana do"
   ],
   "known": false
  },
  {
-  "skill": "loop_boomerang",
-  "taken_by": "j_cut",
+  "skill": "glitch_transition",
+  "taken_by": "glitch",
   "count": 3,
-  "of": 63,
+  "of": 60,
   "examples": [
-   "lup it",
-   "lup it",
-   "lup karo"
+   "glitchh cut",
+   "digital trnstn",
+   "gltch transition do"
   ],
   "known": false
  },
  {
-  "skill": "speed_ramp",
-  "taken_by": "speed_up",
+  "skill": "merge_clips",
+  "taken_by": "split_screen",
   "count": 3,
   "of": 62,
   "examples": [
-   "fast the slow",
-   "slo then fast",
-   "slo phir tez"
-  ],
-  "known": false
- },
- {
-  "skill": "speed_up",
-  "taken_by": "slow_motion",
-  "count": 3,
-  "of": 65,
-  "examples": [
-   "tei se chalao",
-   "slow lag rha hai",
-   "slow lag rha hai"
-  ],
-  "known": false
- },
- {
-  "skill": "text_slide",
-  "taken_by": "slide",
-  "count": 3,
-  "of": 69,
-  "examples": [
-   "tet slide",
-   "tex khisak ke aaye",
-   "tet slid"
-  ],
-  "known": false
- },
- {
-  "skill": "text_slide",
-  "taken_by": "text_overlay",
-  "count": 3,
-  "of": 69,
-  "examples": [
-   "text from the let",
-   "text from the lef",
-   "text from the lef"
-  ],
-  "known": false
- },
- {
-  "skill": "volume",
-  "taken_by": "speed_up",
-  "count": 3,
-  "of": 81,
-  "examples": [
-   "muic tez",
-   "muic tez",
-   "awa tez"
-  ],
-  "known": false
- },
- {
-  "skill": "add_music",
-  "taken_by": "text_overlay",
-  "count": 2,
-  "of": 72,
-  "examples": [
-   "add a sog",
-   "gaa dalo"
+   "sab ek me daal do",
+   "sab ek me daaal do",
+   "sab ek me daaal do"
   ],
   "known": false
  },
@@ -231,123 +187,90 @@
   "known": false
  },
  {
-  "skill": "blur",
-  "taken_by": "progress_bar",
+  "skill": "auto_captions",
+  "taken_by": "text_overlay",
   "count": 2,
-  "of": 63,
+  "of": 69,
   "examples": [
-   "bur",
-   "bur lagao"
+   "jo bol rha hai wo likho",
+   "niche likh do jo bola"
   ],
   "known": false
  },
  {
-  "skill": "blur_background_fill",
-  "taken_by": "remove_fillers",
+  "skill": "beat_edit",
+  "taken_by": "beat_sync",
   "count": 2,
-  "of": 63,
+  "of": 105,
   "examples": [
-   "bur fill",
-   "bur fill"
+   "eit on the beat",
+   "taal pe edi"
   ],
   "known": false
  },
  {
-  "skill": "blur_background_fill",
-  "taken_by": "slide",
+  "skill": "beat_edit",
+  "taken_by": "add_music",
+  "count": 2,
+  "of": 105,
+  "examples": [
+   "beat pe zoo karo",
+   "beet pe eit"
+  ],
+  "known": false
+ },
+ {
+  "skill": "brightness",
+  "taken_by": "punch_in",
   "count": 2,
   "of": 63,
   "examples": [
-   "side me bur",
-   "side blu karo"
+   "too dak",
+   "dak hai"
+  ],
+  "known": false
+ },
+ {
+  "skill": "caption_style",
+  "taken_by": "cool",
+  "count": 2,
+  "of": 93,
+  "examples": [
+   "tex color",
+   "tex color"
   ],
   "known": false
  },
  {
   "skill": "color_pop",
-  "taken_by": "l_cut",
+  "taken_by": "trim",
   "count": 2,
   "of": 63,
   "examples": [
-   "ek hi ran",
-   "ek hi ran"
+   "sirf laa rakho",
+   "baaki sab gey"
   ],
   "known": false
  },
  {
   "skill": "delete_segment",
-  "taken_by": "restore_normal",
+  "taken_by": "shake",
   "count": 2,
-  "of": 65,
+  "of": 64,
   "examples": [
-   "remove fro",
-   "remove sho"
+   "haa do",
+   "haa do"
   ],
   "known": false
  },
  {
-  "skill": "delete_segment",
-  "taken_by": "crop",
-  "count": 2,
-  "of": 65,
-  "examples": [
-   "ye wala kaat do",
-   "ye wla kaat do"
-  ],
-  "known": false
- },
- {
-  "skill": "fade_black",
-  "taken_by": "brighten_to_white",
-  "count": 2,
-  "of": 75,
-  "examples": [
-   "fae to black",
-   "black fae"
-  ],
-  "known": false
- },
- {
-  "skill": "fade_white",
-  "taken_by": "flash",
+  "skill": "duck_music",
+  "taken_by": "volume",
   "count": 2,
   "of": 78,
   "examples": [
-   "drm flash",
-   "flash between shot"
-  ],
-  "known": true
- },
- {
-  "skill": "fit_to_duration",
-  "taken_by": "trim",
-  "count": 2,
-  "of": 69,
-  "examples": [
-   "cut don to",
-   "total length rakhho"
-  ],
-  "known": false
- },
- {
-  "skill": "freeze_frame",
-  "taken_by": "delete_segment",
-  "count": 2,
-  "of": 63,
-  "examples": [
-   "hod the frame",
-   "hod the frame"
-  ],
-  "known": false
- },
- {
-  "skill": "glitch_transition",
-  "taken_by": "glitch",
-  "count": 2,
-  "of": 60,
-  "examples": [
-   "data glitchh",
-   "gltch transition do"
+   "aaaz ke neeche music kam",
+   "bole waqt music kam"
   ],
   "known": false
  },
@@ -357,8 +280,8 @@
   "count": 2,
   "of": 69,
   "examples": [
-   "back and white kar do",
-   "bak and white"
+   "kaa safed",
+   "bla and white"
   ],
   "known": false
  },
@@ -368,41 +291,52 @@
   "count": 2,
   "of": 69,
   "examples": [
-   "ran hata do",
-   "rang hta do"
-  ],
-  "known": false
- },
- {
-  "skill": "insert_broll",
-  "taken_by": "remove_fillers",
-  "count": 2,
-  "of": 66,
-  "examples": [
-   "filler shot daa do",
-   "filler shot daa do"
+   "rang hta do",
+   "rag hata do"
   ],
   "known": false
  },
  {
   "skill": "intro_outro",
-  "taken_by": "title_card",
+  "taken_by": "reorder_clips",
   "count": 2,
   "of": 66,
   "examples": [
-   "lat me card",
-   "las me card"
+   "last me car",
+   "last me car"
   ],
   "known": false
  },
  {
-  "skill": "jump_cut_tighten",
-  "taken_by": "trim",
+  "skill": "iris_circle",
+  "taken_by": "auto_captions",
   "count": 2,
   "of": 63,
   "examples": [
-   "jum cut",
-   "jum cut"
+   "iri lagao",
+   "iri lagao"
+  ],
+  "known": false
+ },
+ {
+  "skill": "j_cut",
+  "taken_by": "trim",
+  "count": 2,
+  "of": 69,
+  "examples": [
+   "hea the next clip first",
+   "agle clip ki awaaz phl"
+  ],
+  "known": false
+ },
+ {
+  "skill": "j_cut",
+  "taken_by": "reorder_clips",
+  "count": 2,
+  "of": 69,
+  "examples": [
+   "pehle sunai de pir dikhe",
+   "awa pehle"
   ],
   "known": false
  },
@@ -412,30 +346,30 @@
   "count": 2,
   "of": 63,
   "examples": [
-   "pan and zoo",
+   "slow pan and zum",
    "pan and zoo"
   ],
   "known": false
  },
  {
-  "skill": "letterbox",
-  "taken_by": "aspect_16_9",
+  "skill": "ken_burns",
+  "taken_by": "slow_motion",
   "count": 2,
   "of": 63,
   "examples": [
-   "widescreen brs",
-   "widescreen bar"
+   "pht motion",
+   "pht me motion"
   ],
   "known": false
  },
  {
-  "skill": "merge_clips",
+  "skill": "mirror_effect",
   "taken_by": "split_screen",
   "count": 2,
-  "of": 62,
+  "of": 60,
   "examples": [
-   "sab ek me daal do",
-   "sab ek me daall do"
+   "don taraf same",
+   "dono taraf sae"
   ],
   "known": false
  },
@@ -443,76 +377,65 @@
   "skill": "normalize_loudness",
   "taken_by": "volume",
   "count": 2,
-  "of": 63,
+  "of": 62,
   "examples": [
-   "even out the volum",
-   "consistent volum"
+   "een out the volume",
+   "even out the vlm"
   ],
   "known": false
  },
  {
-  "skill": "reorder_clips",
-  "taken_by": "replace_audio",
-  "count": 2,
-  "of": 69,
-  "examples": [
-   "ord badlo",
-   "orr badlo"
-  ],
-  "known": false
- },
- {
-  "skill": "replace_audio",
-  "taken_by": "add_music",
-  "count": 2,
-  "of": 66,
-  "examples": [
-   "rplc sound with music",
-   "full gaana moe"
-  ],
-  "known": false
- },
- {
-  "skill": "slow_motion",
-  "taken_by": "export_preset",
-  "count": 2,
-  "of": 69,
-  "examples": [
-   "sow mo",
-   "sow motin"
-  ],
-  "known": false
- },
- {
-  "skill": "srt_export",
-  "taken_by": "auto_captions",
-  "count": 2,
-  "of": 63,
-  "examples": [
-   "caption fie",
-   "caption fie"
-  ],
-  "known": false
- },
- {
-  "skill": "srt_export",
-  "taken_by": "stabilize",
-  "count": 2,
-  "of": 63,
-  "examples": [
-   "str fie",
-   "str fie"
-  ],
-  "known": false
- },
- {
-  "skill": "stabilize",
+  "skill": "punch_in",
   "taken_by": "shake",
   "count": 2,
-  "of": 68,
+  "of": 63,
   "examples": [
-   "ati shake",
-   "hilna ban karo"
+   "jhatke se zoo",
+   "zum ka jhatka"
+  ],
+  "known": false
+ },
+ {
+  "skill": "slide",
+  "taken_by": "slow_motion",
+  "count": 2,
+  "of": 63,
+  "examples": [
+   "sli",
+   "sli"
+  ],
+  "known": false
+ },
+ {
+  "skill": "text_glow_neon",
+  "taken_by": "text_overlay",
+  "count": 2,
+  "of": 69,
+  "examples": [
+   "gow text",
+   "gow txt"
+  ],
+  "known": false
+ },
+ {
+  "skill": "text_pop_in",
+  "taken_by": "picture_in_picture",
+  "count": 2,
+  "of": 69,
+  "examples": [
+   "pop tex",
+   "pop up tex"
+  ],
+  "known": false
+ },
+ {
+  "skill": "text_pop_in",
+  "taken_by": "zoom_in",
+  "count": 2,
+  "of": 69,
+  "examples": [
+   "zum in text",
+   "zum in text"
   ],
   "known": false
  },
@@ -523,7 +446,7 @@
   "of": 72,
   "examples": [
    "tye it out",
-   "tye it out"
+   "tye hota"
   ],
   "known": false
  },
@@ -533,30 +456,41 @@
   "count": 2,
   "of": 69,
   "examples": [
-   "retro tap look",
-   "retro tpe look"
+   "retro tpe",
+   "retro tae"
   ],
   "known": false
  },
  {
-  "skill": "warm",
-  "taken_by": "cool",
+  "skill": "vhs_retro",
+  "taken_by": "fit_to_duration",
+  "count": 2,
+  "of": 69,
+  "examples": [
+   "old video loo",
+   "old video loo"
+  ],
+  "known": false
+ },
+ {
+  "skill": "watermark_logo",
+  "taken_by": "zoom_in",
+  "count": 2,
+  "of": 63,
+  "examples": [
+   "looo",
+   "looo"
+  ],
+  "known": false
+ },
+ {
+  "skill": "zoom_in",
+  "taken_by": "slow_motion",
   "count": 2,
   "of": 64,
   "examples": [
-   "war tone",
-   "orange tin"
-  ],
-  "known": false
- },
- {
-  "skill": "wipe",
-  "taken_by": "pan",
-  "count": 2,
-  "of": 62,
-  "examples": [
-   "wie left",
-   "wie left"
+   "dheere zum",
+   "dheere zoo"
   ],
   "known": false
  },
@@ -572,24 +506,13 @@
   "known": false
  },
  {
-  "skill": "zoom_out",
+  "skill": "zoom_transition",
   "taken_by": "zoom_in",
   "count": 2,
-  "of": 72,
+  "of": 60,
   "examples": [
-   "zoom bak",
-   "rvrs zoom"
-  ],
-  "known": false
- },
- {
-  "skill": "zoom_out",
-  "taken_by": "split_screen",
-  "count": 2,
-  "of": 72,
-  "examples": [
-   "baar ki taraf zoom",
-   "pichhe ki taraf zoo"
+   "zoom ito the next",
+   "zum kat"
   ],
   "known": false
  },
@@ -600,6 +523,16 @@
   "of": 72,
   "examples": [
    "bea daalo"
+  ],
+  "known": false
+ },
+ {
+  "skill": "add_music",
+  "taken_by": "text_overlay",
+  "count": 1,
+  "of": 72,
+  "examples": [
+   "gaa dalo"
   ],
   "known": false
  },
@@ -694,6 +627,16 @@
   "known": false
  },
  {
+  "skill": "auto_captions",
+  "taken_by": "add_music",
+  "count": 1,
+  "of": 69,
+  "examples": [
+   "sus add karo"
+  ],
+  "known": false
+ },
+ {
   "skill": "auto_reframe",
   "taken_by": "add_music",
   "count": 1,
@@ -714,22 +657,52 @@
   "known": false
  },
  {
-  "skill": "beat_sync",
-  "taken_by": "add_music",
+  "skill": "beat_edit",
+  "taken_by": "sticker_lottie",
   "count": 1,
-  "of": 66,
+  "of": 105,
   "examples": [
-   "beat sic"
+   "bea pe animation"
+  ],
+  "known": false
+ },
+ {
+  "skill": "beat_edit",
+  "taken_by": "shake",
+  "count": 1,
+  "of": 105,
+  "examples": [
+   "bea pe jhatka"
+  ],
+  "known": false
+ },
+ {
+  "skill": "beat_edit",
+  "taken_by": "fit_to_duration",
+  "count": 1,
+  "of": 105,
+  "examples": [
+   "beat pe nch video ko"
   ],
   "known": false
  },
  {
   "skill": "blur",
-  "taken_by": "saturation",
+  "taken_by": "progress_bar",
   "count": 1,
   "of": 63,
   "examples": [
-   "halka blu"
+   "bur effect"
+  ],
+  "known": false
+ },
+ {
+  "skill": "blur_background_fill",
+  "taken_by": "remove_fillers",
+  "count": 1,
+  "of": 63,
+  "examples": [
+   "fill with blu"
   ],
   "known": false
  },
@@ -739,47 +712,17 @@
   "count": 1,
   "of": 63,
   "examples": [
-   "blu bars"
+   "kaali patti nahi blr"
   ],
   "known": false
  },
  {
-  "skill": "blur_box_censor",
-  "taken_by": "split",
+  "skill": "blur_background_fill",
+  "taken_by": "zoom_out",
   "count": 1,
   "of": 63,
   "examples": [
-   "bur this part"
-  ],
-  "known": false
- },
- {
-  "skill": "blur_box_censor",
-  "taken_by": "cool",
-  "count": 1,
-  "of": 63,
-  "examples": [
-   "us jagah blu"
-  ],
-  "known": false
- },
- {
-  "skill": "blur_box_censor",
-  "taken_by": "mute",
-  "count": 1,
-  "of": 63,
-  "examples": [
-   "chp do"
-  ],
-  "known": false
- },
- {
-  "skill": "brighten_to_white",
-  "taken_by": "brightness",
-  "count": 1,
-  "of": 66,
-  "examples": [
-   "brighten to wit"
+   "peeche blu"
   ],
   "known": false
  },
@@ -789,37 +732,97 @@
   "count": 1,
   "of": 93,
   "examples": [
-   "captons ko mast karo"
+   "make cptns bigger"
+  ],
+  "known": false
+ },
+ {
+  "skill": "caption_style",
+  "taken_by": "sharpen",
+  "count": 1,
+  "of": 93,
+  "examples": [
+   "caption clr"
+  ],
+  "known": false
+ },
+ {
+  "skill": "caption_style",
+  "taken_by": "color_pop",
+  "count": 1,
+  "of": 93,
+  "examples": [
+   "tet ka rang"
   ],
   "known": false
  },
  {
   "skill": "color_pop",
-  "taken_by": "trim",
+  "taken_by": "l_cut",
   "count": 1,
   "of": 63,
   "examples": [
-   "sirf lal rakho"
+   "ek hi ran"
+  ],
+  "known": false
+ },
+ {
+  "skill": "cool",
+  "taken_by": "jump_cut_tighten",
+  "count": 1,
+  "of": 69,
+  "examples": [
+   "blue tit karo"
+  ],
+  "known": false
+ },
+ {
+  "skill": "countdown_timer",
+  "taken_by": "split",
+  "count": 1,
+  "of": 58,
+  "examples": [
+   "3 2 1 kaaro"
+  ],
+  "known": false
+ },
+ {
+  "skill": "countdown_timer",
+  "taken_by": "trim",
+  "count": 1,
+  "of": 58,
+  "examples": [
+   "tim"
   ],
   "known": false
  },
  {
   "skill": "crop",
-  "taken_by": "text_overlay",
+  "taken_by": "zoom_in",
   "count": 1,
   "of": 62,
   "examples": [
-   "cop kar do beech me"
+   "cro in"
+  ],
+  "known": false
+ },
+ {
+  "skill": "crop",
+  "taken_by": "slide",
+  "count": 1,
+  "of": 62,
+  "examples": [
+   "side kaa do"
   ],
   "known": false
  },
  {
   "skill": "delete_segment",
-  "taken_by": "split",
+  "taken_by": "restore_normal",
   "count": 1,
-  "of": 65,
+  "of": 64,
   "examples": [
-   "rmv part"
+   "remove fro"
   ],
   "known": false
  },
@@ -827,7 +830,7 @@
   "skill": "delete_segment",
   "taken_by": "montage_builder",
   "count": 1,
-  "of": 65,
+  "of": 64,
   "examples": [
    "rmv shot"
   ],
@@ -835,21 +838,11 @@
  },
  {
   "skill": "delete_segment",
-  "taken_by": "shake",
+  "taken_by": "punch_in",
   "count": 1,
-  "of": 65,
+  "of": 64,
   "examples": [
-   "haa do"
-  ],
-  "known": false
- },
- {
-  "skill": "delete_segment",
-  "taken_by": "fit_to_duration",
-  "count": 1,
-  "of": 65,
-  "examples": [
-   "ye wala kaa do"
+   "se tak hat do"
   ],
   "known": false
  },
@@ -859,7 +852,27 @@
   "count": 1,
   "of": 66,
   "examples": [
-   "sho hatao"
+   "hawa ki aaaz hatao"
+  ],
+  "known": false
+ },
+ {
+  "skill": "denoise",
+  "taken_by": "mute",
+  "count": 1,
+  "of": 66,
+  "examples": [
+   "haw ki awaaz hatao"
+  ],
+  "known": false
+ },
+ {
+  "skill": "duck_music",
+  "taken_by": "fit_to_duration",
+  "count": 1,
+  "of": 78,
+  "examples": [
+   "muic under the voice"
   ],
   "known": false
  },
@@ -875,101 +888,81 @@
  },
  {
   "skill": "duck_music",
-  "taken_by": "sharpen",
-  "count": 1,
-  "of": 78,
-  "examples": [
-   "voie clear rakho"
-  ],
-  "known": false
- },
- {
-  "skill": "duck_music",
   "taken_by": "add_music",
   "count": 1,
   "of": 78,
   "examples": [
-   "music sie me"
+   "aaaz upar music neeche"
   ],
   "known": false
  },
  {
   "skill": "echo_reverb",
-  "taken_by": "title_card",
+  "taken_by": "normalize_loudness",
   "count": 1,
-  "of": 63,
+  "of": 62,
   "examples": [
-   "big roo"
+   "guj wali awaaz"
   ],
   "known": false
  },
  {
-  "skill": "echo_reverb",
-  "taken_by": "restore_normal",
+  "skill": "export_preset",
+  "taken_by": "aspect_16_9",
   "count": 1,
-  "of": 63,
+  "of": 69,
   "examples": [
-   "hall jaisa aaaz"
+   "youtube shorts ke liye nkl"
   ],
   "known": false
  },
  {
   "skill": "extract_audio",
-  "taken_by": "merge_clips",
+  "taken_by": "mute",
   "count": 1,
   "of": 75,
   "examples": [
-   "audio ony"
+   "sound fie do"
   ],
   "known": false
  },
  {
   "skill": "extract_highlights",
-  "taken_by": "shape_highlight",
+  "taken_by": "beat_sync",
   "count": 1,
   "of": 63,
   "examples": [
-   "highlight ril"
+   "the best bit"
   ],
   "known": false
  },
  {
   "skill": "extract_highlights",
-  "taken_by": "delete_segment",
+  "taken_by": "auto_enhance",
   "count": 1,
   "of": 63,
   "examples": [
-   "bes part nikalo"
-  ],
-  "known": false
- },
- {
-  "skill": "extract_highlights",
-  "taken_by": "split",
-  "count": 1,
-  "of": 63,
-  "examples": [
-   "kaam ke hisse nkl"
+   "mast wale par"
   ],
   "known": false
  },
  {
   "skill": "fade_black",
-  "taken_by": "delete_segment",
+  "taken_by": "saturation",
   "count": 1,
   "of": 75,
   "examples": [
-   "fae out"
+   "kal fade"
   ],
   "known": false
  },
  {
   "skill": "fade_black",
-  "taken_by": "restore_normal",
+  "taken_by": "brightness",
   "count": 1,
   "of": 75,
   "examples": [
-   "dip to back"
+   "andhera hoe hue khatam"
   ],
   "known": false
  },
@@ -985,41 +978,51 @@
  },
  {
   "skill": "fade_white",
-  "taken_by": "saturation",
+  "taken_by": "brighten_to_white",
   "count": 1,
   "of": 78,
   "examples": [
-   "whi fade"
+   "white me fae karo"
   ],
   "known": false
  },
  {
-  "skill": "fit_to_duration",
-  "taken_by": "watermark_logo",
+  "skill": "fade_white",
+  "taken_by": "fade_black",
   "count": 1,
-  "of": 69,
+  "of": 78,
   "examples": [
-   "make it seconds log"
+   "safe fad"
   ],
   "known": false
  },
  {
-  "skill": "grayscale",
-  "taken_by": "sharpen",
+  "skill": "freeze_frame",
+  "taken_by": "delete_segment",
   "count": 1,
-  "of": 69,
+  "of": 63,
   "examples": [
-   "no clr"
+   "sop the frame"
   ],
   "known": false
  },
  {
-  "skill": "grayscale",
-  "taken_by": "color_pop",
+  "skill": "glitch_transition",
+  "taken_by": "zoom_transition",
   "count": 1,
-  "of": 69,
+  "of": 60,
   "examples": [
-   "bia rang ka"
+   "errr transition"
+  ],
+  "known": false
+ },
+ {
+  "skill": "hook_first",
+  "taken_by": "extract_highlights",
+  "count": 1,
+  "of": 66,
+  "examples": [
+   "open with the higlight"
   ],
   "known": false
  },
@@ -1030,6 +1033,46 @@
   "of": 66,
   "examples": [
    "hoo lagao"
+  ],
+  "known": false
+ },
+ {
+  "skill": "hook_first",
+  "taken_by": "split",
+  "count": 1,
+  "of": 66,
+  "examples": [
+   "shuru me bes part"
+  ],
+  "known": false
+ },
+ {
+  "skill": "hook_first",
+  "taken_by": "reorder_clips",
+  "count": 1,
+  "of": 66,
+  "examples": [
+   "best prt pehle"
+  ],
+  "known": false
+ },
+ {
+  "skill": "insert_broll",
+  "taken_by": "trim",
+  "count": 1,
+  "of": 66,
+  "examples": [
+   "show another clip ove"
+  ],
+  "known": false
+ },
+ {
+  "skill": "insert_broll",
+  "taken_by": "remove_fillers",
+  "count": 1,
+  "of": 66,
+  "examples": [
+   "filler shot daa do"
   ],
   "known": false
  },
@@ -1045,81 +1088,41 @@
  },
  {
   "skill": "iris_circle",
-  "taken_by": "auto_captions",
+  "taken_by": "wipe",
   "count": 1,
   "of": 63,
   "examples": [
-   "iri lagao"
+   "iis wipe"
+  ],
+  "known": false
+ },
+ {
+  "skill": "iris_circle",
+  "taken_by": "shape_highlight",
+  "count": 1,
+  "of": 63,
+  "examples": [
+   "crtn circle"
   ],
   "known": false
  },
  {
   "skill": "j_cut",
-  "taken_by": "trim",
+  "taken_by": "picture_in_picture",
   "count": 1,
   "of": 69,
   "examples": [
-   "hear the nex clip first"
-  ],
-  "known": false
- },
- {
-  "skill": "j_cut",
-  "taken_by": "mute",
-  "count": 1,
-  "of": 69,
-  "examples": [
-   "sound phl"
-  ],
-  "known": false
- },
- {
-  "skill": "jump_cut_tighten",
-  "taken_by": "split",
-  "count": 1,
-  "of": 63,
-  "examples": [
-   "jum cut lagao"
+   "audio bfr picture"
   ],
   "known": false
  },
  {
   "skill": "karaoke_captions",
-  "taken_by": "brightness",
+  "taken_by": "shape_highlight",
   "count": 1,
   "of": 63,
   "examples": [
-   "jo boe wo word chamke"
-  ],
-  "known": false
- },
- {
-  "skill": "karaoke_captions",
-  "taken_by": "auto_captions",
-  "count": 1,
-  "of": 63,
-  "examples": [
-   "krk captions"
-  ],
-  "known": false
- },
- {
-  "skill": "ken_burns",
-  "taken_by": "slow_motion",
-  "count": 1,
-  "of": 63,
-  "examples": [
-   "photo dheere zoo"
-  ],
-  "known": false
- },
- {
-  "skill": "ken_burns",
-  "taken_by": "freeze_frame",
-  "count": 1,
-  "of": 63,
-  "examples": [
-   "still ko moe karo"
+   "highlight each wor"
   ],
   "known": false
  },
@@ -1129,17 +1132,7 @@
   "count": 1,
   "of": 66,
   "examples": [
-   "awaz aae"
-  ],
-  "known": false
- },
- {
-  "skill": "letterbox",
-  "taken_by": "brighten_to_white",
-  "count": 1,
-  "of": 63,
-  "examples": [
-   "black bas lagao"
+   "awaaz aae tak chale"
   ],
   "known": false
  },
@@ -1154,32 +1147,72 @@
   "known": false
  },
  {
-  "skill": "light_leak",
-  "taken_by": "cinematic_look",
+  "skill": "letterbox",
+  "taken_by": "brighten_to_white",
   "count": 1,
   "of": 63,
   "examples": [
-   "film bun"
+   "blak bas"
   ],
   "known": false
  },
  {
   "skill": "light_leak",
-  "taken_by": "text_glow_neon",
+  "taken_by": "jump_cut_tighten",
   "count": 1,
   "of": 63,
   "examples": [
-   "war glow"
+   "light lea"
+  ],
+  "known": false
+ },
+ {
+  "skill": "light_leak",
+  "taken_by": "text_overlay",
+  "count": 1,
+  "of": 63,
+  "examples": [
+   "light lik"
   ],
   "known": false
  },
  {
   "skill": "loop_boomerang",
-  "taken_by": "picture_in_picture",
+  "taken_by": "zoom_in",
   "count": 1,
   "of": 63,
   "examples": [
-   "insta wala loo"
+   "loo it"
+  ],
+  "known": false
+ },
+ {
+  "skill": "loop_boomerang",
+  "taken_by": "rotate_flip",
+  "count": 1,
+  "of": 63,
+  "examples": [
+   "ulta seedha lup"
+  ],
+  "known": false
+ },
+ {
+  "skill": "loop_boomerang",
+  "taken_by": "j_cut",
+  "count": 1,
+  "of": 63,
+  "examples": [
+   "lup karo"
+  ],
+  "known": false
+ },
+ {
+  "skill": "lower_third",
+  "taken_by": "title_card",
+  "count": 1,
+  "of": 63,
+  "examples": [
+   "nae title"
   ],
   "known": false
  },
@@ -1189,37 +1222,47 @@
   "count": 1,
   "of": 63,
   "examples": [
-   "kaun bol rha hai likho"
+   "nch naam likho"
+  ],
+  "known": false
+ },
+ {
+  "skill": "lower_third",
+  "taken_by": "letterbox",
+  "count": 1,
+  "of": 63,
+  "examples": [
+   "naa ki patti"
   ],
   "known": false
  },
  {
   "skill": "merge_clips",
-  "taken_by": "aspect_16_9",
+  "taken_by": "zoom_out",
   "count": 1,
   "of": 62,
   "examples": [
-   "ek vide banao"
-  ],
-  "known": false
- },
- {
-  "skill": "merge_clips",
-  "taken_by": "vhs_retro",
-  "count": 1,
-  "of": 62,
-  "examples": [
-   "sab ek me daa do"
+   "joo"
   ],
   "known": false
  },
  {
   "skill": "mirror_effect",
-  "taken_by": "split_screen",
+  "taken_by": "rotate_flip",
   "count": 1,
   "of": 60,
   "examples": [
-   "khaar taraf mirror"
+   "ulta seedha sae"
+  ],
+  "known": false
+ },
+ {
+  "skill": "montage_builder",
+  "taken_by": "speed_up",
+  "count": 1,
+  "of": 63,
+  "examples": [
+   "fatafat cut"
   ],
   "known": false
  },
@@ -1227,29 +1270,9 @@
   "skill": "mute",
   "taken_by": "delete_segment",
   "count": 1,
-  "of": 63,
+  "of": 61,
   "examples": [
    "awaaz hta do"
-  ],
-  "known": false
- },
- {
-  "skill": "mute",
-  "taken_by": "normalize_loudness",
-  "count": 1,
-  "of": 63,
-  "examples": [
-   "bia awaaz"
-  ],
-  "known": false
- },
- {
-  "skill": "pan",
-  "taken_by": "rotate_flip",
-  "count": 1,
-  "of": 62,
-  "examples": [
-   "lef right ghumao"
   ],
   "known": false
  },
@@ -1259,17 +1282,17 @@
   "count": 1,
   "of": 66,
   "examples": [
-   "mii video"
+   "min video"
   ],
   "known": false
  },
  {
   "skill": "pixelate_censor",
-  "taken_by": "add_music",
+  "taken_by": "blur",
   "count": 1,
   "of": 62,
   "examples": [
-   "msc"
+   "blur wala dbb"
   ],
   "known": false
  },
@@ -1279,47 +1302,47 @@
   "count": 1,
   "of": 63,
   "examples": [
-   "bar chl"
+   "neeche line chl"
   ],
   "known": false
  },
  {
   "skill": "punch_in",
-  "taken_by": "jump_cut_tighten",
+  "taken_by": "zoom_in",
   "count": 1,
   "of": 63,
   "examples": [
-   "snap zoo"
+   "jum zoom"
   ],
   "known": false
  },
  {
-  "skill": "punch_in",
-  "taken_by": "shake",
+  "skill": "reorder_clips",
+  "taken_by": "trim",
   "count": 1,
-  "of": 63,
+  "of": 69,
   "examples": [
-   "jhatka zoo"
-  ],
-  "known": false
- },
- {
-  "skill": "punch_in",
-  "taken_by": "add_music",
-  "count": 1,
-  "of": 63,
-  "examples": [
-   "beat par zoo"
+   "moe clip"
   ],
   "known": false
  },
  {
   "skill": "replace_audio",
-  "taken_by": "mute",
+  "taken_by": "add_music",
   "count": 1,
   "of": 66,
   "examples": [
-   "remove original sound and add muic"
+   "sif gaana chale"
+  ],
+  "known": false
+ },
+ {
+  "skill": "restore_normal",
+  "taken_by": "brighten_to_white",
+  "count": 1,
+  "of": 78,
+  "examples": [
+   "sab saa karo"
   ],
   "known": false
  },
@@ -1334,42 +1357,12 @@
   "known": false
  },
  {
-  "skill": "reverse",
-  "taken_by": "jump_cut_tighten",
-  "count": 1,
-  "of": 63,
-  "examples": [
-   "tie machine wala"
-  ],
-  "known": false
- },
- {
-  "skill": "rgb_split",
-  "taken_by": "split",
-  "count": 1,
-  "of": 63,
-  "examples": [
-   "ran alag alag"
-  ],
-  "known": false
- },
- {
-  "skill": "rotate_flip",
-  "taken_by": "mirror_effect",
-  "count": 1,
-  "of": 62,
-  "examples": [
-   "mirrr"
-  ],
-  "known": false
- },
- {
   "skill": "rotate_flip",
   "taken_by": "fit_to_duration",
   "count": 1,
   "of": 62,
   "examples": [
-   "tun the video"
+   "tur the video"
   ],
   "known": false
  },
@@ -1379,27 +1372,17 @@
   "count": 1,
   "of": 72,
   "examples": [
-   "fdd karo"
+   "fdd colours"
   ],
   "known": false
  },
  {
   "skill": "saturation",
-  "taken_by": "color_pop",
+  "taken_by": "flash",
   "count": 1,
   "of": 72,
   "examples": [
-   "rang chaak"
-  ],
-  "known": false
- },
- {
-  "skill": "saturation",
-  "taken_by": "split_screen",
-  "count": 1,
-  "of": 72,
-  "examples": [
-   "ran badha do"
+   "ran chatak"
   ],
   "known": false
  },
@@ -1409,37 +1392,7 @@
   "count": 1,
   "of": 69,
   "examples": [
-   "cut at scee changes"
-  ],
-  "known": false
- },
- {
-  "skill": "sepia",
-  "taken_by": "restore_normal",
-  "count": 1,
-  "of": 63,
-  "examples": [
-   "purani pht jaisa"
-  ],
-  "known": false
- },
- {
-  "skill": "sfx_whoosh",
-  "taken_by": "zoom_transition",
-  "count": 1,
-  "of": 63,
-  "examples": [
-   "transition pe aaaz"
-  ],
-  "known": false
- },
- {
-  "skill": "shake",
-  "taken_by": "brighten_to_white",
-  "count": 1,
-  "of": 66,
-  "examples": [
-   "sha"
+   "see alag"
   ],
   "known": false
  },
@@ -1447,79 +1400,149 @@
   "skill": "shape_highlight",
   "taken_by": "blur_box_censor",
   "count": 1,
-  "of": 69,
+  "of": 70,
   "examples": [
-   "daw a box"
+   "dra a box"
   ],
   "known": false
  },
  {
   "skill": "shape_highlight",
-  "taken_by": "iris_circle",
+  "taken_by": "auto_captions",
   "count": 1,
-  "of": 69,
+  "of": 70,
   "examples": [
-   "gol ghr banao"
+   "tee lagao"
+  ],
+  "known": false
+ },
+ {
+  "skill": "shape_highlight",
+  "taken_by": "replace_audio",
+  "count": 1,
+  "of": 70,
+  "examples": [
+   "dbb banao"
+  ],
+  "known": false
+ },
+ {
+  "skill": "shape_highlight",
+  "taken_by": "shake",
+  "count": 1,
+  "of": 70,
+  "examples": [
+   "hlt this"
+  ],
+  "known": false
+ },
+ {
+  "skill": "sharpen",
+  "taken_by": "brighten_to_white",
+  "count": 1,
+  "of": 63,
+  "examples": [
+   "saa karo"
   ],
   "known": false
  },
  {
   "skill": "slide",
-  "taken_by": "slow_motion",
+  "taken_by": "zoom_transition",
   "count": 1,
   "of": 63,
   "examples": [
-   "sli"
-  ],
-  "known": false
- },
- {
-  "skill": "slide",
-  "taken_by": "split_screen",
-  "count": 1,
-  "of": 63,
-  "examples": [
-   "sid"
+   "puh transition"
   ],
   "known": false
  },
  {
   "skill": "slow_motion",
-  "taken_by": "speed_up",
+  "taken_by": "export_preset",
   "count": 1,
   "of": 69,
   "examples": [
-   "adh speed"
-  ],
-  "known": false
- },
- {
-  "skill": "speed_ramp",
-  "taken_by": "auto_captions",
-  "count": 1,
-  "of": 62,
-  "examples": [
-   "ram lagao"
+   "sow motin"
   ],
   "known": false
  },
  {
   "skill": "split",
-  "taken_by": "brightness",
+  "taken_by": "trim",
   "count": 1,
-  "of": 62,
+  "of": 63,
   "examples": [
-   "beech se too"
+   "dvd the clip"
   ],
   "known": false
  },
  {
-  "skill": "sticker_lottie",
+  "skill": "split",
+  "taken_by": "lower_third",
+  "count": 1,
+  "of": 63,
+  "examples": [
+   "do pat karo"
+  ],
+  "known": false
+ },
+ {
+  "skill": "split",
+  "taken_by": "l_cut",
+  "count": 1,
+  "of": 63,
+  "examples": [
+   "aag karo"
+  ],
+  "known": false
+ },
+ {
+  "skill": "split",
+  "taken_by": "shape_highlight",
+  "count": 1,
+  "of": 63,
+  "examples": [
+   "spt"
+  ],
+  "known": false
+ },
+ {
+  "skill": "split_screen",
+  "taken_by": "fit_to_duration",
+  "count": 1,
+  "of": 66,
+  "examples": [
+   "do video sth"
+  ],
+  "known": false
+ },
+ {
+  "skill": "srt_export",
+  "taken_by": "auto_captions",
+  "count": 1,
+  "of": 63,
+  "examples": [
+   "cptns ki file"
+  ],
+  "known": false
+ },
+ {
+  "skill": "srt_export",
   "taken_by": "stabilize",
   "count": 1,
-  "of": 69,
+  "of": 63,
   "examples": [
-   "stier"
+   "str fie"
+  ],
+  "known": false
+ },
+ {
+  "skill": "teal_orange",
+  "taken_by": "restore_normal",
+  "count": 1,
+  "of": 63,
+  "examples": [
+   "action fil jaisa"
   ],
   "known": false
  },
@@ -1529,7 +1552,7 @@
   "count": 1,
   "of": 63,
   "examples": [
-   "tea orange karo"
+   "tea aur orange"
   ],
   "known": false
  },
@@ -1539,7 +1562,7 @@
   "count": 1,
   "of": 62,
   "examples": [
-   "wite on the video"
+   "wite"
   ],
   "known": false
  },
@@ -1549,47 +1572,37 @@
   "count": 1,
   "of": 62,
   "examples": [
-   "tex daalo"
-  ],
-  "known": false
- },
- {
-  "skill": "text_pop_in",
-  "taken_by": "zoom_in",
-  "count": 1,
-  "of": 69,
-  "examples": [
-   "zom in text"
-  ],
-  "known": false
- },
- {
-  "skill": "text_pop_in",
-  "taken_by": "picture_in_picture",
-  "count": 1,
-  "of": 69,
-  "examples": [
-   "pop up tex"
+   "tet daalo"
   ],
   "known": false
  },
  {
   "skill": "text_slide",
-  "taken_by": "text_glow_neon",
+  "taken_by": "slide",
   "count": 1,
   "of": 69,
   "examples": [
-   "text fro the right"
+   "slide in tet"
   ],
   "known": false
  },
  {
-  "skill": "title_card",
-  "taken_by": "aspect_16_9",
+  "skill": "text_slide",
+  "taken_by": "text_overlay",
   "count": 1,
-  "of": 61,
+  "of": 69,
   "examples": [
-   "full screen tite"
+   "text sli"
+  ],
+  "known": false
+ },
+ {
+  "skill": "tilt",
+  "taken_by": "rotate_flip",
+  "count": 1,
+  "of": 63,
+  "examples": [
+   "roate a little"
   ],
   "known": false
  },
@@ -1597,9 +1610,39 @@
   "skill": "title_card",
   "taken_by": "jump_cut_tighten",
   "count": 1,
-  "of": 61,
+  "of": 63,
   "examples": [
-   "tite screen"
+   "tite"
+  ],
+  "known": false
+ },
+ {
+  "skill": "title_card",
+  "taken_by": "aspect_16_9",
+  "count": 1,
+  "of": 63,
+  "examples": [
+   "full screen ttl"
+  ],
+  "known": false
+ },
+ {
+  "skill": "trim",
+  "taken_by": "extract_audio",
+  "count": 1,
+  "of": 63,
+  "examples": [
+   "kip only"
+  ],
+  "known": false
+ },
+ {
+  "skill": "trim",
+  "taken_by": "countdown_timer",
+  "count": 1,
+  "of": 63,
+  "examples": [
+   "cop the time"
   ],
   "known": false
  },
@@ -1607,19 +1650,39 @@
   "skill": "trim",
   "taken_by": "delete_segment",
   "count": 1,
-  "of": 62,
+  "of": 63,
   "examples": [
    "kip from"
   ],
   "known": false
  },
  {
-  "skill": "trim",
-  "taken_by": "split",
+  "skill": "vhs_retro",
+  "taken_by": "pan",
   "count": 1,
-  "of": 62,
+  "of": 69,
   "examples": [
-   "oly keep the part"
+   "prn camera"
+  ],
+  "known": false
+ },
+ {
+  "skill": "vignette",
+  "taken_by": "duck_music",
+  "count": 1,
+  "of": 63,
+  "examples": [
+   "ege darkening"
+  ],
+  "known": false
+ },
+ {
+  "skill": "vignette",
+  "taken_by": "brightness",
+  "count": 1,
+  "of": 63,
+  "examples": [
+   "sie me andhera"
   ],
   "known": false
  },
@@ -1634,82 +1697,22 @@
   "known": false
  },
  {
-  "skill": "vintage_faded",
-  "taken_by": "saturation",
-  "count": 1,
-  "of": 69,
-  "examples": [
-   "faded purana luk"
-  ],
-  "known": false
- },
- {
-  "skill": "voice_clarity",
-  "taken_by": "sharpen",
-  "count": 1,
-  "of": 66,
-  "examples": [
-   "voie crisp karo"
-  ],
-  "known": false
- },
- {
-  "skill": "voice_clarity",
-  "taken_by": "restore_normal",
-  "count": 1,
-  "of": 66,
-  "examples": [
-   "aaz saaf"
-  ],
-  "known": false
- },
- {
   "skill": "volume",
-  "taken_by": "cool",
+  "taken_by": "add_music",
   "count": 1,
   "of": 81,
   "examples": [
-   "tun it up"
+   "music dow"
   ],
   "known": false
  },
  {
   "skill": "watermark_logo",
-  "taken_by": "zoom_in",
+  "taken_by": "lower_third",
   "count": 1,
   "of": 63,
   "examples": [
-   "loo"
-  ],
-  "known": false
- },
- {
-  "skill": "watermark_logo",
-  "taken_by": "picture_in_picture",
-  "count": 1,
-  "of": 63,
-  "examples": [
-   "kone me loo"
-  ],
-  "known": false
- },
- {
-  "skill": "whip_pan",
-  "taken_by": "pan",
-  "count": 1,
-  "of": 63,
-  "examples": [
-   "whi pan"
-  ],
-  "known": false
- },
- {
-  "skill": "whip_pan",
-  "taken_by": "zoom_transition",
-  "count": 1,
-  "of": 63,
-  "examples": [
-   "whi transition"
+   "channel ka naam koe me"
   ],
   "known": false
  },
@@ -1724,42 +1727,22 @@
   "known": false
  },
  {
-  "skill": "white_screen_card",
-  "taken_by": "brighten_to_white",
+  "skill": "whip_pan",
+  "taken_by": "fit_to_duration",
   "count": 1,
   "of": 63,
   "examples": [
-   "white cad"
+   "fat cut wala"
   ],
   "known": false
  },
  {
   "skill": "wipe",
-  "taken_by": "merge_clips",
+  "taken_by": "whip_pan",
   "count": 1,
-  "of": 62,
+  "of": 63,
   "examples": [
-   "sie se mitao"
-  ],
-  "known": false
- },
- {
-  "skill": "wipe",
-  "taken_by": "zoom_transition",
-  "count": 1,
-  "of": 62,
-  "examples": [
-   "wie transtion"
-  ],
-  "known": false
- },
- {
-  "skill": "zoom_in",
-  "taken_by": "slow_motion",
-  "count": 1,
-  "of": 66,
-  "examples": [
-   "dheere zum"
+   "wip lagao"
   ],
   "known": false
  },
@@ -1790,16 +1773,6 @@
   "of": 60,
   "examples": [
    "zoo cut"
-  ],
-  "known": false
- },
- {
-  "skill": "zoom_transition",
-  "taken_by": "blur",
-  "count": 1,
-  "of": 60,
-  "examples": [
-   "zoo blur transition"
   ],
   "known": false
  }
