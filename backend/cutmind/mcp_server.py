@@ -17,6 +17,45 @@ from typing import Any
 
 import httpx
 from mcp.server.mcpserver import MCPServer
+from mcp.server.mcpserver.exceptions import ToolError  # its message reaches the client (others are hidden)
+
+VIDEO_EXT = {".mp4", ".mov", ".m4v", ".mkv", ".webm", ".avi"}
+AUDIO_EXT = {".mp3", ".m4a", ".wav", ".aac", ".ogg", ".flac", ".webm", ".opus"}
+MAX_IMPORT_MB = int(os.environ.get("CUTMIND_MCP_MAX_MB", "500"))
+
+
+def local_dir() -> Path:
+    """CutMind's own folder OUTSIDE OneDrive (sync never touches big media): %LOCALAPPDATA%/CutMind on Windows,
+    ~/.cutmind elsewhere; CUTMIND_LOCAL_DIR overrides it."""
+    env = os.environ.get("CUTMIND_LOCAL_DIR")
+    if env:
+        return Path(env).expanduser()
+    base = os.environ.get("LOCALAPPDATA")
+    return Path(base) / "CutMind" if base else Path.home() / ".cutmind"
+
+
+def allowed_dirs() -> list[Path]:
+    """The only folders an MCP client may read files from: the inbox, the test fixtures, CUTMIND_MCP_ALLOW (';')."""
+    dirs = [local_dir() / "inbox", local_dir() / "test_fixtures"]
+    dirs += [Path(d).expanduser() for d in os.environ.get("CUTMIND_MCP_ALLOW", "").split(";") if d.strip()]
+    return [d.resolve() for d in dirs]
+
+
+def check_path(path: str, exts: set[str]) -> Path:
+    """A file an MCP tool may read: inside an allowed folder (no ../ or link escape), the right type, not too big.
+    Before, upload_clip / transcribe_voice read ANY file of the computer a client named."""
+    p = Path(path).expanduser().resolve()  # resolves ../ and symlinks before the check
+    if not any(p.is_relative_to(d) for d in allowed_dirs()):
+        raise ToolError("that folder is not allowed — put the file in "
+                           f"{local_dir() / 'inbox'} (or a folder listed in CUTMIND_MCP_ALLOW)")
+    if not p.is_file():
+        raise ToolError("file not found")
+    if p.suffix.lower() not in exts:
+        raise ToolError(f"not a supported file type ({p.suffix or 'none'})")
+    if p.stat().st_size > MAX_IMPORT_MB * 1024 * 1024:
+        raise ToolError(f"file is larger than {MAX_IMPORT_MB} MB")
+    return p
+
 
 INSTRUCTIONS = (
     "CutMind edits videos from plain-language prompts (English, Hindi, Hinglish). Typical flow: list_projects or "
@@ -43,7 +82,7 @@ def build_server(base_url: str | None = None, api_key: str | None = None,
             body = {"text": r.text[:500]}
         if r.status_code >= 400:
             err = body.get("error", {}) if isinstance(body, dict) else {}
-            raise RuntimeError(f"{err.get('code', r.status_code)}: {err.get('message', body)}")
+            raise ToolError(f"{err.get('code', r.status_code)}: {err.get('message', body)}")
         return body
 
     @server.tool()
@@ -63,15 +102,13 @@ def build_server(base_url: str | None = None, api_key: str | None = None,
 
     @server.tool()
     async def upload_clip(project_id: str, file_path: str) -> dict[str, Any]:
-        """Upload a local video file into a project (validated by the server: type, size, readable)."""
-        p = Path(file_path).expanduser()
-        if not p.is_file():
-            raise RuntimeError(f"file not found: {file_path}")
+        """Upload a video file from an allowed folder (the CutMind inbox; see allowed_dirs) into a project."""
+        p = check_path(file_path, VIDEO_EXT)
         async with client(timeout=600) as c:
             with p.open("rb") as fh:
                 r = await c.post(f"/projects/{project_id}/clips", files={"files": (p.name, fh, "video/mp4")})
         if r.status_code >= 400:
-            raise RuntimeError(r.text[:500])
+            raise ToolError(r.text[:500])
         return r.json()
 
     @server.tool()
@@ -160,14 +197,12 @@ def build_server(base_url: str | None = None, api_key: str | None = None,
     @server.tool()
     async def transcribe_voice(file_path: str) -> dict[str, Any]:
         """Spoken request (audio file, any language) → English prompt text, with the local Whisper model."""
-        p = Path(file_path).expanduser()
-        if not p.is_file():
-            raise RuntimeError(f"file not found: {file_path}")
+        p = check_path(file_path, AUDIO_EXT | VIDEO_EXT)
         async with client(timeout=300) as c:
             with p.open("rb") as fh:
                 r = await c.post("/transcribe", files={"audio": (p.name, fh, "application/octet-stream")})
         if r.status_code >= 400:
-            raise RuntimeError(r.text[:500])
+            raise ToolError(r.text[:500])
         return r.json()
 
     return server

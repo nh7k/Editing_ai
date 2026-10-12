@@ -23,7 +23,9 @@ def _data(result) -> object:
     return json.loads(result.content[0].text)
 
 
-def test_mcp_client_runs_an_edit_end_to_end(tmp_path, media, music_dir):
+def test_mcp_client_runs_an_edit_end_to_end(tmp_path, media, music_dir, monkeypatch):
+    # the test media folder is allowed the way a user allows one: CUTMIND_MCP_ALLOW (files are read only from there)
+    monkeypatch.setenv("CUTMIND_MCP_ALLOW", str(media["a"].parent))
     app = create_app(make_settings(tmp_path / "data", music_dir))
     server = build_server("http://cutmind", api_key="", transport=httpx.ASGITransport(app=app))
 
