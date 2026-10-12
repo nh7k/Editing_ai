@@ -173,6 +173,14 @@ async function request<T>(path: string, opts: RequestOptions = {}): Promise<T> {
   }
 
   const text = await res.text();
+  if (res.status === 404 && path === '/projects') {
+    // CutMind always has /projects: a 404 here means another app answers at this address (e.g. port 8000 in use).
+    throw new ApiError(
+      'not_cutmind',
+      `The server at ${getBaseUrl()} is not CutMind (another app answered). Open Settings and enter the CutMind backend address, e.g. http://localhost:8010.`,
+      404,
+    );
+  }
   if (!res.ok) throw httpError(res.status, text);
   if (!text) return undefined as T;
   try {

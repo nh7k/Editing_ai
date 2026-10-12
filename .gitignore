@@ -42,3 +42,6 @@ tools/test200/work/
 tools/test200/fixtures/*.mp4
 tools/test200/fixtures/*.wav
 tools/test200/fixtures/*.m4a
+
+# MCP client config with the secret URL token (never commit)
+.mcp.json
