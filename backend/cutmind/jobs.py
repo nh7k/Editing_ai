@@ -377,7 +377,12 @@ class JobManager:
         if not clips:
             raise JobError("This project has no clips. Upload at least one video clip first.")
         ordered = sorted(clips, key=lambda c: c.position)
-        return first_plan([c.id for c in ordered], {c.id: probe(c.path).duration for c in ordered}, "16:9", 720)
+        infos = {c.id: probe(c.path) for c in ordered}
+        # the first clip's shape decides the canvas (a phone talking-head stays vertical; it came out 16:9 before)
+        first = infos[ordered[0].id]
+        ratio = first.width / max(1, first.height)
+        aspect = "9:16" if ratio < 0.8 else "1:1" if ratio < 1.2 else "16:9"
+        return first_plan([c.id for c in ordered], {k: v.duration for k, v in infos.items()}, aspect, 720)
 
     def submit_tools(self, project_id: str, calls: list[dict[str, Any]], prompt: str = "") -> str:
         """Check the calls now (clear 422 errors before queuing), then render in the queue like any job."""

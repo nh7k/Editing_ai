@@ -231,6 +231,12 @@ def _timed_text(item: TextItem, text: str) -> str:
         return "".join(rf"{{\k{step}}}{ch}" for ch in chars)
     if anim == "karaoke":
         words = text.split(" ")
+        wt = item.word_times
+        if len(wt) == len(words) and wt:
+            # each word lights up when it is SAID (the speech's own word times), a lead-in before the first one
+            marks = [max(0, int(round(t * 100))) for t in wt] + [total_cs]
+            lead = rf"{{\k{marks[0]}}}" if marks[0] > 0 else ""
+            return lead + " ".join(rf"{{\k{max(1, marks[i + 1] - marks[i])}}}{wd}" for i, wd in enumerate(words))
         step = max(5, int(total_cs * 0.85 / max(1, len(words))))
         return " ".join(rf"{{\k{step}}}{wd}" for wd in words)
     if anim == "wave":

@@ -1,0 +1,101 @@
+id: talking_head_reel
+seed: 111
+category: text
+name: Talking-head reel
+name_hi: Jo bolo wo screen pe
+description: The editorial talking-head edit for vlogs / YouTube / reels — captions that light up word by word as they
+  are said, the layout changing with every sentence (full frame, a card on cream paper, the shot on top with the words
+  below), the strongest spoken words as big keyword cards, an optional @handle and a "COMMENT X" card when the speaker
+  asks for comments.
+params:
+  handle:
+    type: string
+    default: null
+    extract: handle
+    desc: the @handle shown in the corner
+  layouts:
+    type: boolean
+    default: true
+    desc: change the layout with the sentences
+  keywords:
+    type: boolean
+    default: true
+    desc: big keyword cards from the speech
+  cta:
+    type: boolean
+    default: true
+    desc: a COMMENT card when the speaker asks for comments
+time_modes:
+- whole
+builder: speech.talking_head_reel
+graph: transcript words (faster-whisper) → sentences / keywords / CTA → split + layout effects + karaoke captions + titles
+media3:
+  status: server_only
+  how: the server renders it; the phone path is NOT TESTED
+stage: text
+conflicts: []
+cost: medium
+licence: own code; faster-whisper (MIT) for the words; FFmpeg pad / drawbox / libass
+changes_duration: false
+needs:
+- speech
+variant_axes:
+  layouts:
+  - 'true'
+  - 'false'
+synonyms:
+  en:
+  - talking head edit
+  - talking head reel
+  - youtube style edit
+  - vlog style edit
+  - edit my talking video
+  - put what I say on screen
+  - make my words appear on screen
+  - explainer reel
+  - podcast clip style
+  - motion graphics talking head
+  hinglish:
+  - jo bol raha hu wo screen pe aaye
+  - jo bolu wo aa jaye
+  - jo bol raha hu wo likh ke aaye
+  - vlog jaisa edit karo
+  - youtube video jaisa edit karo
+  - meri baat screen pe dikhao
+  - bolne wala reel edit karo
+  - talking video edit karo
+  - jo main bol raha hu uske words aaye
+  - creator style edit karo
+  hi:
+  - जो बोलूं वो स्क्रीन पर आए
+  - व्लॉग जैसा एडिट करो
+  - यूट्यूब वीडियो जैसा एडिट
+  slang:
+  - full creator wala edit maar do
+  - ashok reddy jaisa edit
+  typos:
+  - talking hed edit
+  - jo bolu vo aa jaye
+  - vlog jesa edit
+negations:
+- talking head edit mat karo
+examples:
+- prompt: jo bol raha hu wo screen pe aaye
+  lang: hinglish
+- prompt: vlog jaisa edit karo
+  lang: hinglish
+- prompt: make a talking head reel
+  lang: en
+- prompt: youtube video jaisa edit karo jo bolu vo aa jaye
+  lang: hinglish
+- prompt: जो बोलूं वो स्क्रीन पर आए
+  lang: hi
+- prompt: talking hed edit
+  lang: typo
+- prompt: full creator wala edit maar do
+  lang: slang
+- prompt: meri baat screen pe dikhao
+  lang: vague
+test:
+  check: captions_on_speech
+  setup: []

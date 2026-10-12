@@ -159,10 +159,27 @@ def probe(path: Path) -> MediaInfo:
     a = next((s for s in streams if s.get("codec_type") == "audio"), None)
     fmt = data.get("format", {})
     duration = float(fmt.get("duration") or (v or {}).get("duration") or 0.0)
+    w, h = int((v or {}).get("width") or 0), int((v or {}).get("height") or 0)
+    # a phone video is often stored landscape with "rotate 90" metadata; FFmpeg turns it upright when decoding, so the
+    # picture everything works with is h×w (a vertical talking head was treated as 16:9 before)
+    rot = 0
+    for sd in (v or {}).get("side_data_list", []) or []:
+        if "rotation" in sd:
+            try:
+                rot = int(float(sd["rotation"]))
+            except (TypeError, ValueError):
+                rot = 0
+    if not rot:
+        try:
+            rot = int(float(((v or {}).get("tags") or {}).get("rotate") or 0))
+        except (TypeError, ValueError):
+            rot = 0
+    if abs(rot) % 180 == 90:
+        w, h = h, w
     return MediaInfo(
         duration=duration,
-        width=int((v or {}).get("width") or 0),
-        height=int((v or {}).get("height") or 0),
+        width=w,
+        height=h,
         fps=round(_parse_rate((v or {}).get("avg_frame_rate") or (v or {}).get("r_frame_rate")), 3),
         has_audio=a is not None,
         has_video=v is not None,

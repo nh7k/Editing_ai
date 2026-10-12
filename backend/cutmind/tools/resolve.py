@@ -435,7 +435,9 @@ def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
     clipped = len(prompt) > MAX_CHARS
     prompt = prompt[:MAX_CHARS]
     specs = spec.load()
-    words = canonical_words(prompt)
+    from .parse import strip_handles
+
+    words = canonical_words(strip_handles(prompt)[0])  # "@cutmind" is a name, never an unexplained word
     t = ctx.get("marker_time", ctx.get("playhead"))
     t = float(t) if t is not None else None
     deictic = bool(DEICTIC & set(words)) or "is jagah" in " ".join(words)

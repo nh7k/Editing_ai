@@ -28,7 +28,9 @@ COLOR = {"grade", "mono", "film_bw", "invert_mono", "silhouette", "duotone_blue_
 GLITCH = {"glitch", "rgb_split", "pixelate", "impact"}
 TEXTURE = {"film_grain", "old_film", "vhs", "scanlines", "vignette", "letterbox"}
 FLASH = {"flash", "strobe"}
-ORDER = [GEOMETRY, TIME_BLEND, COLOR, GLITCH, TEXTURE, FLASH]
+# the frame's LAYOUT (the shot as a card on paper, the shot in the top half): last, so nothing scales the paper
+LAYOUT = {"inset_card", "split_top"}
+ORDER = [GEOMETRY, TIME_BLEND, COLOR, GLITCH, TEXTURE, FLASH, LAYOUT]
 
 # pairs that undo each other on the same shot
 CONFLICTS: list[tuple[set[str], set[str]]] = [

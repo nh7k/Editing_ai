@@ -745,8 +745,18 @@ def nearest(text: str, n: int = 3) -> list[dict[str, str]]:
 QUOTE = re.compile(r"['\"‘“]([^'\"’”]{1,120})['\"’”]")
 
 
+HANDLE = re.compile(r"(?:(?:mera|my|meri|with|aur)\s+)?(?:handle|insta|id)?\s*(?:@)([A-Za-z0-9_.]{2,30})")
+
+
+def strip_handles(prompt: str) -> tuple[str, list[str]]:
+    """'@cutmind' mentions → (the prompt without them, the handles). A handle is a name, not an instruction word."""
+    found = [m.group(1) for m in HANDLE.finditer(prompt)]
+    return (HANDLE.sub(" ", prompt) if found else prompt), found
+
+
 def parse(prompt: str) -> dict[str, Any]:
     specs = spec.load()
+    prompt, handles = strip_handles(prompt)
     # quoted text keeps its case and punctuation: it is swapped for a token before normalizing / splitting
     quotes = [q.strip() for q in QUOTE.findall(prompt)]
     typed_emoji = x_emoji(prompt) if re.search(r"[\U0001F300-\U0001FAFF\u2600-\u27BF]", prompt) else None
@@ -826,4 +836,9 @@ def parse(prompt: str) -> dict[str, Any]:
         keep = [c for c in keep if not (c["id"] in ("blur", "blur_background_fill")
                                         and any(a["_clause"] == c["_clause"] for a in aspects))]
     calls = [{k: v for k, v in c.items() if k != "_clause"} for c in keep]
+    if handles:  # "@cutmind" goes to the skill that shows a handle
+        for c in calls:
+            for k, p in specs[c["id"]]["params"].items():
+                if p.get("extract") == "handle":
+                    c["params"] = {**c.get("params", {}), k: handles[0]}
     return {"calls": calls, "negated": negated, "unknown": unknown, "assumed": assumed, "normalized": norm}

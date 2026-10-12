@@ -1125,8 +1125,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             # the reviewer checks the whole edit)
             clear_change = (bool(last_done) and quick.decision == "apply" and len(quick.apply) == 1
                             and not director_only)
-            precise = ((tool_mode or restoring or clear_change) and not options and not new_edit_words.search(prompt)
-                       and quick.decision in ("apply", "act", "partial"))
+            # "jo bolo wo screen pe aaye" / "talking head reel" is a whole recipe the skills make from the speech —
+            # also as the FIRST message (the director has no such edit)
+            speech_recipe = (quick.decision == "apply" and [c["id"] for c in quick.apply] == ["talking_head_reel"]
+                             and bool(speech_words_ask.search(prompt)))
+            precise = ((tool_mode or restoring or clear_change or speech_recipe) and not options
+                       and not new_edit_words.search(prompt) and quick.decision in ("apply", "act", "partial"))
             if precise or quick.decision in ("non_edit", "undo") or str(quick.trace.get("turn", "")).startswith("relative"):
                 # a greeting / question, or "aur thoda" / "kam karo" / "isko hata do" about the last edit
                 last = db.last_job(pid, "done")
@@ -1158,6 +1162,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         job_id = jobs.submit(pid, prompt, options)
         return {"job_id": job_id, "status": "queued"}
 
+    # "what I say on screen": the talking-head recipe (tools/b_speech.py)
+    speech_words_ask = re.compile(r"\b(jo|jitna|what)\s+(main\s+|mai\s+|me\s+|i\s+)?(bol|bolu|bolo|boloon|bolta|bolti|say|said|"
+                                  r"speak)\w*|\btalking\s*he?ad\b|\bmeri\s+baat\b|\bmy\s+words\b|बोल", re.I)
     # asking for a (new) whole edit, not a change to the current one
     new_edit_words = re.compile(r"\b(new edit|naya edit|nayi edit|fresh edit|from scratch|shuru se|start over|edit like|"
                                 r"make (a|an|me a)|banao (ek|naya)|ek (reel|video|short) banao)\b", re.I)

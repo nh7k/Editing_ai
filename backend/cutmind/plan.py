@@ -174,6 +174,9 @@ class TextItem(_Model):
     # text that follows a tracked person: (output seconds, x px, y px) of the point the text sits on
     track: list[list[float]] = Field(default_factory=list, max_length=2000)
     behind: bool = False  # drawn behind the people in the shot (person cut-out mask, cutmind/segmentation.py)
+    # captions: when each word of `text` is SAID (seconds after `start`, one per word) — karaoke lights each word at
+    # its real time instead of spreading the line evenly
+    word_times: list[float] = Field(default_factory=list, max_length=60)
 
     @model_validator(mode="after")
     def _order(self) -> "TextItem":

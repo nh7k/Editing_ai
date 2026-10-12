@@ -85,6 +85,30 @@ def _beat_shake(c: FxContext) -> list[str]:
             f"scale={c.w}:{c.h}"]
 
 
+PAPER = "ECE6DA"  # the cream "paper" of the editorial talking-head layouts
+
+
+def _inset_card(c: FxContext) -> list[str]:
+    """The shot as a card on paper: 74 % size, a thin dark frame, on a cream page (editorial talking head); the
+    paper below the card (the lower ~20 %) holds the words."""
+    col = str(c.params.get("color") or PAPER)
+    sw, sh = int(c.w * 0.74) // 2 * 2, int(c.h * 0.74) // 2 * 2
+    x, y = (c.w - sw) // 2, int(c.h * 0.06)
+    return [f"scale={sw}:{sh}", f"pad={c.w}:{c.h}:{x}:{y}:color=0x{col}",
+            f"drawbox=x={x - 2}:y={y - 2}:w={sw + 4}:h={sh + 4}:color=0x1A1A1A@0.85:t=2",
+            f"drawbox=x={x}:y={y + sh + int(c.h * 0.02)}:w={sw}:h=2:color=0x1A1A1A@0.35:t=fill"]
+
+
+def _split_top(c: FxContext) -> list[str]:
+    """The shot in the top half of a cream page (the lower half is for big words / panels)."""
+    col = str(c.params.get("color") or PAPER)
+    hh = int(c.h * 0.46) // 2 * 2
+    sw, sh = int(c.w * 0.9) // 2 * 2, int(hh * 0.9) // 2 * 2
+    return [f"crop={c.w}:{hh}:0:{(c.h - hh) // 2}", f"scale={sw}:{sh}",
+            f"pad={c.w}:{c.h}:{(c.w - sw) // 2}:{int(c.h * 0.07)}:color=0x{col}",
+            f"drawbox=x={(c.w - sw) // 2}:y={int(c.h * 0.07) + sh + int(c.h * 0.025)}:w={sw}:h=2:color=0x1A1A1A@0.35:t=fill"]
+
+
 def _swing(c: FxContext) -> list[str]:
     ang = 0.035 * c.strength
     return [f"scale=w={int(c.w * 1.08) // 2 * 2}:h={int(c.h * 1.08) // 2 * 2}",
@@ -242,6 +266,8 @@ _REGISTRY: list[FX] = [
     FX("shake", "Camera Shake", "motion", "handheld shake", (r"shake", r"handheld", r"jhatk"), _shake),
     FX("swing", "Swing", "motion", "gentle left-right tilt", (r"swing", r"sway", r"jhool"), _swing),
     FX("beat_shake", "Beat Shake", "motion", "short shake bursts on chosen beats (the drop)", (), _beat_shake),
+    FX("inset_card", "Card on paper", "video_effect", "the shot as a framed card on a cream page", (), _inset_card),
+    FX("split_top", "Shot on top", "video_effect", "the shot in the top half of a cream page", (), _split_top),
     FX("pulse", "Beat Pulse", "motion", "zoom punch on every music beat", (
         r"pulse", r"beat (zoom|punch|bounce|shake|drop)", r"bounce zoom", r"(zoom|punch|jhatka|shake|bounce) (on|with|pe|par) (the |har )?beats?",
         r"\bbeats? (ke |ki )?(pe|par|on|saath|sath|hisaab se) (\w+ ){0,2}(zoom|punch|jhatka|shake|bounce|effects?|animations?|motion)",

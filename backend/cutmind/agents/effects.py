@@ -106,7 +106,7 @@ def default_aspect(ctx: AgentContext) -> AspectRatio:
 def caption_items(timeline: list[TimelineEntry], words_by_clip: dict[str, list[Any]], position: str,
                   size: int, box_color: str = "#7C5CFF", max_words: int = 0) -> list[TextItem]:
     """Group transcript words into short captions and map them to output time."""
-    raw: list[tuple[float, float, str]] = []
+    raw: list[tuple[float, float, str, list[float]]] = []
     for entry in timeline:
         seg = entry.segment
         words = [w for w in words_by_clip.get(seg.source, []) if w.start >= seg.in_ - 0.02 and w.end <= seg.out + 0.02]
@@ -120,21 +120,25 @@ def caption_items(timeline: list[TimelineEntry], words_by_clip: dict[str, list[A
         for w in words:
             if group and (len(group) >= (max_words or MAX_CAPTION_WORDS) or w.end - group[0].start > MAX_CAPTION_SECONDS
                           or group[-1].text.endswith((".", "!", "?", ","))):
-                raw.append((to_out(group[0].start), to_out(group[-1].end), " ".join(g.text for g in group)))
+                raw.append((to_out(group[0].start), to_out(group[-1].end), " ".join(g.text for g in group),
+                            [to_out(g.start) for g in group]))
                 group = []
             group.append(w)
         if group:
-            raw.append((to_out(group[0].start), to_out(group[-1].end), " ".join(g.text for g in group)))
+            raw.append((to_out(group[0].start), to_out(group[-1].end), " ".join(g.text for g in group),
+                        [to_out(g.start) for g in group]))
     total = timeline[-1].end if timeline else 0.0
     items: list[TextItem] = []
-    raw.sort()
-    for i, (s, e, text) in enumerate(raw):
+    raw.sort(key=lambda r: r[0])
+    for i, (s, e, text, starts) in enumerate(raw):
         nxt = raw[i + 1][0] if i + 1 < len(raw) else total
         e = min(max(e, s + 0.6), nxt, total)
         if e - s < 0.15 or s >= total:
             continue
+        times = [round(max(0.0, min(t - s, e - s)), 3) for t in starts]
         items.append(TextItem(kind="caption", text=text.strip()[:200], start=round(s, 3), end=round(e, 3),
-                              style=TextStyle(position=position, size=size, box_color=box_color)))
+                              style=TextStyle(position=position, size=size, box_color=box_color),
+                              word_times=times if len(times) == len(text.strip()[:200].split(" ")) else []))
     return items
 
 
