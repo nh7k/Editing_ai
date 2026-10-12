@@ -8,6 +8,7 @@ python tools/test200/fixtures.py [--force] [--long]
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -19,7 +20,14 @@ sys.path.insert(0, str(ROOT / "backend"))
 from cutmind.ffmpeg_utils import detect_silence, probe, run_ffmpeg  # noqa: E402
 from cutmind.media_gen import make_corrupt_file, make_song, make_speech_wav  # noqa: E402
 
-OUT = HERE / "fixtures"
+# CUTMIND_FIXTURES_DIR: generate outside OneDrive (e.g. ~/CutMind/test_fixtures — the MCP test mode)
+OUT = Path(os.environ["CUTMIND_FIXTURES_DIR"]) if os.environ.get("CUTMIND_FIXTURES_DIR") else HERE / "fixtures"
+
+
+def resolve_path(stored: str) -> Path:
+    """A manifest path: relative to the repo, or absolute when the fixtures live outside it."""
+    q = Path(stored)
+    return q if q.is_absolute() else ROOT / q
 ENC = ["-c:v", "libx264", "-preset", "veryfast", "-pix_fmt", "yuv420p"]
 AAC = ["-c:a", "aac", "-b:a", "128k"]
 SPEECH = ('Hello friends, welcome to my travel vlog.<break time="1400ms"/> Um, today we are in the mountains.'
@@ -50,7 +58,7 @@ def build(force: bool = False, long: bool = False) -> dict[str, dict]:
         p = OUT / f"{name}.mp4"
         if force or not p.exists() or name not in man:
             fn(p)
-        info = {"path": str(p.relative_to(ROOT)).replace("\\", "/")}
+        info = {"path": (str(p.relative_to(ROOT)) if p.is_relative_to(ROOT) else str(p)).replace("\\", "/")}
         try:
             pi = probe(p)
             info.update(duration=round(pi.duration, 3), width=pi.width, height=pi.height, fps=round(pi.fps, 2),

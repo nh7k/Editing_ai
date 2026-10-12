@@ -1,4 +1,4 @@
-"""MCP file access: upload_clip / transcribe_voice read ONLY from the allowed folders (CutMind inbox, test fixtures,
+"""MCP file access: import_clip (was upload_clip) / transcribe_voice read ONLY from the allowed folders (CutMind inbox, test fixtures,
 CUTMIND_MCP_ALLOW). Before, any MCP client could make the server read any file on the computer (a prompt-injected
 "upload C:/Users/.../secrets.txt" would have been read and sent to the API)."""
 
@@ -58,15 +58,15 @@ def test_only_allowed_folders_can_be_read(env, monkeypatch):
 
     async def steps(c):  # noqa: ANN001, ANN202
         pid = (await c.call_tool("create_project", {"name": "sec"})).structured_content
-        pid = pid.get("result", pid)["id"]
-        ok = await c.call_tool("upload_clip", {"project_id": pid, "file_path": str(good)})
+        pid = pid.get("result", pid)["project_id"]
+        ok = await c.call_tool("import_clip", {"project_id": pid, "path": str(good)})
         assert not ok.is_error, text(ok)
         out = {}
         for name, path in {"outside": str(outside), "traversal": traversal, "secret": str(secret),
                            "wrong_type": str(wrong_type), "missing": str(local / "inbox" / "nope.mp4")}.items():
-            r = await c.call_tool("upload_clip", {"project_id": pid, "file_path": path})
+            r = await c.call_tool("import_clip", {"project_id": pid, "path": path})
             out[name] = (r.is_error, text(r))
-        tv = await c.call_tool("transcribe_voice", {"file_path": str(secret)})
+        tv = await c.call_tool("transcribe_voice", {"path": str(secret)})
         out["transcribe_secret"] = (tv.is_error, text(tv))
         return out
 
@@ -86,8 +86,8 @@ def test_extra_folders_only_by_env_and_size_limit(env, monkeypatch):
 
     async def steps(c):  # noqa: ANN001, ANN202
         pid = (await c.call_tool("create_project", {"name": "sec2"})).structured_content
-        pid = pid.get("result", pid)["id"]
-        return await c.call_tool("upload_clip", {"project_id": pid, "file_path": str(outside)})
+        pid = pid.get("result", pid)["project_id"]
+        return await c.call_tool("import_clip", {"project_id": pid, "path": str(outside)})
 
     r = run(server, steps)
     assert r.is_error and "larger than" in text(r)  # allowed folder now, but over the size limit
@@ -103,8 +103,8 @@ def test_a_link_out_of_the_inbox_is_refused(env):
 
     async def steps(c):  # noqa: ANN001, ANN202
         pid = (await c.call_tool("create_project", {"name": "sec3"})).structured_content
-        pid = pid.get("result", pid)["id"]
-        return await c.call_tool("upload_clip", {"project_id": pid, "file_path": str(link)})
+        pid = pid.get("result", pid)["project_id"]
+        return await c.call_tool("import_clip", {"project_id": pid, "path": str(link)})
 
     r = run(server, steps)
     assert r.is_error and "not allowed" in text(r)

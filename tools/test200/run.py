@@ -38,7 +38,8 @@ import yaml  # noqa: E402
 import judge as J  # noqa: E402
 import measure as M  # noqa: E402
 
-WORK = HERE / "work"
+# per-case workspaces live OUTSIDE OneDrive (big renders; sync must not touch them)
+WORK = Path(os.environ.get("CUTMIND_TEST200_WORK") or Path.home() / "CutMind" / "test200_work")
 STATE = HERE / "state.json"
 RESULTS = HERE / "results.jsonl"
 CSV = HERE / "results.csv"
@@ -117,7 +118,8 @@ def do_turn(app: App, pid: str, turn: dict, last_job: dict | None) -> dict:
         return {"say": f"[{op}]", "status": s, "body": b, "job": None}
     if "chip" in turn:  # the user taps a chip the app offered (resolver choice / alternative): /tools with its calls
         prev = turn.get("_prev_body") or {}
-        chips = ((prev.get("error") or {}).get("details") or {}).get("choices") or prev.get("alternatives") or []
+        perr = prev.get("error") if isinstance(prev.get("error"), dict) else {}
+        chips = (perr.get("choices") or (perr.get("details") or {}).get("choices") or prev.get("alternatives") or [])
         if not chips:
             return {"say": "[tap chip]", "status": 0, "body": {"error": "no chip was offered"}, "job": None}
         ch = chips[min(turn["chip"], len(chips) - 1)]
@@ -148,7 +150,8 @@ def final_state(c: J.Ctx, exp: dict) -> tuple[str, str]:
     code = (b.get("error") or {}).get("code") if isinstance(b, dict) and isinstance(b.get("error"), dict) else None
     allowed = exp.get("states", ["APPLIED"])
     if code in ("not_understood", "choose") and t.get("status") == 422:
-        chips = ((b.get("error") or {}).get("details") or {}).get("choices") or []
+        err = b.get("error") or {}
+        chips = err.get("choices") or (err.get("details") or {}).get("choices") or []
         st = "NOT_UNDERSTOOD"
         return (st if st in allowed and (chips or not exp.get("need_chips", True)) else "FAILED",
                 f"422 {code}, {len(chips)} chips: {(b.get('error') or {}).get('message', '')[:90]}")

@@ -264,7 +264,8 @@ def no_overlays(c: Ctx, a: dict) -> tuple[bool, str]:
 
 def chips_offered(c: Ctx, a: dict) -> tuple[bool, str]:
     b = c.last.get("body") or {}
-    ch = (b.get("error", {}).get("details") or {}).get("choices") if "error" in b else b.get("alternatives")
+    err = b.get("error") if isinstance(b.get("error"), dict) else {}
+    ch = (err.get("choices") or (err.get("details") or {}).get("choices")) if err else b.get("alternatives")
     ch = ch or b.get("choices") or []
     return len(ch) >= a.get("min", 1), f"{len(ch)} chips"
 
