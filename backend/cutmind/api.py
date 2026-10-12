@@ -289,6 +289,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 "has_output": bool(done and done["output_path"] and Path(done["output_path"]).exists())}
 
     # ---- routes --------------------------------------------------------------------------------------------
+    @app.get("/", tags=["system"], include_in_schema=False)
+    def root() -> dict[str, Any]:
+        """Someone opened the API address in a browser: say what this is and where the app is."""
+        return {"name": "CutMind API", "status": "ok",
+                "message": "This is the CutMind backend (no page here). Open the app: http://localhost:8081 "
+                           "and set Settings > Backend URL to this address.",
+                "docs": "/docs", "health": "/health"}
+
     @app.get("/health", tags=["system"])
     def health() -> dict[str, Any]:
         whisper = True
