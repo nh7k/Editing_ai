@@ -32,8 +32,14 @@ sys.path.insert(0, str(HERE))
 os.environ.setdefault("CUTMIND_TRANSLATOR", "off")
 os.environ.setdefault("LLM_PROVIDER", "rules")
 os.environ.setdefault("RATE_LIMIT_PER_MIN", "0")
+# fixtures live outside OneDrive, in the folder cutmind-mcp may read from (~/CutMind/test_fixtures)
+os.environ.setdefault("CUTMIND_FIXTURES_DIR", str(Path.home() / "CutMind" / "test_fixtures"))
+
+import logging  # noqa: E402
 
 import yaml  # noqa: E402
+
+logging.getLogger("httpx").setLevel(logging.WARNING)  # the MCP server's request lines are noise here
 
 import judge as J  # noqa: E402
 import measure as M  # noqa: E402
@@ -103,6 +109,135 @@ class App:
             return None
         dest.write_bytes(r.content)
         return str(dest)
+
+
+class McpApp:
+    """The same case, driven THROUGH cutmind-mcp in TEST MODE with a real MCP client: a phrase reaches the app only
+    via run_prompt (the chat path); buttons / chips / variations / undo through their MCP tools. The judge still reads
+    the rendered file and the plan itself (never the app's claims). Each case: its own CutMind data dir."""
+
+    def __init__(self, data: Path) -> None:
+        import asyncio
+
+        import httpx
+        from mcp import Client
+
+        from cutmind.api import create_app
+        from cutmind.config import Settings
+        from cutmind.mcp_server import build_server
+
+        s = Settings()
+        s.planner_mode = "mock"
+        s.data_dir = data
+        s.music_dir = ROOT / "backend" / "assets" / "music"
+        s.enable_transcription = True
+        self.transport = httpx.ASGITransport(app=create_app(s))
+        self.loop = asyncio.new_event_loop()
+        self.client = Client(build_server("http://cutmind-test", api_key="", transport=self.transport, mode="test"))
+        self.loop.run_until_complete(self.client.__aenter__())
+
+    def close(self) -> None:
+        try:
+            self.loop.run_until_complete(self.client.__aexit__(None, None, None))
+        finally:
+            self.loop.close()
+
+    def tool(self, name: str, args: dict) -> tuple[bool, Any]:
+        r = self.loop.run_until_complete(self.client.call_tool(name, args))
+        if r.is_error:
+            return False, " ".join(getattr(x, "text", "") for x in r.content)
+        sc = getattr(r, "structured_content", None)
+        if sc is not None:
+            return True, sc.get("result", sc) if isinstance(sc, dict) and set(sc) == {"result"} else sc
+        return True, json.loads(r.content[0].text)
+
+    def get(self, path: str) -> tuple[int, Any]:  # the harness reading results (plan, video) — not a user action
+        import httpx
+
+        async def go() -> httpx.Response:
+            async with httpx.AsyncClient(base_url="http://cutmind-test", transport=self.transport, timeout=600) as c:
+                return await c.get(path)
+        r = self.loop.run_until_complete(go())
+        return r.status_code, r
+
+    def versions(self, pid: str) -> int:
+        ok, d = self.tool("list_versions", {"project_id": pid, "limit": 100})
+        return len(d["versions"]) if ok else 0
+
+    def plan(self, pid: str) -> dict | None:
+        s, r = self.get(f"/projects/{pid}/plan")
+        return r.json() if s == 200 else None
+
+    def output(self, pid: str, dest: Path) -> str | None:
+        s, r = self.get(f"/projects/{pid}/output")
+        if s != 200:
+            return None
+        dest.write_bytes(r.content)
+        return str(dest)
+
+
+def _mcp_result(say: str, ok: bool, d: Any) -> dict:
+    """A run_prompt / press_* result in the shape the judge reads ({status, body, job})."""
+    if not ok:
+        return {"say": say, "status": 0, "body": {"error": {"code": "tool_error", "message": str(d)[:300]}}, "job": None}
+    if "http" not in d:  # press_chip / apply-like: a compact job
+        job = d
+        return {"say": say, "status": 202 if job.get("job_id") else 200, "body": {"job_id": job.get("job_id")},
+                "job": {"id": job.get("job_id"), "status": job.get("status"), "error": job.get("error"),
+                        "explain": job.get("message") or {}, "variations": job.get("variations") or []}}
+    if d["http"] == 202:
+        j = d.get("job") or {}
+        return {"say": say, "status": 202,
+                "body": {"decision": d.get("decision"), "did": d.get("said"), "alternatives": d.get("alternatives") or [],
+                         "request_id": d.get("request_id"), "job_id": j.get("job_id")},
+                "job": {"id": j.get("job_id"), "status": j.get("status"), "error": j.get("error"),
+                        "explain": j.get("message") or {}, "variations": j.get("variations") or []}}
+    return {"say": say, "status": d["http"],
+            "body": {"error": {"code": d.get("code"), "message": d.get("message"), "choices": d.get("chips") or [],
+                               "request_id": d.get("request_id")}}, "job": None}
+
+
+def do_turn_mcp(app: McpApp, pid: str, turn: dict, last_job: dict | None) -> dict:
+    say = turn.get("say", "")
+    if "choose" in turn:
+        ok, d = app.tool("use_variation", {"job_id": (last_job or {}).get("id", ""), "index": turn["choose"]})
+        return {"say": f"[Use this #{turn['choose']}]", "status": 200 if ok else 0, "body": d if ok else {"error": d},
+                "job": None}
+    if turn.get("undo") or turn.get("redo"):
+        op = "undo" if turn.get("undo") else "redo"
+        ok, d = app.tool(op, {"project_id": pid})
+        return {"say": f"[{op}]", "status": 200 if ok else 0, "body": d if ok else {"error": d}, "job": None}
+    if "chip" in turn:
+        prev = turn.get("_prev_body") or {}
+        perr = prev.get("error") if isinstance(prev.get("error"), dict) else {}
+        chips = perr.get("choices") or prev.get("alternatives") or []
+        if not chips:
+            return {"say": "[tap chip]", "status": 0, "body": {"error": "no chip was offered"}, "job": None}
+        ch = chips[min(turn["chip"], len(chips) - 1)]
+        ok, d = app.tool("press_chip", {"project_id": pid, "calls": ch["calls"], "label": ch.get("label", "")})
+        return _mcp_result(f"[tap chip {ch.get('label')}]", ok, d)
+    if "tools" in turn:  # a one-tap chip with fixed skill calls ("Sab jod do")
+        ok, d = app.tool("press_chip", {"project_id": pid, "calls": turn["tools"], "label": say})
+        return _mcp_result(say or "[tap]", ok, d)
+    if "manual" in turn:
+        return {"say": say or "[panel]", "status": 0, "body": {"error": "panel buttons are UI cases (browser)"},
+                "job": None}
+    if "style" in turn:  # the Overlays panel's look button
+        ok, d = app.tool("press_button", {"project_id": pid, "name": f"look:{turn['style']}"})
+        return _mcp_result(say, ok, d)
+    if turn.get("variations"):
+        ok, d = app.tool("generate_variations", {"project_id": pid, "text": say, "n": turn["variations"]})
+        return _mcp_result(say, ok, d)
+    args: dict[str, Any] = {"project_id": pid, "text": say}
+    if "at" in turn:
+        args["at_s"] = turn["at"]
+    if "playhead" in turn:
+        args["playhead_s"] = turn["playhead"]
+    ok, d = app.tool("run_prompt", args)
+    return _mcp_result(say, ok, d)
+
+
+VIA = "mcp"  # set by --via
 
 
 def do_turn(app: App, pid: str, turn: dict, last_job: dict | None) -> dict:
@@ -181,16 +316,25 @@ def run_case(case: dict, man: dict) -> dict:
     fx = {**man[case["fixture"]], "_extra_paths": [str(ROOT / man[e]["path"]) for e in case.get("extra_fixtures", [])]}
     src = str(ROOT / fx["path"])
     src_hash = sha(Path(src))
-    app = App(work / "data")
-    out: dict[str, Any] = {"id": case["id"], "cat": case["cat"], "fixture": case["fixture"]}
+    app: Any = McpApp(work / "data") if VIA == "mcp" else App(work / "data")
+    turn_fn = do_turn_mcp if VIA == "mcp" else do_turn
+    out: dict[str, Any] = {"id": case["id"], "cat": case["cat"], "fixture": case["fixture"], "via": VIA}
     try:
-        _, p = app.req("POST", "/projects", json={"name": case["id"]})
-        pid = p["id"]
-        files = [("files", (Path(src).name, Path(src).read_bytes(), "video/mp4"))]
-        for extra in case.get("extra_fixtures", []):  # more clips (transitions, reorder, picture-in-picture …)
-            e = ROOT / man[extra]["path"]
-            files.append(("files", (e.name, e.read_bytes(), "video/mp4")))
-        s, up = app.req("POST", f"/projects/{pid}/clips", files=files)
+        paths = [Path(src)] + [ROOT / man[e]["path"] for e in case.get("extra_fixtures", [])]
+        if VIA == "mcp":
+            ok, p = app.tool("create_project", {"name": case["id"]})
+            pid = p["project_id"]
+            s, up = 201, None
+            for f in paths:  # through import_clip (the allowlisted folder ~/CutMind/test_fixtures)
+                ok, up = app.tool("import_clip", {"project_id": pid, "path": str(f)})
+                if not ok:
+                    s = 415 if ("type" in str(up) or "read" in str(up).lower() or "422" in str(up)) else 400
+                    break
+        else:
+            _, p = app.req("POST", "/projects", json={"name": case["id"]})
+            pid = p["id"]
+            files = [("files", (f.name, f.read_bytes(), "video/mp4")) for f in paths]
+            s, up = app.req("POST", f"/projects/{pid}/clips", files=files)
         out["upload"] = s
         turns: list[dict] = []
         if case.get("upload_expect"):
@@ -202,7 +346,7 @@ def run_case(case: dict, man: dict) -> dict:
             raise RuntimeError(f"upload failed {s}: {str(up)[:200]}")
         last_job = None
         if case.get("base") == "chip":
-            r = do_turn(app, pid, {"tools": [{"id": "merge_clips"}], "say": "Sab jod do"}, None)
+            r = turn_fn(app, pid, {"tools": [{"id": "merge_clips"}], "say": "Sab jod do"}, None)
             if (r["job"] or {}).get("status") != "done":
                 raise RuntimeError(f"base version failed: {(r['job'] or {}).get('error')}")
             last_job = r["job"]
@@ -215,7 +359,7 @@ def run_case(case: dict, man: dict) -> dict:
             prev_out, prev_plan = cur_out, cur_plan
             v_before = app.versions(pid)
             turn = {**turn, "_prev_body": prev_body}
-            r = do_turn(app, pid, turn, last_job)
+            r = turn_fn(app, pid, turn, last_job)
             if r.get("job") and r["job"].get("status") == "done":
                 last_job = r["job"]
             cur_out = app.output(pid, work / f"v{i + 1}.mp4") or cur_out
@@ -323,11 +467,17 @@ def main() -> None:
     ap.add_argument("--again", action="store_true", help="rerun even if already done")
     ap.add_argument("--no-retry", action="store_true")
     ap.add_argument("--record", nargs=3, metavar=("ID", "RESULT", "EVIDENCE"))
+    ap.add_argument("--via", choices=["mcp", "api"], default="mcp",
+                    help="mcp: through cutmind-mcp TEST MODE (run_prompt); api: the HTTP API directly")
     a = ap.parse_args()
+    global VIA
+    VIA = a.via
     if LOCK.exists() and json.loads(LOCK.read_text())["sha256"] != sha(CASES):
         print("cases.yaml changed after it was frozen — log the change in docs/test200/ORACLE_CHANGES.md and refreeze")
     cases = yaml.safe_load(CASES.read_text(encoding="utf-8"))["cases"]
-    man = json.loads((HERE / "fixtures" / "manifest.json").read_text(encoding="utf-8"))
+    import fixtures as F
+
+    man = json.loads((F.OUT / "manifest.json").read_text(encoding="utf-8"))
     st = load_state()
     if a.record:
         cid, res, ev = a.record

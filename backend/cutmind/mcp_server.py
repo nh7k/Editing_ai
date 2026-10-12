@@ -473,9 +473,19 @@ def build_server(base_url: str | None = None, api_key: str | None = None,
     @server.tool(annotations=EDIT)
     @logged
     async def press_button(project_id: str, name: str) -> dict[str, Any]:
-        """Press an app button: auto_edit, arrange_clips, captions (the same request the UI sends)."""
+        """Press an app button (the same request the UI sends): auto_edit, arrange_clips, captions, or a look of
+        the Overlays panel: look:midnight_drift, look:violet_authority, look:cyan_kinetic."""
+        if name.startswith("look:"):
+            from .styles import STYLES
+
+            sid = name.split(":", 1)[1]
+            if sid not in STYLES:
+                raise ToolError(f"unknown look — one of {sorted(STYLES)}")
+            async with render_lock:  # StudioEditor.applyStyle
+                return await _send(project_id, {"prompt": f"Restyle this edit with the {STYLES[sid].name} look",
+                                                "style": sid, "variations": 1})
         if name not in BUTTONS:
-            raise ToolError(f"unknown button — one of {sorted(BUTTONS)}")
+            raise ToolError(f"unknown button — one of {sorted(BUTTONS)} or look:<id>")
         async with render_lock:
             return await _send(project_id, {"prompt": BUTTONS[name]})
 
