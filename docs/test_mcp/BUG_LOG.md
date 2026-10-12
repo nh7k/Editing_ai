@@ -19,3 +19,10 @@ Status: FIXED = root cause fixed + checked by re-running the prompt; OPEN = foun
 | [BUG-8](bugs/BUG-8.md) | user screenshot | web app on the wrong backend | "Could not load projects — Not Found"; API root showed a bare Not Found | FIXED |
 | — | ronaldo lab R11 | "sab effects hata do normal kar do" | slow motion stays (speed is part of the cut, not an effect; the length shown is honest) | OPEN (by design?) |
 | — | ronaldo lab R15 | "captions laga do" on a clip with no voice | job "failed" with the honest reason; could offer song-lyric captions | OPEN (minor) |
+| — | real ronaldo project | "thoda contrast badhao" | 19 min in the final encode (segments took 10 s); the same encode took 54 s on the next edit and 109 s in the lab — cause NOT found (other load on the laptop?) | OPEN (watch) |
+
+Re-run after the fixes [RAN] (`--seq`, 11 prompts in one project): all done; "black and white hata do" keeps warm,
+fade 15.7-16.3 s with a black last frame, "10 second ka karo" → 9.7 s, "make it brighter" → "effects tuned:
+warm colour (brightness 0 → 0.12)", "flash hata do" removes the flash. Found in that run and fixed: "shake hatao"
+with NO shake on the video removed zoom + pulse (the family) — now a named effect that is not there is said and
+nothing else is removed; with no shake effect "shake hatao" stabilizes the footage.
