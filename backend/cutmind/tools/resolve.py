@@ -188,9 +188,21 @@ def _family_of(s: dict[str, Any]) -> str | None:
 # words that name WHERE / WHAT KIND without saying which change ("ye effect daal do", "screen pe", "video ko"): they
 # never make a clear reading unclear ("yaha pe screen black and white ke effect daal do" became 3 choices and went
 # to the director, which re-made the whole edit). Not used for scoring.
-GENERIC = {"effect", "effects", "filter", "filters", "video", "clip", "clips", "wala", "wali", "type"}
+GENERIC = {"effect", "effects", "filter", "filters", "video", "clip", "clips", "wala", "wali", "type",
+           "liye", "lie"}  # "ke liye" (= for) joins words; it never makes a clear reading unclear
+ALL_WORDS = {"sab", "saare", "sare", "saara", "sara", "sabhi", "all", "everything", "poora", "pura", "poori", "puri",
+             "har", "every"}
+# how MUCH, not what: "halka vignette" is the vignette skill at a lower amount ("thoda" was already a filler; "halka"
+# made "halka vignette lagao" an unsure "act" and sent it to the director)
+MAGNITUDE = {"halka", "halki", "halke", "hlka", "hlki", "bahut", "bohot", "bht", "zyada", "jyada", "thodi", "thode",
+             "light", "lightly", "slight", "slightly", "little", "bit", "strong", "strongly", "heavy", "more", "less",
+             "extra", "full", "ekdam"}
+GENERIC |= MAGNITUDE
+# WHEN, not what: the time words are read by the time extractor ("3 second ka title shuru me")
+GENERIC |= {"second", "seconds", "sec", "secs", "minute", "minutes", "min", "shuru", "start", "starting",
+            "beginning", "end", "ending", "aakhir", "last", "first", "pehle", "baad", "beech", "middle", "tak"}
 # … but with "hata do / remove" the effect IS the meaning ("ye effect hata do" must not read as "delete this part")
-GENERIC_WHEN_REMOVING = {"video", "clip", "clips", "wala", "wali", "type"}
+GENERIC_WHEN_REMOVING = {"video", "clip", "clips", "wala", "wali", "type", "liye", "lie"}
 
 
 def unexplained(words: list[str], skill_ids: list[str]) -> float:
@@ -437,7 +449,8 @@ def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
     specs = spec.load()
     from .parse import strip_handles
 
-    words = canonical_words(strip_handles(prompt)[0])  # "@cutmind" is a name, never an unexplained word
+    # "@cutmind" is a name and 'GOA' (in quotes) is text to show — neither is an unexplained word
+    words = canonical_words(QUOTED.sub(" ", strip_handles(prompt)[0]))
     t = ctx.get("marker_time", ctx.get("playhead"))
     t = float(t) if t is not None else None
     deictic = bool(DEICTIC & set(words)) or "is jagah" in " ".join(words)
@@ -466,7 +479,10 @@ def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
         rc = next(c for c in exact["calls"] if c["id"] == "restore_normal")
         if len(fams) == 1:
             rc = {**rc, "params": {**rc.get("params", {}), "what": fams.pop()}}
-        exact = {**exact, "calls": [rc]}
+        if ALL_WORDS & set(canonical_words(prompt)):  # "SAB effect hata do, normal kar do": everything, not one family
+            rc = {**rc, "params": {**rc.get("params", {}), "what": "all"}}
+        # a clause the matcher could not place ("sab effect") is part of WHAT to take off, not an unknown request
+        exact = {**exact, "calls": [rc], "unknown": []}
     exact_ids = [c["id"] for c in exact["calls"]]
     from .turns import non_edit, relative
 
@@ -533,11 +549,7 @@ def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
     choices, scores = _ranked(prompt, words, exact, ctx, point, restore_said, present, trace)
     # "stickers hata do": the restore takes off THAT family only (stickers), not the colour and effects too
     named_fams = {_family_of(specs[x]) for x in exact_ids + list(exact["negated"]) if x in specs} - {None}
-    from .b_restore import _family as _fx_family
-
-    there = {_fx_family(str(f.get("type", ""))) if f.get("type") not in ("sticker", "style", "color_preset")
-             else {"sticker": "overlays", "style": "all", "color_preset": "color"}[f["type"]] for f in present}
-    if removing and len(named_fams) == 1 and (named_fams & there or "overlays" in named_fams and there):
+    if removing and len(named_fams) == 1 and not ALL_WORDS & set(words):  # "zoom hata do": the zoom family only
         fam = next(iter(named_fams))
         for ch in choices:
             if ch["id"] == "restore_normal":

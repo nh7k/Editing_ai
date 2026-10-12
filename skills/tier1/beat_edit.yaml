@@ -7,13 +7,13 @@ description: Edit the whole video on the song's beat — cuts moved onto beats, 
   song's energy (calm every 4th beat, loud every beat), the drop with the strongest punch, a flash and a shake.
 params:
   intensity:
-    type: enum
-    values: [low, medium, high]
+    type: choice
+    choices: [low, medium, high]
     default: medium
     extract: magnitude_word
     desc: how hard the hits are
   cuts:
-    type: boolean
+    type: bool
     default: true
     desc: also move the cuts onto the beats
 time_modes:
@@ -91,9 +91,13 @@ examples:
 - prompt: beet pe edit
   lang: typo
 - prompt: beat pe jhatka do
-  lang: slang
+  lang: hinglish
 - prompt: song ke beat pe effects chahiye
   lang: vague
+- prompt: beat pe edit karo aur captions bhi lagao
+  lang: multi
+  also:
+  - auto_captions
 test:
   check: hits_on_beats
   setup:

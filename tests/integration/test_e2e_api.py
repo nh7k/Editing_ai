@@ -65,7 +65,10 @@ def run_prompt(env, key: str, prompt: str, **opts: Any) -> tuple[dict, Path, Edi
         assert facts["duration"] >= 30, f"video was shortened without being asked: {facts['duration']}s"
     contact_sheet(out, f"{MODE}_{key}")
     row = {"key": key, "prompt": prompt, "mode": MODE, "job_id": job["id"], "match_percent": job["match_percent"],
-           "agent_scores": job["review"]["agent_scores"], "failed_checks": [c["name"] for c in job["review"]["checks"] if not c["passed"]],
+           # a single clear change after an edit is made by the skills (no director review; measured by verify)
+           "agent_scores": (job.get("review") or {}).get("agent_scores"),
+           "failed_checks": [c["name"] for c in (job.get("review") or {}).get("checks", []) if not c["passed"]],
+           "route": "skills" if (job.get("explain") or {}).get("tools") is not None else "director",
            "rounds": len(job.get("history", [])), "modes": job.get("modes"), "segments": len(plan.clips),
            "captions": sum(t.kind == "caption" for t in plan.text), "transitions": len(plan.transitions),
            "music": plan.audio.music, "color_preset": plan.color.preset, **facts, "extra": {}}

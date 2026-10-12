@@ -9,7 +9,7 @@ from fastapi.testclient import TestClient
 from helpers import wait_job
 
 from cutmind.api import create_app
-from cutmind.ffmpeg_utils import decode_check, probe
+from cutmind.ffmpeg_utils import extract_frame, decode_check, probe
 from cutmind.plan import EditPlan
 
 pytestmark = pytest.mark.integration
@@ -72,7 +72,10 @@ def test_versions_undo_redo_restore_and_explain(env):
     j2, p2 = edit(c, pid, "ab black and white kar do")
     # explain-back: what changed, what stayed, the length (no length was asked: no warning)
     ex = j2["explain"]
-    assert any(x.startswith("colour") for x in ex["changed"]) and ex["warnings"] == []
+    # a single clear change after a director edit is made by the skills (Phase A rule): black and white may be a
+    # colour preset (director) or a black-and-white grade (skill) — the answer must say it either way
+    bw_said = lambda lines: any(x.startswith("colour") or "black and white" in x for x in lines)  # noqa: E731
+    assert bw_said(ex["changed"]) and ex["warnings"] == [], ex
     assert abs(ex["duration_after"] - ex["duration_before"]) < 0.3 and "Changed:" in ex["summary"]
     vs = c.get(f"/projects/{pid}/versions").json()["versions"]
     assert vs[-1]["job_id"] == j2["id"] and vs[-1]["current"] and vs[-2]["job_id"] == j1["id"]
@@ -83,14 +86,17 @@ def test_versions_undo_redo_restore_and_explain(env):
     out = data / "projects" / pid / "output" / f"{u['job_id']}.mp4"
     assert out.exists() and decode_check(out)[0]
     # redo: black and white again
-    c.post(f"/projects/{pid}/redo")
-    assert EditPlan.model_validate(c.get(f"/projects/{pid}/plan").json()).color.preset == "bw"
+    rd = c.post(f"/projects/{pid}/redo").json()
+    # black and white again — measured on the redone video, not on how the plan spells it
+    redone = data / "projects" / pid / "output" / f"{rd['job_id']}.mp4"
+    f = extract_frame(redone, 1.0).astype(float)
+    assert float((f.max(axis=2) - f.min(axis=2)).mean()) < 8
     # restore any version by id, and a follow-up continues from the restored edit
     c.post(f"/projects/{pid}/versions/{j1['id']}/restore")
     _j, p = edit(c, pid, "thoda bright karo")
     assert p.color.preset == "warm" or p.color.brightness > 0
     cmp = c.get(f"/projects/{pid}/versions/compare", params={"a": j1["id"], "b": j2["id"]}).json()
-    assert any(x.startswith("colour") for x in cmp["changed"])
+    assert bw_said(cmp["changed"]), cmp
     assert c.post(f"/projects/{pid}/versions/job_nope/restore").status_code == 400
 
 

@@ -57,7 +57,7 @@ def _track(ctx: ToolCtx, name: str | None, mood: str | None) -> Path:
                 chosen = None
             if chosen is not None:
                 return chosen
-        if d.name == "music" and d.parent.parent.name == "projects":
+        if d.name == "music" and d.parent.parent.name == "projects" and d.is_dir():  # no upload yet: no folder
             own = sorted((x for x in d.iterdir() if x.suffix.lower() in (".mp3", ".m4a", ".wav", ".aac", ".ogg", ".flac")),
                          key=lambda x: x.stat().st_mtime, reverse=True)
             if own:

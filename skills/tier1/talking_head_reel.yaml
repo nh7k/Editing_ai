@@ -14,15 +14,15 @@ params:
     extract: handle
     desc: the @handle shown in the corner
   layouts:
-    type: boolean
+    type: bool
     default: true
     desc: change the layout with the sentences
   keywords:
-    type: boolean
+    type: bool
     default: true
     desc: big keyword cards from the speech
   cta:
-    type: boolean
+    type: bool
     default: true
     desc: a COMMENT card when the speaker asks for comments
 time_modes:
@@ -58,6 +58,7 @@ synonyms:
   hinglish:
   - jo bol raha hu wo screen pe aaye
   - jo bolu wo aa jaye
+  - jo bolu wo screen pe aaye
   - jo bol raha hu wo likh ke aaye
   - vlog jaisa edit karo
   - youtube video jaisa edit karo
@@ -93,9 +94,13 @@ examples:
 - prompt: talking hed edit
   lang: typo
 - prompt: full creator wala edit maar do
-  lang: slang
+  lang: hinglish
 - prompt: meri baat screen pe dikhao
   lang: vague
+- prompt: jo bolu wo screen pe aaye aur thoda warm bhi karo
+  lang: multi
+  also:
+  - warm
 test:
   check: captions_on_speech
   setup: []

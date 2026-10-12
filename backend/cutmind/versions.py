@@ -162,12 +162,26 @@ def redo(db: Database, project_dir: Path, project_id: str, memory: Any) -> dict[
 
 
 # ---- what changed --------------------------------------------------------------------------------------------
+def _fx_name(e: Any) -> str:
+    """The words a user would use: a colour 'grade' says what it does ("black and white", "warm colour")."""
+    if e.type != "grade":
+        return e.type
+    p = e.params or {}
+    look = str(p.get("look") or "")
+    if look in ("grayscale", "bw", "mono", "noir", "film_bw"):
+        return "black and white"
+    if look:
+        return f"{look} look"
+    w = float(p.get("warmth", 0) or 0)
+    return "warm colour" if w > 0 else "cool colour" if w < 0 else "colour grade"
+
+
 def _effects(p: EditPlan) -> list[str]:
-    return sorted({e.type for e in p.effects})
+    return sorted({_fx_name(e) for e in p.effects})
 
 
 def _fx_spots(p: EditPlan) -> list[tuple[str, int, float]]:
-    return sorted((e.type, e.target, round(e.strength, 2)) for e in p.effects)
+    return sorted((_fx_name(e), e.target, round(e.strength, 2)) for e in p.effects)
 
 
 def _texts(p: EditPlan) -> list[str]:

@@ -434,11 +434,20 @@ class JobManager:
             for c in checks:
                 state.log("reviewer", "warn" if c.status == "failed" else "info",
                           f"verify {c.skill}: {c.status} — {c.detail}")
+            # the plan diff in plain words (like a director edit's answer), then the measured checks
+            from .versions import diff as plan_diff
+
+            d = plan_diff(base, plan)
             with state.lock:
                 state.data["explain"] = {"tools": [a.to_dict() for a in applied],
                                          # one string (the app shows it as text; a list ran together before)
-                                         "summary": "; ".join(f"{a.name}: {a.where}" for a in applied),
-                                         "changed": lines, "kept": [], "warnings": warns, "suggestions": [],
+                                         # the same shape as a director edit's answer ("Changed: …. Length …")
+                                         "summary": (f"Changed: {'; '.join(d['changed']) or 'nothing visible'}. "
+                                                     f"Length {d['duration_after']:.1f}s. ("
+                                                     + "; ".join(f"{a.name}: {a.where}" for a in applied) + ")"),
+                                         "changed": d["changed"] + lines, "kept": d["kept"], "warnings": warns,
+                                         "suggestions": [], "duration_before": d["duration_before"],
+                                         "duration_after": d["duration_after"],
                                          "verify": [c.to_dict() for c in checks]}
             self.db.update_job(job_id, plan=plan.to_json(), output_path=str(output))
             self._remember_tools(project_id, job_id, state.data.get("prompt", ""), list(options["tools"]))

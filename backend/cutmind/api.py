@@ -1112,7 +1112,17 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             tool_mode = _made_by_tools(last_done)
             # "normal kar do" / "pehle jaisa karo" is always the restore skill: the director re-styled the video
             # instead ("purple video ko normal kar do" → "violet authority look", nothing changed)
-            restoring = quick.decision == "apply" and [c["id"] for c in quick.apply] == ["restore_normal"]
+            # "normal kar do" is never the director's job (it read "sab effect hata do, normal kar do" as an AUTO
+            # EDIT and kept the look): a restore the skills read — sure or best guess — goes to them
+            restoring = quick.decision in ("apply", "act") and [c["id"] for c in quick.apply] == ["restore_normal"]
+            # … but a message that puts a NEW look on ("cyan lagao, violet hata do") or takes ONE named look off
+            # ("violet authority hata do") is the director's (it swaps / removes exactly that look); only "normal /
+            # pehle jaisa" — back to the plain video — is the restore skill
+            from .intent import parse_intent as _pi0
+
+            _i0 = _pi0(prompt)
+            if restoring and (_i0.style or ("style" in _i0.remove and not normal_words.search(prompt))):
+                restoring = False
             # ONE path for clear changes: once an edit exists, a message the skills read clearly ("warm karo",
             # "captions laga do") changes exactly that on the current version — also after a director edit (before,
             # the director re-made the whole edit and its "from memory" merge re-added old asks). Looks / "3
@@ -1162,6 +1172,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         job_id = jobs.submit(pid, prompt, options)
         return {"job_id": job_id, "status": "queued"}
 
+    # back to the plain video ("normal kar do", "pehle jaisa", "original jaisa")
+    normal_words = re.compile(r"\b(normal|nomal|pehle\s+jaisa|pehle\s+jaise|jaisa\s+tha|original|plain|saada|sada)\b",
+                              re.I)
     # "what I say on screen": the talking-head recipe (tools/b_speech.py)
     speech_words_ask = re.compile(r"\b(jo|jitna|what)\s+(main\s+|mai\s+|me\s+|i\s+)?(bol|bolu|bolo|boloon|bolta|bolti|say|said|"
                                   r"speak)\w*|\btalking\s*he?ad\b|\bmeri\s+baat\b|\bmy\s+words\b|बोल", re.I)
