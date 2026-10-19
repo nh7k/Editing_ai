@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import glob
 import json
+import logging
 import math
 import os
 import re
@@ -16,6 +17,8 @@ from pathlib import Path
 import numpy as np
 
 from .config import get_settings
+
+log = logging.getLogger(__name__)
 
 
 class FFmpegError(RuntimeError):
@@ -70,7 +73,35 @@ def ffmpeg_available() -> bool:
 STALL_S = 300.0  # ffmpeg prints progress every ~0.5 s; this long without any output means it is stuck
 
 
+# ffmpeg CRASHED (not an error it reported): Windows access violation / stack overrun / stack overflow, a POSIX
+# signal. FFmpeg 9.0.1's arnndn (voice clean-up) segfaults on some inputs at random — measured 8 of 20 runs of the
+# same command on the same file — so a crash is run again; every command writes its output with -y, so that is safe
+CRASH_CODES = {3221225477, 3221226505, 3221225725, 139, 134}
+CRASH_RETRIES = 2
+
+
 def run_ffmpeg(args: list[str], cwd: Path | None = None, timeout: float | None = None, stall: float = STALL_S) -> str:
+    """Run ffmpeg; a crash (segfault) is run again up to CRASH_RETRIES times (see _run_ffmpeg_once)."""
+    for attempt in range(CRASH_RETRIES + 1):
+        try:
+            return _run_ffmpeg_once(args, cwd, timeout, stall)
+        except FFmpegError as exc:
+            if not getattr(exc, "crashed", False):
+                raise
+            if attempt == CRASH_RETRIES:
+                if not any("arnndn=" in a for a in args):
+                    raise
+                # still crashing: the voice is cleaned with FFmpeg's FFT denoiser instead (it does not crash; a
+                # little less strong on wind / crowd than RNNoise) — said in the log, the edit is not lost
+                log.warning("ffmpeg's arnndn kept crashing — the voice is cleaned with afftdn instead")
+                safe = [re.sub(r"arnndn=m=[^,;\[\]]+", "afftdn=nf=-25", a) for a in args]  # the model name only
+                return _run_ffmpeg_once(safe, cwd, timeout, stall)
+            log.warning("ffmpeg crashed (attempt %d of %d) — running it again", attempt + 1, CRASH_RETRIES + 1)
+    raise AssertionError("unreachable")
+
+
+def _run_ffmpeg_once(args: list[str], cwd: Path | None = None, timeout: float | None = None,
+                     stall: float = STALL_S) -> str:
     """Run ffmpeg with the given args; returns stderr (ffmpeg logs there). Raises FFmpegError.
 
     No fixed time limit by default: a 20-minute 1080p export legitimately takes about an hour on a laptop (a flat
@@ -118,7 +149,10 @@ def run_ffmpeg(args: list[str], cwd: Path | None = None, timeout: float | None =
             log.write_text(" ".join(cmd) + "\n\n" + proc.stderr, encoding="utf-8")
         except OSError:
             pass
-        raise FFmpegError("ffmpeg failed", "\n".join(summary))
+        crashed = proc.returncode in CRASH_CODES or proc.returncode < 0
+        err = FFmpegError("ffmpeg crashed" if crashed else "ffmpeg failed", "\n".join(summary))
+        err.crashed = crashed  # type: ignore[attr-defined]
+        raise err
     return proc.stderr
 
 

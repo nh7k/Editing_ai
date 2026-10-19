@@ -40,3 +40,5 @@ nothing else is removed; with no shake effect "shake hatao" stabilizes the foota
 | BUG-15 | quality | any export | 1080p/4K and 60 fps sources came out 720p/30 fps from proxies; no original-quality export | FIXED |
 | — | full suite | test_tier1 beat_edit / talking_head_reel | beat_edit's check was never written; talking_head ran on silent media | FIXED (tests) |
 | — | full suite | voice_clean pipeline, auto_captions variants | failed only under load; pass alone | FLAKY (watch) |
+| BUG-16 | full suite (voice_clean / voice_louder) | voice clean-up | FFmpeg 9.0.1's `arnndn` segfaults at random (8 of 20 runs of one command on one file, measured; not our graph — `arnndn` alone does it). Fixed in the app: a crash (not an ffmpeg error) is run again twice; if it keeps crashing the voice is cleaned with `afftdn`. 20 of 20 calls succeed (6 crashes recovered) | FIXED (workaround) |
+| BUG-17 | user: "kitna bekar edit" | photo edit v1 | two wide frames repeating, small moves, calm song — v2: 4 framings per photo from the object detector, energy-driven beat cuts, punches | FIXED |

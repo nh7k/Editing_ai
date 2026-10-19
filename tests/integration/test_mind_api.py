@@ -41,7 +41,8 @@ def test_explain_after_two_edits(env):
     edit(c, pid, "8 second ka edit, warm color")
     edit(c, pid, "black and white karo")
     ex = c.get(f"/projects/{pid}/explain").json()
-    assert any("colour" in x for x in ex["changed"]), ex
+    # black and white is a colour change; the skills make it as a grade ("effects: … → black and white")
+    assert any("colour" in x or "black and white" in x for x in ex["changed"]), ex
     assert ex["understood"] and 1 <= len(ex["suggestions"]) <= 3
 
 
@@ -49,6 +50,7 @@ def test_planner_model_reading_is_used_and_a_dead_model_never_breaks_an_edit(env
     c, pid = env
     set_provider_for_tests(MockProvider({"gaane ki awaaz thodi dheemi kar do": {
         "commands": [{"id": "music_softer", "value": ""}], "confidence": 0.9}}))
+    edit(c, pid, "upbeat music lagao")  # a song to make softer ("8 second ka edit" no longer adds one by mistake)
     job = edit(c, pid, "gaane ki awaaz thodi dheemi kar do")
     assert job["status"] == "done"
     assert c.get("/llm/health").json()["last_trace"][-1]["result"] == "used"
