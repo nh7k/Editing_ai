@@ -39,7 +39,7 @@ def listening(port: int) -> bool:
 def start(name: str, args: list[str], env: dict[str, str] | None = None) -> subprocess.Popen:
     LOGS.mkdir(parents=True, exist_ok=True)
     log = (LOGS / f"{name}.log").open("w", encoding="utf-8")
-    print(f"starting {name} …", flush=True)
+    print(f"starting {name} ...", flush=True)
     return subprocess.Popen(args, cwd=ROOT, stdout=log, stderr=subprocess.STDOUT, env={**os.environ, **(env or {})})
 
 
@@ -53,6 +53,9 @@ def wait_port(port: int, seconds: float = 90) -> bool:
 
 
 def main() -> int:
+    for stream in (sys.stdout, sys.stderr):  # a Windows console (cp1252) cannot print every character
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
     ap = argparse.ArgumentParser()
     ap.add_argument("--rotate", action="store_true", help="make a new secret token (the old URL stops working)")
     a = ap.parse_args()
@@ -96,7 +99,7 @@ def main() -> int:
         URL_FILE.write_text(full)
         print("\nREADY. claude.ai → Settings → Connectors → Add custom connector → name: cutmind, URL:\n")
         print(f"  {full}\n")
-        print("(also in ~/CutMind/connector_url.txt and in the app: Settings → Connect to Claude)")
+        print("(also in ~/CutMind/connector_url.txt and in the app: Settings > Connect to Claude)")
         print("Keep this window open. Ctrl+C stops the tunnel and the servers started here.", flush=True)
         while all(p.poll() is None for p in procs):
             time.sleep(2)
