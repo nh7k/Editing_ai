@@ -39,6 +39,8 @@ ACT_MIN, ACT_UNEXPLAINED, LONG_VIDEO_S = 0.70, 0.5, 120.0
 NUMERIC = re.compile(r"\d+(?:\.\d+)?|sec|second|seconds|s|se|to|tak|x|min|minute|qtk\d+")
 DEICTIC = {"yaha", "idhar"}  # not "abhi" / "now": in a command they mean "right away", not "at this second"
 RESTORE_WORDS = {"normal", "original", "wapas", "pehle"}
+QUALITY_WORDS = {"original", "asli", "quality", "qualiti", "resolution", "best", "highest", "max", "maximum", "full",
+                 "top", "high", "lossless", "4k"}
 REMOVER_SKILLS = {"stabilize", "denoise", "remove_silence", "remove_fillers"}  # "X hatao" = these skills themselves
 REMOVE_WORDS = {"hatao", "hata", "nikal", "nikalo", "remove", "hatana", "band", "uda"}
 EFFECT_CATEGORIES = {"color", "motion", "stylize", "transitions"}
@@ -483,6 +485,12 @@ def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
         # the removal is the request; "colour rehne do" only says what must stay (it is never a new effect)
         prompt = (prompt[:kept.start()] + " " + prompt[kept.end():]).strip()
         words = canonical_words(QUOTED.sub(" ", strip_handles(prompt)[0]))
+    from .parse import ORIGINAL_QUALITY
+
+    if ORIGINAL_QUALITY.search(prompt.lower()):
+        # "original quality me export karo": "original" here is the export's quality, never "make it like the
+        # original" — it took every effect off before (a warm + bright edit came back plain)
+        words = [w for w in words if w not in QUALITY_WORDS]
     t = ctx.get("marker_time", ctx.get("playhead"))
     t = float(t) if t is not None else None
     deictic = bool(DEICTIC & set(words)) or "is jagah" in " ".join(words)
@@ -559,6 +567,9 @@ def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
     disliked = any(float((ctx.get("learned") or {}).get(i, 0.0)) < 0 for i in exact_ids)
     # "purple video ko normal kar do" with a look on the video: the other words only say WHICH thing to take off
     restore_only = exact_ids == ["restore_normal"] and bool(present) and not exact["unknown"] and not disliked
+    if exact_ids == ["restore_normal"] and not present:
+        exact = {**exact, "calls": []}  # nothing to restore: the words are ranked like any unclear ask
+        exact_ids = []
     # a clause the exact matcher left "unknown" whose words the matched skills explain anyway ("beat ke based pe
     # animation AND motion add karo": "motion add karo" alone matched nothing, but motion IS the beat edit) is no
     # unknown part — before, it was answered "ye nahi ho paaya" with unrelated chips
@@ -590,6 +601,10 @@ def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
         return Resolution([choice], "apply", trace, apply=calls)
 
     choices, scores = _ranked(prompt, words, exact, ctx, point, restore_said, present, trace)
+    if not present and len(choices) > 1:
+        # nothing on the video to take off ("isko normal edit kar do" on a new project): "back to normal" is never the
+        # reading that runs — it failed with "nothing to take off"; it stays one tap away at the end
+        choices = [c for c in choices if c["id"] != "restore_normal"] + [c for c in choices if c["id"] == "restore_normal"]
     # "stickers hata do": the restore takes off THAT family only (stickers), not the colour and effects too
     named_fams = {_family_of(specs[x]) for x in exact_ids + list(exact["negated"]) if x in specs} - {None}
     # "colour hata do": the word names the family itself (the matcher read it as something else, e.g. delete a shot)

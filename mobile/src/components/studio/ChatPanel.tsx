@@ -309,7 +309,8 @@ function TurnView({ turn, playingVariant, onPlayVariant, onChosen, onSend, disab
           </AppText>
         </View>
       ) : null}
-      {turn.did ? (
+      {/* "Maine ye kiya" is written before the job runs: a failed job did nothing, its error card says why */}
+      {turn.did && turn.job?.status !== 'failed' ? (
         <View style={styles.agentBubble} testID="agent-did">
           <AppText size="sm" color={studio.text}>
             ✓ {turn.did.startsWith('Kiya') || turn.did.startsWith('Maine') ? turn.did : `Kiya: ${turn.did}`} — pasand na aaye to ↶ Undo

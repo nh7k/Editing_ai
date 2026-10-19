@@ -117,3 +117,16 @@ def test_kind_of_edit_words_are_never_on_screen_text():  # BUG-7
 def test_ranked_readings_keep_the_parsed_settings(prompt):
     r = resolve(prompt, {})
     assert r.apply == [{"id": "export_preset", "params": {"platform": "original"}, "time": None}], r.trace
+
+
+def test_original_quality_on_an_edited_video_is_an_export_not_a_restore():
+    # found by the manual MCP test: the word "original" took every effect off a warm + bright edit
+    ctx = context_from_plan(_plan(WARM_BW, preset="warm"), None)
+    r = resolve("original quality me export karo", ctx)
+    assert r.apply == [{"id": "export_preset", "params": {"platform": "original"}, "time": None}], r.trace
+    assert resolve("original jaisa kar do", ctx).apply[0]["id"] == "restore_normal"
+
+
+def test_nothing_to_take_off_never_runs_a_restore():
+    r = resolve("isko normal edit kar do", {})
+    assert not r.apply or r.apply[0]["id"] != "restore_normal", r.trace

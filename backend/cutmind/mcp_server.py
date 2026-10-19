@@ -461,6 +461,9 @@ def build_server(base_url: str | None = None, api_key: str | None = None,
                        unclear=[{"text": fence(u["text"]), "choices": [c["label"] for c in u["choices"]][:3]}
                                 for u in r.get("unclear") or []][:4], request_id=r.get("request_id"))
             out["job"] = job_compact(await wait_job(r["job_id"]))
+            if out["job"].get("status") == "failed":
+                # "did" is written BEFORE the job runs ("Maine ye kiya: flash hatao"); a failed job did nothing
+                out["said"] = f"NOT done — nothing changed: {out['job'].get('error') or 'the edit failed'}"
         else:
             err = (r or {}).get("error", {}) if isinstance(r, dict) else {}
             extra = {**err, **(err.get("details") or {})}  # the API puts extra fields right in the error object
