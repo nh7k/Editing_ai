@@ -79,8 +79,13 @@ COLOUR_ADJ = re.compile(r"\b(?:colou?r|rang|grade|grading|lut|tone)(?:\s+(?:ko|m
                         r"\b(?:cinematic|filmy)\s+(?:colou?r|rang|grade|grading|look|lut|tone|teal|orange)\b")
 
 
+# "8 second ka edit": a LENGTH, not whose edit — it read as a fan edit of "8 second" (velocity moves, black and white,
+# flashes and the word SECOND on screen, nobody asked)
+LENGTH_SAID = re.compile(r"\b\d+(?:\.\d+)?\s*(?:s|sec|secs|second|seconds|min|mins|minute|minutes)\s+(?:ka|ki|ke|long)\b")
+
+
 def _colour_said_out(prompt: str) -> str:
-    return COLOUR_ADJ.sub(" ", prompt.lower())
+    return LENGTH_SAID.sub(" ", COLOUR_ADJ.sub(" ", prompt.lower()))
 
 
 def concepts_in(prompt: str) -> list[str]:
@@ -284,7 +289,7 @@ _STOP = {"bhai", "isko", "iska", "a", "an", "the", "me", "my", "make", "edit", "
 
 # words that say what KIND of edit, never a name to put on screen ("make it look like a pro football edit" showed
 # IT / LOOK / LIKE / PRO / FOOTBALL on a Ronaldo edit)
-_KIND = {"it", "look", "looks", "like", "feel", "feels", "seem", "pro", "professional", "football", "soccer", "cricket",
+_KIND = {"second", "seconds", "sec", "secs", "minute", "minutes", "min", "it", "look", "looks", "like", "feel", "feels", "seem", "pro", "professional", "football", "soccer", "cricket",
          "sports", "sport", "travel", "wedding", "gym", "car", "bike", "anime", "fan", "cinematic", "velocity", "beat",
          "beats", "sigma", "hype", "epic", "viral", "flash", "flashes", "edits", "style", "type", "wala", "wali", "jaisa",
          "jaisi", "on", "in", "to", "proper", "good", "best", "high", "quality", "level", "montage", "highlight",

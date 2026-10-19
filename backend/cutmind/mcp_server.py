@@ -33,6 +33,7 @@ from mcp.types import ToolAnnotations
 
 ROOT = Path(__file__).resolve().parents[2]
 VIDEO_EXT = {".mp4", ".mov", ".m4v", ".mkv", ".webm", ".avi"}
+PHOTO_EXT = {".jpg", ".jpeg", ".png", ".webp"}  # a photo becomes a still clip (cutmind.photos)
 AUDIO_EXT = {".mp3", ".m4a", ".wav", ".aac", ".ogg", ".flac"}
 MAX_IMPORT_MB = int(os.environ.get("CUTMIND_MCP_MAX_MB", "500"))
 JOB_WAIT_S = int(os.environ.get("CUTMIND_MCP_WAIT_S", "600"))
@@ -242,8 +243,9 @@ def build_server(base_url: str | None = None, api_key: str | None = None,
     @server.tool(annotations=EDIT)
     @logged
     async def import_clip(project_id: str, path: str) -> dict[str, Any]:
-        """Add a video (or a song: .mp3/.m4a/.wav) from an allowed folder (see health_check) to a project."""
-        p = check_path(path, mode, VIDEO_EXT | AUDIO_EXT)
+        """Add a video, a photo (.jpg/.png/.webp: becomes a 5 s still clip) or a song (.mp3/.m4a/.wav) from an allowed
+        folder (see health_check) to a project."""
+        p = check_path(path, mode, VIDEO_EXT | PHOTO_EXT | AUDIO_EXT)
         async with render_lock:
             async with client(timeout=600) as c:
                 with p.open("rb") as fh:

@@ -128,5 +128,5 @@ def test_original_quality_on_an_edited_video_is_an_export_not_a_restore():
 
 
 def test_nothing_to_take_off_never_runs_a_restore():
-    r = resolve("isko normal edit kar do", {})
+    r = resolve("isko normal edit kar do", {"effects_present_at_time": []})  # a new project: nothing on it
     assert not r.apply or r.apply[0]["id"] != "restore_normal", r.trace

@@ -17,6 +17,7 @@ import numpy as np
 from pydantic import BaseModel, Field, field_validator
 
 from ..ffmpeg_utils import detect_silence, extract_audio_wav, ffmpeg_bin, measure_loudness, probe, run_ffmpeg
+from ..photos import is_photo
 from .base import AgentContext, AgentResult, BaseAgent, ClipRef, Feedback
 
 ANALYSIS_VERSION = 8
@@ -409,7 +410,9 @@ class AnalyzerAgent(BaseAgent):
             a.scenes = detect_scenes(media)
 
         def idle() -> None:
-            a.idle = detect_idle(media)
+            # a photo is still on purpose, not frozen footage: before, the auto edit cut both photos of a "car edit
+            # with 2 photos" away as idle ("nothing to keep")
+            a.idle = [] if is_photo(clip.filename) else detect_idle(media)
 
         # independent measurements run side by side (each is mostly an FFmpeg decode)
         with ThreadPoolExecutor(max_workers=4, thread_name_prefix="analyze") as pool:

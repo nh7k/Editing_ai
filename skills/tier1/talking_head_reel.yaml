@@ -102,5 +102,6 @@ examples:
   also:
   - warm
 test:
-  check: captions_on_speech
+  check: speech_on_screen
+  media: talk
   setup: []

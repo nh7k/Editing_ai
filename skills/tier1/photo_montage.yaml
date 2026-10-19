@@ -1,0 +1,118 @@
+id: photo_montage
+seed: 111
+category: motion
+name: Photo edit
+name_hi: Photos se video
+description: Turn the project's photos into an edit — they take turns as shots cut on the song's beat, each with its own
+  camera move (push in, pull out, drift), a colour look, vignette, flashes on the bar starts and a fade at the end. The
+  photos are animated; nothing new is generated into them.
+params:
+  seconds:
+    type: number
+    default: 12
+    min: 4
+    max: 60
+    unit: s
+    extract: seconds
+    desc: how long the edit is
+  beats_per_shot:
+    type: integer
+    default: 2
+    min: 1
+    max: 8
+    desc: beats per shot (1 = a cut on every beat)
+  look:
+    type: choice
+    choices: [cinematic, moody_blue, arctic, teal_orange, none]
+    default: cinematic
+    desc: colour look
+  move:
+    type: number
+    default: 0.15
+    min: 0.05
+    max: 0.4
+    extract: magnitude
+    desc: how far the camera moves
+time_modes:
+- whole
+builder: photos.photo_montage
+graph: photo stills (cutmind/photos.py) → beat-length shots in turn → keyframed scale/translate per shot, colour preset,
+  vignette, flash, fade out
+media3:
+  status: server_only
+  how: the server builds the shots and moves; the phone path is NOT TESTED
+stage: structure
+conflicts: []
+cost: medium
+licence: own code; Pillow (HPND) for the photos; librosa (ISC) beats; FFmpeg filters
+changes_duration: true
+needs: []
+variant_axes:
+  look:
+  - cinematic
+  - moody_blue
+  - arctic
+synonyms:
+  en:
+  - photo edit
+  - edit with my photos
+  - make a video from photos
+  - photos to video
+  - photo montage
+  - slideshow on the beat
+  - animate my photos to the song
+  - car edit with photos
+  - push in on the photos
+  - cinematic edit from pictures
+  hinglish:
+  - photos se edit banao
+  - photo se video banao
+  - in photos ka edit banao
+  - photos ko beat pe chalao
+  - photos se cinematic edit
+  - photo wala edit banao
+  - tasveeron se video banao
+  - photos pe camera push in karo
+  - in photos se car edit banao
+  - photos ka montage banao
+  hi:
+  - फोटो से वीडियो बनाओ
+  - फोटो से एडिट बनाओ
+  - तस्वीरों से वीडियो
+  slang:
+  - photos se mast reel bana do
+  - pics se edit maar do
+  typos:
+  - fotos se edit banao
+  - photo se vedio banao
+  - phtos se edit
+negations:
+- photos se edit mat banao
+examples:
+- prompt: in photos se edit banao
+  lang: hinglish
+- prompt: make a video from my photos
+  lang: en
+- prompt: photos se cinematic edit banao camera push in ke saath
+  lang: hinglish
+- prompt: फोटो से वीडियो बनाओ
+  lang: hi
+- prompt: fotos se edit banao
+  lang: typo
+- prompt: pics se mast reel bana do
+  lang: vague
+- prompt: car photos ka beat edit chahiye
+  lang: hinglish
+- prompt: photo montage on the beat
+  lang: en
+- prompt: photos se edit banao aur black and white karo
+  lang: multi
+  also:
+  - grayscale
+test:
+  check: photo_montage
+  media: photos
+  setup:
+  - id: add_music
+    params:
+      volume: 0.8

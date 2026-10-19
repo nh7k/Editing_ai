@@ -34,6 +34,7 @@ from .config import Settings, get_settings
 from .db import AGENT_ROLES, Database, new_id
 from .editorial import KNOWLEDGE_DIR, knowledge
 from .ffmpeg_utils import FFmpegError, extract_audio_wav, ffmpeg_available, probe, save_frame_jpg
+from .photos import PHOTO_EXT, is_photo, photo_to_clip
 from .fx_catalog import TEXT_ANIMATIONS
 from .fx_catalog import catalog as fx_catalog
 from .intent import PromptError, parse_intent, validate_prompt
@@ -415,9 +416,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         for f in files:
             name = Path(f.filename or "clip").name
             ext = Path(name).suffix.lower()
-            if ext not in settings.allowed_extensions:
+            photo = is_photo(name)
+            if ext not in settings.allowed_extensions and not photo:
                 raise ApiError(415, "unsupported_file_type",
-                               f"'{name}' is not a supported video type. Allowed: {', '.join(settings.allowed_extensions)}")
+                               f"'{name}' is not a supported video or photo type. Allowed: "
+                               f"{', '.join(settings.allowed_extensions + PHOTO_EXT)}")
             dest = clip_dir / f"{new_id('src')}{ext}"
             size = 0
             with dest.open("wb") as out:
@@ -432,6 +435,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             if size == 0:
                 dest.unlink(missing_ok=True)
                 raise ApiError(400, "empty_file", f"'{name}' is empty.")
+            if photo:  # a photo becomes a still clip (the photo itself is kept next to it)
+                still = dest.with_suffix(".mp4")
+                try:
+                    photo_to_clip(dest, still)
+                except Exception as exc:  # noqa: BLE001 — Pillow / ffmpeg: not a readable image
+                    dest.unlink(missing_ok=True)
+                    raise ApiError(400, "corrupt_file", f"'{name}' could not be read as a photo ({str(exc)[:120]}).") from exc
+                dest = still
             try:
                 info = probe(dest)
                 if not info.has_video or info.duration <= 0.2 or info.width == 0:
@@ -1110,7 +1121,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
             from .tools.resolve import context_from_plan as _ctx_of
             last_done = db.last_job(pid, "done")
-            whole_ctx: dict[str, Any] = {}
+            whole_ctx: dict[str, Any] = {"effects_present_at_time": []}  # no edit yet: nothing is on the video
             if last_done and last_done["plan"]:
                 whole_ctx = _ctx_of(EditPlan.model_validate(json.loads(last_done["plan"])), None)
             quick = quick_resolve(prompt, {**whole_ctx, "comment": False, "recent_edits": _recent_edits(pid)})
@@ -1147,8 +1158,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             # also as the FIRST message (the director has no such edit)
             speech_recipe = (quick.decision == "apply" and [c["id"] for c in quick.apply] == ["talking_head_reel"]
                              and bool(speech_words_ask.search(prompt)))
-            precise = ((tool_mode or restoring or clear_change or speech_recipe) and not options
-                       and not new_edit_words.search(prompt) and quick.decision in ("apply", "act", "partial"))
+            # "in photos se edit banao" is the photo recipe — also as the first message, also with "edit banao" (the
+            # director's fan-edit reading turned the photos black and white with speed ramps)
+            photo_recipe = quick.decision == "apply" and [c["id"] for c in quick.apply][:1] == ["photo_montage"]
+            precise = ((tool_mode or restoring or clear_change or speech_recipe or photo_recipe) and not options
+                       and (photo_recipe or not new_edit_words.search(prompt))
+                       and quick.decision in ("apply", "act", "partial"))
             if precise or quick.decision in ("non_edit", "undo") or str(quick.trace.get("turn", "")).startswith("relative"):
                 # a greeting / question, or "aur thoda" / "kam karo" / "isko hata do" about the last edit
                 last = db.last_job(pid, "done")
@@ -1247,7 +1262,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         from .tools.resolve import context_from_plan, resolve
         from .unmet import UnmetLog
 
-        ctx = context_from_plan(plan, at if at is not None else playhead) if plan is not None else {}
+        # no edit yet: nothing is on the video (said explicitly — an empty context means "not known")
+        ctx = (context_from_plan(plan, at if at is not None else playhead) if plan is not None
+               else {"effects_present_at_time": []})
         if at is None:
             ctx["comment"] = False  # a chat message points at the playhead only when it says "yaha / here"
         log = UnmetLog(db)

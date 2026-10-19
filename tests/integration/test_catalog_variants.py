@@ -56,6 +56,9 @@ KNOWN_NO_EFFECT = {
     "volume.what=voice": "the test media is tones, no voice — nothing to make louder",
     "extract_highlights.length=8s": "2 x 8 s is longer than the 12 s video, so the whole video is kept",
     "beat_sync.every=4": "the only cut is further than max_shift from every 4th beat; explain says '0 of 1 cuts moved'",
+    # measured 2026-10-19 after the kick-phase beat grid fix (song.py v4): the cut at 6.0 s is 37 ms from a beat
+    # (every=1 moves it 37 ms — below what the fingerprint sees) and 0.45 s from every 2nd beat (> max_shift 0.4)
+    "beat_sync.every=2": "the only cut is 0.45 s from every 2nd beat (more than max_shift 0.4): nothing moves",
     "sharpen.amount=light": "on soft footage a light sharpen only shows at full size; this test looks at 256 px",
     "echo_reverb.amount=room": "a small room is subtle: 1.4 dB, just under the 1.5 dB audible limit",
 }

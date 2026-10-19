@@ -103,6 +103,27 @@ def shaky(tmp_path_factory):
     return out
 
 
+def _photos(root: Path) -> dict[str, Path]:
+    """Two photos made into still clips the way an upload does it (cutmind.photos): detailed, different pictures."""
+    from PIL import Image, ImageDraw
+
+    from cutmind.photos import photo_to_clip
+
+    out = {}
+    for k, (bg, fg) in {"P1": ((20, 40, 90), (240, 200, 40)), "P2": ((90, 20, 30), (40, 220, 200))}.items():
+        im = Image.new("RGB", (1280, 720), bg)
+        dr = ImageDraw.Draw(im)
+        for i in range(0, 1280, 64):  # a grid: zoom and pan are measurable
+            dr.line([(i, 0), (i, 720)], fill=(200, 200, 200), width=3)
+        for j in range(0, 720, 64):
+            dr.line([(0, j), (1280, j)], fill=(200, 200, 200), width=3)
+        dr.ellipse([440, 160, 840, 560], fill=fg)
+        photo = root / f"{k}.jpg"
+        im.save(photo, quality=95)
+        out[k] = photo_to_clip(photo, root / f"{k}.mp4", seconds=4.0)
+    return out
+
+
 @pytest.fixture(scope="module")
 def env(tmp_path_factory, media, tones, box, dark, soft, noisy, shaky, music_dir):
     root = tmp_path_factory.mktemp("tier1")
@@ -119,6 +140,7 @@ def env(tmp_path_factory, media, tones, box, dark, soft, noisy, shaky, music_dir
         "scenes": (["C"], {"C": media["c"]}),
         "shaky": (["K"], {"K": shaky}),
         "gap": (["G"], {"G": media["b"]}),
+        "photos": (["P1", "P2"], _photos(root)),
     }
     canvas = {"vertical": "9:16", "box": "9:16"}
     analyses: dict[str, object] = {}

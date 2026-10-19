@@ -39,6 +39,8 @@ ACT_MIN, ACT_UNEXPLAINED, LONG_VIDEO_S = 0.70, 0.5, 120.0
 NUMERIC = re.compile(r"\d+(?:\.\d+)?|sec|second|seconds|s|se|to|tak|x|min|minute|qtk\d+")
 DEICTIC = {"yaha", "idhar"}  # not "abhi" / "now": in a command they mean "right away", not "at this second"
 RESTORE_WORDS = {"normal", "original", "wapas", "pehle"}
+RECIPE_COVERS = {"photo_montage": {"zoom_in", "zoom_out", "ken_burns", "push_in", "punch_in", "cinematic_look",
+                                     "beat_sync", "add_music", "fade_black"}}
 QUALITY_WORDS = {"original", "asli", "quality", "qualiti", "resolution", "best", "highest", "max", "maximum", "full",
                  "top", "high", "lossless", "4k"}
 REMOVER_SKILLS = {"stabilize", "denoise", "remove_silence", "remove_fillers"}  # "X hatao" = these skills themselves
@@ -509,6 +511,9 @@ def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
     trace["exact"] = {"calls": [c["id"] for c in exact["calls"]], "unknown": [u["text"] for u in exact["unknown"]],
                       "negated": exact["negated"]}
     present = _effects_at(ctx, point)
+    # the context SAYS nothing is on the video (a new project, or an edit with no effect): a missing context only
+    # means "not known" — then the restore stays a normal reading (the understanding corpus has no context)
+    nothing_there = "effects_present_at_time" in ctx and not present
     calls_in = exact["calls"]
     if any(c["id"] == "add_music" for c in calls_in) and any(
             (c.get("params") or {}).get("what") == "music" for c in calls_in if c["id"] != "add_music"):
@@ -567,7 +572,7 @@ def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
     disliked = any(float((ctx.get("learned") or {}).get(i, 0.0)) < 0 for i in exact_ids)
     # "purple video ko normal kar do" with a look on the video: the other words only say WHICH thing to take off
     restore_only = exact_ids == ["restore_normal"] and bool(present) and not exact["unknown"] and not disliked
-    if exact_ids == ["restore_normal"] and not present:
+    if exact_ids == ["restore_normal"] and nothing_there:
         exact = {**exact, "calls": []}  # nothing to restore: the words are ranked like any unclear ask
         exact_ids = []
     # a clause the exact matcher left "unknown" whose words the matched skills explain anyway ("beat ke based pe
@@ -591,6 +596,10 @@ def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
             return part
     if clear:
         calls = []
+        # a recipe skill already does these: "photos se cinematic edit, camera push in" is ONE photo montage (its own
+        # move per shot and look) — a whole-video zoom / look on top replaced the shots' moves
+        covered = set().union(*(RECIPE_COVERS.get(c["id"], set()) for c in exact["calls"]))
+        exact = {**exact, "calls": [c for c in exact["calls"] if c["id"] not in covered]}
         for c in exact["calls"]:
             if point is not None and not c.get("time"):
                 c = {**c, "time": _when(c["id"], point, ctx, specs[c["id"]])}
@@ -601,7 +610,7 @@ def resolve(prompt: str, context: dict[str, Any] | None = None) -> Resolution:
         return Resolution([choice], "apply", trace, apply=calls)
 
     choices, scores = _ranked(prompt, words, exact, ctx, point, restore_said, present, trace)
-    if not present and len(choices) > 1:
+    if nothing_there and len(choices) > 1:
         # nothing on the video to take off ("isko normal edit kar do" on a new project): "back to normal" is never the
         # reading that runs — it failed with "nothing to take off"; it stays one tap away at the end
         choices = [c for c in choices if c["id"] != "restore_normal"] + [c for c in choices if c["id"] == "restore_normal"]

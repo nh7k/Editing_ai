@@ -884,6 +884,22 @@ def captions_on_speech(r: Run) -> tuple[bool, str]:
         f"in a pause {quiet:.2%}"
 
 
+def speech_on_screen(r: Run) -> tuple[bool, str]:
+    """talking_head_reel: what is said appears on screen (anywhere — big keywords sit mid-frame, not only in the
+    bottom band), nothing in a pause, and the on-screen words are words that were really said."""
+    caps = [t for t in r.plan.text if t.kind == "caption"]
+    if not caps:
+        return False, "no captions in the plan"
+    c = caps[len(caps) // 2]
+    said = changed_mask(r, (c.start + c.end) / 2).mean()
+    gaps = [(a.end, b.start) for a, b in zip(caps, caps[1:], strict=False) if b.start - a.end > 0.6]
+    quiet = changed_mask(r, (gaps[0][0] + gaps[0][1]) / 2).mean() if gaps else 0.0
+    spoken = {w.lower().strip(".,!?'") for w, _s, _e in r.words(r.media["_clips"][0])}
+    shown = [w.lower().strip(".,!?'") for t in caps for w in t.text.split()]
+    real = sum(w in spoken for w in shown) / max(1, len(shown))
+    return said > 0.004 and quiet < 0.002 and real >= 0.8,         f"{len(caps)} caption(s); text pixels while '{c.text}' is said {said:.2%}, in a pause {quiet:.2%}; "         f"{real:.0%} of the on-screen words were said"
+
+
 def karaoke_colors(r: Run) -> tuple[bool, str]:
     caps = [t for t in r.plan.text if t.kind == "caption"]
     if not caps or any(t.style.animation != "karaoke" for t in caps):
@@ -1134,8 +1150,61 @@ def srt_file(r: Run) -> tuple[bool, str]:
     return len(blocks) == len(caps) and times_ok and len(caps) > 0, f"{len(blocks)} SRT entries for {len(caps)} captions; well-formed: {times_ok}"
 
 
+def _song_beats(r: Run) -> list[float]:
+    """The song's beats in output seconds, measured here (librosa through cutmind.song, its own cache dir)."""
+    from cutmind.music_library import resolve as find_track
+    from cutmind.song import analyze_song
+
+    track = find_track(r.plan.audio.music, [r.media["_music"]])
+    work = r.out.parent / f"beats_{r.out.stem}"
+    work.mkdir(exist_ok=True)
+    prof = analyze_song(track, work, work)
+    start = r.plan.audio.music_start
+    return [b - start for b in prof.grid(until=start + r.plan.total_duration() + 1) if b >= start]
+
+
+def hits_on_beats(r: Run) -> tuple[bool, str]:
+    """beat_edit: the punches sit on the song's beats, and the picture really punches there (zoom at the hit is
+    bigger than half a beat later)."""
+    tl = r.plan.timeline()
+    hits = sorted(tl[e.target].start + t for e in r.plan.effects if e.type == "pulse" and e.target >= 0 for t in e.times)
+    if len(hits) < 3:
+        return False, f"only {len(hits)} punch(es) in the plan"
+    beats = _song_beats(r)
+    on = [h for h in hits if beats and min(abs(h - b) for b in beats) <= 0.06]
+    half = (beats[1] - beats[0]) / 2 if len(beats) > 1 else 0.25
+    h = next((x for x in hits if x + half + 0.1 < dur(r.out)), hits[0])
+    peak, after = scale_at(r, h + 0.04), scale_at(r, h + half)
+    return len(on) >= 0.9 * len(hits) and peak > after + 0.02, \
+        f"{len(on)}/{len(hits)} punches within 60 ms of a beat; zoom at a hit {peak:.2f}, half a beat later {after:.2f}"
+
+
+def photo_montage(r: Run) -> tuple[bool, str]:
+    """photo_montage: the photos take turns, every shot moves (its zoom at the end differs from its start), the
+    cuts sit on the beat and the video is as long as the shots."""
+    tl = r.plan.timeline()
+    srcs = [e.segment.source for e in tl]
+    turns = all(a != b for a, b in zip(srcs, srcs[1:], strict=False))
+    beats = _song_beats(r)
+    cuts_on = sum(1 for e in tl[1:] if beats and min(abs(e.start - b) for b in beats) <= 0.06)
+    def zoom(t: float, src: Path) -> float:  # output frame at t vs the photo itself (resized to the output)
+        from PIL import Image
+
+        f = frame(r.out, t)
+        g = np.asarray(Image.fromarray(frame(src, 0.05).astype(np.uint8)).resize((f.shape[1], f.shape[0]))).astype(float)
+        return float(min(np.arange(1.0, 1.71, 0.02), key=lambda sc: diff(f, _zoomed(g, sc))))
+
+    first, second = tl[0], tl[1]
+    z0, z1 = zoom(first.start + 0.05, r.media[first.segment.source]), zoom(first.end - 0.08, r.media[first.segment.source])
+    y0, y1 = zoom(second.start + 0.05, r.media[second.segment.source]), zoom(second.end - 0.08, r.media[second.segment.source])
+    ok = (turns and len(tl) >= 4 and cuts_on >= len(tl) - 2 and z1 > z0 + 0.06 and y0 > y1 + 0.06
+          and abs(dur(r.out) - r.plan.total_duration()) < 0.15)
+    return ok, (f"{len(tl)} shots, photos in turn {turns}, {cuts_on}/{len(tl) - 1} cuts on a beat; shot 1 zoom "
+                f"{z0:.2f}→{z1:.2f} (push in), shot 2 {y0:.2f}→{y1:.2f} (pull out)")
+
+
 CHECKS = {k: v for k, v in globals().items() if callable(v) and k not in (
     "frame", "diff", "dur", "pcm", "peak_hz", "rms_db", "edges", "near", "Run", "sat", "luma", "_in_out", "_rb",
     "_hf", "_zoomed", "scale_at", "_pan_x", "_mid", "_len_ok", "_slide_fit", "_hiband", "band_db", "_pauses",
     "save_frame", "changed_mask", "_box_of", "FRAMES", "_gbox", "_sharp", "dataclass", "field", "detect_silence",
-    "extract_frame", "ffmpeg_bin", "probe", "EditPlan", "Path", "Any")}
+    "extract_frame", "ffmpeg_bin", "probe", "EditPlan", "Path", "Any", "_song_beats")}
