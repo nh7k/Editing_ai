@@ -58,6 +58,8 @@ def main() -> int:
             stream.reconfigure(encoding="utf-8", errors="replace")
     ap = argparse.ArgumentParser()
     ap.add_argument("--rotate", action="store_true", help="make a new secret token (the old URL stops working)")
+    ap.add_argument("--frames", action="store_true",
+                    help="let Claude SEE the edits (get_frame / get_contact_sheet): small frames go to Anthropic")
     a = ap.parse_args()
     HOME.mkdir(parents=True, exist_ok=True)
     if a.rotate or not TOKEN_FILE.exists():
@@ -68,7 +70,7 @@ def main() -> int:
         return 2
     procs: list[subprocess.Popen] = []
     env = {"PYTHONPATH": str(ROOT / "backend"), "CUTMIND_URL": "http://localhost:8010", "PLANNER_MODE": "mock",
-           "CUTMIND_TRANSLATOR": "off"}
+           "CUTMIND_TRANSLATOR": "off", "CUTMIND_MCP_FRAMES": "1" if a.frames else "0"}
     try:
         if not listening(8010):
             procs.append(start("backend", [str(PY), "-m", "uvicorn", "cutmind.api:create_app", "--factory", "--app-dir",

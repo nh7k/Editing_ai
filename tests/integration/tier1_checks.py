@@ -1180,27 +1180,32 @@ def hits_on_beats(r: Run) -> tuple[bool, str]:
 
 
 def photo_montage(r: Run) -> tuple[bool, str]:
-    """photo_montage: the photos take turns, every shot moves (its zoom at the end differs from its start), the
-    cuts sit on the beat and the video is as long as the shots."""
+    """photo_montage: the shots are different framings (wide / medium / close-ups) of the photos, never the same
+    framing twice in a row; every shot moves (its zoom at the end differs from its start); the cuts sit on the
+    beat; beat punches on top; the video is as long as the shots."""
     tl = r.plan.timeline()
     srcs = [e.segment.source for e in tl]
     turns = all(a != b for a, b in zip(srcs, srcs[1:], strict=False))
     beats = _song_beats(r)
     cuts_on = sum(1 for e in tl[1:] if beats and min(abs(e.start - b) for b in beats) <= 0.06)
-    def zoom(t: float, src: Path) -> float:  # output frame at t vs the photo itself (resized to the output)
+
+    def zoom(t: float, src: Path) -> float:  # output frame at t vs the shot's own framing (resized to the output)
         from PIL import Image
 
         f = frame(r.out, t)
         g = np.asarray(Image.fromarray(frame(src, 0.05).astype(np.uint8)).resize((f.shape[1], f.shape[0]))).astype(float)
         return float(min(np.arange(1.0, 1.71, 0.02), key=lambda sc: diff(f, _zoomed(g, sc))))
 
-    first, second = tl[0], tl[1]
-    z0, z1 = zoom(first.start + 0.05, r.media[first.segment.source]), zoom(first.end - 0.08, r.media[first.segment.source])
-    y0, y1 = zoom(second.start + 0.05, r.media[second.segment.source]), zoom(second.end - 0.08, r.media[second.segment.source])
-    ok = (turns and len(tl) >= 4 and cuts_on >= len(tl) - 2 and z1 > z0 + 0.06 and y0 > y1 + 0.06
+    moves = []
+    for e in tl[:3]:
+        src = r.media[e.segment.source]
+        moves.append((zoom(e.start + 0.05, src), zoom(e.end - 0.08, src)))
+    moving = all(abs(b - a) > 0.05 for a, b in moves)
+    punches = sum(len(e.times) for e in r.plan.effects if e.type == "pulse")
+    ok = (turns and len(set(srcs)) >= 4 and len(tl) >= 6 and cuts_on >= len(tl) - 2 and moving and punches >= 3
           and abs(dur(r.out) - r.plan.total_duration()) < 0.15)
-    return ok, (f"{len(tl)} shots, photos in turn {turns}, {cuts_on}/{len(tl) - 1} cuts on a beat; shot 1 zoom "
-                f"{z0:.2f}→{z1:.2f} (push in), shot 2 {y0:.2f}→{y1:.2f} (pull out)")
+    return ok, (f"{len(tl)} shots from {len(set(srcs))} framings, never twice in a row {turns}; {cuts_on}/{len(tl) - 1}"
+                f" cuts on a beat; first shots' zoom {', '.join(f'{a:.2f}→{b:.2f}' for a, b in moves)}; {punches} punches")
 
 
 CHECKS = {k: v for k, v in globals().items() if callable(v) and k not in (

@@ -115,6 +115,34 @@ def detect_people(frame_rgb: np.ndarray, conf: float = 0.35) -> list[tuple[float
     return out_boxes
 
 
+def detect_objects(frame_rgb: np.ndarray, conf: float = 0.3) -> list[tuple[float, float, float, float, float, int]]:
+    """YOLOX-nano boxes of ANY of the 80 COCO classes as (cx, cy, w, h, score, class), normalised to the frame
+    (class 0 person, 2 car, 3 motorcycle, 5 bus, 7 truck, 16 dog, …) — the subject of a photo."""
+    import cv2
+
+    h, w = frame_rgb.shape[:2]
+    r = min(416 / h, 416 / w)
+    img = np.full((416, 416, 3), 114, dtype=np.uint8)
+    rs = cv2.resize(frame_rgb[:, :, ::-1], (int(w * r), int(h * r)), interpolation=cv2.INTER_LINEAR)  # BGR
+    img[: rs.shape[0], : rs.shape[1]] = rs
+    out = _yolox().run(None, {"images": img.transpose(2, 0, 1)[None].astype(np.float32)})[0][0]  # type: ignore[attr-defined]
+    cls = out[:, 5:].argmax(1)
+    score = out[:, 4] * out[np.arange(len(out)), 5 + cls]
+    keep = score > conf
+    if not keep.any():
+        return []
+    xy = ((out[:, :2] + _GRID) * _STRIDES)[keep] / r
+    wh = (np.exp(out[:, 2:4]) * _STRIDES)[keep] / r
+    score, cls = score[keep], cls[keep]
+    boxes = [[float(x - bw / 2), float(y - bh / 2), float(bw), float(bh)] for (x, y), (bw, bh) in zip(xy, wh, strict=True)]
+    idx = cv2.dnn.NMSBoxes(boxes, score.tolist(), conf, 0.45)
+    found = []
+    for i in np.array(idx).flatten():
+        x, y, bw, bh = boxes[int(i)]
+        found.append(((x + bw / 2) / w, (y + bh / 2) / h, bw / w, bh / h, float(score[int(i)]), int(cls[int(i)])))
+    return found
+
+
 def detect_faces(frame_rgb: np.ndarray, conf: float = 0.6) -> list[tuple[float, float, float, float, float]]:
     import cv2
 

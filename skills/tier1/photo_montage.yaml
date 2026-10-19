@@ -3,9 +3,10 @@ seed: 111
 category: motion
 name: Photo edit
 name_hi: Photos se video
-description: Turn the project's photos into an edit — they take turns as shots cut on the song's beat, each with its own
-  camera move (push in, pull out, drift), a colour look, vignette, flashes on the bar starts and a fade at the end. The
-  photos are animated; nothing new is generated into them.
+description: Turn the project's photos into an edit — every photo gives a wide shot, a medium and two close-ups on its
+  most detailed areas; the shots are cut on the song's beat (every beat where it is loud, every 2nd where calm), each
+  with its own camera move, beat punches / flashes / shake, a colour look and a fade. The photos are framed and
+  animated; nothing new is generated into them.
 params:
   seconds:
     type: number
@@ -28,11 +29,16 @@ params:
     desc: colour look
   move:
     type: number
-    default: 0.15
+    default: 0.18
     min: 0.05
     max: 0.4
-    extract: magnitude
     desc: how far the camera moves
+  intensity:
+    type: choice
+    choices: [low, medium, high]
+    default: medium
+    extract: magnitude_word
+    desc: how hard the beat hits are
 time_modes:
 - whole
 builder: photos.photo_montage

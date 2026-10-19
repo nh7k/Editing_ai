@@ -16,7 +16,7 @@ gap found:** `upload_clip` / `transcribe_voice` read any file path a client name
 | transport | **stdio** | one user, one laptop; Claude Desktop launches local servers over stdio; no port, nothing listens on the network |
 | one server or two | **one program, two Claude Desktop entries** (`--mode edit`, `--mode test`) | the two modes must never mix: in TEST MODE the skill-picking tools do not exist at all, so Claude cannot "help" the app by accident |
 | TEST MODE backend | an **in-process CutMind on `~/CutMind/test_workspace`** (its own database + storage) | real projects can never be touched; nothing else to start |
-| tool count | **26 (edit) / 25 (test)**, grouped by job (projects, versions, checking, editing) | too many tiny tools hurt tool choice; giant tools hurt control (my knowledge) |
+| tool count | **27 (edit) / 26 (test)** (+ get_contact_sheet, 2026-10-19), grouped by job (projects, versions, checking, editing) | too many tiny tools hurt tool choice; giant tools hurt control (my knowledge) |
 | results | **compact JSON**: lists capped, plans summarised (`get_project_summary`), diffs instead of plans | token cost on the user's Claude plan |
 | slow renders | edit tools wait up to 600 s (one render at a time); a still-running job returns its id → `get_job_status(wait_seconds)` | renders take 10-90 s here; **cancel is NOT available** (the backend has no job cancel yet) |
 | resources / prompts | resources: skill index, craft rules; prompt: `edit_like_pro` | catalogue-like data is a resource, actions are tools |

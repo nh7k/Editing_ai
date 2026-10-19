@@ -336,6 +336,29 @@ def build_server(base_url: str | None = None, api_key: str | None = None,
                                              f"scale={w}:-2", "-q:v", "5", str(jpg)])
         return Image(data=jpg.read_bytes(), format="jpeg")
 
+    @server.tool(annotations=RO)
+    @logged
+    async def get_contact_sheet(project_id: str, job_id: str | None = None, frames: int = 12) -> Any:
+        """The WHOLE video at a glance: `frames` (4-24) evenly spaced frames of a version, tiled into one image
+        (each labelled by its second is not drawn — frame k is at k/frames of the length). Use it to judge an edit
+        like an editor (repetition, framing, colour, text, black frames) before changing it. Only when
+        CUTMIND_MCP_FRAMES=1 — the picture leaves your machine to Claude."""
+        if not frames_on:
+            return {"frames_disabled": True, "how": "start with --frames (tools/start_remote.py) or CUTMIND_MCP_FRAMES=1"}
+        from .ffmpeg_utils import probe as _probe
+        from .ffmpeg_utils import run_ffmpeg
+
+        out = await _download_output(project_id, job_id)
+        n = max(4, min(int(frames), 24))
+        cols = 6 if n > 12 else 4 if n > 6 else n
+        rows = -(-n // cols)
+        dur = (await asyncio.to_thread(_probe, out)).duration
+        jpg = out.with_suffix(f".sheet{n}.jpg")
+        fps = n / max(0.5, dur)
+        await asyncio.to_thread(run_ffmpeg, ["-i", str(out), "-vf", f"fps={fps:.5f},scale=160:-2,tile={cols}x{rows}",
+                                             "-frames:v", "1", "-q:v", "5", str(jpg)])
+        return Image(data=jpg.read_bytes(), format="jpeg")
+
     async def _download_output(project_id: str, job_id: str | None = None) -> Path:
         d = local_dir() / "mcp_cache"
         d.mkdir(parents=True, exist_ok=True)
