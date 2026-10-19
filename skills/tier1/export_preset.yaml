@@ -16,6 +16,7 @@ params:
     - youtube
     - linkedin
     - instagram_feed
+    - original
     default: instagram_reels
     extract: platform
     desc: platform
@@ -57,9 +58,12 @@ synonyms:
   - for whatsapp
   - export settings
   - upload ready
+  - export in original quality
   - platform export
   hinglish:
   - export karo
+  - original quality me export karo
+  - best quality me nikalo
   - save karo
   - instagram ke liye
   - whatsapp ke liye

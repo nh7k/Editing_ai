@@ -452,7 +452,7 @@ class DirectorAgent(BaseAgent):
             vplan = apply_style(base, sid, keep_color=intent.color_preset is not None)
             live.variation(ctx, tracker, i + 1, intent.variations, style.name, style.description, vplan)
             out_v = ctx.work_dir / f"var_{i}.mp4"
-            render_sources = ({c.id: c.media for c in ctx.clips} if vplan.canvas.resolution <= PROXY_SHORT_SIDE
+            render_sources = ({c.id: c.media for c in ctx.clips} if vplan.canvas.resolution <= PROXY_SHORT_SIDE and not vplan.export.is_master
                               else sources)
             try:
                 render(vplan, render_sources, ctx.work_dir / f"v{i}", out_v, music_dirs(ctx.settings, ctx.project_id),

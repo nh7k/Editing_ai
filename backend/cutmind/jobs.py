@@ -535,7 +535,7 @@ class JobManager:
             state.event("node_completed", node="apply", ms=round((time.perf_counter() - t0) * 1000))
             state.agent("director", "done", 1.0, "changes applied")
             output = self.project_dir(project_id) / "output" / f"{job_id}.mp4"
-            sources = ({c.id: c.media for c in clips} if plan.canvas.resolution <= PROXY_SHORT_SIDE
+            sources = ({c.id: c.media for c in clips} if plan.canvas.resolution <= PROXY_SHORT_SIDE and not plan.export.is_master
                        else {c.id: c.path for c in clips})
             t1 = time.perf_counter()
             state.event("node_started", node="render")

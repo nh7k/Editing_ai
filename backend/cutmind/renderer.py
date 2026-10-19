@@ -26,6 +26,12 @@ ProgressFn = Callable[[float, str], None]
 
 # intermediates are re-encoded once more at the end, so favour speed (quality loss at crf 17 is negligible)
 INTERMEDIATE_V = ["-c:v", "libx264", "-preset", "ultrafast", "-crf", "17", "-pix_fmt", "yuv420p"]
+# the "original quality" export: near-lossless intermediates (bigger temp files, the final encode decides the quality)
+MASTER_V = ["-c:v", "libx264", "-preset", "ultrafast", "-crf", "10", "-pix_fmt", "yuv420p"]
+
+
+def inter_v(plan: EditPlan) -> list[str]:
+    return MASTER_V if plan.export.is_master else INTERMEDIATE_V
 # PCM, not AAC: every AAC file starts with ~21 ms of encoder priming that the concat demuxer does not trim — it
 # put a silent gap at EVERY hard cut (measured: 21-50 ms of zeros where a split should be inaudible)
 INTERMEDIATE_A = ["-c:a", "pcm_s16le", "-ar", "48000", "-ac", "2"]
@@ -421,7 +427,7 @@ def render_segment(plan: EditPlan, entry: TimelineEntry, src: Path, out: Path) -
     graph.append(f"[asp]volume={seg.volume:.3f},aresample=48000,aformat=sample_fmts=fltp:channel_layouts=stereo,"
                  f"{fin}apad{fout},atrim=0:{dur_q:.6f}[aout]")
     args += ["-filter_complex", ";".join(graph), "-map", "[vout]", "-map", "[aout]",
-             "-frames:v", str(n_frames), "-t", f"{dur_q:.6f}", "-r", str(fps), *INTERMEDIATE_V, *INTERMEDIATE_A,
+             "-frames:v", str(n_frames), "-t", f"{dur_q:.6f}", "-r", str(fps), *inter_v(plan), *INTERMEDIATE_A,
              str(out.resolve())]
     # cwd = LUT folder so `lut3d=file=<look>.cube` needs no Windows drive-letter escaping
     uses_lut = plan.color.preset in LOOKS or any(e.type == "grade" and e.params.get("look") and e.target in (-1, entry.index)
@@ -473,7 +479,7 @@ def join_segments(plan: EditPlan, parts: list[Path], out: Path) -> Path:
         graph.append(f"[{v_prev}]" + ",".join(post) + "[vpost]")
         v_prev = "vpost"
     args += ["-filter_complex", ";".join(graph), "-map", f"[{v_prev}]", "-map", f"[{a_prev}]",
-             *INTERMEDIATE_V, *INTERMEDIATE_A, str(out)]
+             *inter_v(plan), *INTERMEDIATE_A, str(out)]
     run_ffmpeg(args)
     return out
 
@@ -716,7 +722,8 @@ def finish(plan: EditPlan, joined: Path, out: Path, work: Path, music_path: Path
     args += ["-filter_complex", ";".join(graph), "-map", "[vout]", "-map", "1:a",
              "-c:v", e.video_codec, "-preset", e.preset, "-crf", str(e.crf), "-pix_fmt", "yuv420p",
              # capped quality: film grain / noise otherwise takes 30+ Mbit/s (a 51 s old-movie edit was 234 MB)
-             *(["-maxrate", f"{e.max_bitrate_kbps}k", "-bufsize", f"{2 * e.max_bitrate_kbps}k"] if e.max_bitrate_kbps else
+             *([] if e.is_master else  # original quality: the CRF alone decides, no bitrate ceiling
+               ["-maxrate", f"{e.max_bitrate_kbps}k", "-bufsize", f"{2 * e.max_bitrate_kbps}k"] if e.max_bitrate_kbps else
                ["-maxrate", f"{max_mbps(plan.canvas.resolution)}M", "-bufsize", f"{2 * max_mbps(plan.canvas.resolution)}M"]),
              "-r", str(plan.canvas.fps), "-c:a", "aac", "-b:a", e.audio_bitrate, "-ar", "48000",
              "-t", f"{total:.3f}", "-movflags", "+faststart", str(out.resolve())]
@@ -790,7 +797,7 @@ def sticker_graph(st: Any, k: int, base: str, w: int, h: int) -> list[str]:
 
 def max_mbps(short_side: int) -> int:
     """Upper video bitrate (Mbit/s) — about what Instagram / YouTube keep anyway."""
-    return 12 if short_side >= 1080 else 6 if short_side >= 720 else 3
+    return 40 if short_side >= 2160 else 20 if short_side >= 1440 else 12 if short_side >= 1080 else 6 if short_side >= 720 else 3
 
 
 def render_workers() -> int:
@@ -822,7 +829,7 @@ def picture_key(plan: EditPlan, sources: dict[str, Path]) -> str:
     data = {"canvas": plan.canvas.model_dump(), "clips": [c.model_dump(by_alias=True) for c in plan.clips],
             "effects": [e.model_dump() for e in plan.effects], "color": plan.color.model_dump(),
             "transitions": [t.model_dump() for t in plan.transitions if t.after >= 0], "sources": src,
-            "v": 2}  # 2: frame-exact segment lengths + the sharper beat punch
+            "v": 2, "master": plan.export.is_master}  # 2: frame-exact segment lengths + the sharper beat punch
     return hashlib.sha1(json.dumps(data, sort_keys=True, default=str).encode()).hexdigest()[:20]
 
 

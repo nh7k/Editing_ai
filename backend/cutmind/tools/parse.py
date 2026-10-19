@@ -200,7 +200,14 @@ def x_quoted(t: str) -> str | None:
     return m.group(1).strip() if m else None
 
 
+# "original quality me export karo", "best quality", "quality kam na ho", "4k me nikalo": the source's own size / fps
+ORIGINAL_QUALITY = re.compile(r"\b(?:original|best|full|highest|max|maximum|asli|top|high)\s+(?:quality|qualiti|resolution)\b|"
+                              r"\b(?:quality|qualiti)\s+(?:kam|loss|kharab|down)\s+(?:na|nahi|mat|nhi)\b|\blossless\b|\b4k\b")
+
+
 def x_platform(t: str) -> str | None:
+    if ORIGINAL_QUALITY.search(t):
+        return "original"
     for w, p in sorted(PLATFORMS.items(), key=lambda kv: -len(kv[0])):
         if re.search(rf"\b{w}\b", t):
             return p

@@ -249,6 +249,9 @@ def diff(a: EditPlan, b: EditPlan) -> dict[str, Any]:
     item("captions", caps_a > 0, caps_b > 0, lambda x: "on" if x else "off")
     item("transitions", sorted({t.type for t in a.transitions}), sorted({t.type for t in b.transitions}), opt)
     item("shape", a.canvas.aspect_ratio, b.canvas.aspect_ratio)
+    # an export ("original quality", "instagram") changes the size / frame rate / quality, not the picture's content
+    item("size", "{}x{} {}fps".format(*a.canvas.size, a.canvas.fps), "{}x{} {}fps".format(*b.canvas.size, b.canvas.fps))
+    item("export", a.export.platform or "standard", b.export.platform or "standard")
     da, db_ = round(a.total_duration(), 2), round(b.total_duration(), 2)
     return {"changed": changed, "kept": kept, "duration_before": da, "duration_after": db_}
 

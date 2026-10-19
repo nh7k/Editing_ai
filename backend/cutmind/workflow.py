@@ -422,7 +422,7 @@ def render_node(s: EditState, rt: Runtime) -> dict[str, Any]:
                text=msg, round=r)
 
     # ≤720p output: decode the light proxies (much faster); 1080p: the originals, for full quality
-    sources = ({c.id: c.media for c in ctx.clips} if plan.canvas.resolution <= PROXY_SHORT_SIDE
+    sources = ({c.id: c.media for c in ctx.clips} if plan.canvas.resolution <= PROXY_SHORT_SIDE and not plan.export.is_master
                else {c.id: c.path for c in ctx.clips})
     try:
         render(plan, sources, ctx.work_dir / f"r{r}", out_try, music_dirs(ctx.settings, ctx.project_id), _progress,

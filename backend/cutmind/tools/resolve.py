@@ -346,12 +346,17 @@ def _ranked(prompt: str, words: list[str], exact: dict[str, Any], ctx: dict[str,
             if n["id"] not in ranked and n["id"] not in exact["negated"]:
                 ranked.append(n["id"])
                 scores.setdefault(n["id"], 0.0)
+    # what the exact matcher read for a skill (its settings and time) stays with it when it is ranked: "original
+    # quality me export karo" was ranked (the words "original quality" are not in the index) and lost
+    # platform=original — the export came out as an Instagram reel
+    read = {c["id"]: c for c in exact["calls"]}
     choices = []
     for sid in ranked:
-        when = _when(sid, point, ctx, specs[sid])
-        call = {"id": sid, "params": {}, "time": when}
-        choices.append({"id": sid, "params": {}, "time": when, "score": round(min(scores[sid], 1.0), 3),
-                        "calls": [call], "label": label(sid, when, ctx)})
+        params = dict((read.get(sid) or {}).get("params") or {})
+        when = (read.get(sid) or {}).get("time") or _when(sid, point, ctx, specs[sid])
+        call = {"id": sid, "params": params, "time": when}
+        choices.append({"id": sid, "params": params, "time": when, "score": round(min(scores[sid], 1.0), 3),
+                        "calls": [call], "label": label(sid, when, ctx, params)})
     return choices, scores
 
 

@@ -42,7 +42,7 @@ class _Model(BaseModel):
 
 class Canvas(_Model):
     aspect_ratio: AspectRatio = "16:9"
-    resolution: Literal[360, 480, 720, 1080] = 720  # length of the SHORT side in pixels
+    resolution: Literal[360, 480, 720, 1080, 1440, 2160] = 720  # length of the SHORT side in pixels
     fps: int = Field(30, ge=12, le=60)
     reframe: Literal["crop", "blur_pad", "pad"] = "crop"  # pad = the whole picture with black bars
     rotate: Literal[0, 90, 180, 270] = 0          # clockwise, applied to every source before reframing
@@ -299,14 +299,20 @@ class ExportSettings(_Model):
     format: Literal["mp4"] = "mp4"
     video_codec: Literal["libx264"] = "libx264"
     crf: int = Field(23, ge=14, le=35)
-    preset: Literal["ultrafast", "veryfast", "faster", "fast", "medium"] = "veryfast"
-    audio_bitrate: Literal["96k", "128k", "192k"] = "128k"
+    preset: Literal["ultrafast", "veryfast", "faster", "fast", "medium", "slow"] = "veryfast"
+    audio_bitrate: Literal["96k", "128k", "192k", "256k"] = "128k"
     # extra deliverables made next to the MP4: an animated GIF, the soundtrack (mp3 / wav / m4a), a cover image,
     # an .srt of the captions
     extras: list[Literal["gif", "mp3", "wav", "m4a", "thumbnail", "srt"]] = Field(default_factory=list)
     platform: str | None = Field(None, max_length=40)       # export preset id (tools/b_delivery.PLATFORMS)
     max_bitrate_kbps: int | None = Field(None, ge=300, le=100000)
     thumbnail_at: float | None = Field(None, ge=0)
+
+    @property
+    def is_master(self) -> bool:
+        """The "original quality" export: from the original files (never the 720p proxies), near-lossless
+        intermediates, no bitrate cap (tools/b_delivery.export_preset, platform "original")."""
+        return self.platform == "original"
 
 
 @dataclass(frozen=True)

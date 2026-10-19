@@ -53,8 +53,42 @@ def scene_detect(plan: EditPlan, p: dict[str, Any], when: When, ctx: ToolCtx) ->
     return plan
 
 
+RESOLUTIONS = (720, 1080, 1440, 2160)
+
+
+def _original(plan: EditPlan, ctx: ToolCtx) -> EditPlan:
+    """"Original quality": the size and frame rate of the sharpest clip in the edit (never smaller than 720p, at most
+    4K), CRF 17 with the slow preset, no bitrate ceiling, AAC 192k — rendered from the original files."""
+    from ..ffmpeg_utils import probe
+
+    shorts, rates = [], []
+    for cid in {c.source for c in plan.clips}:
+        src = ctx.sources.get(cid)
+        if src is None or not src.exists() or cid.startswith("gen_"):
+            continue
+        info = probe(src)
+        shorts.append(min(info.width, info.height))
+        rates.append(info.fps)
+    if not shorts:
+        raise ToolError("the original clips are not available here, so the original quality is unknown")
+    short = max(shorts)
+    res = next((r for r in RESOLUTIONS if r >= short), RESOLUTIONS[-1])
+    fps = int(round(min(60.0, max(rates or [30.0]))))
+    data = plan.to_json()
+    data["canvas"].update(resolution=res, fps=max(12, fps))
+    data["export"].update(platform="original", crf=17, preset="slow", audio_bitrate="192k", max_bitrate_kbps=None)
+    new = EditPlan.model_validate(data)
+    w, h = new.canvas.size
+    up = " (your clips are smaller: upscaled, no detail is added)" if short < res else ""
+    ctx.notes.append(f"original quality: {w}x{h}, {new.canvas.fps} fps, H.264 CRF 17 (slow), no bitrate cap, "
+                     f"AAC 192k, from the original files{up}")
+    return new
+
+
 @tool("export_preset")
 def export_preset(plan: EditPlan, p: dict[str, Any], when: When, ctx: ToolCtx) -> EditPlan:
+    if p["platform"] == "original":
+        return _original(plan, ctx)
     spec = PLATFORMS[p["platform"]]
     data = plan.to_json()
     data["canvas"].update(aspect_ratio=spec["aspect"], resolution=spec["res"] if p["quality"] == "high" else 720, fps=spec["fps"])
