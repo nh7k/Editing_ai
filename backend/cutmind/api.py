@@ -298,6 +298,21 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                            "and set Settings > Backend URL to this address.",
                 "docs": "/docs", "health": "/health"}
 
+    @app.get("/connect/claude", tags=["system"], include_in_schema=False)
+    def connect_claude(request: Request) -> dict[str, Any]:
+        """The claude.ai connector URL for the app's "Connect to Claude" page (tools/start_remote.py writes it).
+        It holds the secret token, so only a request from this laptop gets it."""
+        host = request.client.host if request.client else ""
+        if host not in ("127.0.0.1", "::1", "localhost", "testclient"):
+            raise ApiError(403, "local_only", "The connector URL is shown only on the laptop that runs CutMind.")
+        f = Path.home() / "CutMind" / "connector_url.txt"
+        url = f.read_text().strip() if f.exists() else None
+        return {"url": url, "running": url is not None,
+                "start": "backend\\.venv\\Scripts\\python.exe tools\\start_remote.py",
+                "steps": ["claude.ai → Settings → Connectors → Add custom connector",
+                          "Name: cutmind — URL: the link above — sign-in: none → Add",
+                          "In a new chat turn cutmind on (tools icon) and say: cutmind ka health_check chalao"]}
+
     @app.get("/health", tags=["system"])
     def health() -> dict[str, Any]:
         whisper = True

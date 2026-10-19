@@ -26,3 +26,17 @@ fade 15.7-16.3 s with a black last frame, "10 second ka karo" → 9.7 s, "make i
 warm colour (brightness 0 → 0.12)", "flash hata do" removes the flash. Found in that run and fixed: "shake hatao"
 with NO shake on the video removed zoom + pulse (the family) — now a named effect that is not there is said and
 nothing else is removed; with no shake effect "shake hatao" stabilizes the footage.
+
+## 2026-10-19 (manual test through the public https URL, the full suite, photos)
+
+| # | found by | prompt / test | what went wrong | status |
+|---|---|---|---|---|
+| BUG-9 | manual MCP test | "original quality me export karo" on an edited video | every effect taken off ("original" read as "like the original") | FIXED |
+| BUG-10 | manual MCP test | "flash hata do" with no flash | job failed correctly but said "Maine ye kiya: flash hatao" (MCP + web chat) | FIXED |
+| BUG-11 | manual MCP test | "isko normal edit kar do" on a new project | "back to normal" ran with nothing to take off → failed | FIXED |
+| BUG-12 | resolver | any ranked reading | the parser's settings were dropped (`params: {}`) → original-quality export became an Instagram export | FIXED |
+| BUG-13 | full suite (test_mind_api) | "8 second ka edit, warm color" | read as a fan edit of "8 second": black and white, speed ramps, flashes, "SECOND" on screen | FIXED |
+| BUG-14 | photos | "in photos se … edit banao" | the auto edit cut both photos away as idle ("nothing to keep") | FIXED |
+| BUG-15 | quality | any export | 1080p/4K and 60 fps sources came out 720p/30 fps from proxies; no original-quality export | FIXED |
+| — | full suite | test_tier1 beat_edit / talking_head_reel | beat_edit's check was never written; talking_head ran on silent media | FIXED (tests) |
+| — | full suite | voice_clean pipeline, auto_captions variants | failed only under load; pass alone | FLAKY (watch) |

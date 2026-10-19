@@ -355,8 +355,18 @@ function mediaUrl(path: string): string {
 
 // ---------------------------------------------------------------- endpoints
 
+export interface ClaudeConnect {
+  /** The claude.ai connector URL (holds the secret token); null when tools/start_remote.py is not running. */
+  url: string | null;
+  running: boolean;
+  start: string;
+  steps: string[];
+}
+
 export const api = {
   health: () => request<Health>('/health', { timeoutMs: 5_000 }),
+  /** Only answered on the laptop that runs CutMind (the URL is a secret). */
+  connectClaude: () => request<ClaudeConnect>('/connect/claude', { timeoutMs: 5_000 }),
 
   listProjects: () => request<Project[]>('/projects'),
   createProject: (name: string) => request<Project>('/projects', { method: 'POST', body: { name } }),

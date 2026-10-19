@@ -94,3 +94,27 @@ Bade test (200 cases) Python runner chalata hai (`tools/test200`), Claude Deskto
 | python / module error | `command` me venv ka python.exe ka poora path ho, `PYTHONPATH` = backend folder |
 | Claude Desktop ke logs | `%APPDATA%\Claude\logs\mcp-server-cutmind.log` (Claude Desktop ka) |
 | hamare tool logs | `C:\Users\itanm\CutMind\mcp_logs\mcp-YYYYMMDD.jsonl` (`get_logs` tool se bhi) |
+
+## 5. claude.ai (website) se jodna — ek command
+
+claude.ai aapke laptop tak sirf ek public **https** link se pahunch sakta hai. Ye ek command sab chalu karta hai —
+CutMind backend (127.0.0.1:8010), MCP server (127.0.0.1:8020, secret link) aur Cloudflare tunnel (sirf MCP bahar
+dikhta hai, backend nahi):
+
+```powershell
+backend\.venv\Scripts\python.exe tools\start_remote.py
+```
+
+Ye link print karta hai (aur app me **Settings → Connect to Claude** me "Copy link" button). Phir:
+1. claude.ai → Settings → Connectors → **Add custom connector** → Name `cutmind`, URL = link, sign-in: none → Add
+2. Naye chat me tools icon se `cutmind` on → "cutmind ka health_check chalao"
+
+- `cloudflared` ek baar chahiye: `~/CutMind/bin/cloudflared.exe` — Cloudflare ki official GitHub release (2026.9.3,
+  SHA256 `f096265e…e7e2`, Windows signature "Cloudflare, Inc." — dono check kiye).
+- Link ek **password** hai: jiske paas link, wo aapke projects edit kar sakta hai (login abhi nahi hai).
+- Free tunnel ka link har start pe badalta hai. Purana link band karna: `tools\start_remote.py --rotate` (naya token).
+- Window band = tunnel band.
+- claude.ai me attach ki photo/video laptop tak nahi aati: file `C:\Users\itanm\CutMind\inbox` me rakho aur Claude se
+  "inbox wali car1.jpg naye project me daalo" bolo. Photos (JPG/PNG/WEBP) clip ban jaati hain; "in photos se edit
+  banao" = beat pe photo montage (camera push-in, cinematic look). Naye scene generate karna (jaise car ko jami jheel
+  pe rakhna) is laptop pe free me NAHI ho sakta — GPU wala video-generation model chahiye.

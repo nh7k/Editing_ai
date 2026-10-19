@@ -1,9 +1,11 @@
+import * as Clipboard from 'expo-clipboard';
 import { useState } from 'react';
 import { Platform, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 
-import { api, errorMessage } from '../api/client';
+import { api, errorMessage, type ClaudeConnect } from '../api/client';
 import type { Health, LlmHealth } from '../api/types';
 import { AppText, Button, Card, InlineError, Screen, StatusPill } from '../components';
+import { useAsync } from '../hooks/useAsync';
 import {
   DEFAULT_BASE_URL,
   isValidBaseUrl,
@@ -44,6 +46,54 @@ function healthRows(h: Health): HealthRow[] {
     { key: 'AI model', ...llmRow(h.llm) },
     { key: 'auth', label: h.auth_required ? 'required' : 'off', ok: true },
   ];
+}
+
+/** "Connect to Claude": the claude.ai connector URL + the steps (like a remote-agents setup page). */
+function ConnectClaudeCard() {
+  const settings = useSettings();
+  const state = useAsync<ClaudeConnect>(() => api.connectClaude(), settings.baseUrl);
+  const info = state.data ?? null;
+  const error = state.error;
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    if (!info?.url) return;
+    await Clipboard.setStringAsync(info.url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+  return (
+    <Card style={styles.gap} testID="connect-claude">
+      <AppText size="lg" weight="bold">
+        Connect to Claude
+      </AppText>
+      <AppText size="sm" muted>
+        Edit by chatting on claude.ai: Claude uses CutMind&apos;s tools and the edits appear here as new versions. The
+        link is a secret — anyone with it can edit your projects.
+      </AppText>
+      {info?.url ? (
+        <>
+          <StatusPill label="READY" tone="success" />
+          <AppText size="xs" selectable style={styles.url} testID="connect-claude-url">
+            {info.url}
+          </AppText>
+          <Button title={copied ? 'Copied' : 'Copy link'} onPress={copy} testID="connect-claude-copy" />
+          {info.steps.map((s, i) => (
+            <AppText key={s} size="sm">{`${i + 1}. ${s}`}</AppText>
+          ))}
+        </>
+      ) : info ? (
+        <>
+          <StatusPill label="NOT RUNNING" tone="warning" />
+          <AppText size="sm">Start it on the laptop (a terminal in the CutMind folder), then refresh:</AppText>
+          <AppText size="xs" selectable style={styles.url}>
+            {info.start}
+          </AppText>
+        </>
+      ) : null}
+      {error ? <InlineError message={error} /> : null}
+      <Button title="Refresh" variant="ghost" small onPress={() => state.reload()} />
+    </Card>
+  );
 }
 
 export function SettingsScreen() {
@@ -196,6 +246,7 @@ export function SettingsScreen() {
           />
           {keyError ? <InlineError message={keyError} /> : null}
         </Card>
+        <ConnectClaudeCard />
         <AppText size="xs" muted center>
           CutMind mobile · UI only, all editing runs on your backend.
         </AppText>
@@ -219,4 +270,5 @@ const styles = StyleSheet.create({
   },
   health: { gap: 6, backgroundColor: colors.cardAlt, borderRadius: radius.md, padding: spacing.md },
   key: { width: 80 },
+  url: { backgroundColor: colors.cardAlt, borderRadius: radius.md, padding: spacing.sm, color: colors.text },
 });
