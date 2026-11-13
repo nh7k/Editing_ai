@@ -210,6 +210,56 @@ export function loadHumanoidGLB(url, opts = {}) {
   });
 }
 
+// Convert an imported FBX Phong material to a correctly-configured PBR
+// MeshStandardMaterial. Preserves the embedded diffuse/normal/alpha textures
+// and UVs; fixes colour space (sRGB colour, linear data maps); uses alphaTest
+// for the transparent hair/brow/lash/detail cards so they no longer render as
+// black patches/halos; sets realistic per-material roughness; and lets the
+// scene environment light it (IBL) for a non-plastic look.
+function upgradeFBXMaterial(m) {
+  if (!m || m.isMeshStandardMaterial) return m;
+  const name = (m.name || '').toLowerCase();
+  const std = new THREE.MeshStandardMaterial();
+  std.name = m.name;
+  if (m.color) std.color.copy(m.color);
+  std.side = m.side != null ? m.side : THREE.FrontSide;
+  std.metalness = 0.0;
+  std.roughness = 0.7;
+  std.envMapIntensity = 0.55;
+
+  if (m.map) { m.map.colorSpace = THREE.SRGBColorSpace; std.map = m.map; }
+  if (m.normalMap) { m.normalMap.colorSpace = THREE.NoColorSpace; std.normalMap = m.normalMap; std.normalScale = new THREE.Vector2(0.8, 0.8); }
+  else if (m.bumpMap) { std.bumpMap = m.bumpMap; std.bumpScale = 0.25; }
+
+  // alpha: cards (hair/brows/lashes/detail decal) use an alpha channel — read it
+  // as linear data and clip with alphaTest so dark areas aren't drawn (no black).
+  const isCard = /(hair|brow|lash|detail)/.test(name);
+  if (m.alphaMap) {
+    m.alphaMap.colorSpace = THREE.NoColorSpace;
+    std.alphaMap = m.alphaMap;
+    std.transparent = false;
+    std.alphaTest = isCard ? 0.4 : 0.5;
+    std.depthWrite = true;
+  } else if (m.transparent) {
+    std.transparent = true; std.opacity = m.opacity != null ? m.opacity : 1;
+  }
+
+  // per-material tuning
+  if (name.includes('skin') && !name.includes('detail')) { std.roughness = 0.62; std.envMapIntensity = 0.45; }
+  else if (name.includes('detail')) { std.roughness = 0.68; std.alphaTest = 0.6; }   // drop faint overlay fragments
+  else if (name.includes('eye') && !name.includes('brow') && !name.includes('lash')) {
+    std.roughness = 0.16; std.metalness = 0.0; std.envMapIntensity = 1.4; std.transparent = false; std.alphaTest = 0;
+  }
+  else if (name.includes('hair')) { std.roughness = 0.5; std.alphaTest = 0.12; }   // soft short-hair alpha — don't clip to bald
+  else if (name.includes('brow') || name.includes('lash')) { std.roughness = 0.6; std.alphaTest = 0.3; }
+  else if (name.includes('teeth')) { std.roughness = 0.35; }
+  else if (name.includes('tongue')) { std.roughness = 0.45; }
+  else if (name.includes('short') || name.includes('cargo') || name.includes('cloth')) { std.roughness = 0.85; std.envMapIntensity = 0.4; }
+
+  std.needsUpdate = true;
+  return std;
+}
+
 // ---- FBX character (e.g. Ara 3D Gen) ---------------------------------------
 function loadFBX(url, opts, resolve, reject) {
   fbxLoader.load(url, (obj) => {
@@ -225,8 +275,8 @@ function loadFBX(url, opts, resolve, reject) {
       obj.traverse(o => {
         if (o.isMesh || o.isSkinnedMesh) {
           o.castShadow = true; o.receiveShadow = false; o.frustumCulled = false;
-          const mats = Array.isArray(o.material) ? o.material : [o.material];
-          mats.forEach(m => { if (m) { m.side = THREE.FrontSide; if (m.map) m.map.colorSpace = THREE.SRGBColorSpace; } });
+          if (Array.isArray(o.material)) o.material = o.material.map(upgradeFBXMaterial);
+          else o.material = upgradeFBXMaterial(o.material);
         }
       });
       const root = new THREE.Group();

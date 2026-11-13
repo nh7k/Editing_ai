@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Driftspace — Character Studio</title>
+<style>
+  :root{--bg:#3a3d42;--panel:#1b1d22;--line:#3a3d46;--text:#eef;--accent:#ff4fd8;font-family:'Inter',system-ui,sans-serif}
+  *{box-sizing:border-box} html,body{margin:0;height:100%;background:var(--bg);color:var(--text);overflow:hidden}
+  #c{position:fixed;inset:0;display:block}
+  .bar{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;
+    background:#000a;padding:10px 12px;border-radius:14px;backdrop-filter:blur(8px);z-index:5;max-width:94vw}
+  .bar button{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:13px;cursor:pointer}
+  .bar button:hover{border-color:var(--accent)}
+  .bar button.on{border-color:var(--accent);background:#2a1b3e}
+  .bar .sep{width:1px;background:var(--line);margin:0 2px}
+  .top{position:fixed;top:12px;left:12px;z-index:5;font-size:13px;color:#cdd;background:#000a;padding:7px 12px;border-radius:999px}
+  .top a{color:var(--accent);text-decoration:none}
+  #status{position:fixed;top:12px;right:12px;z-index:5;font-size:12px;color:#cdd;background:#000a;padding:7px 12px;border-radius:999px}
+</style>
+<script type="importmap">{ "imports": { "three": "/vendor/three.module.js" } }</script>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="top">🎬 Character Studio · <a href="/">← back to Driftspace</a></div>
+<div id="status">loading…</div>
+<div class="bar">
+  <button data-view="front" class="on">Front</button>
+  <button data-view="side">Side</button>
+  <button data-view="back">Back</button>
+  <button data-view="face">Face</button>
+  <button id="spin">360° spin</button>
+  <span class="sep"></span>
+  <button data-anim="idle" class="on">Idle</button>
+  <button data-anim="walk">Walk</button>
+  <button data-anim="run">Run</button>
+  <span class="sep"></span>
+  <button data-bg="studio" class="on">Studio bg</button>
+  <button data-bg="dark">Dark</button>
+  <button data-bg="white">White</button>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { loadHumanoidGLB } from '/rpmAvatar.js';
+
+const CHAR = new URLSearchParams(location.search).get('url') || '/models/characters/Athletic_male.fbx';
+const canvas = document.getElementById('c');
+const status = document.getElementById('status');
+
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+const scene = new THREE.Scene();
+const BG = { studio: '#3a3d42', dark: '#111318', white: '#e9ebef' };
+scene.background = new THREE.Color(BG.studio);
+
+const camera = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.05, 100);
+
+// neutral IBL environment (soft grey gradient) via PMREM — no coloured room tint
+const pmrem = new THREE.PMREMGenerator(renderer);
+(function setEnv() {
+  const cv = document.createElement('canvas'); cv.width = 16; cv.height = 128;
+  const g = cv.getContext('2d').createLinearGradient(0, 0, 0, 128);
+  g.addColorStop(0, '#c8ccd2'); g.addColorStop(0.5, '#8d9299'); g.addColorStop(1, '#4a4e55');
+  const x = cv.getContext('2d'); x.fillStyle = g; x.fillRect(0, 0, 16, 128);
+  const tex = new THREE.CanvasTexture(cv); tex.mapping = THREE.EquirectangularReflectionMapping;
+  scene.environment = pmrem.fromEquirectangular(tex).texture; tex.dispose();
+})();
+
+// three-point lighting
+const key = new THREE.DirectionalLight(0xfff4e8, 2.4);
+key.position.set(2.2, 3.2, 2.6); key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048);
+Object.assign(key.shadow.camera, { left: -2, right: 2, top: 3, bottom: -0.5, near: 0.5, far: 12 });
+key.shadow.bias = -0.0004; key.shadow.normalBias = 0.02;
+scene.add(key);
+const fill = new THREE.DirectionalLight(0xdfe8ff, 0.8); fill.position.set(-3, 1.6, 1.5); scene.add(fill);
+const rim = new THREE.DirectionalLight(0xffffff, 2.0); rim.position.set(-1.5, 2.4, -3); scene.add(rim);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x3a3d42, 0.35));
+
+// soft ground + contact shadow
+const ground = new THREE.Mesh(new THREE.CircleGeometry(6, 48),
+  new THREE.MeshStandardMaterial({ color: 0x2f3237, roughness: 1 }));
+ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+
+// ---- camera orbit ----
+let yaw = 0, pitch = 0.08, dist = 3.4, target = new THREE.Vector3(0, 1.0, 0);
+let spin = false, dragging = false, lx = 0, ly = 0;
+canvas.addEventListener('pointerdown', e => { dragging = true; lx = e.clientX; ly = e.clientY; });
+addEventListener('pointerup', () => dragging = false);
+addEventListener('pointermove', e => { if (!dragging) return; yaw -= (e.clientX - lx) * 0.01; pitch = Math.max(-0.5, Math.min(1.2, pitch + (e.clientY - ly) * 0.008)); lx = e.clientX; ly = e.clientY; });
+canvas.addEventListener('wheel', e => { dist = Math.max(0.6, Math.min(8, dist + e.deltaY * 0.002)); e.preventDefault(); }, { passive: false });
+
+function view(v) {
+  if (v === 'front') { yaw = 0; pitch = 0.05; dist = 3.4; target.set(0, 1.0, 0); }
+  else if (v === 'side') { yaw = Math.PI / 2; pitch = 0.05; dist = 3.4; target.set(0, 1.0, 0); }
+  else if (v === 'back') { yaw = Math.PI; pitch = 0.05; dist = 3.4; target.set(0, 1.0, 0); }
+  else if (v === 'face') { yaw = 0; pitch = 0.0; dist = 0.9; target.set(0, 1.62, 0); }
+}
+
+// ---- load character ----
+let avatar = null;
+loadHumanoidGLB(CHAR).then(a => {
+  avatar = a; scene.add(a.root);
+  // frame by bounding box
+  const box = new THREE.Box3().setFromObject(a.root);
+  target.set(0, (box.max.y - box.min.y) * 0.55, 0);
+  status.textContent = 'ready · drag to rotate, scroll to zoom';
+}).catch(e => { status.textContent = 'load failed: ' + (e && e.message || e); });
+
+// ---- UI ----
+document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => {
+  document.querySelectorAll('[data-view]').forEach(x => x.classList.remove('on')); b.classList.add('on');
+  spin = false; document.getElementById('spin').classList.remove('on'); view(b.dataset.view);
+});
+document.getElementById('spin').onclick = function () { spin = !spin; this.classList.toggle('on', spin); };
+document.querySelectorAll('[data-anim]').forEach(b => b.onclick = () => {
+  document.querySelectorAll('[data-anim]').forEach(x => x.classList.remove('on')); b.classList.add('on');
+  if (avatar) avatar.setAnim(b.dataset.anim);
+});
+document.querySelectorAll('[data-bg]').forEach(b => b.onclick = () => {
+  document.querySelectorAll('[data-bg]').forEach(x => x.classList.remove('on')); b.classList.add('on');
+  scene.background = new THREE.Color(BG[b.dataset.bg]);
+});
+addEventListener('resize', () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
+
+const clock = new THREE.Clock();
+(function loop() {
+  requestAnimationFrame(loop);
+  const dt = Math.min(clock.getDelta(), 0.05);
+  if (spin) yaw += dt * 0.6;
+  if (avatar) avatar.update(dt);
+  const cx = target.x + Math.sin(yaw) * Math.cos(pitch) * dist;
+  const cz = target.z + Math.cos(yaw) * Math.cos(pitch) * dist;
+  const cy = target.y + Math.sin(pitch) * dist;
+  camera.position.set(cx, cy, cz); camera.lookAt(target);
+  renderer.render(scene, camera);
+})();
+</script>
+</body>
+</html>
