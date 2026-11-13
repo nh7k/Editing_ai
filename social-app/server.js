@@ -41,6 +41,11 @@ const AVATAR_PRESETS = {
   outfitColors: ['#ff4fd8', '#5ad17a', '#8f9bff', '#f0a94b', '#ff6b6b', '#38bdf8', '#ffffff', '#222222'],
   hairStyles: ['long', 'wavy', 'ponytail', 'bun', 'short'],
   bodies: ['feminine', 'neutral', 'athletic', 'male'],
+  // Free ready-made rigged avatars (loaded from their public CDNs, not bundled).
+  // The first is the pixiv three-vrm sample — a generic anime avatar for demos.
+  readyAvatars: [
+    { name: 'Aria (anime)', url: 'https://cdn.jsdelivr.net/gh/pixiv/three-vrm@v3.4.2/packages/three-vrm/examples/models/VRM1_Constraint_Twist_Sample.vrm' },
+  ],
 };
 
 // ---------------------------------------------------------------------------

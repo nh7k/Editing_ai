@@ -591,7 +591,18 @@ function buildCustomizeUI() {
   swatches('outfitColors', presets.outfitColors, 'outfitColor');
   pills('hairStyles', presets.hairStyles || ['long', 'wavy', 'ponytail', 'bun', 'short'], 'hairStyle');
   pills('outfitStyles', presets.outfits, 'outfit');
+  buildReadyAvatars();
   syncRpmUI();
+}
+function buildReadyAvatars() {
+  const c = $('readyAvatars'); if (!c || !presets) return;
+  c.innerHTML = '';
+  for (const a of (presets.readyAvatars || [])) {
+    const b = document.createElement('button');
+    b.textContent = '✨ ' + a.name;
+    b.onclick = () => { setAvatarUrl(a.url); toast('Loading ' + a.name + '…'); };
+    c.appendChild(b);
+  }
 }
 function pills(containerId, items, key) {
   const c = $(containerId); if (!c) return; c.innerHTML = '';
