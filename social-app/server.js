@@ -44,6 +44,7 @@ const AVATAR_PRESETS = {
   // Free ready-made rigged avatars (loaded from their public CDNs, not bundled).
   // The first is the pixiv three-vrm sample — a generic anime avatar for demos.
   readyAvatars: [
+    { name: 'Athletic male', url: '/models/characters/Athletic_male.fbx' },   // first permanent character
     { name: 'Aria (anime)', url: 'https://cdn.jsdelivr.net/gh/pixiv/three-vrm@v3.4.2/packages/three-vrm/examples/models/VRM1_Constraint_Twist_Sample.vrm' },
   ],
 };
@@ -85,7 +86,7 @@ function defaultProfile(name) {
     body: 'feminine',
     outfit: 'tee',
     outfitColor: AVATAR_PRESETS.outfitColors[0],
-    avatarUrl: '',                   // Ready Player Me .glb URL (empty => procedural avatar)
+    avatarUrl: '/models/characters/Athletic_male.fbx',   // first permanent library character (procedural shows as fallback)
     visibility: 'everyone',          // everyone | friends | nobody
     friends: [],                     // array of userIds (mutual once both add)
   };
@@ -105,6 +106,17 @@ const THEME_PRESETS = {
   ocean:  { floor: '#0f2230', accent: '#38bdf8' },
   rose:   { floor: '#2a1420', accent: '#ff6b9d' },
 };
+
+// Paired (two-character synchronized) poses. Tasteful, consensual, non-explicit.
+// a/b are the emote each partner plays; gap is their distance; facing 'toward'
+// puts them face to face, 'same' side by side.
+const PAIRED_POSES = {
+  hug:   { label: 'Hug',        a: 'hug',   b: 'hug',   gap: 0.6, facing: 'toward' },
+  dance: { label: 'Slow dance', a: 'dance', b: 'dance', gap: 0.75, facing: 'toward' },
+  hold:  { label: 'Hold hands', a: 'holdR', b: 'holdL', gap: 0.5, facing: 'same' },
+  five:  { label: 'High five',  a: 'highfive', b: 'highfive', gap: 0.72, facing: 'toward' },
+};
+const pairings = new Map();   // userId -> { partner, pose }
 
 const rooms = new Map(ROOM_DEFS.map(r => [r.id, { def: r, members: new Set(), owner: null }]));
 // Load user-created rooms from the database.
@@ -126,8 +138,9 @@ function validAvatarUrl(u) {
   if (typeof u !== 'string') return null;
   if (u === '') return '';
   if (u.length > 300) return null;
-  if (/^\/avatars\/[\w.-]+\.(glb|vrm)$/i.test(u)) return u;                 // uploaded to this server
-  return /^https:\/\/[\w.-]+(:\d+)?\/[\w%@./+-]+\.(glb|vrm)(\?[\w=&%.@+-]*)?$/i.test(u) ? u : null;
+  if (/^\/avatars\/[\w.-]+\.(glb|vrm|fbx)$/i.test(u)) return u;             // uploaded to this server
+  if (/^\/models\/[\w./-]+\.(glb|vrm|fbx)$/i.test(u)) return u;             // bundled character library
+  return /^https:\/\/[\w.-]+(:\d+)?\/[\w%@./+-]+\.(glb|vrm|fbx)(\?[\w=&%.@+-]*)?$/i.test(u) ? u : null;
 }
 
 // ---------------------------------------------------------------------------
@@ -378,6 +391,7 @@ function handleMessage(c, msg) {
         userId: uid,
         profile: publicProfile(uid),
         presets: AVATAR_PRESETS,
+        pairedPoses: Object.entries(PAIRED_POSES).map(([key, d]) => ({ key, label: d.label })),
         rooms: roomCounts(),
       });
       pushPresenceAll();
@@ -412,6 +426,7 @@ function handleMessage(c, msg) {
     }
     case 'leaveRoom': {
       if (!c.id || !c.roomId) return;
+      if (pairings.has(c.id)) endPairing(c.id);
       const old = rooms.get(c.roomId);
       if (old) { old.members.delete(c.id); broadcastRoom(c.roomId, { type: 'left', id: c.id }); }
       c.roomId = null;
@@ -427,7 +442,7 @@ function handleMessage(c, msg) {
       const hx = d.w / 2 - 1, hz = d.d / 2 - 1;
       const nx = clamp(Number(m.x) || 0, -hx, hx);
       const nz = clamp(Number(m.z) || 0, -hz, hz);
-      // basic anti-teleport: cap step distance since last move
+      if (pairings.has(c.id)) endPairing(c.id);   // moving ends a paired pose
       c.x = nx; c.z = nz;
       c.rot = Number(m.rot) || 0;
       c.lastMove = now;
@@ -438,7 +453,38 @@ function handleMessage(c, msg) {
       if (!c.id || !c.roomId) return;
       const name = (m.name == null || m.name === '') ? '' : sanitize(m.name, 20);
       c.emote = name || null;
+      if (pairings.has(c.id)) endPairing(c.id);   // a solo emote breaks a pairing
       broadcastRoom(c.roomId, { type: 'emote', id: c.id, name: c.emote });
+      break;
+    }
+    case 'pairInvite': {
+      if (!c.id || !c.roomId) return;
+      const targetId = sanitize(m.targetId, 40);
+      const pose = PAIRED_POSES[m.pose] ? m.pose : null;
+      const t = clients.get(targetId);
+      if (!t || !pose || targetId === c.id || t.roomId !== c.roomId) return;
+      if (pairings.has(targetId) || pairings.has(c.id)) { c.ws.send({ type: 'pairResult', ok: false, reason: 'Someone is busy' }); return; }
+      t.ws.send({ type: 'pairInvite', fromId: c.id, fromName: (profiles[c.id] || {}).name || 'Someone', pose, label: PAIRED_POSES[pose].label });
+      break;
+    }
+    case 'pairAccept': {
+      if (!c.id || !c.roomId) return;
+      const fromId = sanitize(m.fromId, 40);
+      const pose = PAIRED_POSES[m.pose] ? m.pose : null;
+      const a = clients.get(fromId);
+      if (!a || !pose || a.roomId !== c.roomId || fromId === c.id) return;
+      if (pairings.has(fromId) || pairings.has(c.id)) return;
+      startPairing(a, c, pose);
+      break;
+    }
+    case 'pairDecline': {
+      if (!c.id) return;
+      const a = clients.get(sanitize(m.fromId, 40));
+      if (a) a.ws.send({ type: 'pairResult', ok: false, reason: ((profiles[c.id] || {}).name || 'They') + ' declined' });
+      break;
+    }
+    case 'pairCancel': {
+      if (c.id && pairings.has(c.id)) endPairing(c.id);
       break;
     }
     case 'chat': {
@@ -554,11 +600,42 @@ function broadcastRoomCountsAll() {
   for (const [, c] of clients) c.ws.send({ type: 'rooms', rooms: rc });
 }
 
+// ---- paired (two-character) poses ----
+function startPairing(a, b, pose) {
+  const def = PAIRED_POSES[pose];
+  const dir = a.rot || 0;                       // a keeps its facing
+  const fx = Math.sin(dir), fz = Math.cos(dir); // a's forward
+  if (def.facing === 'toward') {
+    b.x = a.x + fx * def.gap; b.z = a.z + fz * def.gap; b.rot = dir + Math.PI;
+  } else {                                      // side by side (right of a)
+    b.x = a.x + fz * def.gap; b.z = a.z - fx * def.gap; b.rot = dir;
+  }
+  // clamp b into room bounds
+  const room = rooms.get(a.roomId); if (room) { const hw = room.def.w / 2 - 1, hd = room.def.d / 2 - 1; b.x = clamp(b.x, -hw, hw); b.z = clamp(b.z, -hd, hd); }
+  a.emote = def.a; b.emote = def.b;
+  pairings.set(a.id, { partner: b.id, pose }); pairings.set(b.id, { partner: a.id, pose });
+  broadcastRoom(a.roomId, {
+    type: 'pairedPose',
+    a: { id: a.id, pose: def.a, x: a.x, z: a.z, rot: a.rot },
+    b: { id: b.id, pose: def.b, x: b.x, z: b.z, rot: b.rot },
+  });
+}
+function endPairing(id) {
+  const p = pairings.get(id); if (!p) return;
+  const partner = p.partner;
+  pairings.delete(id); pairings.delete(partner);
+  for (const uid of [id, partner]) {
+    const cc = clients.get(uid);
+    if (cc) { cc.emote = null; if (cc.roomId) broadcastRoom(cc.roomId, { type: 'emote', id: uid, name: null }); }
+  }
+}
+
 function dropClient(c) {
   if (!c.id) return;
   // If a newer connection has already taken this userId, this stale socket
   // must not remove the live client or its room membership.
   if (clients.get(c.id) !== c) return;
+  if (pairings.has(c.id)) endPairing(c.id);
   if (c.roomId && rooms.has(c.roomId)) {
     rooms.get(c.roomId).members.delete(c.id);
     broadcastRoom(c.roomId, { type: 'left', id: c.id });
@@ -587,7 +664,7 @@ const server = http.createServer((req, res) => {
   // served back by a shareable URL so other clients can load it too.
   if (req.method === 'POST' && req.url.startsWith('/api/upload-avatar')) {
     const ext = ((new URL(req.url, 'http://x').searchParams.get('ext')) || 'glb').toLowerCase();
-    if (!['glb', 'vrm'].includes(ext)) { res.writeHead(400); res.end('bad ext'); return; }
+    if (!['glb', 'vrm', 'fbx'].includes(ext)) { res.writeHead(400); res.end('bad ext'); return; }
     const chunks = []; let size = 0, aborted = false;
     req.on('data', (c) => {
       size += c.length;

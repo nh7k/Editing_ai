@@ -87,6 +87,12 @@ h2{font-size:18px;margin:4px 0 6px}
 .emote-btn:hover{border-color:var(--accent)}
 .emote-btn.on{border-color:var(--accent);background:#2a1b3e}
 @media (max-width:560px){.emote-bar{bottom:96px;max-width:calc(100vw - 24px);justify-content:center;left:12px;right:12px}}
+.pair-wrap{position:fixed;right:12px;bottom:150px;z-index:5;display:flex;flex-direction:column;align-items:flex-end;gap:4px;max-width:min(320px,calc(100vw - 24px))}
+.pair-title{font-size:10px;color:var(--muted);background:#0b0a14aa;padding:2px 8px;border-radius:999px}
+.pair-bar{position:static;max-width:none}
+.pair-invite{position:fixed;bottom:150px;left:50%;transform:translateX(-50%);z-index:21;display:flex;align-items:center;gap:10px;
+  background:var(--panel-solid);border:1px solid var(--accent);padding:10px 14px;border-radius:14px;font-size:14px;box-shadow:0 12px 30px #000a}
+@media (max-width:560px){.pair-wrap{bottom:170px;left:12px;right:12px;align-items:center}}
 
 /* panels */
 .panel{position:fixed;top:60px;right:12px;width:min(340px,calc(100vw - 24px));z-index:6;

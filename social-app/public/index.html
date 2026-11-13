@@ -83,6 +83,19 @@
   <!-- emote / pose bar -->
   <div id="emoteBar" class="emote-bar"></div>
 
+  <!-- paired-pose bar (do things together with a nearby person) -->
+  <div class="pair-wrap">
+    <div class="pair-title">👫 Together (stand near someone)</div>
+    <div id="pairBar" class="emote-bar pair-bar"></div>
+  </div>
+
+  <!-- paired-pose invite banner -->
+  <div id="pairInvite" class="pair-invite" hidden>
+    <span id="pairInviteText"></span>
+    <button id="pairAcceptBtn" class="primary small">Accept</button>
+    <button id="pairDeclineBtn" class="ghost">No</button>
+  </div>
+
   <!-- APPEARANCE PANEL -->
   <aside id="customizePanel" class="panel" hidden>
     <header><h3>Appearance</h3><button class="x" data-close="customizePanel">✕</button></header>
@@ -93,7 +106,7 @@
       <p class="muted">Use a high-quality rigged character — anime (VRoid <code>.vrm</code>) or realistic. It gets its own hair/dress physics and walks with the room.</p>
       <div id="readyAvatars" class="ready-avatars"></div>
       <button id="uploadAvatarBtn" class="primary small">⬆ Upload my avatar (.vrm / .glb)</button>
-      <input id="avatarFile" type="file" accept=".vrm,.glb,model/gltf-binary" hidden />
+      <input id="avatarFile" type="file" accept=".vrm,.glb,.fbx,model/gltf-binary" hidden />
       <div class="rpm-sub">Made in <b>VRoid Studio</b> (free) or <b>Ready Player Me</b>. Your file stays on your own server.</div>
       <button id="openRpm" class="ghost" style="width:100%;margin-top:8px">✨ Create a realistic avatar (Ready Player Me)</button>
       <details class="rpm-adv"><summary>Advanced: paste a .vrm / .glb URL</summary>

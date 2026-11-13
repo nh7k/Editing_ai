@@ -7,9 +7,11 @@
 import * as THREE from 'three';
 import { GLTFLoader } from './vendor/GLTFLoader.js';
 import { VRMLoaderPlugin, VRMUtils } from './vendor/three-vrm.module.js';
+import { FBXLoader } from './vendor/FBXLoader.js';
 
 const loader = new GLTFLoader();
 loader.register((parser) => new VRMLoaderPlugin(parser));   // enable .vrm (VRoid/anime) avatars
+const fbxLoader = new FBXLoader();                          // enable .fbx characters (Ara 3D Gen etc.)
 
 function norm(n) { return String(n).toLowerCase().replace(/mixamorig/g, '').replace(/[:_\s.]/g, ''); }
 
@@ -83,6 +85,19 @@ export const EMOTES = {
     a.Larm(DOWN_L[0], DOWN_L[1], DOWN_L[2], 0.1);
     a.Rarm(-0.12, 0.35, 0.45, 2.1); a.head(0.12, -0.12, 0);
   },
+  // paired-pose roles (tasteful): reach a hand toward a partner / high-five
+  holdR(t, a) {   // right hand reaches out to the side to hold a partner's hand
+    a.Larm(DOWN_L[0], DOWN_L[1], DOWN_L[2], 0.1);
+    a.Rarm(-0.75, -0.35, 0.15, 0.2); a.head(0, -0.08, 0);
+  },
+  holdL(t, a) {   // left hand reaches out (mirror of holdR)
+    a.Rarm(DOWN_R[0], DOWN_R[1], DOWN_R[2], 0.1);
+    a.Larm(0.75, -0.35, 0.15, 0.2); a.head(0, 0.08, 0);
+  },
+  highfive(t, a) {
+    a.Larm(DOWN_L[0], DOWN_L[1], DOWN_L[2], 0.1);
+    a.Rarm(-0.25, 0.7, 0.45, 0.35); a.head(-0.05, 0, 0);
+  },
 };
 
 // capture rest quaternions so emote eulers apply as deltas on the real rest pose
@@ -147,6 +162,7 @@ function pickEmbedded(animations) {
 
 export function loadHumanoidGLB(url, opts = {}) {
   return new Promise((resolve, reject) => {
+    if (/\.fbx(\?|$)/i.test(url)) { loadFBX(url, opts, resolve, reject); return; }
     loader.load(url, (gltf) => {
       try {
         // ---- VRM (VRoid / anime) avatar path --------------------------------
@@ -192,6 +208,53 @@ export function loadHumanoidGLB(url, opts = {}) {
       } catch (e) { reject(e); }
     }, undefined, (err) => reject(err));
   });
+}
+
+// ---- FBX character (e.g. Ara 3D Gen) ---------------------------------------
+function loadFBX(url, opts, resolve, reject) {
+  fbxLoader.load(url, (obj) => {
+    try {
+      // FBX is often authored in cm — normalise to ~1.8 m tall, then drop feet to y=0
+      obj.updateMatrixWorld(true);
+      let box = new THREE.Box3().setFromObject(obj);
+      const h = box.max.y - box.min.y;
+      if (h > 0.001) obj.scale.multiplyScalar(1.8 / h);
+      obj.updateMatrixWorld(true);
+      box = new THREE.Box3().setFromObject(obj);
+      obj.position.y -= box.min.y;
+      obj.traverse(o => {
+        if (o.isMesh || o.isSkinnedMesh) {
+          o.castShadow = true; o.receiveShadow = false; o.frustumCulled = false;
+          const mats = Array.isArray(o.material) ? o.material : [o.material];
+          mats.forEach(m => { if (m) { m.side = THREE.FrontSide; if (m.map) m.map.colorSpace = THREE.SRGBColorSpace; } });
+        }
+      });
+      const root = new THREE.Group();
+      root.add(obj);
+      root.updateMatrixWorld(true);
+
+      const bones = mapBones(obj);
+      const anims = obj.animations || [];
+      const embedded = opts.procedural ? null : pickEmbedded(anims);
+      const api = embedded ? mixerDriver(obj, embedded) : proceduralDriver(bones);
+
+      resolve({
+        root,
+        update: api.update,
+        setAnim: api.setAnim,
+        setEmote: api.setEmote || (() => {}),
+        setAppearance: () => {},
+        get outfit() { return 'fbx'; },
+        _info: { animations: anims.map(a => a.name), bones: Object.keys(bones), driver: embedded ? 'embedded' : 'procedural' },
+        dispose() {
+          obj.traverse(o => {
+            if (o.geometry) o.geometry.dispose();
+            if (o.material) { const mm = Array.isArray(o.material) ? o.material : [o.material]; mm.forEach(m => { if (!m) return; for (const k in m) { if (m[k] && m[k].isTexture) m[k].dispose(); } m.dispose && m.dispose(); }); }
+          });
+        },
+      });
+    } catch (e) { reject(e); }
+  }, undefined, (err) => reject(err));
 }
 
 // ---- VRM (VRoid / anime) avatar --------------------------------------------

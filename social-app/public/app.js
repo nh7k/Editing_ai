@@ -43,6 +43,7 @@ function handle(m) {
   switch (m.type) {
     case 'welcome':
       myProfile = m.profile; presets = m.presets; roomsCache = m.rooms;
+      pairedPosesList = m.pairedPoses || [];
       buildRoomList(); buildCustomizeUI(); syncVisibilityUI();
       if (joinedRoomId) send({ type: 'joinRoom', roomId: joinedRoomId }); // rejoin after reconnect
       break;
@@ -57,7 +58,10 @@ function handle(m) {
     case 'moved': onMoved(m); break;
     case 'chat': onChat(m); break;
     case 'appearance': onAppearance(m); break;
-    case 'emote': { const r = remotes.get(m.id); if (r) r.avatar.setEmote(m.name || null); break; }
+    case 'emote': { const r = remotes.get(m.id); if (r) r.avatar.setEmote(m.name || null); if (m.id === uid && m.name === null) clearPairLocal(); break; }
+    case 'pairInvite': onPairInvite(m); break;
+    case 'pairedPose': onPairedPose(m); break;
+    case 'pairResult': if (!m.ok) toast(m.reason || 'Pairing failed'); break;
     case 'profileUpdated': myProfile = m.profile; syncVisibilityUI(); buildFriendList(); syncRpmUI(); break;
     case 'presence': onPresence(m.users); break;
     case 'whereisResult': onWhereis(m); break;
@@ -280,6 +284,7 @@ function onRoomState(m) {
   roomTitle.textContent = m.room.name;
   buildRoom(m.room);
   buildEmoteBar();
+  buildPairBar();
   // local avatar
   localAvatar = createAvatarController({
     bodyColor: myProfile.bodyColor, hairColor: myProfile.hairColor, hairStyle: myProfile.hairStyle || 'long', body: myProfile.body || 'feminine',
@@ -301,7 +306,8 @@ function clearRoom() {
   remotes.clear();
   if (localAvatar && scene) { if (localAvatar.dispose) localAvatar.dispose(); scene.remove(localAvatar.root); disposeGroup(localAvatar.root); localAvatar = null; }
   moveTarget = null;
-  localEmote = null;
+  localEmote = null; pairLock = false;
+  const pin = $('pairInvite'); if (pin) pin.hidden = true;
   document.querySelectorAll('#emoteBar .emote-btn').forEach(b => b.classList.remove('on'));
   chatLog.innerHTML = '';
 }
@@ -444,6 +450,73 @@ function buildEmoteBar() {
   }
 }
 
+// ================= paired (two-character) poses =================
+let pairedPosesList = [];
+let pairLock = false;              // true while my avatar is in a paired pose
+
+function nearestRemoteId() {
+  let best = null, bestD = Infinity;
+  for (const [id, r] of remotes) {
+    const d = Math.hypot(r.group.position.x - myPos.x, r.group.position.z - myPos.z);
+    if (d < bestD) { bestD = d; best = id; }
+  }
+  return bestD < 6 ? best : null;   // must be reasonably close
+}
+function startPair(poseKey) {
+  const targetId = nearestRemoteId();
+  if (!targetId) { toast('Stand near someone to pair up'); return; }
+  const r = remotes.get(targetId);
+  send({ type: 'pairInvite', targetId, pose: poseKey });
+  toast('Invited ' + (r ? r.name : 'them') + '…');
+}
+function onPairInvite(m) {
+  // show an accept/decline banner
+  const el = $('pairInvite');
+  $('pairInviteText').textContent = `${m.fromName} wants to ${m.label.toLowerCase()} 💞`;
+  el.hidden = false;
+  el.dataset.from = m.fromId; el.dataset.pose = m.pose;
+}
+$('pairAcceptBtn') && ($('pairAcceptBtn').onclick = () => {
+  const el = $('pairInvite');
+  send({ type: 'pairAccept', fromId: el.dataset.from, pose: el.dataset.pose });
+  el.hidden = true;
+});
+$('pairDeclineBtn') && ($('pairDeclineBtn').onclick = () => {
+  const el = $('pairInvite');
+  send({ type: 'pairDecline', fromId: el.dataset.from });
+  el.hidden = true;
+});
+function onPairedPose(m) {
+  for (const side of [m.a, m.b]) {
+    if (side.id === uid) {
+      // snap my avatar to the server-set paired position + lock movement
+      myPos.set(side.x, 0, side.z); myRot = side.rot;
+      if (localAvatar) { localAvatar.root.position.copy(myPos); localAvatar.root.rotation.y = myRot; localAvatar.setEmote(side.pose); }
+      moveTarget = null; pairLock = true; localEmote = side.pose;
+    } else {
+      const r = remotes.get(side.id);
+      if (r) { r.target.set(side.x, 0, side.z); r.targetRot = side.rot; r.avatar.setEmote(side.pose); }
+    }
+  }
+}
+function clearPairLocal() {
+  if (!pairLock) return;
+  pairLock = false; localEmote = null;
+  if (localAvatar) localAvatar.setEmote(null);
+  document.querySelectorAll('#emoteBar .emote-btn').forEach(b => b.classList.remove('on'));
+}
+function buildPairBar() {
+  const bar = $('pairBar'); if (!bar || bar.childElementCount) return;
+  const icons = { hug: '🤗', dance: '💃', hold: '🤝', five: '🙌' };
+  for (const p of pairedPosesList) {
+    const b = document.createElement('button');
+    b.className = 'emote-btn'; b.title = p.label;
+    b.innerHTML = `<span>${icons[p.key] || '💞'}</span><small>${p.label}</small>`;
+    b.onclick = () => startPair(p.key);
+    bar.appendChild(b);
+  }
+}
+
 // ================= input / movement =================
 function onPointerDown(e) {
   // click-to-move if clicking floor (not UI)
@@ -502,6 +575,7 @@ function updateLocal(dt) {
     if (d > 0.08) { moveX = dx / d; moveZ = dz / d; moving = true; }
     else moveTarget = null;
   }
+  if (moving && pairLock) { pairLock = false; send({ type: 'pairCancel' }); clearPairLocal(); }
   if (moving && localEmote) cancelEmote();   // moving cancels an emote/pose
   const sprint = moving && (keys['shift'] || keys['shiftleft'] || keys['shiftright']);
   if (moving) {
@@ -677,8 +751,8 @@ if ($('lobbyUploadChar')) $('lobbyUploadChar').onclick = () => $('avatarFile').c
 $('closeRpm').onclick = () => { $('rpmModal').hidden = true; $('rpmFrame').src = 'about:blank'; clearTimeout(rpmLoadTimer); };
 $('applyRpmUrl').onclick = () => {
   const u = $('rpmUrl').value.trim();
-  if (/^https:\/\/\S+\.(glb|vrm)(\?\S*)?$/i.test(u)) { setAvatarUrl(u); toast('Loading avatar…'); }
-  else toast('Enter an https URL ending in .vrm or .glb');
+  if (/^https:\/\/\S+\.(glb|vrm|fbx)(\?\S*)?$/i.test(u)) { setAvatarUrl(u); toast('Loading avatar…'); }
+  else toast('Enter an https URL ending in .vrm, .glb or .fbx');
 };
 $('clearRpm').onclick = () => { setAvatarUrl(''); toast('Using original avatar'); };
 
@@ -688,7 +762,7 @@ $('avatarFile').onchange = async (e) => {
   const file = e.target.files && e.target.files[0];
   if (!file) return;
   const ext = file.name.split('.').pop().toLowerCase();
-  if (!['vrm', 'glb'].includes(ext)) { toast('Use a .vrm or .glb file'); return; }
+  if (!['vrm', 'glb', 'fbx'].includes(ext)) { toast('Use a .vrm, .glb or .fbx file'); return; }
   if (file.size > 45 * 1024 * 1024) { toast('File too large (max 45 MB)'); return; }
   toast('Uploading avatar…');
   try {
