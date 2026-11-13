@@ -43,35 +43,32 @@ const AVATAR_PRESETS = {
 };
 
 // ---------------------------------------------------------------------------
-// Persistent per-user profiles (appearance + privacy + friends).
+// Persistent per-user profiles (appearance + privacy + friends) — SQLite.
+// `profiles` is an in-memory cache; SQLite (db.js) is the durable source of
+// truth. Writes are debounced and written through per changed user.
 // ---------------------------------------------------------------------------
-function loadProfiles() {
+const db = require('./db');
+// One-time migration: if an old profiles.json exists and the DB is empty, import it.
+(function migrateLegacyJson() {
   try {
-    return JSON.parse(fs.readFileSync(PROFILE_FILE, 'utf8'));
-  } catch {
-    return {};
-  }
-}
+    if (Object.keys(db.loadProfiles()).length) return;
+    const old = JSON.parse(fs.readFileSync(PROFILE_FILE, 'utf8'));
+    for (const [id, p] of Object.entries(old)) db.saveProfile(id, p);
+    console.log('Migrated', Object.keys(old).length, 'profiles from profiles.json into SQLite');
+  } catch { /* no legacy file */ }
+})();
+const profiles = db.loadProfiles();
+
 let saveTimer = null;
 function saveProfiles() {
   if (saveTimer) return;
   saveTimer = setTimeout(() => {
     saveTimer = null;
-    try {
-      fs.mkdirSync(DATA_DIR, { recursive: true });
-      const out = {};
-      for (const [id, p] of Object.entries(profiles)) {
-        out[id] = {
-          name: p.name, bodyColor: p.bodyColor, hairColor: p.hairColor, hairStyle: p.hairStyle || 'long',
-          outfit: p.outfit, outfitColor: p.outfitColor, avatarUrl: p.avatarUrl || '',
-          visibility: p.visibility, friends: p.friends,
-        };
-      }
-      fs.writeFileSync(PROFILE_FILE, JSON.stringify(out, null, 2));
-    } catch (e) { console.error('saveProfiles', e.message); }
-  }, 400);
+    for (const [id, p] of Object.entries(profiles)) {
+      try { db.saveProfile(id, p); } catch (e) { console.error('saveProfile', e.message); }
+    }
+  }, 300);
 }
-const profiles = loadProfiles();
 
 function defaultProfile(name) {
   return {
