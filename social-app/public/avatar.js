@@ -169,11 +169,21 @@ const OUTFITS = {
   hoodie: { sleeves: true,  skirt: false, bulk: 1.12 },
   jacket: { sleeves: true,  skirt: false, bulk: 1.06 },
   dress:  { sleeves: false, skirt: true },
+  shorts: { sleeves: false, skirt: false, shirtless: true },   // beach: bare torso + shorts
+};
+
+// Body type multipliers (original parametric proportions, not a likeness of any
+// specific person): shoulder width, chest, waist, hip, arm & leg thickness.
+const BODY_TYPES = {
+  feminine: { shoulder: 0.9, chest: 0.96, waist: 0.84, hip: 1.12, arm: 0.84, leg: 0.96, legOut: 1.0 },
+  neutral:  { shoulder: 1.0, chest: 1.0,  waist: 1.0,  hip: 1.0,  arm: 1.0,  leg: 1.0, legOut: 1.0 },
+  athletic: { shoulder: 1.12, chest: 1.1, waist: 0.92, hip: 1.0,  arm: 1.14, leg: 1.08, legOut: 1.0 },
+  male:     { shoulder: 1.22, chest: 1.14, waist: 1.0, hip: 0.9,  arm: 1.2,  leg: 1.12, legOut: 1.0 },
 };
 
 export function createAvatar(opts = {}) {
   const look = Object.assign({
-    bodyColor: '#f0c27b', hairColor: '#2b2b2b', outfit: 'tee', outfitColor: '#ff4fd8', hairStyle: 'long',
+    bodyColor: '#f0c27b', hairColor: '#2b2b2b', outfit: 'tee', outfitColor: '#ff4fd8', hairStyle: 'long', body: 'feminine',
   }, opts);
 
   const root = new THREE.Group();
@@ -277,18 +287,20 @@ export function createAvatar(opts = {}) {
 function rebuildGeometry(buckets, look) {
   const of = OUTFITS[look.outfit] || OUTFITS.tee;
   const bulk = of.bulk || 1;
+  const bd = BODY_TYPES[look.body] || BODY_TYPES.feminine;
   const skin = buckets.bucket('skin');
   const outfit = buckets.bucket('outfit');
   const hair = buckets.bucket('hair');
   const shoe = buckets.bucket('shoe');
+  const torsoMat = of.shirtless ? skin : outfit;   // bare torso for beach shorts
 
-  // Torso (outfit)
-  tube(outfit, ABS.hips, ABS.spine, 0.145 * bulk, 0.155 * bulk, 'hips', 'spine', null);
-  tube(outfit, ABS.spine, ABS.chest, 0.155 * bulk, 0.175 * bulk, 'spine', 'chest', 'hips');
-  tube(outfit, ABS.chest, ABS.neck, 0.175 * bulk, 0.095, 'chest', 'neck', 'spine');
+  // Torso (proportions scale with body type)
+  tube(torsoMat, ABS.hips, ABS.spine, 0.145 * bulk * bd.hip, 0.155 * bulk * bd.waist, 'hips', 'spine', null);
+  tube(torsoMat, ABS.spine, ABS.chest, 0.155 * bulk * bd.waist, 0.175 * bulk * bd.chest, 'spine', 'chest', 'hips');
+  tube(torsoMat, ABS.chest, ABS.neck, 0.175 * bulk * bd.shoulder, 0.095, 'chest', 'neck', 'spine');
   // shoulder fill
-  blob(outfit, ABS.shoulderL, 0.075 * bulk, [1, 0.9, 1], 'chest');
-  blob(outfit, ABS.shoulderR, 0.075 * bulk, [1, 0.9, 1], 'chest');
+  blob(torsoMat, ABS.shoulderL, 0.075 * bulk * bd.shoulder, [1, 0.9, 1], 'chest');
+  blob(torsoMat, ABS.shoulderR, 0.075 * bulk * bd.shoulder, [1, 0.9, 1], 'chest');
 
   // Neck + head (skin) + hair cap
   tube(skin, ABS.neck, ABS.head, 0.052, 0.05, 'neck', 'head', 'chest');
@@ -314,27 +326,31 @@ function rebuildGeometry(buckets, look) {
   // 'short' adds nothing beyond crown + nape
 
   // Arms
-  const armMat = of.sleeves ? outfit : skin;
-  const upRL = of.sleeves ? 0.056 * bulk : 0.05;
-  tube(armMat, ABS.upperArmL, ABS.lowerArmL, upRL, 0.044, 'upperArmL', 'lowerArmL', 'shoulderL');
-  tube(armMat, ABS.upperArmR, ABS.lowerArmR, upRL, 0.044, 'upperArmR', 'lowerArmR', 'shoulderR');
-  tube(skin, ABS.lowerArmL, ABS.handL, 0.042, 0.032, 'lowerArmL', 'handL', 'upperArmL');
-  tube(skin, ABS.lowerArmR, ABS.handR, 0.042, 0.032, 'lowerArmR', 'handR', 'upperArmR');
+  const armMat = (of.sleeves && !of.shirtless) ? outfit : skin;
+  const upRL = ((of.sleeves && !of.shirtless) ? 0.056 * bulk : 0.05) * bd.arm;
+  tube(armMat, ABS.upperArmL, ABS.lowerArmL, upRL, 0.044 * bd.arm, 'upperArmL', 'lowerArmL', 'shoulderL');
+  tube(armMat, ABS.upperArmR, ABS.lowerArmR, upRL, 0.044 * bd.arm, 'upperArmR', 'lowerArmR', 'shoulderR');
+  tube(skin, ABS.lowerArmL, ABS.handL, 0.042 * bd.arm, 0.032, 'lowerArmL', 'handL', 'upperArmL');
+  tube(skin, ABS.lowerArmR, ABS.handR, 0.042 * bd.arm, 0.032, 'lowerArmR', 'handR', 'upperArmR');
   blob(skin, ABS.handL, 0.045, [0.8, 1.1, 0.6], 'handL');
   blob(skin, ABS.handR, 0.045, [0.8, 1.1, 0.6], 'handR');
 
   // Legs
+  const thighR = 0.092 * bulk * bd.leg, shinR = 0.07 * bd.leg;
   if (of.skirt) {
     // dress skirt replaces thigh covering; shins skin
-    skirt(outfit, 1.00, 0.56, 0.17 * bulk, 0.30, 'hips', 'upLegL');
-    tube(skin, ABS.upLegL, ABS.loLegL, 0.085, 0.066, 'upLegL', 'loLegL', 'hips');
-    tube(skin, ABS.upLegR, ABS.loLegR, 0.085, 0.066, 'upLegR', 'loLegR', 'hips');
+    skirt(outfit, 1.00, 0.56, 0.17 * bulk * bd.hip, 0.30 * bd.hip, 'hips', 'upLegL');
+    tube(skin, ABS.upLegL, ABS.loLegL, 0.085 * bd.leg, 0.066 * bd.leg, 'upLegL', 'loLegL', 'hips');
+    tube(skin, ABS.upLegR, ABS.loLegR, 0.085 * bd.leg, 0.066 * bd.leg, 'upLegR', 'loLegR', 'hips');
   } else {
-    tube(outfit, ABS.upLegL, ABS.loLegL, 0.092 * bulk, 0.07, 'upLegL', 'loLegL', 'hips');
-    tube(outfit, ABS.upLegR, ABS.loLegR, 0.092 * bulk, 0.07, 'upLegR', 'loLegR', 'hips');
+    // 'shorts' covers only the thighs (outfit); otherwise trousers to the ankle
+    const legMat = outfit;
+    tube(legMat, ABS.upLegL, ABS.loLegL, thighR, 0.07 * bd.leg, 'upLegL', 'loLegL', 'hips');
+    tube(legMat, ABS.upLegR, ABS.loLegR, thighR, 0.07 * bd.leg, 'upLegR', 'loLegR', 'hips');
   }
-  tube(skin, ABS.loLegL, ABS.footL, 0.07, 0.045, 'loLegL', 'footL', 'upLegL');
-  tube(skin, ABS.loLegR, ABS.footR, 0.07, 0.045, 'loLegR', 'footR', 'upLegR');
+  const shinMat = of.shirtless ? skin : skin;   // shins are bare below shorts/trousers hem detail
+  tube(shinMat, ABS.loLegL, ABS.footL, shinR, 0.045, 'loLegL', 'footL', 'upLegL');
+  tube(shinMat, ABS.loLegR, ABS.footR, shinR, 0.045, 'loLegR', 'footR', 'upLegR');
   // shoes
   blob(shoe, new THREE.Vector3(ABS.footL.x, 0.035, 0.05), 0.06, [0.75, 0.55, 1.6], 'footL');
   blob(shoe, new THREE.Vector3(ABS.footR.x, 0.035, 0.05), 0.06, [0.75, 0.55, 1.6], 'footR');

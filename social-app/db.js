@@ -14,7 +14,7 @@ db.exec(`
 CREATE TABLE IF NOT EXISTS users(
   id TEXT PRIMARY KEY,
   name TEXT,
-  body_color TEXT, hair_color TEXT, hair_style TEXT,
+  body_color TEXT, hair_color TEXT, hair_style TEXT, body TEXT,
   outfit TEXT, outfit_color TEXT, avatar_url TEXT,
   visibility TEXT, friends TEXT,
   pass_hash TEXT,
@@ -28,11 +28,14 @@ CREATE TABLE IF NOT EXISTS rooms(
   w INTEGER, d INTEGER, owner TEXT, created_at INTEGER
 );
 `);
+// forward-compatible column adds for existing DBs (ignore if already present)
+for (const col of ['body TEXT']) { try { db.exec(`ALTER TABLE users ADD COLUMN ${col}`); } catch { /* exists */ } }
 
 function rowToProfile(r) {
   return {
     name: r.name,
     bodyColor: r.body_color, hairColor: r.hair_color, hairStyle: r.hair_style || 'long',
+    body: r.body || 'feminine',
     outfit: r.outfit, outfitColor: r.outfit_color, avatarUrl: r.avatar_url || '',
     visibility: r.visibility || 'everyone',
     friends: safeArr(r.friends),
@@ -49,17 +52,17 @@ exports.loadProfiles = function () {
 };
 
 const upsertUser = db.prepare(`
-  INSERT INTO users(id,name,body_color,hair_color,hair_style,outfit,outfit_color,avatar_url,visibility,friends,pass_hash,created_at)
-  VALUES(@id,@name,@body,@hair,@hstyle,@outfit,@ocolor,@url,@vis,@friends,@pass,@created)
+  INSERT INTO users(id,name,body_color,hair_color,hair_style,body,outfit,outfit_color,avatar_url,visibility,friends,pass_hash,created_at)
+  VALUES(@id,@name,@bodyc,@hair,@hstyle,@bodytype,@outfit,@ocolor,@url,@vis,@friends,@pass,@created)
   ON CONFLICT(id) DO UPDATE SET
-    name=@name, body_color=@body, hair_color=@hair, hair_style=@hstyle,
+    name=@name, body_color=@bodyc, hair_color=@hair, hair_style=@hstyle, body=@bodytype,
     outfit=@outfit, outfit_color=@ocolor, avatar_url=@url, visibility=@vis,
     friends=@friends, pass_hash=@pass`);
 
 exports.saveProfile = function (id, p) {
   upsertUser.run({
     id, name: p.name || 'Guest',
-    body: p.bodyColor || '', hair: p.hairColor || '', hstyle: p.hairStyle || 'long',
+    bodyc: p.bodyColor || '', hair: p.hairColor || '', hstyle: p.hairStyle || 'long', bodytype: p.body || 'feminine',
     outfit: p.outfit || 'tee', ocolor: p.outfitColor || '', url: p.avatarUrl || '',
     vis: p.visibility || 'everyone', friends: JSON.stringify(p.friends || []),
     pass: p.passHash || null, created: Date.now(),
