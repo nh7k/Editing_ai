@@ -272,7 +272,7 @@ function onRoomState(m) {
   buildEmoteBar();
   // local avatar
   localAvatar = createAvatarController({
-    bodyColor: myProfile.bodyColor, hairColor: myProfile.hairColor,
+    bodyColor: myProfile.bodyColor, hairColor: myProfile.hairColor, hairStyle: myProfile.hairStyle || 'long',
     outfit: myProfile.outfit, outfitColor: myProfile.outfitColor, avatarUrl: myProfile.avatarUrl || '',
   });
   scene.add(localAvatar.root);
@@ -298,7 +298,7 @@ function clearRoom() {
 
 function addRemote(o) {
   if (o.id === uid || remotes.has(o.id)) return;
-  const avatar = createAvatarController({ bodyColor: o.bodyColor, hairColor: o.hairColor, outfit: o.outfit, outfitColor: o.outfitColor, avatarUrl: o.avatarUrl || '' });
+  const avatar = createAvatarController({ bodyColor: o.bodyColor, hairColor: o.hairColor, hairStyle: o.hairStyle || 'long', outfit: o.outfit, outfitColor: o.outfitColor, avatarUrl: o.avatarUrl || '' });
   const group = new THREE.Group();
   group.add(avatar.root);
   group.position.set(o.x, 0, o.z);
@@ -335,7 +335,7 @@ function onMoved(m) {
 function onAppearance(m) {
   const r = remotes.get(m.id);
   if (r) {
-    r.avatar.setAppearance({ bodyColor: m.bodyColor, hairColor: m.hairColor, outfit: m.outfit, outfitColor: m.outfitColor, avatarUrl: m.avatarUrl || '' });
+    r.avatar.setAppearance({ bodyColor: m.bodyColor, hairColor: m.hairColor, hairStyle: m.hairStyle || 'long', outfit: m.outfit, outfitColor: m.outfitColor, avatarUrl: m.avatarUrl || '' });
     if (m.name && r.name !== m.name) { r.name = m.name; r.group.remove(r.label); r.label = makeLabel(m.name); r.label.position.set(0, 2.05, 0); r.group.add(r.label); }
   }
 }
@@ -567,23 +567,29 @@ $('togglePrivacy').onclick = () => togglePanel('privacyPanel');
 $('toggleFriends').onclick = () => { togglePanel('friendsPanel'); buildFriendList(); };
 
 // appearance
-let sel = { bodyColor: null, hairColor: null, outfit: null, outfitColor: null };
+let sel = { bodyColor: null, hairColor: null, hairStyle: null, outfit: null, outfitColor: null };
 function buildCustomizeUI() {
   if (!presets) return;
   sel = {
-    bodyColor: myProfile.bodyColor, hairColor: myProfile.hairColor,
+    bodyColor: myProfile.bodyColor, hairColor: myProfile.hairColor, hairStyle: myProfile.hairStyle || 'long',
     outfit: myProfile.outfit, outfitColor: myProfile.outfitColor,
   };
   $('czName').value = myProfile.name || myName;
   swatches('bodyColors', presets.bodyColors, 'bodyColor');
   swatches('hairColors', presets.hairColors, 'hairColor');
   swatches('outfitColors', presets.outfitColors, 'outfitColor');
+  pills('hairStyles', presets.hairStyles || ['long', 'wavy', 'ponytail', 'bun', 'short'], 'hairStyle');
+  pills('outfitStyles', presets.outfits, 'outfit');
   syncRpmUI();
-  const op = $('outfitStyles'); op.innerHTML = '';
-  for (const o of presets.outfits) {
-    const el = document.createElement('button'); el.className = 'pill' + (o === sel.outfit ? ' sel' : '');
-    el.textContent = o; el.onclick = () => { sel.outfit = o; [...op.children].forEach(c => c.classList.toggle('sel', c.textContent === o)); previewLook(); };
-    op.appendChild(el);
+}
+function pills(containerId, items, key) {
+  const c = $(containerId); if (!c) return; c.innerHTML = '';
+  for (const it of items) {
+    const el = document.createElement('button');
+    el.className = 'pill' + (it === sel[key] ? ' sel' : '');
+    el.textContent = it;
+    el.onclick = () => { sel[key] = it; [...c.children].forEach(x => x.classList.toggle('sel', x.textContent === it)); previewLook(); };
+    c.appendChild(el);
   }
 }
 function swatches(containerId, colors, key) {
@@ -601,7 +607,7 @@ function previewLook() {
 }
 $('saveAppearance').onclick = () => {
   const name = $('czName').value.trim();
-  send({ type: 'customize', name, bodyColor: sel.bodyColor, hairColor: sel.hairColor, outfit: sel.outfit, outfitColor: sel.outfitColor });
+  send({ type: 'customize', name, bodyColor: sel.bodyColor, hairColor: sel.hairColor, hairStyle: sel.hairStyle, outfit: sel.outfit, outfitColor: sel.outfitColor });
   if (name) { myName = name; localStorage.setItem('ds_name', name); }
   toast('Look saved');
 };

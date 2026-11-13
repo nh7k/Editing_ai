@@ -173,7 +173,7 @@ const OUTFITS = {
 
 export function createAvatar(opts = {}) {
   const look = Object.assign({
-    bodyColor: '#f0c27b', hairColor: '#2b2b2b', outfit: 'tee', outfitColor: '#ff4fd8',
+    bodyColor: '#f0c27b', hairColor: '#2b2b2b', outfit: 'tee', outfitColor: '#ff4fd8', hairStyle: 'long',
   }, opts);
 
   const root = new THREE.Group();
@@ -295,9 +295,23 @@ function rebuildGeometry(buckets, look) {
   blob(skin, new THREE.Vector3(0, 1.62, 0.005), 0.108, [0.92, 1.08, 1.0], 'head');
   // nose hint
   blob(skin, new THREE.Vector3(0, 1.60, 0.108), 0.022, [0.8, 0.9, 1], 'head');
-  // hair: crown sits at the hairline (reveals forehead/face) + length at the back
-  blob(hair, new THREE.Vector3(0, 1.70, -0.025), 0.115, [1.0, 0.8, 0.92], 'head');
-  blob(hair, new THREE.Vector3(0, 1.605, -0.07), 0.09, [1.05, 1.4, 0.8], 'head');
+  // hair: crown sits at the hairline (reveals forehead/face) + style-dependent length
+  const hs = look.hairStyle || 'short';
+  blob(hair, new THREE.Vector3(0, 1.70, -0.025), 0.118, [1.02, 0.82, 0.95], 'head');  // crown
+  blob(hair, new THREE.Vector3(0, 1.605, -0.07), 0.092, [1.08, 1.4, 0.82], 'head');   // nape
+  if (hs === 'long' || hs === 'wavy') {
+    // long hair falling down the back and over the shoulders (original volumes)
+    blob(hair, new THREE.Vector3(0, 1.32, -0.11), 0.11, [1.25, 3.1, 0.62], 'head');   // back length
+    blob(hair, new THREE.Vector3(0.125, 1.34, -0.01), 0.06, [0.8, 3.2, 0.95], 'head'); // L shoulder strand
+    blob(hair, new THREE.Vector3(-0.125, 1.34, -0.01), 0.06, [0.8, 3.2, 0.95], 'head');// R shoulder strand
+    if (hs === 'wavy') { blob(hair, new THREE.Vector3(0, 1.1, -0.08), 0.1, [1.2, 1.6, 0.7], 'head'); } // wave at the ends
+  } else if (hs === 'ponytail') {
+    blob(hair, new THREE.Vector3(0, 1.74, -0.1), 0.05, [1, 1, 1], 'head');             // tie
+    blob(hair, new THREE.Vector3(0, 1.45, -0.17), 0.065, [0.85, 3.0, 0.85], 'head');   // tail
+  } else if (hs === 'bun') {
+    blob(hair, new THREE.Vector3(0, 1.8, -0.05), 0.072, [1, 1, 1], 'head');            // bun
+  }
+  // 'short' adds nothing beyond crown + nape
 
   // Arms
   const armMat = of.sleeves ? outfit : skin;

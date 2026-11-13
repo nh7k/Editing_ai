@@ -39,6 +39,7 @@ const AVATAR_PRESETS = {
   hairColors: ['#2b2b2b', '#6b3e1d', '#c9a227', '#d94f4f', '#4f6fd9', '#a94fd9', '#eeeeee'],
   outfits:    ['tee', 'hoodie', 'jacket', 'dress', 'tank'],
   outfitColors: ['#ff4fd8', '#5ad17a', '#8f9bff', '#f0a94b', '#ff6b6b', '#38bdf8', '#ffffff', '#222222'],
+  hairStyles: ['long', 'wavy', 'ponytail', 'bun', 'short'],
 };
 
 // ---------------------------------------------------------------------------
@@ -61,7 +62,7 @@ function saveProfiles() {
       const out = {};
       for (const [id, p] of Object.entries(profiles)) {
         out[id] = {
-          name: p.name, bodyColor: p.bodyColor, hairColor: p.hairColor,
+          name: p.name, bodyColor: p.bodyColor, hairColor: p.hairColor, hairStyle: p.hairStyle || 'long',
           outfit: p.outfit, outfitColor: p.outfitColor, avatarUrl: p.avatarUrl || '',
           visibility: p.visibility, friends: p.friends,
         };
@@ -77,6 +78,7 @@ function defaultProfile(name) {
     name: name || 'Guest',
     bodyColor: AVATAR_PRESETS.bodyColors[0],
     hairColor: AVATAR_PRESETS.hairColors[0],
+    hairStyle: 'long',
     outfit: 'tee',
     outfitColor: AVATAR_PRESETS.outfitColors[0],
     avatarUrl: '',                   // Ready Player Me .glb URL (empty => procedural avatar)
@@ -270,7 +272,7 @@ function roomSnapshot(roomId) {
     const prof = profiles[id] || {};
     occupants.push({
       id, name: prof.name, x: c.x, z: c.z, rot: c.rot,
-      bodyColor: prof.bodyColor, hairColor: prof.hairColor,
+      bodyColor: prof.bodyColor, hairColor: prof.hairColor, hairStyle: prof.hairStyle || 'long',
       outfit: prof.outfit, outfitColor: prof.outfitColor, avatarUrl: prof.avatarUrl || '',
       emote: c.emote || null,
     });
@@ -314,8 +316,8 @@ function placeInRoom(c, roomId) {
   broadcastRoom(roomId, {
     type: 'joined',
     user: { id: c.id, name: prof.name, x: c.x, z: c.z, rot: c.rot,
-      bodyColor: prof.bodyColor, hairColor: prof.hairColor, outfit: prof.outfit,
-      outfitColor: prof.outfitColor, avatarUrl: prof.avatarUrl || '' },
+      bodyColor: prof.bodyColor, hairColor: prof.hairColor, hairStyle: prof.hairStyle || 'long',
+      outfit: prof.outfit, outfitColor: prof.outfitColor, avatarUrl: prof.avatarUrl || '' },
   }, c.id);
   return true;
 }
@@ -412,6 +414,7 @@ function handleMessage(c, msg) {
       p.hairColor = validColor(m.hairColor, p.hairColor);
       p.outfitColor = validColor(m.outfitColor, p.outfitColor);
       if (AVATAR_PRESETS.outfits.includes(m.outfit)) p.outfit = m.outfit;
+      if (AVATAR_PRESETS.hairStyles.includes(m.hairStyle)) p.hairStyle = m.hairStyle;
       if (typeof m.name === 'string' && sanitize(m.name, 24)) p.name = sanitize(m.name, 24);
       if ('avatarUrl' in m) { const v = validAvatarUrl(m.avatarUrl); if (v !== null) p.avatarUrl = v; }
       saveProfiles();
@@ -419,7 +422,7 @@ function handleMessage(c, msg) {
       if (c.roomId) {
         broadcastRoom(c.roomId, {
           type: 'appearance', id: c.id, name: p.name,
-          bodyColor: p.bodyColor, hairColor: p.hairColor, outfit: p.outfit,
+          bodyColor: p.bodyColor, hairColor: p.hairColor, hairStyle: p.hairStyle || 'long', outfit: p.outfit,
           outfitColor: p.outfitColor, avatarUrl: p.avatarUrl || '',
         });
       }
@@ -496,7 +499,7 @@ function resolveByName(name) {
 function publicProfile(id) {
   const p = profiles[id] || {};
   return {
-    id, name: p.name, bodyColor: p.bodyColor, hairColor: p.hairColor,
+    id, name: p.name, bodyColor: p.bodyColor, hairColor: p.hairColor, hairStyle: p.hairStyle || 'long',
     outfit: p.outfit, outfitColor: p.outfitColor, avatarUrl: p.avatarUrl || '',
     visibility: p.visibility,
     friends: (p.friends || []).map(fid => ({ id: fid, name: profiles[fid] ? profiles[fid].name : fid })),
