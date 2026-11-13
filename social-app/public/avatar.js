@@ -176,6 +176,7 @@ const OUTFITS = {
 // specific person): shoulder width, chest, waist, hip, arm & leg thickness.
 const BODY_TYPES = {
   feminine: { shoulder: 0.9, chest: 0.96, waist: 0.84, hip: 1.12, arm: 0.84, leg: 0.96, legOut: 1.0 },
+  curvy:    { shoulder: 0.94, chest: 1.12, waist: 0.82, hip: 1.26, arm: 0.92, leg: 1.08, legOut: 1.0 },
   neutral:  { shoulder: 1.0, chest: 1.0,  waist: 1.0,  hip: 1.0,  arm: 1.0,  leg: 1.0, legOut: 1.0 },
   athletic: { shoulder: 1.12, chest: 1.1, waist: 0.92, hip: 1.0,  arm: 1.14, leg: 1.08, legOut: 1.0 },
   male:     { shoulder: 1.22, chest: 1.14, waist: 1.0, hip: 0.9,  arm: 1.2,  leg: 1.12, legOut: 1.0 },
@@ -235,6 +236,17 @@ export function createAvatar(opts = {}) {
   const emoteApi = makeEmoteApi(emoteMap, poseL, poseR, hipsRestY);
   let emote = null, emoteT = 0;
 
+  // Flowy "swinging" over-skirt for dresses — a separate mesh so it can sway
+  // freely (gives a flowing dress without rigid skinning).
+  const skirtFlow = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.19, 0.47, 0.54, 24, 3, true),
+    new THREE.MeshStandardMaterial({ color: look.outfitColor, roughness: 0.75, metalness: 0.02, side: THREE.DoubleSide }));
+  skirtFlow.position.set(0, 0.74, 0);
+  skirtFlow.castShadow = true; skirtFlow.frustumCulled = false;
+  skirtFlow.visible = (look.outfit === 'dress');
+  root.add(skirtFlow);
+  let clockT = 0;
+
   function setAnim(name) {
     if (name === current || !actions[name]) return;
     const from = actions[current], to = actions[name];
@@ -250,6 +262,8 @@ export function createAvatar(opts = {}) {
     mats.skin.color.set(look.bodyColor);
     mats.hair.color.set(look.hairColor);
     mats.outfit.color.set(look.outfitColor);
+    skirtFlow.visible = (look.outfit === 'dress');
+    skirtFlow.material.color.set(look.outfitColor);
     // outfit silhouette change -> rebuild geometry
     const nb = new Buckets();
     rebuildGeometry(nb, look);
@@ -266,12 +280,21 @@ export function createAvatar(opts = {}) {
   }
 
   function update(dt) {
+    clockT += dt;
     mixer.update(dt);
     if (emote && EMOTES[emote] && current === 'idle') {
       emoteT += dt;
       B('hips').position.y = hipsRestY;
       emoteApi._reset();
       EMOTES[emote](emoteT, emoteApi);
+    }
+    // swinging dress
+    if (skirtFlow.visible) {
+      const moving = current === 'walk' || current === 'run';
+      const amp = (moving ? 0.17 : 0.05) + (emote === 'dance' ? 0.12 : 0);
+      const sp = moving ? 4.2 : 1.7;
+      skirtFlow.rotation.z = Math.sin(clockT * sp) * amp;
+      skirtFlow.rotation.x = Math.sin(clockT * sp * 0.8 + 1.0) * amp * 0.7;
     }
   }
 

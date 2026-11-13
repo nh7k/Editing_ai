@@ -40,7 +40,7 @@ const AVATAR_PRESETS = {
   outfits:    ['tee', 'tank', 'hoodie', 'jacket', 'dress', 'shorts'],
   outfitColors: ['#ff4fd8', '#5ad17a', '#8f9bff', '#f0a94b', '#ff6b6b', '#38bdf8', '#ffffff', '#222222'],
   hairStyles: ['long', 'wavy', 'ponytail', 'bun', 'short'],
-  bodies: ['feminine', 'neutral', 'athletic', 'male'],
+  bodies: ['feminine', 'curvy', 'neutral', 'athletic', 'male'],
   // Free ready-made rigged avatars (loaded from their public CDNs, not bundled).
   // The first is the pixiv three-vrm sample — a generic anime avatar for demos.
   readyAvatars: [
