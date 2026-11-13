@@ -272,6 +272,7 @@ function roomSnapshot(roomId) {
       id, name: prof.name, x: c.x, z: c.z, rot: c.rot,
       bodyColor: prof.bodyColor, hairColor: prof.hairColor,
       outfit: prof.outfit, outfitColor: prof.outfitColor, avatarUrl: prof.avatarUrl || '',
+      emote: c.emote || null,
     });
   }
   return { type: 'roomState', room: room.def, occupants };
@@ -301,6 +302,7 @@ function placeInRoom(c, roomId) {
     broadcastRoom(c.roomId, { type: 'left', id: c.id });
   }
   c.roomId = roomId;
+  c.emote = null;               // emotes don't carry across rooms
   const d = room.def;
   c.x = (Math.random() - 0.5) * (d.w - 4);
   c.z = (Math.random() - 0.5) * (d.d - 4);
@@ -386,6 +388,13 @@ function handleMessage(c, msg) {
       c.rot = Number(m.rot) || 0;
       c.lastMove = now;
       broadcastRoom(c.roomId, { type: 'moved', id: c.id, x: c.x, z: c.z, rot: c.rot }, c.id);
+      break;
+    }
+    case 'emote': {
+      if (!c.id || !c.roomId) return;
+      const name = (m.name == null || m.name === '') ? '' : sanitize(m.name, 20);
+      c.emote = name || null;
+      broadcastRoom(c.roomId, { type: 'emote', id: c.id, name: c.emote });
       break;
     }
     case 'chat': {

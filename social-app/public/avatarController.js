@@ -11,6 +11,7 @@ export function createAvatarController(look = {}) {
   root.add(impl.root);
   let mode = 'procedural';
   let currentAnim = 'idle';
+  let currentEmote = null;
   let loadToken = 0;                       // guards against stale async loads
   let destroyed = false;
   let lastUrl = look.avatarUrl || '';
@@ -21,6 +22,7 @@ export function createAvatarController(look = {}) {
     impl = newImpl;
     root.add(impl.root);
     impl.setAnim(currentAnim);
+    if (currentEmote && impl.setEmote) impl.setEmote(currentEmote);
   }
 
   async function applyUrl(url) {
@@ -48,6 +50,7 @@ export function createAvatarController(look = {}) {
     root,
     update: (dt) => impl.update(dt),
     setAnim: (n) => { currentAnim = n; impl.setAnim(n); },
+    setEmote: (n) => { currentEmote = n || null; if (impl.setEmote) impl.setEmote(currentEmote); },
     setAppearance: (next) => {
       Object.assign(look, next);
       if ('avatarUrl' in next && (next.avatarUrl || '') !== lastUrl) applyUrl(next.avatarUrl);

@@ -3,6 +3,7 @@
 // cross-joint skin weighting (smooth bends), and hand-authored idle + walk clips.
 // Fully original geometry — no third-party models or captured assets.
 import * as THREE from 'three';
+import { makeArmPoser, makeEmoteApi, restMap, EMOTES } from './rpmAvatar.js';
 
 // --- Bind-pose skeleton (A-pose, metres, feet at y=0) -----------------------
 // name, absolute bind position, parent name
@@ -211,6 +212,19 @@ export function createAvatar(opts = {}) {
   actions.walk.play(); actions.walk.setEffectiveWeight(0);
   let current = 'idle';
 
+  // --- emote/pose support (same library as the custom avatars) ---
+  const B = (n) => bones[IDX[n]];
+  const hipsRestY = B('hips').position.y;
+  const poseL = makeArmPoser(B('upperArmL'), B('lowerArmL'), B('upperArmL').quaternion.clone(), B('lowerArmL').quaternion.clone());
+  const poseR = makeArmPoser(B('upperArmR'), B('lowerArmR'), B('upperArmR').quaternion.clone(), B('lowerArmR').quaternion.clone());
+  const emoteMap = restMap({
+    spine: B('spine'), chest: B('chest'), head: B('head'), hips: B('hips'),
+    lleg: B('upLegL'), rleg: B('upLegR'), lknee: B('loLegL'), rknee: B('loLegR'),
+    lfoot: B('footL'), rfoot: B('footR'),
+  });
+  const emoteApi = makeEmoteApi(emoteMap, poseL, poseR, hipsRestY);
+  let emote = null, emoteT = 0;
+
   function setAnim(name) {
     if (name === current || !actions[name]) return;
     const from = actions[current], to = actions[name];
@@ -241,10 +255,21 @@ export function createAvatar(opts = {}) {
     }
   }
 
+  function update(dt) {
+    mixer.update(dt);
+    if (emote && EMOTES[emote] && current === 'idle') {
+      emoteT += dt;
+      B('hips').position.y = hipsRestY;
+      emoteApi._reset();
+      EMOTES[emote](emoteT, emoteApi);
+    }
+  }
+
   return {
     root, mixer, setAnim,
-    update: (dt) => mixer.update(dt),
+    update,
     setAppearance,
+    setEmote: (name) => { if (name !== emote) { emote = name || null; emoteT = 0; } },
     get outfit() { return look.outfit; },
   };
 }

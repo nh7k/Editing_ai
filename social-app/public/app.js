@@ -53,6 +53,7 @@ function handle(m) {
     case 'moved': onMoved(m); break;
     case 'chat': onChat(m); break;
     case 'appearance': onAppearance(m); break;
+    case 'emote': { const r = remotes.get(m.id); if (r) r.avatar.setEmote(m.name || null); break; }
     case 'profileUpdated': myProfile = m.profile; syncVisibilityUI(); buildFriendList(); syncRpmUI(); break;
     case 'presence': onPresence(m.users); break;
     case 'whereisResult': onWhereis(m); break;
@@ -268,6 +269,7 @@ function onRoomState(m) {
   currentRoom = m.room;
   roomTitle.textContent = m.room.name;
   buildRoom(m.room);
+  buildEmoteBar();
   // local avatar
   localAvatar = createAvatarController({
     bodyColor: myProfile.bodyColor, hairColor: myProfile.hairColor,
@@ -289,6 +291,8 @@ function clearRoom() {
   remotes.clear();
   if (localAvatar && scene) { if (localAvatar.dispose) localAvatar.dispose(); scene.remove(localAvatar.root); disposeGroup(localAvatar.root); localAvatar = null; }
   moveTarget = null;
+  localEmote = null;
+  document.querySelectorAll('#emoteBar .emote-btn').forEach(b => b.classList.remove('on'));
   chatLog.innerHTML = '';
 }
 
@@ -308,6 +312,7 @@ function addRemote(o) {
     target: new THREE.Vector3(o.x, 0, o.z), targetRot: o.rot,
     lastPos: new THREE.Vector3(o.x, 0, o.z), speed: 0, bubble: null, bubbleTimer: 0,
   });
+  if (o.emote) avatar.setEmote(o.emote);
   sysMsg(`${o.name} joined`);
 }
 
@@ -402,6 +407,33 @@ function sysMsg(text) {
   chatLog.appendChild(el); chatLog.scrollTop = chatLog.scrollHeight;
 }
 
+// ================= emotes =================
+let localEmote = null;
+function doEmote(name) {
+  localEmote = (name === localEmote || !name) ? null : name;
+  if (localAvatar) localAvatar.setEmote(localEmote);
+  send({ type: 'emote', name: localEmote || '' });
+  document.querySelectorAll('#emoteBar .emote-btn').forEach(b => b.classList.toggle('on', b.dataset.emote === localEmote));
+}
+function cancelEmote() {
+  if (!localEmote) return;
+  localEmote = null;
+  if (localAvatar) localAvatar.setEmote(null);
+  send({ type: 'emote', name: '' });
+  document.querySelectorAll('#emoteBar .emote-btn').forEach(b => b.classList.remove('on'));
+}
+const EMOTE_BTNS = [['wave', '👋'], ['clap', '👏'], ['dance', '🕺'], ['sit', '🪑'], ['hug', '🤗'], ['cheer', '🙌'], ['cool', '😎'], ['think', '🤔']];
+function buildEmoteBar() {
+  const bar = $('emoteBar'); if (!bar || bar.childElementCount) return;
+  for (const [name, icon] of EMOTE_BTNS) {
+    const b = document.createElement('button');
+    b.className = 'emote-btn'; b.dataset.emote = name; b.title = name;
+    b.innerHTML = `<span>${icon}</span><small>${name}</small>`;
+    b.onclick = () => doEmote(name);
+    bar.appendChild(b);
+  }
+}
+
 // ================= input / movement =================
 function onPointerDown(e) {
   // click-to-move if clicking floor (not UI)
@@ -460,6 +492,7 @@ function updateLocal(dt) {
     if (d > 0.08) { moveX = dx / d; moveZ = dz / d; moving = true; }
     else moveTarget = null;
   }
+  if (moving && localEmote) cancelEmote();   // moving cancels an emote/pose
   const sprint = moving && (keys['shift'] || keys['shiftleft'] || keys['shiftright']);
   if (moving) {
     const spd = SPEED * (sprint ? 1.9 : 1);

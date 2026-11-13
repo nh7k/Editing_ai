@@ -13,6 +13,111 @@ loader.register((parser) => new VRMLoaderPlugin(parser));   // enable .vrm (VRoi
 
 function norm(n) { return String(n).toLowerCase().replace(/mixamorig/g, '').replace(/[:_\s.]/g, ''); }
 
+// --- rig-agnostic arm poser: point an upper-arm bone along a world direction ---
+// Works on any humanoid rig (VRM normalized, RPM/Mixamo raw) because it rotates
+// from the arm's measured rest direction toward the target, in parent space.
+export function makeArmPoser(upper, lower, uRest, lRest) {
+  const restDir = new THREE.Vector3(), pW = new THREE.Quaternion(), pWi = new THREE.Quaternion();
+  const _d = new THREE.Quaternion(), _adj = new THREE.Quaternion(), _t = new THREE.Vector3();
+  const _a = new THREE.Vector3(), _b = new THREE.Vector3();
+  // measure the arm's rest direction now, from the bind pose
+  upper.updateWorldMatrix(true, false); lower.updateWorldMatrix(true, false);
+  _a.setFromMatrixPosition(upper.matrixWorld); _b.setFromMatrixPosition(lower.matrixWorld);
+  restDir.copy(_b).sub(_a); if (restDir.lengthSq() < 1e-8) restDir.set(0, -1, 0);
+  restDir.normalize();
+  upper.parent.getWorldQuaternion(pW); pWi.copy(pW).invert();
+  return function point(x, y, z, bend) {
+    _t.set(x, y, z); if (_t.lengthSq() < 1e-8) _t.set(0, -1, 0); _t.normalize();
+    _d.setFromUnitVectors(restDir, _t);
+    _adj.copy(pWi).multiply(_d).multiply(pW);
+    upper.quaternion.copy(uRest).premultiply(_adj);
+    lower.quaternion.copy(lRest); lower.rotateX(-(bend || 0));
+  };
+}
+
+// Emote/pose library — authored against an avatar that faces +Z, Y up, with
+// +X to the avatar's left. Each emote receives time t and an `a` API provided
+// by the driver (so the same emote works on VRM, RPM and the fallback rig).
+// Arm targets are world-ish directions; legs/spine/head are euler; hipsY offset.
+export const EMOTE_NAMES = ['wave', 'clap', 'dance', 'sit', 'hug', 'cheer', 'cool', 'think'];
+const DOWN_L = [0.32, -0.95, 0.05], DOWN_R = [-0.32, -0.95, 0.05];
+export const EMOTES = {
+  wave(t, a) {
+    a.Larm(DOWN_L[0], DOWN_L[1], DOWN_L[2], 0.15);
+    a.Rarm(-0.25 + 0.18 * Math.sin(t * 9), 0.92, 0.18, 0.5);
+    a.head(0, 0, -0.08);
+  },
+  clap(t, a) {
+    const c = 0.18 + 0.14 * (0.5 + 0.5 * Math.sin(t * 10));
+    a.Larm(c, -0.05, 0.9, 1.1); a.Rarm(-c, -0.05, 0.9, 1.1);
+    a.spine(0.06, 0, 0);
+  },
+  dance(t, a) {
+    const s = Math.sin(t * 4), s2 = Math.sin(t * 8);
+    a.Larm(0.5, 0.55 + 0.25 * s, 0.1, 0.7 + 0.2 * s);
+    a.Rarm(-0.5, 0.55 - 0.25 * s, 0.1, 0.7 - 0.2 * s);
+    a.spine(0.04, 0.12 * s, 0.08 * s); a.hipsY(Math.abs(s2) * 0.05);
+    a.leg('l', 0.12 * s); a.leg('r', -0.12 * s); a.head(0, 0.1 * s, 0.1 * s);
+  },
+  sit(t, a) {
+    a.hipsY(-0.42); a.spine(0.12, 0, 0);
+    a.leg('l', 1.45); a.leg('r', 1.45); a.knee('l', 1.5); a.knee('r', 1.5);
+    a.foot('l', 0.2); a.foot('r', 0.2);
+    a.Larm(0.3, -0.75, 0.35, 0.5); a.Rarm(-0.3, -0.75, 0.35, 0.5);
+  },
+  hug(t, a) {
+    const p = 0.9 + 0.05 * Math.sin(t * 2);
+    a.Larm(0.15, 0.05, p, 1.2); a.Rarm(-0.15, 0.05, p, 1.2);
+    a.spine(0.08, 0, 0); a.head(0.08, 0, 0);
+  },
+  cheer(t, a) {
+    const b = 0.03 * Math.sin(t * 6);
+    a.Larm(0.4, 0.92, 0.08, 0.15); a.Rarm(-0.4, 0.92, 0.08, 0.15);
+    a.hipsY(Math.abs(Math.sin(t * 6)) * 0.04); a.head(-0.1, 0, 0);
+  },
+  cool(t, a) {              // static pose: hand on hip
+    a.Larm(0.55, -0.55, 0.12, 1.5); a.Rarm(DOWN_R[0], DOWN_R[1], DOWN_R[2], 0.1);
+    a.spine(0, 0.06, 0.04); a.head(0, 0.15, 0);
+  },
+  think(t, a) {             // static pose: hand near chin
+    a.Larm(DOWN_L[0], DOWN_L[1], DOWN_L[2], 0.1);
+    a.Rarm(-0.12, 0.35, 0.45, 2.1); a.head(0.12, -0.12, 0);
+  },
+};
+
+// capture rest quaternions so emote eulers apply as deltas on the real rest pose
+export function restMap(nodes) {
+  const m = {};
+  for (const k in nodes) { const n = nodes[k]; if (n) m[k] = { node: n, rest: n.quaternion.clone() }; }
+  return m;
+}
+export function makeEmoteApi(map, poseL, poseR, hipsRestY) {
+  const _e = new THREE.Euler(), _q = new THREE.Quaternion();
+  function setE(key, rx, ry, rz) {
+    const m = map[key]; if (!m) return;
+    _q.setFromEuler(_e.set(rx || 0, ry || 0, rz || 0));
+    m.node.quaternion.copy(m.rest).premultiply(_q);
+  }
+  return {
+    Larm: (x, y, z, bend) => poseL && poseL(x, y, z, bend),
+    Rarm: (x, y, z, bend) => poseR && poseR(x, y, z, bend),
+    leg: (side, rx) => setE(side === 'l' ? 'lleg' : 'rleg', rx, 0, 0),
+    knee: (side, rx) => setE(side === 'l' ? 'lknee' : 'rknee', rx, 0, 0),
+    foot: (side, rx) => setE(side === 'l' ? 'lfoot' : 'rfoot', rx, 0, 0),
+    spine: (rx, ry, rz) => setE('spine', rx, ry, rz),
+    chest: (rx, ry, rz) => setE('chest', rx, ry, rz),
+    head: (rx, ry, rz) => setE('head', rx, ry, rz),
+    hipsY: (off) => { const h = map.hips; if (h) h.node.position.y = hipsRestY + off; },
+    _reset() {   // clean base each frame: arms relaxed-down, other bones at rest
+      for (const k of ['spine', 'chest', 'head', 'lleg', 'rleg', 'lknee', 'rknee', 'lfoot', 'rfoot']) {
+        const m = map[k]; if (m) m.node.quaternion.copy(m.rest);
+      }
+      if (poseL) poseL(DOWN_L[0], DOWN_L[1], DOWN_L[2], 0.1);
+      if (poseR) poseR(DOWN_R[0], DOWN_R[1], DOWN_R[2], 0.1);
+    },
+  };
+}
+
 // canonical humanoid bones we care about
 const WANT = ['hips', 'spine', 'spine1', 'spine2', 'neck', 'head',
   'leftshoulder', 'rightshoulder', 'leftarm', 'rightarm', 'leftforearm', 'rightforearm',
@@ -135,13 +240,34 @@ function vrmDriver(vrm) {
   const hipsRestY = b.hips ? b.hips.position.y : 0;
   function set(node, rx, ry, rz) { if (node) node.rotation.set(rx, ry, rz); }
 
-  let phase = 0, t = 0, w = 0, runW = 0, wT = 0, runT = 0;
+  // rest quats + arm posers for emotes
+  const uLRest = b.larm ? b.larm.quaternion.clone() : null;
+  const uRRest = b.rarm ? b.rarm.quaternion.clone() : null;
+  const lLRest = b.lfore ? b.lfore.quaternion.clone() : null;
+  const lRRest = b.rfore ? b.rfore.quaternion.clone() : null;
+  const poseL = (b.larm && b.lfore) ? makeArmPoser(b.larm, b.lfore, uLRest, lLRest) : null;
+  const poseR = (b.rarm && b.rfore) ? makeArmPoser(b.rarm, b.rfore, uRRest, lRRest) : null;
+  const emoteMap = restMap({
+    spine: b.spine, chest: b.chest, head: b.head, hips: b.hips,
+    lleg: b.lleg, rleg: b.rleg, lknee: b.lknee, rknee: b.rknee, lfoot: b.lfoot, rfoot: b.rfoot,
+  });
+  const emoteApi = makeEmoteApi(emoteMap, poseL, poseR, hipsRestY);
+
+  let phase = 0, t = 0, w = 0, runW = 0, wT = 0, runT = 0, emote = null, emoteT = 0;
   const ARM_DOWN = 1.25;
 
   function update(dt) {
     t += dt;
     w += (wT - w) * Math.min(1, dt * 8);
     runW += (runT - runW) * Math.min(1, dt * 8);
+    // Emote plays only when essentially standing still.
+    if (emote && EMOTES[emote] && w < 0.2 && runW < 0.2) {
+      emoteT += dt;
+      if (b.hips) b.hips.position.y = hipsRestY;
+      emoteApi._reset();
+      EMOTES[emote](emoteT, emoteApi);
+      return;
+    }
     phase += dt * (7 + runW * 3.5) * (0.35 + w);
     const s = Math.sin(phase), s2 = Math.sin(phase + Math.PI);
     const legAmp = 0.42 * w + 0.32 * runW, armAmp = 0.35 * w + 0.33 * runW;
@@ -168,7 +294,8 @@ function vrmDriver(vrm) {
     else if (name === 'walk') { wT = 1; runT = 0; }
     else if (name === 'run') { wT = 1; runT = 1; }
   }
-  return { update, setAnim };
+  function setEmote(name) { if (name !== emote) { emote = name || null; emoteT = 0; } }
+  return { update, setAnim, setEmote };
 }
 
 // ---- driver A: play the glb's own clips via AnimationMixer + crossfade ------
@@ -188,6 +315,7 @@ function mixerDriver(scene, clips) {
       to.crossFadeFrom(from, 0.25, false); to.play();
       current = name;
     },
+    setEmote: () => {},   // avatars that ship their own locomotion clips skip procedural emotes
   };
 }
 
@@ -220,6 +348,19 @@ function proceduralDriver(bones) {
   armDown('leftarm', 'leftforearm', +1);
   armDown('rightarm', 'rightforearm', -1);
 
+  // emote posers (use raw bind rest, captured before any animation)
+  const poseL = (bones.leftarm && bones.leftforearm)
+    ? makeArmPoser(bones.leftarm, bones.leftforearm, bones.leftarm.quaternion.clone(), bones.leftforearm.quaternion.clone()) : null;
+  const poseR = (bones.rightarm && bones.rightforearm)
+    ? makeArmPoser(bones.rightarm, bones.rightforearm, bones.rightarm.quaternion.clone(), bones.rightforearm.quaternion.clone()) : null;
+  const emoteMap = restMap({
+    spine: bones.spine, chest: bones.spine2 || bones.chest, head: bones.head, hips: bones.hips,
+    lleg: bones.leftupleg, rleg: bones.rightupleg, lknee: bones.leftleg, rknee: bones.rightleg,
+    lfoot: bones.leftfoot, rfoot: bones.rightfoot,
+  });
+  const emoteApi = makeEmoteApi(emoteMap, poseL, poseR, hipsRestY);
+  let emote = null, emoteT = 0;
+
   const _e = new THREE.Euler();
   const _dq = new THREE.Quaternion();
   function set(key, rx, ry, rz) {
@@ -237,6 +378,13 @@ function proceduralDriver(bones) {
     t += dt;
     w += (wT - w) * Math.min(1, dt * 8);
     runW += (runT - runW) * Math.min(1, dt * 8);
+    if (emote && EMOTES[emote] && w < 0.2 && runW < 0.2) {
+      emoteT += dt;
+      if (hips) hips.position.y = hipsRestY;
+      emoteApi._reset();
+      EMOTES[emote](emoteT, emoteApi);
+      return;
+    }
     const cadence = 7.0 + runW * 3.5;
     phase += dt * cadence * (0.35 + w);          // stride faster when walking/running
     const s = Math.sin(phase), s2 = Math.sin(phase + Math.PI);
@@ -278,6 +426,7 @@ function proceduralDriver(bones) {
     else if (name === 'walk') { wT = 1; runT = 0; }
     else if (name === 'run') { wT = 1; runT = 1; }
   }
+  function setEmote(name) { if (name !== emote) { emote = name || null; emoteT = 0; } }
 
-  return { update, setAnim };
+  return { update, setAnim, setEmote };
 }
