@@ -47,6 +47,10 @@ function handle(m) {
       if (joinedRoomId) send({ type: 'joinRoom', roomId: joinedRoomId }); // rejoin after reconnect
       break;
     case 'rooms': roomsCache = m.rooms; buildRoomList(); break;
+    case 'roomCreateResult':
+      if (m.ok) { if ($('roomCreateMsg')) $('roomCreateMsg').textContent = ''; enterRoom(m.roomId); }
+      else if ($('roomCreateMsg')) $('roomCreateMsg').textContent = m.reason || 'Could not create room';
+      break;
     case 'roomState': onRoomState(m); break;
     case 'joined': addRemote(m.user); break;
     case 'left': removeRemote(m.id); break;
@@ -70,6 +74,12 @@ enterBtn.onclick = () => {
   loginStep.hidden = true; roomStep.hidden = false;
 };
 $('backToName').onclick = () => { roomStep.hidden = true; loginStep.hidden = false; };
+if ($('createRoomBtn')) $('createRoomBtn').onclick = () => {
+  const name = $('newRoomName').value.trim();
+  if (!name) { $('roomCreateMsg').textContent = 'Enter a room name'; return; }
+  $('roomCreateMsg').textContent = 'Creating…';
+  send({ type: 'createRoom', name, theme: $('newRoomTheme').value });
+};
 nameInput.onkeydown = (e) => { if (e.key === 'Enter') enterBtn.click(); };
 
 function buildRoomList() {

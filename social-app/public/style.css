@@ -44,6 +44,11 @@ input{font-family:inherit}
   border-radius:14px;background:linear-gradient(135deg,#2a1b3e55,#1a1830)}
 .create-char .primary,.create-char .ghost{width:100%}
 .create-char .muted{margin:2px 0 0;text-align:center}
+.make-room{margin:4px 0 12px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#0f0e1c}
+.make-room summary{cursor:pointer;font-size:14px;color:var(--text)}
+.make-room .row{margin:8px 0}
+.make-room select{flex:0 0 auto;padding:10px 12px;background:#0f0e1c;border:1px solid var(--line);border-radius:10px;color:var(--text)}
+.make-room input{flex:1}
 .lobby-foot{position:absolute;bottom:14px;color:var(--muted);font-size:12px;text-align:center;width:100%;padding:0 16px}
 h2{font-size:18px;margin:4px 0 6px}
 

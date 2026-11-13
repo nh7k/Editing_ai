@@ -91,7 +91,23 @@ function defaultProfile(name) {
 // ---------------------------------------------------------------------------
 // clients: userId -> { ws, id, roomId, x, z, rot, lastMove }
 const clients = new Map();
-const rooms = new Map(ROOM_DEFS.map(r => [r.id, { def: r, members: new Set() }]));
+// Theme presets for user-created rooms (original palettes).
+const THEME_PRESETS = {
+  neon:   { floor: '#1b1033', accent: '#ff4fd8' },
+  warm:   { floor: '#2a211a', accent: '#f0a94b' },
+  nature: { floor: '#15241a', accent: '#5ad17a' },
+  mono:   { floor: '#202024', accent: '#8f9bff' },
+  ocean:  { floor: '#0f2230', accent: '#38bdf8' },
+  rose:   { floor: '#2a1420', accent: '#ff6b9d' },
+};
+
+const rooms = new Map(ROOM_DEFS.map(r => [r.id, { def: r, members: new Set(), owner: null }]));
+// Load user-created rooms from the database.
+try {
+  for (const r of db.loadRooms()) {
+    rooms.set(r.id, { def: { id: r.id, name: r.name, theme: r.theme, floor: r.floor, accent: r.accent, w: r.w, d: r.d }, members: new Set(), owner: r.owner || null });
+  }
+} catch (e) { /* db loaded later; rooms added on demand */ }
 
 function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
 function sanitize(str, max) {
@@ -287,7 +303,12 @@ function pushPresenceAll() {
 }
 
 function roomCounts() {
-  return ROOM_DEFS.map(r => ({ id: r.id, name: r.name, theme: r.theme, accent: r.accent, count: rooms.get(r.id).members.size }));
+  const out = [];
+  for (const [, room] of rooms) {
+    const d = room.def;
+    out.push({ id: d.id, name: d.name, theme: d.theme, accent: d.accent, count: room.members.size, custom: !!room.owner });
+  }
+  return out;
 }
 
 // ---------------------------------------------------------------------------
@@ -355,6 +376,23 @@ function handleMessage(c, msg) {
         rooms: roomCounts(),
       });
       pushPresenceAll();
+      break;
+    }
+    case 'createRoom': {
+      if (!c.id) return;
+      const name = sanitize(m.name, 28);
+      if (!name) { c.ws.send({ type: 'roomCreateResult', ok: false, reason: 'Enter a room name' }); return; }
+      const theme = THEME_PRESETS[m.theme] ? m.theme : 'neon';
+      // cap how many rooms one user can own
+      let owned = 0; for (const [, r] of rooms) if (r.owner === c.id) owned++;
+      if (owned >= 10) { c.ws.send({ type: 'roomCreateResult', ok: false, reason: 'Room limit reached' }); return; }
+      const id = 'r_' + crypto.randomUUID().slice(0, 8);
+      const tp = THEME_PRESETS[theme];
+      const def = { id, name, theme, floor: tp.floor, accent: tp.accent, w: 22, d: 22 };
+      rooms.set(id, { def, members: new Set(), owner: c.id });
+      try { db.createRoom({ ...def, owner: c.id }); } catch (e) { console.error('createRoom', e.message); }
+      broadcastRoomCountsAll();
+      c.ws.send({ type: 'roomCreateResult', ok: true, roomId: id });
       break;
     }
     case 'joinRoom': {

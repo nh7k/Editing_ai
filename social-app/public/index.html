@@ -33,6 +33,22 @@
       </div>
       <h2>Choose a room</h2>
       <div id="roomList" class="room-list"></div>
+      <details class="make-room">
+        <summary>➕ Create your own room</summary>
+        <div class="row"><input id="newRoomName" placeholder="Room name" maxlength="28" /></div>
+        <div class="row">
+          <select id="newRoomTheme">
+            <option value="neon">Neon</option>
+            <option value="warm">Warm</option>
+            <option value="nature">Nature</option>
+            <option value="mono">Mono</option>
+            <option value="ocean">Ocean</option>
+            <option value="rose">Rose</option>
+          </select>
+          <button id="createRoomBtn" class="primary small">Create + enter</button>
+        </div>
+        <div id="roomCreateMsg" class="muted"></div>
+      </details>
       <button id="backToName" class="ghost">← change name</button>
     </div>
   </div>
