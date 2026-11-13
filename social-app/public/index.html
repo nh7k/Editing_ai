@@ -63,7 +63,21 @@
   <aside id="customizePanel" class="panel" hidden>
     <header><h3>Appearance</h3><button class="x" data-close="customizePanel">✕</button></header>
     <label class="field"><span>Name</span><input id="czName" maxlength="24" /></label>
-    <div class="swatch-group"><span>Skin</span><div id="bodyColors" class="swatches"></div></div>
+
+    <div class="rpm-box">
+      <div class="rpm-row"><b>Custom 3D avatar</b><span id="rpmStatus" class="rpm-status">Original avatar</span></div>
+      <p class="muted">Use a high-quality rigged character — anime (VRoid <code>.vrm</code>) or realistic. It gets its own hair/dress physics and walks with the room.</p>
+      <button id="uploadAvatarBtn" class="primary small">⬆ Upload my avatar (.vrm / .glb)</button>
+      <input id="avatarFile" type="file" accept=".vrm,.glb,model/gltf-binary" hidden />
+      <div class="rpm-sub">Made in <b>VRoid Studio</b> (free) or <b>Ready Player Me</b>. Your file stays on your own server.</div>
+      <button id="openRpm" class="ghost" style="width:100%;margin-top:8px">✨ Create a realistic avatar (Ready Player Me)</button>
+      <details class="rpm-adv"><summary>Advanced: paste a .vrm / .glb URL</summary>
+        <div class="row"><input id="rpmUrl" placeholder="https://…/avatar.vrm" /><button id="applyRpmUrl" class="ghost">Apply</button></div>
+      </details>
+      <button id="clearRpm" class="ghost" hidden>Use original avatar</button>
+    </div>
+
+    <div class="swatch-group" id="procControls"><span>Skin</span><div id="bodyColors" class="swatches"></div></div>
     <div class="swatch-group"><span>Hair</span><div id="hairColors" class="swatches"></div></div>
     <div class="swatch-group"><span>Outfit</span><div id="outfitStyles" class="pills"></div></div>
     <div class="swatch-group"><span>Outfit color</span><div id="outfitColors" class="swatches"></div></div>
@@ -103,6 +117,15 @@
     <h4>Who's online</h4>
     <div id="presenceList" class="presence-list"></div>
   </aside>
+</div>
+
+<!-- Ready Player Me creator modal -->
+<div id="rpmModal" class="modal" hidden>
+  <div class="modal-card">
+    <header><h3>Create your realistic avatar</h3><button class="x" id="closeRpm">✕</button></header>
+    <iframe id="rpmFrame" class="rpm-frame" allow="camera *; microphone *; clipboard-write" title="Ready Player Me avatar creator"></iframe>
+    <p class="muted" id="rpmHint">Loading Ready Player Me… If it doesn't load you may be offline — close this and use the original avatar or a .glb URL.</p>
+  </div>
 </div>
 
 <div id="toast" class="toast" hidden></div>

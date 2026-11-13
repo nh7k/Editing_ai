@@ -53,7 +53,38 @@ so the Claude Code preview / `launch.json` runners can start it directly.
 6. **Friends** — mutual friends system (both must add each other), backing the
    "Friends only" visibility.
 
-## The avatar (realistic, original)
+## Avatars: bring your own realistic / anime character
+
+The "robot-free" high-quality path. Each user can use a real rigged character,
+and it gets the room's PBR lighting + shadows, walks/idles/runs with the
+movement sync, and (for VRM) its own hair/skirt **spring-bone physics**. Set it
+in **Appearance → Custom 3D avatar**:
+
+- **Upload your own `.vrm` or `.glb`** — the best option. It's uploaded to your
+  own server (`/avatars/…`), so it persists and other players see it too. Works
+  offline.
+- **Anime (VRoid):** make a character in **[VRoid Studio](https://vroid.com/en/studio)**
+  (free) — pick the body, face, hair, outfit/dress you want — then
+  *Export → VRM* and upload it. This is how you get the anime look (pink hair,
+  frilly dress, etc.) as **your own original character**.
+- **Realistic (Ready Player Me):** the "✨ Create a realistic avatar" button
+  opens the RPM creator; finish it and the photoreal avatar loads automatically.
+- **Paste a `.vrm` / `.glb` URL** (Advanced) for an already-hosted avatar.
+
+If no custom avatar is set, or it can't load (offline / bad file), the app falls
+back to the original procedural avatar below so it never breaks.
+
+**Rigs & animation.** `.vrm` uses the VRM normalized humanoid; `.glb` uses its
+own embedded clips when present (idle/walk/run via `AnimationMixer`), otherwise
+an original procedural idle/walk/run cycle mapped onto the standard humanoid
+bones. `three` + `GLTFLoader` + `@pixiv/three-vrm` are all vendored locally.
+
+> **On copyrighted characters:** make or import your *own* character. The app
+> deliberately doesn't ship or clone copyrighted game/anime characters (e.g. a
+> specific Genshin character). VRoid Studio lets you build a character in that
+> same style that is genuinely yours.
+
+## The original procedural avatar (fallback)
 
 `public/avatar.js` builds the humanoid procedurally — no external models:
 

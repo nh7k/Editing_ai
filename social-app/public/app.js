@@ -1,6 +1,6 @@
 // app.js — Driftspace client: scene, networking, input, UI.
 import * as THREE from 'three';
-import { createAvatar } from './avatar.js';
+import { createAvatarController } from './avatarController.js';
 
 // ---------- identity ----------
 const uid = localStorage.getItem('ds_uid') || crypto.randomUUID();
@@ -53,7 +53,7 @@ function handle(m) {
     case 'moved': onMoved(m); break;
     case 'chat': onChat(m); break;
     case 'appearance': onAppearance(m); break;
-    case 'profileUpdated': myProfile = m.profile; syncVisibilityUI(); buildFriendList(); break;
+    case 'profileUpdated': myProfile = m.profile; syncVisibilityUI(); buildFriendList(); syncRpmUI(); break;
     case 'presence': onPresence(m.users); break;
     case 'whereisResult': onWhereis(m); break;
     case 'friendResult': onFriendResult(m); break;
@@ -150,9 +150,10 @@ function initScene() {
   animate();
   // lightweight debug hook (handy for diagnostics; harmless in production)
   window.__ds = {
-    get remotes() { return [...remotes.entries()].map(([id, r]) => ({ id, name: r.name, x: +r.group.position.x.toFixed(2), z: +r.group.position.z.toFixed(2), anim: r.avatar.outfit })); },
-    get me() { return { x: +myPos.x.toFixed(2), z: +myPos.z.toFixed(2), rot: +myRot.toFixed(2) }; },
+    get remotes() { return [...remotes.entries()].map(([id, r]) => ({ id, name: r.name, x: +r.group.position.x.toFixed(2), z: +r.group.position.z.toFixed(2), mode: r.avatar.mode })); },
+    get me() { return { x: +myPos.x.toFixed(2), z: +myPos.z.toFixed(2), rot: +myRot.toFixed(2), mode: localAvatar && localAvatar.mode }; },
     get room() { return currentRoom && currentRoom.name; },
+    setAvatar(u) { setAvatarUrl(u); },
   };
 }
 
@@ -268,9 +269,9 @@ function onRoomState(m) {
   roomTitle.textContent = m.room.name;
   buildRoom(m.room);
   // local avatar
-  localAvatar = createAvatar({
+  localAvatar = createAvatarController({
     bodyColor: myProfile.bodyColor, hairColor: myProfile.hairColor,
-    outfit: myProfile.outfit, outfitColor: myProfile.outfitColor,
+    outfit: myProfile.outfit, outfitColor: myProfile.outfitColor, avatarUrl: myProfile.avatarUrl || '',
   });
   scene.add(localAvatar.root);
   const me = m.occupants.find(o => o.id === uid);
@@ -284,16 +285,16 @@ function onRoomState(m) {
 }
 
 function clearRoom() {
-  for (const [, r] of remotes) { scene && scene.remove(r.group); disposeGroup(r.group); }
+  for (const [, r] of remotes) { if (r.avatar.dispose) r.avatar.dispose(); scene && scene.remove(r.group); disposeGroup(r.group); }
   remotes.clear();
-  if (localAvatar && scene) { scene.remove(localAvatar.root); disposeGroup(localAvatar.root); localAvatar = null; }
+  if (localAvatar && scene) { if (localAvatar.dispose) localAvatar.dispose(); scene.remove(localAvatar.root); disposeGroup(localAvatar.root); localAvatar = null; }
   moveTarget = null;
   chatLog.innerHTML = '';
 }
 
 function addRemote(o) {
   if (o.id === uid || remotes.has(o.id)) return;
-  const avatar = createAvatar({ bodyColor: o.bodyColor, hairColor: o.hairColor, outfit: o.outfit, outfitColor: o.outfitColor });
+  const avatar = createAvatarController({ bodyColor: o.bodyColor, hairColor: o.hairColor, outfit: o.outfit, outfitColor: o.outfitColor, avatarUrl: o.avatarUrl || '' });
   const group = new THREE.Group();
   group.add(avatar.root);
   group.position.set(o.x, 0, o.z);
@@ -314,6 +315,7 @@ function removeRemote(id) {
   const r = remotes.get(id);
   if (!r) return;
   if (r.name) sysMsg(`${r.name} left`);
+  if (r.avatar.dispose) r.avatar.dispose();
   scene.remove(r.group); disposeGroup(r.group);
   remotes.delete(id);
 }
@@ -328,7 +330,7 @@ function onMoved(m) {
 function onAppearance(m) {
   const r = remotes.get(m.id);
   if (r) {
-    r.avatar.setAppearance({ bodyColor: m.bodyColor, hairColor: m.hairColor, outfit: m.outfit, outfitColor: m.outfitColor });
+    r.avatar.setAppearance({ bodyColor: m.bodyColor, hairColor: m.hairColor, outfit: m.outfit, outfitColor: m.outfitColor, avatarUrl: m.avatarUrl || '' });
     if (m.name && r.name !== m.name) { r.name = m.name; r.group.remove(r.label); r.label = makeLabel(m.name); r.label.position.set(0, 2.05, 0); r.group.add(r.label); }
   }
 }
@@ -458,14 +460,16 @@ function updateLocal(dt) {
     if (d > 0.08) { moveX = dx / d; moveZ = dz / d; moving = true; }
     else moveTarget = null;
   }
+  const sprint = moving && (keys['shift'] || keys['shiftleft'] || keys['shiftright']);
   if (moving) {
-    myPos.x = clamp(myPos.x + moveX * SPEED * dt, -roomBounds.w / 2 + 1, roomBounds.w / 2 - 1);
-    myPos.z = clamp(myPos.z + moveZ * SPEED * dt, -roomBounds.d / 2 + 1, roomBounds.d / 2 - 1);
+    const spd = SPEED * (sprint ? 1.9 : 1);
+    myPos.x = clamp(myPos.x + moveX * spd * dt, -roomBounds.w / 2 + 1, roomBounds.w / 2 - 1);
+    myPos.z = clamp(myPos.z + moveZ * spd * dt, -roomBounds.d / 2 + 1, roomBounds.d / 2 - 1);
     myRot = Math.atan2(moveX, moveZ);
   }
   localAvatar.root.position.copy(myPos);
   localAvatar.root.rotation.y = dampAngle(localAvatar.root.rotation.y, myRot, 12, dt);
-  localAvatar.setAnim(moving ? 'walk' : 'idle');
+  localAvatar.setAnim(moving ? (sprint ? 'run' : 'walk') : 'idle');
   localAvatar.update(dt);
 
   // send throttled
@@ -487,7 +491,7 @@ function updateRemotes(dt) {
     r.speed = moved / Math.max(dt, 0.001);
     const movingR = r.speed > 0.25;
     r.avatar.root.rotation.y = dampAngle(r.avatar.root.rotation.y, r.targetRot, 10, dt);
-    r.avatar.setAnim(movingR ? 'walk' : 'idle');
+    r.avatar.setAnim(movingR ? (r.speed > SPEED * 1.35 ? 'run' : 'walk') : 'idle');
     r.avatar.update(dt);
     if (r.bubble) { r.bubbleTimer -= dt; if (r.bubbleTimer <= 0) { r.group.remove(r.bubble); r.bubble.material.map.dispose(); r.bubble = null; } }
   }
@@ -541,6 +545,7 @@ function buildCustomizeUI() {
   swatches('bodyColors', presets.bodyColors, 'bodyColor');
   swatches('hairColors', presets.hairColors, 'hairColor');
   swatches('outfitColors', presets.outfitColors, 'outfitColor');
+  syncRpmUI();
   const op = $('outfitStyles'); op.innerHTML = '';
   for (const o of presets.outfits) {
     const el = document.createElement('button'); el.className = 'pill' + (o === sel.outfit ? ' sel' : '');
@@ -567,6 +572,75 @@ $('saveAppearance').onclick = () => {
   if (name) { myName = name; localStorage.setItem('ds_name', name); }
   toast('Look saved');
 };
+
+// ---------- Ready Player Me ----------
+const RPM_SUBDOMAIN = localStorage.getItem('ds_rpm_subdomain') || 'demo';
+function rpmCreatorUrl() {
+  return `https://${RPM_SUBDOMAIN}.readyplayer.me/avatar?frameApi&clearCache&bodyType=fullbody`;
+}
+function syncRpmUI() {
+  if (!myProfile) return;
+  const on = !!myProfile.avatarUrl;
+  const isVrm = on && /\.vrm(\?|$)/i.test(myProfile.avatarUrl);
+  const st = $('rpmStatus'); st.textContent = on ? (isVrm ? 'Anime avatar ✓' : 'Custom avatar ✓') : 'Original avatar';
+  st.classList.toggle('on', on);
+  $('clearRpm').hidden = !on;
+  const pc = $('procControls'); // keep color controls usable even with RPM (for fallback)
+}
+function setAvatarUrl(url) {
+  send({ type: 'customize', avatarUrl: url });            // server persists + broadcasts
+  if (localAvatar) localAvatar.setAppearance({ avatarUrl: url });
+  myProfile.avatarUrl = url;
+  syncRpmUI();
+}
+$('openRpm').onclick = () => {
+  const f = $('rpmFrame'); f.src = rpmCreatorUrl();
+  $('rpmModal').hidden = false;
+};
+$('closeRpm').onclick = () => { $('rpmModal').hidden = true; $('rpmFrame').src = 'about:blank'; };
+$('applyRpmUrl').onclick = () => {
+  const u = $('rpmUrl').value.trim();
+  if (/^https:\/\/\S+\.(glb|vrm)(\?\S*)?$/i.test(u)) { setAvatarUrl(u); toast('Loading avatar…'); }
+  else toast('Enter an https URL ending in .vrm or .glb');
+};
+$('clearRpm').onclick = () => { setAvatarUrl(''); toast('Using original avatar'); };
+
+// Upload the user's own .vrm/.glb to this server, then use its shareable URL
+$('uploadAvatarBtn').onclick = () => $('avatarFile').click();
+$('avatarFile').onchange = async (e) => {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+  const ext = file.name.split('.').pop().toLowerCase();
+  if (!['vrm', 'glb'].includes(ext)) { toast('Use a .vrm or .glb file'); return; }
+  if (file.size > 45 * 1024 * 1024) { toast('File too large (max 45 MB)'); return; }
+  toast('Uploading avatar…');
+  try {
+    const res = await fetch('/api/upload-avatar?ext=' + ext, { method: 'POST', body: file });
+    const data = await res.json();
+    if (data.url) { setAvatarUrl(data.url); toast('Avatar uploaded ✓'); }
+    else toast('Upload failed');
+  } catch { toast('Upload failed'); }
+  e.target.value = '';
+};
+
+// Receive the exported .glb from the Ready Player Me iframe
+window.addEventListener('message', (ev) => {
+  let json = ev.data;
+  if (typeof json === 'string') {
+    if (/\.glb(\?|$)/i.test(json) && json.startsWith('http')) { onRpmExport(json); return; }
+    try { json = JSON.parse(json); } catch { return; }
+  }
+  if (!json || json.source !== 'readyplayerme') return;
+  if (json.eventName === 'v1.frame.ready') {
+    $('rpmFrame').contentWindow.postMessage(JSON.stringify({ target: 'readyplayerme', type: 'subscribe', eventName: 'v1.**' }), '*');
+  }
+  if (json.eventName === 'v1.avatar.exported') onRpmExport(json.data.url);
+});
+function onRpmExport(url) {
+  $('rpmModal').hidden = true; $('rpmFrame').src = 'about:blank';
+  setAvatarUrl(url);
+  toast('Realistic avatar loaded');
+}
 
 // privacy
 function syncVisibilityUI() {

@@ -62,7 +62,7 @@ function saveProfiles() {
       for (const [id, p] of Object.entries(profiles)) {
         out[id] = {
           name: p.name, bodyColor: p.bodyColor, hairColor: p.hairColor,
-          outfit: p.outfit, outfitColor: p.outfitColor,
+          outfit: p.outfit, outfitColor: p.outfitColor, avatarUrl: p.avatarUrl || '',
           visibility: p.visibility, friends: p.friends,
         };
       }
@@ -79,6 +79,7 @@ function defaultProfile(name) {
     hairColor: AVATAR_PRESETS.hairColors[0],
     outfit: 'tee',
     outfitColor: AVATAR_PRESETS.outfitColors[0],
+    avatarUrl: '',                   // Ready Player Me .glb URL (empty => procedural avatar)
     visibility: 'everyone',          // everyone | friends | nobody
     friends: [],                     // array of userIds (mutual once both add)
   };
@@ -97,6 +98,14 @@ function sanitize(str, max) {
 }
 function validColor(c, fallback) {
   return (typeof c === 'string' && /^#[0-9a-fA-F]{6}$/.test(c)) ? c : fallback;
+}
+// Accept only an https URL to a .glb (Ready Player Me or any glb host); '' clears it.
+function validAvatarUrl(u) {
+  if (typeof u !== 'string') return null;
+  if (u === '') return '';
+  if (u.length > 300) return null;
+  if (/^\/avatars\/[\w.-]+\.(glb|vrm)$/i.test(u)) return u;                 // uploaded to this server
+  return /^https:\/\/[\w.-]+(:\d+)?\/[\w%@./+-]+\.(glb|vrm)(\?[\w=&%.@+-]*)?$/i.test(u) ? u : null;
 }
 
 // ---------------------------------------------------------------------------
@@ -262,7 +271,7 @@ function roomSnapshot(roomId) {
     occupants.push({
       id, name: prof.name, x: c.x, z: c.z, rot: c.rot,
       bodyColor: prof.bodyColor, hairColor: prof.hairColor,
-      outfit: prof.outfit, outfitColor: prof.outfitColor,
+      outfit: prof.outfit, outfitColor: prof.outfitColor, avatarUrl: prof.avatarUrl || '',
     });
   }
   return { type: 'roomState', room: room.def, occupants };
@@ -303,7 +312,8 @@ function placeInRoom(c, roomId) {
   broadcastRoom(roomId, {
     type: 'joined',
     user: { id: c.id, name: prof.name, x: c.x, z: c.z, rot: c.rot,
-      bodyColor: prof.bodyColor, hairColor: prof.hairColor, outfit: prof.outfit, outfitColor: prof.outfitColor },
+      bodyColor: prof.bodyColor, hairColor: prof.hairColor, outfit: prof.outfit,
+      outfitColor: prof.outfitColor, avatarUrl: prof.avatarUrl || '' },
   }, c.id);
   return true;
 }
@@ -394,12 +404,14 @@ function handleMessage(c, msg) {
       p.outfitColor = validColor(m.outfitColor, p.outfitColor);
       if (AVATAR_PRESETS.outfits.includes(m.outfit)) p.outfit = m.outfit;
       if (typeof m.name === 'string' && sanitize(m.name, 24)) p.name = sanitize(m.name, 24);
+      if ('avatarUrl' in m) { const v = validAvatarUrl(m.avatarUrl); if (v !== null) p.avatarUrl = v; }
       saveProfiles();
       c.ws.send({ type: 'profileUpdated', profile: publicProfile(c.id) });
       if (c.roomId) {
         broadcastRoom(c.roomId, {
           type: 'appearance', id: c.id, name: p.name,
-          bodyColor: p.bodyColor, hairColor: p.hairColor, outfit: p.outfit, outfitColor: p.outfitColor,
+          bodyColor: p.bodyColor, hairColor: p.hairColor, outfit: p.outfit,
+          outfitColor: p.outfitColor, avatarUrl: p.avatarUrl || '',
         });
       }
       pushPresenceAll();
@@ -476,7 +488,8 @@ function publicProfile(id) {
   const p = profiles[id] || {};
   return {
     id, name: p.name, bodyColor: p.bodyColor, hairColor: p.hairColor,
-    outfit: p.outfit, outfitColor: p.outfitColor, visibility: p.visibility,
+    outfit: p.outfit, outfitColor: p.outfitColor, avatarUrl: p.avatarUrl || '',
+    visibility: p.visibility,
     friends: (p.friends || []).map(fid => ({ id: fid, name: profiles[fid] ? profiles[fid].name : fid })),
   };
 }
@@ -513,6 +526,40 @@ const server = http.createServer((req, res) => {
   if (req.url === '/health') {
     res.writeHead(200, { 'content-type': 'application/json' });
     res.end(JSON.stringify({ ok: true, rooms: roomCounts(), online: clients.size }));
+    return;
+  }
+  // Upload an avatar file (user's own .glb/.vrm). Stored on this server and
+  // served back by a shareable URL so other clients can load it too.
+  if (req.method === 'POST' && req.url.startsWith('/api/upload-avatar')) {
+    const ext = ((new URL(req.url, 'http://x').searchParams.get('ext')) || 'glb').toLowerCase();
+    if (!['glb', 'vrm'].includes(ext)) { res.writeHead(400); res.end('bad ext'); return; }
+    const chunks = []; let size = 0, aborted = false;
+    req.on('data', (c) => {
+      size += c.length;
+      if (size > 45 * 1024 * 1024) { aborted = true; res.writeHead(413); res.end('too large'); req.destroy(); }
+      else chunks.push(c);
+    });
+    req.on('end', () => {
+      if (aborted) return;
+      try {
+        fs.mkdirSync(path.join(DATA_DIR, 'avatars'), { recursive: true });
+        const name = crypto.randomUUID() + '.' + ext;
+        fs.writeFileSync(path.join(DATA_DIR, 'avatars', name), Buffer.concat(chunks));
+        res.writeHead(200, { 'content-type': 'application/json' });
+        res.end(JSON.stringify({ url: '/avatars/' + name }));
+      } catch (e) { res.writeHead(500); res.end('err'); }
+    });
+    return;
+  }
+  // Serve uploaded avatars
+  if (req.url.split('?')[0].startsWith('/avatars/')) {
+    const fp = path.join(DATA_DIR, path.normalize(decodeURIComponent(req.url.split('?')[0])));
+    if (!fp.startsWith(path.join(DATA_DIR, 'avatars'))) { res.writeHead(403); res.end(); return; }
+    fs.readFile(fp, (e, d) => {
+      if (e) { res.writeHead(404); res.end(); return; }
+      res.writeHead(200, { 'content-type': 'model/gltf-binary', 'access-control-allow-origin': '*' });
+      res.end(d);
+    });
     return;
   }
   let urlPath = decodeURIComponent(req.url.split('?')[0]);
