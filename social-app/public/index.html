@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Driftspace — 3D social rooms</title>
+<link rel="stylesheet" href="/style.css" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23ff4fd8'/%3E%3C/svg%3E" />
+<script type="importmap">
+{ "imports": { "three": "/vendor/three.module.js" } }
+</script>
+</head>
+<body>
+<!-- ===================== LOGIN / LOBBY ===================== -->
+<div id="lobby" class="screen">
+  <div class="lobby-card">
+    <h1 class="brand">Drift<span>space</span></h1>
+    <p class="tagline">Original 3D hangout rooms · avatars · live chat</p>
+
+    <div id="loginStep">
+      <label class="field">
+        <span>Display name</span>
+        <input id="nameInput" maxlength="24" placeholder="e.g. Nova" autocomplete="off" />
+      </label>
+      <button id="enterBtn" class="primary">Enter Driftspace</button>
+    </div>
+
+    <div id="roomStep" hidden>
+      <h2>Choose a room</h2>
+      <div id="roomList" class="room-list"></div>
+      <button id="backToName" class="ghost">← change name</button>
+    </div>
+  </div>
+  <footer class="lobby-foot">Original project — not affiliated with any existing product. Your room location is private by your rules.</footer>
+</div>
+
+<!-- ===================== IN-WORLD ===================== -->
+<div id="world" class="screen" hidden>
+  <canvas id="scene"></canvas>
+
+  <!-- top bar -->
+  <div class="topbar">
+    <button id="leaveBtn" class="chip">← Rooms</button>
+    <span id="roomTitle" class="room-title"></span>
+    <span class="spacer"></span>
+    <button id="toggleCustomize" class="chip">👤 Appearance</button>
+    <button id="togglePrivacy" class="chip">🔒 Privacy</button>
+    <button id="toggleFriends" class="chip">👥 Friends</button>
+  </div>
+
+  <!-- chat -->
+  <div class="chat">
+    <div id="chatLog" class="chat-log"></div>
+    <form id="chatForm" class="chat-input">
+      <input id="chatInput" maxlength="240" placeholder="Say something…" autocomplete="off" />
+      <button class="primary small">Send</button>
+    </form>
+  </div>
+
+  <div class="hint">Click the floor or use <b>W A S D</b> / arrows to walk. Drag to look.</div>
+
+  <!-- APPEARANCE PANEL -->
+  <aside id="customizePanel" class="panel" hidden>
+    <header><h3>Appearance</h3><button class="x" data-close="customizePanel">✕</button></header>
+    <label class="field"><span>Name</span><input id="czName" maxlength="24" /></label>
+    <div class="swatch-group"><span>Skin</span><div id="bodyColors" class="swatches"></div></div>
+    <div class="swatch-group"><span>Hair</span><div id="hairColors" class="swatches"></div></div>
+    <div class="swatch-group"><span>Outfit</span><div id="outfitStyles" class="pills"></div></div>
+    <div class="swatch-group"><span>Outfit color</span><div id="outfitColors" class="swatches"></div></div>
+    <button id="saveAppearance" class="primary">Save look</button>
+  </aside>
+
+  <!-- PRIVACY PANEL -->
+  <aside id="privacyPanel" class="panel" hidden>
+    <header><h3>Room-location privacy</h3><button class="x" data-close="privacyPanel">✕</button></header>
+    <p class="muted">Who can see <b>which room you are in</b>? This is enforced on the server — a hidden location is never sent to anyone else.</p>
+    <div class="radio-group" id="visibilityGroup">
+      <label><input type="radio" name="vis" value="everyone"><span>🌍 Everyone</span></label>
+      <label><input type="radio" name="vis" value="friends"><span>👥 Friends only</span></label>
+      <label><input type="radio" name="vis" value="nobody"><span>🙈 Nobody</span></label>
+    </div>
+    <hr/>
+    <h4>Test the lookup</h4>
+    <p class="muted">Ask the server where another user is. You only get a room back if their setting allows you.</p>
+    <div class="row">
+      <input id="whereisName" placeholder="their display name" maxlength="24"/>
+      <button id="whereisBtn" class="ghost">Look up</button>
+    </div>
+    <div id="whereisResult" class="lookup-result"></div>
+  </aside>
+
+  <!-- FRIENDS PANEL -->
+  <aside id="friendsPanel" class="panel" hidden>
+    <header><h3>Friends</h3><button class="x" data-close="friendsPanel">✕</button></header>
+    <p class="muted">Both people must add each other. Mutual friends can see each other under "Friends only".</p>
+    <div class="row">
+      <input id="addFriendName" placeholder="display name" maxlength="24"/>
+      <button id="addFriendBtn" class="ghost">Add</button>
+    </div>
+    <div id="friendMsg" class="muted"></div>
+    <h4>Your friends</h4>
+    <div id="friendList" class="friend-list"></div>
+    <h4>Who's online</h4>
+    <div id="presenceList" class="presence-list"></div>
+  </aside>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+
+<script type="module" src="/app.js"></script>
+</body>
+</html>
