@@ -632,11 +632,27 @@ function setAvatarUrl(url) {
   myProfile.avatarUrl = url;
   syncRpmUI();
 }
-$('openRpm').onclick = () => {
-  const f = $('rpmFrame'); f.src = rpmCreatorUrl();
+let rpmLoadTimer = null, rpmReady = false;
+function openRpmCreator() {
+  rpmReady = false;
+  const f = $('rpmFrame');
+  $('rpmHint').textContent = 'Loading the character creator…';
+  $('rpmHint').classList.remove('err');
+  f.src = rpmCreatorUrl();
   $('rpmModal').hidden = false;
-};
-$('closeRpm').onclick = () => { $('rpmModal').hidden = true; $('rpmFrame').src = 'about:blank'; };
+  clearTimeout(rpmLoadTimer);
+  rpmLoadTimer = setTimeout(() => {
+    if (!rpmReady) {
+      $('rpmHint').innerHTML = 'The creator didn’t load — you may be offline or it’s blocked here. ' +
+        'Close this and either style the quick avatar in <b>Appearance</b>, or <b>Upload</b> your own .vrm/.glb (make one free in VRoid Studio).';
+      $('rpmHint').classList.add('err');
+    }
+  }, 9000);
+}
+$('openRpm').onclick = openRpmCreator;
+if ($('lobbyCreateChar')) $('lobbyCreateChar').onclick = openRpmCreator;
+if ($('lobbyUploadChar')) $('lobbyUploadChar').onclick = () => $('avatarFile').click();
+$('closeRpm').onclick = () => { $('rpmModal').hidden = true; $('rpmFrame').src = 'about:blank'; clearTimeout(rpmLoadTimer); };
 $('applyRpmUrl').onclick = () => {
   const u = $('rpmUrl').value.trim();
   if (/^https:\/\/\S+\.(glb|vrm)(\?\S*)?$/i.test(u)) { setAvatarUrl(u); toast('Loading avatar…'); }
@@ -671,14 +687,18 @@ window.addEventListener('message', (ev) => {
   }
   if (!json || json.source !== 'readyplayerme') return;
   if (json.eventName === 'v1.frame.ready') {
-    $('rpmFrame').contentWindow.postMessage(JSON.stringify({ target: 'readyplayerme', type: 'subscribe', eventName: 'v1.**' }), '*');
+    rpmReady = true; clearTimeout(rpmLoadTimer);
+    $('rpmHint').textContent = 'Build your character, then press the button in the creator to finish — it loads in automatically.';
+    $('rpmHint').classList.remove('err');
+    try { $('rpmFrame').contentWindow.postMessage(JSON.stringify({ target: 'readyplayerme', type: 'subscribe', eventName: 'v1.**' }), '*'); } catch {}
   }
-  if (json.eventName === 'v1.avatar.exported') onRpmExport(json.data.url);
+  if (json.eventName === 'v1.avatar.exported' && json.data && json.data.url) onRpmExport(json.data.url);
 });
 function onRpmExport(url) {
+  clearTimeout(rpmLoadTimer);
   $('rpmModal').hidden = true; $('rpmFrame').src = 'about:blank';
   setAvatarUrl(url);
-  toast('Realistic avatar loaded');
+  toast('Realistic avatar loaded ✓');
 }
 
 // privacy

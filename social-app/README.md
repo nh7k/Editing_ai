@@ -67,8 +67,13 @@ in **Appearance → Custom 3D avatar**:
   (free) — pick the body, face, hair, outfit/dress you want — then
   *Export → VRM* and upload it. This is how you get the anime look (pink hair,
   frilly dress, etc.) as **your own original character**.
-- **Realistic (Ready Player Me):** the "✨ Create a realistic avatar" button
-  opens the RPM creator; finish it and the photoreal avatar loads automatically.
+- **Realistic (Ready Player Me):** the **"✨ Create your 3D character"** step in
+  the lobby (and the button in Appearance) opens the RPM creator **inside the
+  app** — build face, hair and outfit, and the finished avatar loads into the
+  room automatically. Needs internet. It uses the public `demo.readyplayer.me`
+  subdomain by default; for your own app set `localStorage.ds_rpm_subdomain` to
+  your subdomain from studio.readyplayer.me. If the creator can't load (offline
+  or blocked), the modal says so and points you to Upload / the quick avatar.
 - **Paste a `.vrm` / `.glb` URL** (Advanced) for an already-hosted avatar.
 
 If no custom avatar is set, or it can't load (offline / bad file), the app falls

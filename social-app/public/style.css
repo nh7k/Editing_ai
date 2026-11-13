@@ -40,6 +40,10 @@ input{font-family:inherit}
 .room-dot{width:34px;height:34px;border-radius:9px;flex:0 0 auto}
 .room-card .rn{font-weight:700}
 .room-card .rc{font-size:12px;color:var(--muted)}
+.create-char{display:flex;flex-direction:column;gap:8px;padding:14px;margin-bottom:14px;border:1px solid var(--line);
+  border-radius:14px;background:linear-gradient(135deg,#2a1b3e55,#1a1830)}
+.create-char .primary,.create-char .ghost{width:100%}
+.create-char .muted{margin:2px 0 0;text-align:center}
 .lobby-foot{position:absolute;bottom:14px;color:var(--muted);font-size:12px;text-align:center;width:100%;padding:0 16px}
 h2{font-size:18px;margin:4px 0 6px}
 
@@ -131,6 +135,7 @@ hr{border:none;border-top:1px solid var(--line);margin:14px 0}
 .modal[hidden]{display:none}
 .modal-card{background:var(--panel-solid);border:1px solid var(--line);border-radius:16px;padding:14px;width:min(900px,96vw);height:min(760px,92vh);display:flex;flex-direction:column}
 .rpm-frame{flex:1;width:100%;border:none;border-radius:10px;background:#0f0e1c}
+.modal .muted.err{color:#ffb4b4}
 .modal .muted{margin:8px 2px 0}
 
 .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--panel-solid);
