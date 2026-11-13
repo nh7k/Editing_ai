@@ -32,6 +32,7 @@ const ROOM_DEFS = [
   { id: 'lounge',  name: 'Driftwood Lounge', theme: 'warm',  floor: '#2a211a', accent: '#f0a94b', w: 20, d: 20 },
   { id: 'garden',  name: 'Skylight Garden', theme: 'nature', floor: '#15241a', accent: '#5ad17a', w: 26, d: 22 },
   { id: 'studio',  name: 'Mono Studio',   theme: 'mono',   floor: '#202024', accent: '#8f9bff', w: 18, d: 18 },
+  { id: 'penthouse', name: 'Midnight Romance — Penthouse', theme: 'penthouse', floor: '#171320', accent: '#c8a95e', w: 30, d: 24 },
 ];
 
 const AVATAR_PRESETS = {

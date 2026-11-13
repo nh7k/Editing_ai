@@ -94,6 +94,14 @@ h2{font-size:18px;margin:4px 0 6px}
   background:var(--panel-solid);border:1px solid var(--accent);padding:10px 14px;border-radius:14px;font-size:14px;box-shadow:0 12px 30px #000a}
 @media (max-width:560px){.pair-wrap{bottom:170px;left:12px;right:12px;align-items:center}}
 
+/* penthouse atmosphere bar */
+.atmo-bar{position:fixed;top:56px;left:50%;transform:translateX(-50%);z-index:5;display:flex;gap:6px;
+  background:#000a;padding:7px 9px;border-radius:999px;backdrop-filter:blur(8px)}
+.atmo-bar button{background:var(--panel-solid);color:var(--text);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:12px}
+.atmo-bar button:hover{border-color:var(--accent)}
+.atmo-bar button.on{border-color:#c8a95e;background:#2a1f10;color:#f0dca8}
+@media (max-width:560px){.atmo-bar{flex-wrap:wrap;max-width:calc(100vw - 24px);justify-content:center}}
+
 /* panels */
 .panel{position:fixed;top:60px;right:12px;width:min(340px,calc(100vw - 24px));z-index:6;
   background:var(--panel-solid);border:1px solid var(--line);border-radius:16px;padding:16px;
