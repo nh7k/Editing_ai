@@ -125,6 +125,7 @@ const remotes = new Map();         // id -> { avatar, group, target, label, last
 let roomMeshGroup = null;
 let roomUpdate = null;          // per-frame hook for animated rooms (penthouse water/skyline/candles)
 let penthouseSeats = [];        // sit spots: {x,z,rot,label}
+let penthouseColliders = [];    // furniture colliders: {x,z,r}
 let setAtmosphere = null;       // penthouse atmosphere preset setter
 let running = false;
 const clock = new THREE.Clock();
@@ -209,7 +210,7 @@ function buildRoom(def) {
   roomMeshGroup = new THREE.Group();
   scene.add(roomMeshGroup);
   roomBounds = { w: def.w, d: def.d };
-  roomUpdate = null; penthouseSeats = [];
+  roomUpdate = null; penthouseSeats = []; penthouseColliders = [];
 
   if (def.theme === 'penthouse') { buildPenthouse(def); return; }
 
@@ -320,7 +321,7 @@ function clearRoom() {
   for (const [, r] of remotes) { if (r.avatar.dispose) r.avatar.dispose(); scene && scene.remove(r.group); disposeGroup(r.group); }
   remotes.clear();
   if (localAvatar && scene) { if (localAvatar.dispose) localAvatar.dispose(); scene.remove(localAvatar.root); disposeGroup(localAvatar.root); localAvatar = null; }
-  moveTarget = null; roomUpdate = null; penthouseSeats = []; setAtmosphere = null;
+  moveTarget = null; roomUpdate = null; penthouseSeats = []; penthouseColliders = []; setAtmosphere = null;
   const ab = document.getElementById('atmoBar'); if (ab) ab.hidden = true;
   localEmote = null; pairLock = false;
   const pin = $('pairInvite'); if (pin) pin.hidden = true;
@@ -608,6 +609,14 @@ function updateLocal(dt) {
     myPos.x = clamp(myPos.x + moveX * spd * dt, -roomBounds.w / 2 + 1, roomBounds.w / 2 - 1);
     myPos.z = clamp(myPos.z + moveZ * spd * dt, -roomBounds.d / 2 + 1, roomBounds.d / 2 - 1);
     myRot = Math.atan2(moveX, moveZ);
+  }
+  // furniture collision (penthouse): push the avatar out of furniture footprints
+  // (skipped while walking to a seat / seated / paired, so sitting still works)
+  if (!pendingSit && !pairLock && localEmote !== 'sit') {
+    for (const c of penthouseColliders) {
+      const dx = myPos.x - c.x, dz = myPos.z - c.z, d = Math.hypot(dx, dz), minD = c.r + 0.35;
+      if (d < minD && d > 1e-4) { myPos.x = c.x + dx / d * minD; myPos.z = c.z + dz / d * minD; moveTarget = null; }
+    }
   }
   localAvatar.root.position.copy(myPos);
   localAvatar.root.rotation.y = dampAngle(localAvatar.root.rotation.y, myRot, 12, dt);
@@ -938,10 +947,16 @@ function buildPenthouse(def) {
   const warmB = new THREE.PointLight(0xff9050, 14, 26, 2); warmB.position.set(W * 0.2, 2.4, D * 0.1); g.add(warmB);
   const amb = new THREE.AmbientLight(0xffe0c0, 0.25); g.add(amb);   // soft base so the big room never goes pitch black
 
-  // furniture (original)
+  // furniture: king bed (original) + real licensed velvet sofa (CC-BY)
   buildBed(g, -W * 0.3, -D * 0.2, velvetMat, creamMat, goldMat);
-  buildSofa(g, W * 0.16, D * 0.06, velvetMat, goldMat);
+  loadFurniture('/models/furniture/GlamVelvetSofa.glb', W * 0.16, D * 0.06, 3.4, Math.PI, g,
+    () => buildSofa(g, W * 0.16, D * 0.06, velvetMat, goldMat));   // procedural fallback
   buildCoffeeTable(g, W * 0.16, D * 0.06 - 2.2, marbleMat, goldMat);
+  // furniture colliders (keep avatars from walking through the big pieces)
+  penthouseColliders.push({ x: -W * 0.3, z: -D * 0.2, r: 1.7 });   // bed
+  penthouseColliders.push({ x: W * 0.16, z: D * 0.06, r: 1.9 });   // sofa
+  penthouseColliders.push({ x: W * 0.16, z: D * 0.06 - 2.2, r: 1.0 }); // coffee table
+  penthouseColliders.push({ x: W * 0.3, z: D * 0.3, r: 2.0 });     // jacuzzi
   const rug = new THREE.Mesh(new THREE.CircleGeometry(3.3, 40), pMat('#3a1024', 0.96, 0)); rug.rotation.x = -Math.PI / 2; rug.position.set(W * 0.16, 0.015, D * 0.06 - 1.1); g.add(rug);
   buildLampTable(g, W * 0.16 - 3.8, D * 0.06 + 1.0, goldMat);
   buildLampTable(g, -W * 0.3 - 2.6, -D * 0.2, goldMat);
@@ -990,6 +1005,19 @@ function buildPenthouse(def) {
   let t = 0;
   roomUpdate = (dt) => { t += dt; if (water) animateWater(water, t); };
   buildPenthouseUI();
+}
+
+// load a GLB furniture piece: scale to target footprint, centre, drop to floor,
+// rotate about its centre; call fallback() on failure.
+function loadFurniture(url, x, z, targetW, rotY, g, fallback) {
+  gltfLoader.load(url, (gl) => {
+    const s = gl.scene; s.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; o.frustumCulled = false; } });
+    const bb = new THREE.Box3().setFromObject(s); const w = Math.max(bb.max.x - bb.min.x, bb.max.z - bb.min.z); const sc = w > 0.001 ? targetW / w : 1;
+    s.scale.setScalar(sc);
+    const b2 = new THREE.Box3().setFromObject(s); const cx = (b2.min.x + b2.max.x) / 2, cz = (b2.min.z + b2.max.z) / 2;
+    const pivot = new THREE.Group(); pivot.position.set(x, 0, z); pivot.rotation.y = rotY || 0;
+    s.position.set(-cx, -b2.min.y, -cz); pivot.add(s); g.add(pivot);
+  }, undefined, (e) => { console.warn('[penthouse] furniture load failed:', url, e && e.message); if (fallback) fallback(); });
 }
 
 function makeSkylineTexture() {
