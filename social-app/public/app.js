@@ -143,16 +143,44 @@ const keys = {};
 let lastSent = 0, lastSentPos = new THREE.Vector3();
 let roomBounds = { w: 24, d: 24 };
 
+// ---------- adaptive quality tier (phone / low-end laptop vs desktop) ----------
+// Picked once, before the renderer exists. Keeps weak hardware (phones, iGPU
+// laptops) smooth by dropping the three biggest GPU costs: device-pixel-ratio
+// (a phone at dpr 3 renders 9x the pixels of dpr 1), real-time shadows, and MSAA.
+// Manual override: add ?low / ?high to the URL, or set localStorage.ds_quality.
+const PERF = (() => {
+  let forced = null;
+  try {
+    const q = new URLSearchParams(location.search).get('q') || (location.search.includes('low') ? 'low' : location.search.includes('high') ? 'high' : '');
+    forced = q || localStorage.getItem('ds_quality') || null;
+  } catch {}
+  const coarse = (() => { try { return matchMedia('(pointer: coarse)').matches; } catch { return false; } })();
+  const smallScreen = Math.min(screen.width, screen.height) <= 820;
+  const fewCores = (navigator.hardwareConcurrency || 4) <= 4;
+  const lowMem = (navigator.deviceMemory || 4) <= 4;
+  let low = coarse || smallScreen || fewCores || lowMem;
+  if (forced === 'low') low = true;
+  if (forced === 'high') low = false;
+  return {
+    low,
+    dpr: low ? 1 : 1.5,          // was Math.min(dpr,2); 1.5 is ~visually identical, ~44% fewer fragments
+    shadows: !low,
+    shadowMap: low ? 512 : 1024, // was 2048 (4x the texels)
+    aa: !low,
+  };
+})();
+window.__ds_perf = PERF;
+
 function initScene() {
   const canvas = $('scene');
-  renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer = new THREE.WebGLRenderer({ canvas, antialias: PERF.aa, powerPreference: 'high-performance' });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, PERF.dpr));
   renderer.setSize(innerWidth, innerHeight);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.enabled = PERF.shadows;
+  renderer.shadowMap.type = PERF.low ? THREE.PCFShadowMap : THREE.PCFSoftShadowMap;
 
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(50, innerWidth / innerHeight, 0.1, 200);
@@ -226,8 +254,8 @@ function buildRoom(def) {
   roomMeshGroup.add(hemi);
   const key = new THREE.DirectionalLight(0xffffff, 2.1);
   key.position.set(def.w * 0.4, def.w * 0.9, def.d * 0.3);
-  key.castShadow = true;
-  key.shadow.mapSize.set(2048, 2048);
+  key.castShadow = PERF.shadows;
+  key.shadow.mapSize.set(PERF.shadowMap, PERF.shadowMap);
   const s = Math.max(def.w, def.d) * 0.75;
   Object.assign(key.shadow.camera, { left: -s, right: s, top: s, bottom: -s, near: 1, far: def.w * 3 });
   key.shadow.bias = -0.0004; key.shadow.normalBias = 0.02;
@@ -950,7 +978,7 @@ function buildPenthouse(def) {
 
   // lighting
   const hemi = new THREE.HemisphereLight(0xffe8d0, 0x201018, 0.38); g.add(hemi);
-  const key = new THREE.DirectionalLight(0xffdca8, 1.1); key.position.set(W * 0.3, H * 1.2, D * 0.2); key.castShadow = true; key.shadow.mapSize.set(2048, 2048);
+  const key = new THREE.DirectionalLight(0xffdca8, 1.1); key.position.set(W * 0.3, H * 1.2, D * 0.2); key.castShadow = PERF.shadows; key.shadow.mapSize.set(PERF.shadowMap, PERF.shadowMap);
   const ss = Math.max(W, D) * 0.6; Object.assign(key.shadow.camera, { left: -ss, right: ss, top: ss, bottom: -ss, near: 1, far: W * 3 }); key.shadow.bias = -0.0004; key.shadow.normalBias = 0.03; g.add(key);
   const warmA = new THREE.PointLight(0xffb060, 18, 28, 2); warmA.position.set(-W * 0.25, 2.8, -D * 0.1); g.add(warmA);
   const warmB = new THREE.PointLight(0xff9050, 14, 26, 2); warmB.position.set(W * 0.2, 2.4, D * 0.1); g.add(warmB);
