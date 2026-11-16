@@ -113,6 +113,15 @@ loadHumanoidGLB(CHAR).then(a => {
   const box = new THREE.Box3().setFromObject(a.root);
   target.set(0, (box.max.y - box.min.y) * 0.55, 0);
   status.textContent = 'ready · drag to rotate, scroll to zoom';
+  // debug hook — list every mesh + its material so we can diagnose skin artefacts
+  window.__studio = { scene, avatar: a, dump() {
+    const rows = [];
+    a.root.traverse(o => { if (o.isMesh) {
+      const mm = Array.isArray(o.material) ? o.material : [o.material];
+      mm.forEach(m => rows.push({ mesh: o.name, mat: m && m.name, map: !!(m && m.map), nmap: !!(m && m.normalMap), amap: !!(m && m.alphaMap), transp: !!(m && m.transparent), alphaTest: m && m.alphaTest, side: m && m.side, tris: o.geometry && o.geometry.index ? o.geometry.index.count/3 : (o.geometry && o.geometry.attributes.position.count/3) }));
+    }});
+    return rows;
+  } };
 }).catch(e => { status.textContent = 'load failed: ' + (e && e.message || e); });
 
 // ---- UI ----

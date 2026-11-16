@@ -244,9 +244,30 @@ function upgradeFBXMaterial(m) {
     std.transparent = true; std.opacity = m.opacity != null ? m.opacity : 1;
   }
 
+  // --- "missing skin" repair -------------------------------------------------
+  // Ara/MakeHuman skin meshes (body, mouth-cavity, teeth, tongue) can show a bare
+  // patch two ways: (a) a body material whose embedded diffuse map didn't bind, so
+  // it renders as a flat default colour, or (b) a single-sided mesh with an open
+  // seam you can see straight through. We detect skin/body materials broadly and
+  // (a) give an unmapped one a warm skin fallback tint instead of flat grey/white,
+  // (b) render them double-sided so no seam reads as a hole.
+  const isSkin = /(skin|body|young_|middle_|old_|caucasian|asian|african|nordic|genital|torso|limb|mouth|teeth|tongue|nail)/.test(name);
+  if (isSkin) {
+    std.side = THREE.DoubleSide;
+    if (!std.map) { std.color.set('#e8c6a2'); std.roughness = 0.62; }   // no texture bound → natural skin tone, never bare
+  }
+
   // per-material tuning
   if (name.includes('skin') && !name.includes('detail')) { std.roughness = 0.62; std.envMapIntensity = 0.45; }
-  else if (name.includes('detail')) { std.roughness = 0.68; std.alphaTest = 0.6; }   // drop faint overlay fragments
+  else if (name.includes('detail')) {
+    // "Skin details" is an optional overlay (meant as subtle pore/muscle shading) that
+    // sits on top of the base skin. In this export its alpha content is broken: it drew
+    // a torn, cross-hatched "scab" patch on the chest/shoulder that reads as damaged
+    // skin, whether hard-clipped (alphaTest) or soft-blended. The base "Skin" material
+    // already carries the full skin texture, so we simply hide this overlay — the body
+    // stays fully skinned, just without the broken decal.
+    std.visible = false;
+  }
   else if (name.includes('eye') && !name.includes('brow') && !name.includes('lash')) {
     std.roughness = 0.16; std.metalness = 0.0; std.envMapIntensity = 1.4; std.transparent = false; std.alphaTest = 0;
   }
