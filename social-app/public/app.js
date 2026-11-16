@@ -435,10 +435,50 @@ function showBubble(group, holder, text) {
 }
 
 // ---------- chat ----------
+// --- chat-driven actions ---------------------------------------------------
+// Type an action word (or /action) in chat and your avatar performs it — the
+// action is broadcast through the normal emote sync so everyone in the room sees
+// it. Deterministic, local, non-sexual whitelist only; anything else is ordinary
+// chat. English + Hinglish aliases.
+const CHAT_ACTIONS = {
+  wave: 'wave', hi: 'wave', hii: 'wave', hey: 'wave', hello: 'wave', bye: 'wave', namaste: 'wave', hath: 'wave', hilao: 'wave',
+  clap: 'clap', taali: 'clap', applause: 'clap',
+  dance: 'dance', nach: 'dance', nacho: 'dance', naacho: 'dance', naach: 'dance',
+  sit: 'sit', baith: 'sit', baitho: 'sit', baithja: 'sit', beth: 'sit',
+  hug: 'hug', gale: 'hug', jhappi: 'hug',
+  cheer: 'cheer', yay: 'cheer', hurray: 'cheer', wah: 'cheer', shabash: 'cheer',
+  cool: 'cool', swag: 'cool',
+  think: 'think', soch: 'think', socho: 'think',
+};
+const CHAT_STOP = new Set(['stop', 'ruk', 'ruko', 'rukja', 'normal', 'idle', 'cancel', 'none', 'khade']);
+function parseChatAction(t) {
+  let s = t.trim().toLowerCase();
+  const slash = s.startsWith('/');
+  if (slash) s = s.replace(/^\/+/, '').trim();
+  const words = s.split(/\s+/);
+  if (!slash && words.length > 1) return null;   // only a bare single word, or an explicit /command
+  const w = words[0];
+  if (CHAT_STOP.has(w)) return { stop: true };
+  if (CHAT_ACTIONS[w]) return { emote: CHAT_ACTIONS[w] };
+  return null;
+}
+function setActionEmote(name) {
+  localEmote = name;
+  if (localAvatar) localAvatar.setEmote(name);
+  send({ type: 'emote', name });
+  document.querySelectorAll('#emoteBar .emote-btn').forEach(b => b.classList.toggle('on', b.dataset.emote === name));
+}
 chatForm.onsubmit = (e) => {
   e.preventDefault();
   const t = chatInput.value.trim();
   if (!t) return;
+  const act = parseChatAction(t);
+  if (act) {
+    if (act.stop) { cancelEmote(); sysMsg('🎭 idle'); }
+    else { setActionEmote(act.emote); sysMsg('🎭 ' + act.emote); }
+    chatInput.value = '';
+    return;
+  }
   send({ type: 'chat', text: t });
   chatInput.value = '';
 };
