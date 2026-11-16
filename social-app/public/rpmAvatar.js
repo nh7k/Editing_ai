@@ -428,6 +428,11 @@ function mixerDriver(scene, clips) {
       to.crossFadeFrom(from, 0.25, false); to.play();
       current = name;
     },
+    // sync the clip's playback rate to actual movement speed -> less foot-sliding
+    setSpeed: (mps) => {
+      const a = actions[current]; if (!a) return;
+      a.setEffectiveTimeScale(current === 'idle' ? 1 : Math.max(0.6, Math.min(1.8, mps / 2.6)));
+    },
     setEmote: () => {},   // avatars that ship their own locomotion clips skip procedural emotes
   };
 }

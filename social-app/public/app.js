@@ -173,7 +173,7 @@ function initScene() {
   // lightweight debug hook (handy for diagnostics; harmless in production)
   window.__ds = {
     get remotes() { return [...remotes.entries()].map(([id, r]) => ({ id, name: r.name, x: +r.group.position.x.toFixed(2), z: +r.group.position.z.toFixed(2), mode: r.avatar.mode })); },
-    get me() { return { x: +myPos.x.toFixed(2), z: +myPos.z.toFixed(2), rot: +myRot.toFixed(2), mode: localAvatar && localAvatar.mode }; },
+    get me() { return { x: +myPos.x.toFixed(2), z: +myPos.z.toFixed(2), rot: +myRot.toFixed(2), speed: +moveSpeed.toFixed(2), mode: localAvatar && localAvatar.mode }; },
     get room() { return currentRoom && currentRoom.name; },
     setAvatar(u) { setAvatarUrl(u); },
     get info() { return renderer && renderer.info.render; },
@@ -576,56 +576,64 @@ function raycastFloor(cx, cy) {
   return null;
 }
 
-const SPEED = 2.6; // m/s
+const SPEED = 2.6; // m/s (legacy; still used for the remote run threshold)
+// M2 free-movement tuning
+const WALK_SPEED = 2.4, RUN_SPEED = 5.0, ACCEL = 9, DECEL = 11;
+let moveSpeed = 0, lastDirX = 0, lastDirZ = 1;   // current speed + last heading (for glide)
 function updateLocal(dt) {
   if (!localAvatar) return;
-  let moveX = 0, moveZ = 0;
   const f = (keys['w'] || keys['arrowup']) ? 1 : (keys['s'] || keys['arrowdown']) ? -1 : 0;
   const s = (keys['d'] || keys['arrowright']) ? 1 : (keys['a'] || keys['arrowleft']) ? -1 : 0;
-  let moving = false;
+  // --- determine heading + whether there's active input (keys or click target) ---
+  let hasInput = false;
   if (f || s) {
     moveTarget = null;
-    // camera-relative
     const sinY = Math.sin(camYaw), cosY = Math.cos(camYaw);
-    const fx = -sinY, fz = -cosY;       // forward (into screen)
-    const rx = cosY, rz = -sinY;        // right
-    moveX = fx * f + rx * s; moveZ = fz * f + rz * s;
-    const len = Math.hypot(moveX, moveZ) || 1;
-    moveX /= len; moveZ /= len; moving = true;
+    const ix = -sinY * f + cosY * s, iz = -cosY * f - sinY * s;   // camera-relative
+    const len = Math.hypot(ix, iz) || 1; lastDirX = ix / len; lastDirZ = iz / len; hasInput = true;
   } else if (moveTarget) {
-    const dx = moveTarget.x - myPos.x, dz = moveTarget.z - myPos.z;
-    const d = Math.hypot(dx, dz);
-    if (d > 0.08) { moveX = dx / d; moveZ = dz / d; moving = true; }
-    else {
-      moveTarget = null;
-      if (pendingSit) { myRot = pendingSit.rot; localEmote = 'sit'; localAvatar.setEmote('sit'); send({ type: 'emote', name: 'sit' }); pendingSit = null; }
-    }
+    const dx = moveTarget.x - myPos.x, dz = moveTarget.z - myPos.z, d = Math.hypot(dx, dz);
+    if (d > 0.12) { lastDirX = dx / d; lastDirZ = dz / d; hasInput = true; }
+    else { moveTarget = null; if (pendingSit) { myRot = pendingSit.rot; localEmote = 'sit'; localAvatar.setEmote('sit'); send({ type: 'emote', name: 'sit' }); pendingSit = null; } }
   }
-  if (moving && pairLock) { pairLock = false; send({ type: 'pairCancel' }); clearPairLocal(); }
-  if (moving && localEmote) cancelEmote();   // moving cancels an emote/pose
-  const sprint = moving && (keys['shift'] || keys['shiftleft'] || keys['shiftright']);
-  if (moving) {
-    const spd = SPEED * (sprint ? 1.9 : 1);
-    myPos.x = clamp(myPos.x + moveX * spd * dt, -roomBounds.w / 2 + 1, roomBounds.w / 2 - 1);
-    myPos.z = clamp(myPos.z + moveZ * spd * dt, -roomBounds.d / 2 + 1, roomBounds.d / 2 - 1);
-    myRot = Math.atan2(moveX, moveZ);
+  const sprint = hasInput && (keys['shift'] || keys['shiftleft'] || keys['shiftright']);
+  if (hasInput && pairLock) { pairLock = false; send({ type: 'pairCancel' }); clearPairLocal(); }
+  if (hasInput && localEmote && localEmote !== 'sit') cancelEmote();
+
+  // --- smooth acceleration / deceleration toward a target speed ---
+  let targetSpeed = 0;
+  if (hasInput) {
+    targetSpeed = sprint ? RUN_SPEED : WALK_SPEED;
+    if (moveTarget) { const d = Math.hypot(moveTarget.x - myPos.x, moveTarget.z - myPos.z); targetSpeed = Math.min(targetSpeed, Math.max(0.8, d * 3)); } // ease to a stop at a click target
+    myRot = Math.atan2(lastDirX, lastDirZ);
   }
-  // furniture collision (penthouse): push the avatar out of furniture footprints
-  // (skipped while walking to a seat / seated / paired, so sitting still works)
+  moveSpeed += (targetSpeed - moveSpeed) * Math.min(1, (targetSpeed > moveSpeed ? ACCEL : DECEL) * dt);
+  if (targetSpeed === 0 && moveSpeed < 0.03) moveSpeed = 0;
+
+  // --- apply movement along the last heading (so decel keeps gliding) ---
+  if (moveSpeed > 0.001) {
+    myPos.x = clamp(myPos.x + lastDirX * moveSpeed * dt, -roomBounds.w / 2 + 1, roomBounds.w / 2 - 1);
+    myPos.z = clamp(myPos.z + lastDirZ * moveSpeed * dt, -roomBounds.d / 2 + 1, roomBounds.d / 2 - 1);
+  }
+  // furniture collision (penthouse): push out of footprints (sit/paired exempt)
   if (!pendingSit && !pairLock && localEmote !== 'sit') {
     for (const c of penthouseColliders) {
       const dx = myPos.x - c.x, dz = myPos.z - c.z, d = Math.hypot(dx, dz), minD = c.r + 0.35;
-      if (d < minD && d > 1e-4) { myPos.x = c.x + dx / d * minD; myPos.z = c.z + dz / d * minD; moveTarget = null; }
+      if (d < minD && d > 1e-4) { myPos.x = c.x + dx / d * minD; myPos.z = c.z + dz / d * minD; moveTarget = null; moveSpeed = 0; }
     }
   }
-  localAvatar.root.position.copy(myPos);
-  localAvatar.root.rotation.y = dampAngle(localAvatar.root.rotation.y, myRot, 12, dt);
-  localAvatar.setAnim(moving ? (sprint ? 'run' : 'walk') : 'idle');
+  localAvatar.root.position.copy(myPos);              // stays on floor (y from avatar load)
+  if (moveSpeed > 0.05 || hasInput) localAvatar.root.rotation.y = dampAngle(localAvatar.root.rotation.y, myRot, 12, dt);
+
+  // --- animation chosen by actual speed; stride synced to reduce foot-sliding ---
+  const anim = moveSpeed > RUN_SPEED * 0.55 ? 'run' : moveSpeed > 0.12 ? 'walk' : 'idle';
+  localAvatar.setAnim(anim);
+  if (localAvatar.setSpeed) localAvatar.setSpeed(moveSpeed);
   localAvatar.update(dt);
 
   // send throttled
   const now = performance.now();
-  if (now - lastSent > 70 && (moving || lastSentPos.distanceTo(myPos) > 0.01)) {
+  if (now - lastSent > 70 && (moveSpeed > 0.01 || lastSentPos.distanceTo(myPos) > 0.01)) {
     send({ type: 'move', x: +myPos.x.toFixed(3), z: +myPos.z.toFixed(3), rot: +myRot.toFixed(3) });
     lastSent = now; lastSentPos.copy(myPos);
   }
@@ -640,9 +648,10 @@ function updateRemotes(dt) {
     r.group.position.z = damp(r.group.position.z, r.target.z, 10, dt);
     const moved = prev.distanceTo(r.group.position);
     r.speed = moved / Math.max(dt, 0.001);
-    const movingR = r.speed > 0.25;
+    const movingR = r.speed > 0.2;
     r.avatar.root.rotation.y = dampAngle(r.avatar.root.rotation.y, r.targetRot, 10, dt);
-    r.avatar.setAnim(movingR ? (r.speed > SPEED * 1.35 ? 'run' : 'walk') : 'idle');
+    r.avatar.setAnim(movingR ? (r.speed > RUN_SPEED * 0.55 ? 'run' : 'walk') : 'idle');
+    if (r.avatar.setSpeed) r.avatar.setSpeed(r.speed);
     r.avatar.update(dt);
     if (r.bubble) { r.bubbleTimer -= dt; if (r.bubbleTimer <= 0) { r.group.remove(r.bubble); r.bubble.material.map.dispose(); r.bubble = null; } }
   }

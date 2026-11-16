@@ -50,6 +50,7 @@ export function createAvatarController(look = {}) {
     root,
     update: (dt) => impl.update(dt),
     setAnim: (n) => { currentAnim = n; impl.setAnim(n); },
+    setSpeed: (mps) => { if (impl.setSpeed) impl.setSpeed(mps); },
     setEmote: (n) => { currentEmote = n || null; if (impl.setEmote) impl.setEmote(currentEmote); },
     setAppearance: (next) => {
       Object.assign(look, next);
