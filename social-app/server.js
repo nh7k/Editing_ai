@@ -50,6 +50,26 @@ const AVATAR_PRESETS = {
   ],
 };
 
+// Build the ready-avatar list from the characters folder so any .fbx/.glb/.vrm
+// dropped into public/models/characters (e.g. a new Ara export like Mira.fbx)
+// shows up automatically — no code change needed. External CDN samples (the
+// anime VRM) are kept by their http(s) url.
+function characterReadyAvatars() {
+  const dir = path.join(PUBLIC_DIR, 'models', 'characters');
+  const local = [];
+  try {
+    for (const f of fs.readdirSync(dir)) {
+      if (!/\.(fbx|glb|gltf|vrm)$/i.test(f)) continue;
+      const name = f.replace(/\.[^.]+$/, '').replace(/[_-]+/g, ' ').trim() || f;
+      local.push({ name, url: '/models/characters/' + f });
+    }
+  } catch {}
+  // Athletic male stays first (first permanent character), then the rest A→Z.
+  local.sort((a, b) => a.name === 'Athletic male' ? -1 : b.name === 'Athletic male' ? 1 : a.name.localeCompare(b.name));
+  const external = AVATAR_PRESETS.readyAvatars.filter(r => /^https?:/i.test(r.url));
+  return [...local, ...external];
+}
+
 // ---------------------------------------------------------------------------
 // Persistent per-user profiles (appearance + privacy + friends) — SQLite.
 // `profiles` is an in-memory cache; SQLite (db.js) is the durable source of
@@ -391,7 +411,7 @@ function handleMessage(c, msg) {
         type: 'welcome',
         userId: uid,
         profile: publicProfile(uid),
-        presets: AVATAR_PRESETS,
+        presets: { ...AVATAR_PRESETS, readyAvatars: characterReadyAvatars() },
         pairedPoses: Object.entries(PAIRED_POSES).map(([key, d]) => ({ key, label: d.label })),
         rooms: roomCounts(),
       });
