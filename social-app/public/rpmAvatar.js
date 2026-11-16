@@ -353,6 +353,7 @@ function buildVRM(vrm) {
     root,
     update: (dt) => { driver.update(dt); if (vrm.update) vrm.update(dt); },
     setAnim: driver.setAnim,
+    setEmote: driver.setEmote,          // was missing → VRM avatars (e.g. Mira) ignored every emote/pose
     setAppearance: () => {},
     get outfit() { return 'vrm'; },
     dispose() { try { VRMUtils.deepDispose ? VRMUtils.deepDispose(vrm.scene) : vrm.scene.traverse(o => { o.geometry && o.geometry.dispose(); }); } catch {} },
