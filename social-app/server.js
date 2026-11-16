@@ -46,7 +46,7 @@ const AVATAR_PRESETS = {
   // The first is the pixiv three-vrm sample — a generic anime avatar for demos.
   readyAvatars: [
     { name: 'Athletic male', url: '/models/characters/Athletic_male.fbx' },   // first permanent character
-    { name: 'Aria (anime)', url: 'https://cdn.jsdelivr.net/gh/pixiv/three-vrm@v3.4.2/packages/three-vrm/examples/models/VRM1_Constraint_Twist_Sample.vrm' },
+    { name: 'Mira', url: 'https://cdn.jsdelivr.net/gh/pixiv/three-vrm@v3.4.2/packages/three-vrm/examples/models/VRM1_Constraint_Twist_Sample.vrm' },   // girl character (anime-style VRM, served from the official three-vrm CDN)
   ],
 };
 
