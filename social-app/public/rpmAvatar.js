@@ -189,13 +189,15 @@ export function loadHumanoidGLB(url, opts = {}) {
         const embedded = forceProc ? null : pickEmbedded(gltf.animations);
 
         let api;
-        if (embedded) api = mixerDriver(scene, embedded);
+        if (embedded) api = mixerDriver(scene, embedded, bones);
         else api = proceduralDriver(bones);
 
         resolve({
           root,
           update: api.update,
           setAnim: api.setAnim,
+          setEmote: api.setEmote || (() => {}),   // was missing → raw-GLB avatars ignored emotes/poses
+          setSpeed: api.setSpeed,
           setAppearance: () => {},    // RPM look is baked into the glb
           get outfit() { return 'rpm'; },
           dispose() {
@@ -307,13 +309,14 @@ function loadFBX(url, opts, resolve, reject) {
       const bones = mapBones(obj);
       const anims = obj.animations || [];
       const embedded = opts.procedural ? null : pickEmbedded(anims);
-      const api = embedded ? mixerDriver(obj, embedded) : proceduralDriver(bones);
+      const api = embedded ? mixerDriver(obj, embedded, bones) : proceduralDriver(bones);
 
       resolve({
         root,
         update: api.update,
         setAnim: api.setAnim,
         setEmote: api.setEmote || (() => {}),
+        setSpeed: api.setSpeed,
         setAppearance: () => {},
         get outfit() { return 'fbx'; },
         _info: { animations: anims.map(a => a.name), bones: Object.keys(bones), driver: embedded ? 'embedded' : 'procedural' },
@@ -346,6 +349,18 @@ function buildVRM(vrm) {
   facing.rotation.y = Math.PI;            // turn to face +Z (tuned on a real VRM)
   facing.add(vrm.scene);
   root.add(facing);
+  root.updateMatrixWorld(true);
+
+  // Normalise scale + drop feet to y=0 (VRMs ship at varied heights/origins, and
+  // buildVRM previously did neither — so Mira floated / walked "lifted"). Uniform
+  // scale preserves proportions; grounding is a static offset so feet stay planted
+  // through idle/walk/run (the procedural hip-bob rides on top of it).
+  let vbox = new THREE.Box3().setFromObject(root);
+  const vh = vbox.max.y - vbox.min.y;
+  if (vh > 0.001) facing.scale.multiplyScalar(1.7 / vh);   // ~1.7 m (female; male FBX is 1.8 m)
+  root.updateMatrixWorld(true);
+  vbox = new THREE.Box3().setFromObject(root);
+  facing.position.y -= vbox.min.y;                          // feet to floor
   root.updateMatrixWorld(true);
 
   const driver = vrmDriver(vrm);
@@ -434,16 +449,65 @@ function vrmDriver(vrm) {
 }
 
 // ---- driver A: play the glb's own clips via AnimationMixer + crossfade ------
-function mixerDriver(scene, clips) {
+function mixerDriver(scene, clips, bones) {
   const mixer = new THREE.AnimationMixer(scene);
   const actions = {};
   for (const k of ['idle', 'walk', 'run']) {
     if (clips[k]) { actions[k] = mixer.clipAction(clips[k]); actions[k].enabled = true; actions[k].setEffectiveWeight(k === 'idle' ? 1 : 0); actions[k].play(); }
   }
   let current = 'idle';
+
+  // ---- procedural emote OVERLAY on the embedded locomotion clips --------------
+  // The embedded FBX ships only Idle/Walk/Run, so sit/hug/dance/paired poses are
+  // layered procedurally on the SAME standard-named bones. Rest quats are captured
+  // at bind (before the mixer advances); while standing, the emote pose is blended
+  // ON TOP of the mixer output by a weight eW that ramps in/out for smoothness.
+  // No fabricated clips; locomotion is never altered — the overlay only engages
+  // when the avatar is not moving, and fades back to the idle clip on release.
+  let overlay = null;
+  if (bones && bones.hips) {
+    const hips = bones.hips, hipsRestY = hips.position.y;
+    const poseL = (bones.leftarm && bones.leftforearm)
+      ? makeArmPoser(bones.leftarm, bones.leftforearm, bones.leftarm.quaternion.clone(), bones.leftforearm.quaternion.clone()) : null;
+    const poseR = (bones.rightarm && bones.rightforearm)
+      ? makeArmPoser(bones.rightarm, bones.rightforearm, bones.rightarm.quaternion.clone(), bones.rightforearm.quaternion.clone()) : null;
+    const emoteMap = restMap({
+      spine: bones.spine, chest: bones.spine2 || bones.chest, head: bones.head, hips,
+      lleg: bones.leftupleg, rleg: bones.rightupleg, lknee: bones.leftleg, rknee: bones.rightleg,
+      lfoot: bones.leftfoot, rfoot: bones.rightfoot,
+    });
+    const emoteApi = makeEmoteApi(emoteMap, poseL, poseR, hipsRestY);
+    const nodes = [];
+    for (const b of [bones.leftarm, bones.leftforearm, bones.rightarm, bones.rightforearm,
+      bones.spine, bones.spine2 || bones.chest, bones.head,
+      bones.leftupleg, bones.rightupleg, bones.leftleg, bones.rightleg,
+      bones.leftfoot, bones.rightfoot]) if (b) nodes.push(b);
+    const snap = nodes.map(() => new THREE.Quaternion());
+    overlay = { emoteApi, hips, hipsRestY, nodes, snap, tmp: new THREE.Quaternion() };
+  }
+  let emote = null, emoteT = 0, eW = 0, lastSpeed = 0;
+
   return {
-    update: (dt) => mixer.update(dt),
+    update: (dt) => {
+      mixer.update(dt);
+      if (!overlay) return;
+      const moving = current !== 'idle' || lastSpeed > 0.25;
+      const want = (emote && EMOTES[emote] && !moving) ? 1 : 0;
+      eW += (want - eW) * Math.min(1, dt * 6);
+      if (eW < 0.002 || !(emote && EMOTES[emote])) return;
+      emoteT += dt;
+      const { emoteApi, hips, hipsRestY, nodes, snap, tmp } = overlay;
+      for (let i = 0; i < nodes.length; i++) snap[i].copy(nodes[i].quaternion);   // mixer output
+      const hipsMixY = hips.position.y;
+      hips.position.y = hipsRestY;
+      emoteApi._reset();
+      EMOTES[emote](emoteT, emoteApi);                                            // nodes now hold the emote pose
+      for (let i = 0; i < nodes.length; i++) { tmp.copy(nodes[i].quaternion); nodes[i].quaternion.slerpQuaternions(snap[i], tmp, eW); }
+      hips.position.y = hipsMixY + (hips.position.y - hipsMixY) * eW;
+    },
     setAnim: (name) => {
+      if (name === 'walk' || name === 'run') lastSpeed = Math.max(lastSpeed, 2.5);
+      else if (name === 'idle') lastSpeed = 0;
       if (!actions[name] || name === current) return;
       const from = actions[current], to = actions[name];
       to.enabled = true; to.setEffectiveWeight(1); to.setEffectiveTimeScale(1);
@@ -452,10 +516,11 @@ function mixerDriver(scene, clips) {
     },
     // sync the clip's playback rate to actual movement speed -> less foot-sliding
     setSpeed: (mps) => {
+      lastSpeed = mps;
       const a = actions[current]; if (!a) return;
       a.setEffectiveTimeScale(current === 'idle' ? 1 : Math.max(0.6, Math.min(1.8, mps / 2.6)));
     },
-    setEmote: () => {},   // avatars that ship their own locomotion clips skip procedural emotes
+    setEmote: (name) => { if (name !== emote) { emote = name || null; emoteT = 0; } },
   };
 }
 
